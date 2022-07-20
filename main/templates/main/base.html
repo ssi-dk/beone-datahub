@@ -14,15 +14,15 @@
           <h1><a href="/">BeONE Web App</a></h1>
         </div>
         <div class='right-justify'>
-          {% block login %}
-            {% if request.user.is_authenticated %}
-              <span>Hello {{request.user.username}}</span>
-              <span><a href=" {% url 'logout' %}">Logout</a></span>
-            {% else %}
-              <span>Please <a href=" {% url 'login' %}">login</a> first</span>
-            {% endif %}
-          {% endblock %}
+          {% if request.user.is_authenticated %}
+            <span>Hello {{request.user.username}}</span>
+            <span><a href=" {% url 'logout' %}">Logout</a></span>
+          {% else %}
+            <span>Please <a href=" {% url 'login' %}">login</a> first</span>
+          {% endif %}
         </div>
     </div>
+    {% block content %}
+    {% endblock %}
   </body>
 </html>
