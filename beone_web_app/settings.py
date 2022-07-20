@@ -136,3 +136,5 @@ ALL_SPECIES = {
     'listeria': 'Listeria monocytogenes',
     'salmonella': 'Salmonella enterica',
 }
+
+LOGIN_REDIRECT_URL = "/"
