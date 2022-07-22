@@ -130,11 +130,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Own additions
-ALL_SPECIES = {
-    'campy': 'Campylobacter jejuni',
-    'coli': 'Escherichia coli',
-    'listeria': 'Listeria monocytogenes',
-    'salmonella': 'Salmonella enterica',
-}
+ALL_SPECIES = (
+    ('campy', 'Campylobacter jejuni'),
+    ('coli', 'Escherichia coli'),
+    ('listeria', 'Listeria monocytogenes'),
+    ('salmonella', 'Salmonella enterica'),
+)
 
 LOGIN_REDIRECT_URL = "/"
