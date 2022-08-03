@@ -18,22 +18,27 @@ You will also need to start it by running:
 
     sudo service start mongodb
 
+### Optional: install a tool for viewing MongoDB data
+During the testing process it can sometimes be desirable to be able to view the MongoDB data in another way separate from the web app. For this purpose, the MongoDB Compass data viewer can be recommended. Please see MongoDB website for hos to download and install MongoDB Compass.
+
 ### Load test data into MongoDB
-Todo.
+There is a small test data set included in the repository. It can be installed with the 'mongoimport' utility program that comes with MongoDB. The test data set consists of 10 JSON files, each containing data for one sample. However, 'mongoimport' can only import one file at a time. To make it less cumbersome (assuming you are running Ubuntu or another Linux OS), you should be able to install all the data with one command this way:
+
+    cd test_data
+    cat *.json | mongoimport -d beone –c samples
+
+If you installed Compass, you can use it to verify that you now have a database named 'beone' with a collection named 'samples' which contains the samples from the test dataset.
 
 ### Configure MONGO_CONNECTION
-Set the database URI in the MONGO_CONNECTION variable in settings.py. The following setting will connect to a MongoDB server instance running in the host OS and use a database named 'beone' for both authentication and data:
+The URI for the MOngoDB database is controlle by the MONGO_CONNECTION variable in settings.py. The following setting (which is the default) will connect to a MongoDB server instance running in the host OS and use a database named 'beone' for both authentication and data:
 
     MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone'
 
-If you need to authenticate the MongoDB user through another database than the one that stores the data, you need to specify the auth database this way:
+Note that since settings.py is a version-controlled file Git will see it as a code change if you make a change to it. This is not optimal and will be changed later.
+
+If you need to authenticate the MongoDB user through another database than the one that stores the data, can specify the authentication database this way:
 
     MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone?authSource=auth_db'
-
-Note that since this change is made in a version-controlled file Git will see it as a code change. This is not optimal and will be changed later.
-
-### Optional: install a tool for viewing MongoDB data
-During the testing process it can sometimes be desirable to be able to view the MongoDB data in another way separate from the web app. For this purpose, the MongoDB Compass data viewer can be recommended. Please see MongoDB website for hos to download and install MongoDB Compass.
 
 # A note about PostgreSQL
 BeONE Web App also uses a PostgreSQL database for storing user accounts and other user-related data. The PostgreSQL database is provided through the Docker infrastructure, so having a PostgreSQL database is NOT a prerequisite.
