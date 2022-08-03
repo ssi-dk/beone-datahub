@@ -1,5 +1,5 @@
 # Introduction
-BeONE Web App is the core web application for the BeONE project. It this point it is not intended for production use, but can be used for testing and feedback.
+BeONE Web App is the core web application for the BeONE project. At this point it is not intended for production use, but can be used for testing and feedback.
 
 # Installation prerequisites
 
@@ -32,7 +32,7 @@ There is a small test data set included in the repository. It can be installed w
 
 If you installed Compass, you can use it to verify that you now have a database named 'beone' with a collection named 'samples' which contains the samples from the test dataset.
 
-# Installation
+# Installation of the web app
 If you havn't done so already, check out this repository on your computer.
 
 ## Configure MONGO_CONNECTION
