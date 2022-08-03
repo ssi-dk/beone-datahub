@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.conf import settings
 
+from .mongo import samples_api
 from .forms import SpeciesForm
 from .models import UserProfile
 
@@ -11,12 +13,18 @@ def get_context(request):
         return user_profile, species_name
 
 
-def home(request):
+def sample_list(request):
     if request.user.is_authenticated:
         user_profile, species_name = get_context(request)
-        return render(request, 'main/base.html',{
+        samples = list(samples_api.get_samples_of_species(species_name))
+        for sample in samples:
+            sample['country_name'] = sample['country'][0][0]['termName']  # Why this complex structure?
+            sample['source_type_name'] = sample['source_type'][0][1]['termName']  # Why this complex structure?
+
+        return render(request, 'main/sample_list.html',{
             'user_profile': user_profile,
-            'species_name': species_name
+            'species_name': species_name,
+            'samples': samples
             })
     else:
         return render(request, 'main/base.html')

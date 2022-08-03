@@ -1,0 +1,75 @@
+{% extends "main/base.html" %}
+
+{% block content%}
+<div class="pane">
+  <h2>Sample List</h2>
+
+  <div class="overview-row">
+    <div class="overview-firstcol-border">
+      <input type="checkbox"
+      />
+    </div>
+    <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Name</div>
+      <div class='overview-header-inner'>
+        <span>{filter}</span>
+      </div>
+    </div>
+    <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Species</div>
+      <div class='overview-header-inner'>
+        <span>{filter}</span>
+      </div>
+    </div>
+    <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Country</div>
+      <div class='overview-header-inner'>
+        <span>{filter}</span>
+      </div>
+    </div>
+    <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Source</div>
+      <div class='overview-header-inner'>
+        <span>{filter}</span>
+      </div>
+    </div>
+    <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Year</div>
+      <div class='overview-header-inner'>
+        <span>{filter}</span>
+      </div>
+    </div>
+    <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>ST</div>
+      <div class='overview-header-inner'>
+        <span>{filter}</span>
+      </div>
+    </div>
+  </div>
+  {% for sample in samples %}
+  <div class="row">
+    <div class='overview-firstcol'>
+      <input type='checkbox'/>
+    </div>
+    <div class='overview-datacolumn'>
+      {{ sample.name }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ sample.species }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ sample.country_name }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ sample.source_type_name }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ sample.year }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ sample.sequence_type }}
+    </div>
+  </div>
+{% endfor %}
+</div
+{% endblock %}

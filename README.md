@@ -1,8 +1,30 @@
 # Introduction
-BeONE Web App is the core web application for the BeONE project. It this point it is not intended for production use, but can only be used for testing and feedback.
+BeONE Web App is the core web application for the BeONE project. It this point it is not intended for production use, but can be used for testing and feedback.
 
 # Installation prerequisites
-BeONE web app runs trough Docker, so you will need Docker in your computer in order to install it. Please see the Docker documentation for your platform.
+
+## Docker
+BeONE web app runs trough Docker, so you will need Docker on your computer in order to install it. Please see the Docker documentation for your platform. On Windows, the recommended way of running Docker is through Windows Subsystem for Linux (WSL) version 2. The application is being developed and tested with Ubuntu 20.02 on top of WSL2.
+
+## MongoDB
+In order to use BeONE Web App you must have access to a running instance of a MongoDB database that contains a BeONE data structure.
+
+If you do not already have a MongoDB database that you can use for testing the BeONE Web App, you can install MongoDB on your local machine. For development, a MongoDB 3.6 provided by the Ubuntu repositories is being used. Although this version is very old, it is currently sufficient for testing. Set the database URI in the MONGO_CONNECTION variable in settings.py. The following setting will connect to a MongoDB server instance running in the host OS and use a database named 'beone' for both authentication and data:
+
+    MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone'
+
+If you need to authenticate the MongoDB user through another database than the one that stores the data, you need to specify the auth database this way:
+
+    MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone?authSource=auth_db'
+
+The BeONE project will provide a database dump with relevant test data.
+
+At least for now, a read-only account for the MongoDB database will be sufficient as BeONE Web App will not write any data to the MongoDB database.
+
+During the testing process it can sometimes be desirable to be able to view the MongoDB data in another way separate from the web app. For this purpose, the MongoDB Compass data viewer can be recommended.
+
+# A note about PostgreSQL
+BeONE Web App also uses a PostgreSQL database for storing user accounts and other user-related data. The PostgreSQL database is provided through the Docker infrastructure, so having a PostgreSQL database is NOT a prerequisite.
 
 # Installation
 Check out this repository on your computer.
@@ -15,18 +37,17 @@ When Docker has downloaded and initialized the containers you should see sometin
 
 Starting development server at http://0.0.0.0:8000/
 
-That address will probably not work. Use this address instead to se the user interface in a browser:
+That address will probably not work. Use this address instead to see the user interface in a browser:
 
 http://localhost:8000/
 
-# Create a user
-Open another terminal window (while the containers are still running in the first one) and type:
+Open another terminal window (while the containers are still running in the first one) and type the following to generate the table structure in PostgreSQL:
 
     docker exec beone_web_app-web-1 python manage.py migrate
 
 This should produce som text output but no error messages.
 
-Then type in the same terminal window:
+Then type in the same terminal window to create a user that can login to the web app:
 
     docker exec -it beone_web_app-web-1 python manage.py createsuperuser
 

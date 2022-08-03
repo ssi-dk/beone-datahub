@@ -129,7 +129,32 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Own additions
+# Own additions below
+
+MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/dataset2'
+
+# Mapping for Bifrost 2.1 (SOFI)
+"""MONGO_FIELD_MAPPING = {
+    "name": "categories.sample_info.summary.sample_name",
+    "species": "categories.sample_info.summary.provided_species",
+}"""
+
+MONGO_FIELD_MAPPING = {
+    "name": "sample.summary.sample",
+    "species": "sample.summary.species",
+    "country": "sample.metadata.Country",
+    "source_type": "sample.metadata.Source_Type",
+    "year": "sample.metadata.Date_Sampling_YYYY",
+    "sequence_type": "sample.summary.sequence_type",
+    "allele_profile": "pipelines.chewiesnake.allele_profile",
+}
+
+# Mapping for BeONE
+"""MONGO_FIELD_MAPPING = {
+    'name': 'sample.summary.sample',
+    'species': 'sample.summary.species',
+}"""
+
 ALL_SPECIES = (
     ('campy', 'Campylobacter jejuni'),
     ('coli', 'Escherichia coli'),
