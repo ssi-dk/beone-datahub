@@ -7,9 +7,22 @@ BeONE Web App is the core web application for the BeONE project. It this point i
 BeONE web app runs trough Docker, so you will need Docker on your computer in order to install it. Please see the Docker documentation for your platform. On Windows, the recommended way of running Docker is through Windows Subsystem for Linux (WSL) version 2. The application is being developed and tested with Ubuntu 20.02 on top of WSL2.
 
 ## MongoDB
-In order to use BeONE Web App you must have access to a running instance of a MongoDB database that contains a BeONE data structure.
+In order to use BeONE Web App you must have access to a running instance of a MongoDB database that contains a BeONE data structure. At least for now, a read-only account for the MongoDB database will be sufficient as BeONE Web App will not write any data to the MongoDB database.
 
-If you do not already have a MongoDB database that you can use for testing the BeONE Web App, you can install MongoDB on your local machine. For development, a MongoDB 3.6 provided by the Ubuntu repositories is being used. Although this version is very old, it is currently sufficient for testing. Set the database URI in the MONGO_CONNECTION variable in settings.py. The following setting will connect to a MongoDB server instance running in the host OS and use a database named 'beone' for both authentication and data:
+### Install a local MongoDB on Ubuntu
+If you do not already have a MongoDB database that you can use for testing the BeONE Web App, you can install MongoDB on your local machine. For development, a MongoDB 3.6 provided by the Ubuntu repositories is being used. Although this version is very old, it is currently sufficient for testing. You can install it in Ubuntu 20.04 with thic command:
+
+    sudo apt install mongodb
+
+You will also need to start it by running:
+
+    sudo service start mongodb
+
+### Load test data into MongoDB
+Todo.
+
+### Configure MONGO_CONNECTION
+Set the database URI in the MONGO_CONNECTION variable in settings.py. The following setting will connect to a MongoDB server instance running in the host OS and use a database named 'beone' for both authentication and data:
 
     MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone'
 
@@ -17,11 +30,10 @@ If you need to authenticate the MongoDB user through another database than the o
 
     MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone?authSource=auth_db'
 
-The BeONE project will provide a database dump with relevant test data.
+Note that since this change is made in a version-controlled file Git will see it as a code change. This is not optimal and will be changed later.
 
-At least for now, a read-only account for the MongoDB database will be sufficient as BeONE Web App will not write any data to the MongoDB database.
-
-During the testing process it can sometimes be desirable to be able to view the MongoDB data in another way separate from the web app. For this purpose, the MongoDB Compass data viewer can be recommended.
+### Optional: install a tool for viewing MongoDB data
+During the testing process it can sometimes be desirable to be able to view the MongoDB data in another way separate from the web app. For this purpose, the MongoDB Compass data viewer can be recommended. Please see MongoDB website for hos to download and install MongoDB Compass.
 
 # A note about PostgreSQL
 BeONE Web App also uses a PostgreSQL database for storing user accounts and other user-related data. The PostgreSQL database is provided through the Docker infrastructure, so having a PostgreSQL database is NOT a prerequisite.
