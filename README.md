@@ -33,7 +33,7 @@ There is a small test data set included in the repository. It can be installed w
 If you installed Compass, you can use it to verify that you now have a database named 'beone' with a collection named 'samples' which contains the samples from the test dataset.
 
 # Installation of the web app
-If you havn't done so already, check out this repository on your computer.
+If you haven't done so already, check out this repository on your computer.
 
 ## Configure MONGO_CONNECTION
 
