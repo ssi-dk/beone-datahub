@@ -13,12 +13,7 @@ FIELD_MAPPING = settings.MONGO_FIELD_MAPPING
 def get_samples_of_species(species_name):
     connection = pymongo.MongoClient(settings.MONGO_CONNECTION)
     db = connection.get_database()
-    pipeline = [
-        {'$match': {
-            FIELD_MAPPING['species']: species_name
-        }
-        },
-        {'$project': {'_id': '$_id',
+    projection = {'_id': '$_id',
                       'name': f"${FIELD_MAPPING['name']}",
                       'species': f"${FIELD_MAPPING['species']}",
                       'country': f"${FIELD_MAPPING['country']}",
@@ -26,6 +21,12 @@ def get_samples_of_species(species_name):
                       'year': f"${FIELD_MAPPING['year']}",
                       'sequence_type': f"${FIELD_MAPPING['sequence_type']}",
                       }
+    pipeline = [
+        {'$match': {
+            FIELD_MAPPING['species']: species_name
+        }
+        },
+        {'$project': projection
         }
     ]
     return db.samples.aggregate(pipeline)
