@@ -14,7 +14,7 @@ def get_samples_of_species(species_name):
     connection = pymongo.MongoClient(settings.MONGO_CONNECTION)
     db = connection.get_database()
     pipeline = list()
-    if species_name is not None:
+    if species_name != 'all':
         pipeline.append(
             {'$match': {FIELD_MAPPING['species']: species_name}}
         )
