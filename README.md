@@ -28,7 +28,7 @@ You will also need to start it by running:
 There is a small test data set included in the repository. It can be installed with the 'mongoimport' utility program that comes with MongoDB. The test data set consists of 10 JSON files, each containing data for one sample. However, 'mongoimport' can only import one file at a time. To make it less cumbersome (assuming you are running Ubuntu or another Linux OS), you should be able to install all the data with one command this way:
 
     cd test_data
-    cat *.json | mongoimport -d beone –c samples
+    cat *.json | mongoimport -d beone -c samples
 
 If you installed Compass, you can use it to verify that you now have a database named 'beone' with a collection named 'samples' which contains the samples from the test dataset.
 
