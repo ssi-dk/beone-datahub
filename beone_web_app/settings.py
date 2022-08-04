@@ -131,7 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Own additions below
 
-MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/dataset2'
+MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone'
 
 # Mapping for Bifrost 2.1 (SOFI)
 """MONGO_FIELD_MAPPING = {

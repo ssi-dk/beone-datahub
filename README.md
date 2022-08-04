@@ -35,7 +35,7 @@ If you installed Compass, you can use it to verify that you now have a database 
 # Installation of the web app
 If you haven't done so already, check out this repository on your computer.
 
-## Configure MONGO_CONNECTION
+## Optional: change URI for MongoDB
 
 The URI for the MongoDB database is controlled by the MONGO_CONNECTION variable in settings.py. The following setting (which is the default) will connect to a MongoDB server instance running in the host OS and use a database named 'beone' for both authentication and data:
 
