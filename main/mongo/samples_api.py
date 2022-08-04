@@ -18,14 +18,9 @@ def get_samples_of_species(species_name):
         pipeline.append(
             {'$match': {FIELD_MAPPING['species']: species_name}}
         )
-    projection = {'_id': '$_id',
-                      'name': f"${FIELD_MAPPING['name']}",
-                      'species': f"${FIELD_MAPPING['species']}",
-                      'country': f"${FIELD_MAPPING['country']}",
-                      'source_type': f"${FIELD_MAPPING['source_type']}",
-                      'year': f"${FIELD_MAPPING['year']}",
-                      'sequence_type': f"${FIELD_MAPPING['sequence_type']}",
-                      }
+    projection = {'_id': '$_id'}
+    for field in FIELD_MAPPING:
+        projection[field] = f"${FIELD_MAPPING[field]}"
     pipeline.append(
         {'$project': projection
         }
