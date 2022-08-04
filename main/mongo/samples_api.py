@@ -10,22 +10,25 @@ from .mongo_connection import get_connection
 FIELD_MAPPING = settings.MONGO_FIELD_MAPPING
 
 
-def get_samples_of_species(species_name):
-    connection = pymongo.MongoClient(settings.MONGO_CONNECTION)
-    db = connection.get_database()
-    pipeline = list()
-    if species_name != 'all':
+class API:
+    def __init__(self, connection_string):
+        self.connection = pymongo.MongoClient(connection_string)
+        self.db = self.connection.get_database()
+
+    def get_samples_of_species(self, species_name):
+        pipeline = list()
+        if species_name != 'all':
+            pipeline.append(
+                {'$match': {FIELD_MAPPING['species']: species_name}}
+            )
+        projection = {'_id': '$_id'}
+        for field in FIELD_MAPPING:
+            projection[field] = f"${FIELD_MAPPING[field]}"
         pipeline.append(
-            {'$match': {FIELD_MAPPING['species']: species_name}}
+            {'$project': projection
+            }
         )
-    projection = {'_id': '$_id'}
-    for field in FIELD_MAPPING:
-        projection[field] = f"${FIELD_MAPPING[field]}"
-    pipeline.append(
-        {'$project': projection
-        }
-    )
-    return db.samples.aggregate(pipeline)
+        return self.db.samples.aggregate(pipeline)
 
 
 # Everything below this line is code inherited from Martin and Holger and may or may not work in this context.
