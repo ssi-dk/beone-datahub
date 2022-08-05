@@ -12,15 +12,15 @@
 
                 "sample_description": {
 
-                    "sample": "Se-Germany-BfR-0014",
+                    "sample": "Se-Norway-NVI-0072",
 
-                    "read1_file": "/trd-project4/NS9772K/test_data/Se-Germany-BfR-0014_R1.fastq.gz",
+                    "read1_file": "/trd-project4/NS9772K/test_data/Se-Norway-NVI-0072_R1.fastq.gz",
 
-                    "read2_file": "/trd-project4/NS9772K/test_data/Se-Germany-BfR-0014_R2.fastq.gz",
+                    "read2_file": "/trd-project4/NS9772K/test_data/Se-Norway-NVI-0072_R2.fastq.gz",
 
-                    "read1_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Germany-BfR-0014_R1.fastq.gz",
+                    "read1_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Norway-NVI-0072_R1.fastq.gz",
 
-                    "read2_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Germany-BfR-0014_R2.fastq.gz"
+                    "read2_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Norway-NVI-0072_R2.fastq.gz"
 
                 },
 
@@ -242,17 +242,17 @@
 
                 "sample_description": {
 
-                    "sample": "Se-Germany-BfR-0014",
+                    "sample": "Se-Norway-NVI-0072",
 
-                    "read1_file": "/trd-project4/NS9772K/test_data/Se-Germany-BfR-0014_R1.fastq.gz",
+                    "read1_file": "/trd-project4/NS9772K/test_data/Se-Norway-NVI-0072_R1.fastq.gz",
 
-                    "read2_file": "/trd-project4/NS9772K/test_data/Se-Germany-BfR-0014_R2.fastq.gz",
+                    "read2_file": "/trd-project4/NS9772K/test_data/Se-Norway-NVI-0072_R2.fastq.gz",
 
-                    "read1_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Germany-BfR-0014_R1.fastq.gz",
+                    "read1_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Norway-NVI-0072_R1.fastq.gz",
 
-                    "read2_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Germany-BfR-0014_R2.fastq.gz",
+                    "read2_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Norway-NVI-0072_R2.fastq.gz",
 
-                    "fasta_file": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/Assembly/assembly/Se-Germany-BfR-0014.fasta",
+                    "fasta_file": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/Assembly/assembly/Se-Norway-NVI-0072.fasta",
 
                     "fasta_md5": "ef00610503d03c5d9ffc8944f0d7b874"
 
@@ -476,13 +476,13 @@
 
                 "sample_description": {
 
-                    "sample": "Se-Germany-BfR-0014",
+                    "sample": "Se-Norway-NVI-0072",
 
-                    "fasta_file": "/cluster/projects/nn9772k/git/chewieSnake/test_data/fasta/Se-Germany-BfR-0014.fasta",
+                    "fasta_file": "/cluster/projects/nn9772k/git/chewieSnake/test_data/fasta/Se-Norway-NVI-0072.fasta",
 
                     "fasta_md5": "ef00610503d03c5d9ffc8944f0d7b874",
 
-                    "allele_profile": "/cluster/work/users/brendeba/chewieSnake/test_data_saga_slurm_20220209-233134/cgmlst/Se-Germany-BfR-0014/allele_profiles.tsv",
+                    "allele_profile": "/cluster/work/users/brendeba/chewieSnake/test_data_saga_slurm_20220209-233134/cgmlst/Se-Norway-NVI-0072/allele_profiles.tsv",
 
                     "allele_profile_md5": "98af37389dd9803c6432a41dc55a2ab5",
 
@@ -594,7 +594,7 @@
 
         "summary": {
 
-            "sample": "Se-Germany-BfR-0014",
+            "sample": "Se-Norway-NVI-0072",
 
             "reference": "NZ_CP015526.1 Salmonella enterica O157:H7 strain SJTUF10984 chromosome, complete genome",
 
@@ -656,7 +656,7 @@
 
             "species_fraction": 0.99746,
 
-            "sequence_type": "14"
+            "sequence_type": "72"
 
         },
 
@@ -680,9 +680,9 @@
 
             "Microorganism": "Salmonella enterica",
 
-            "Fastq_R1": "Se_Germany_BfR_0001_R1.fastq.gz",
+            "Fastq_R1": "Se_Norway_NVI_0001_R1.fastq.gz",
 
-            "Fastq_R2": "Se_Germany_BfR_0001_R2.fastq.gz",
+            "Fastq_R2": "Se_Norway_NVI_0001_R2.fastq.gz",
 
             "Outbreak_related": "outbreak_02",
 
@@ -696,9 +696,9 @@
 
                         "form_key": "NUTS",
 
-                        "termCode": "DE",
+                        "termCode": "NO",
 
-                        "termName": "GERMANY",
+                        "termName": "NORWAY",
 
                         "parentCode": "root",
 
@@ -768,9 +768,9 @@
 
             ],
 
-            "Date_Sampling": "2020-01-01",
+            "Date_Sampling": "2022-01-01",
 
-            "Date_Sampling_YYYY": 2020,
+            "Date_Sampling_YYYY": 2022,
 
             "Date_Sampling_MM": null,
 
@@ -824,13 +824,13 @@
 
                 "sample_description": {
 
-                    "sample": "Se-Germany-BfR-0014",
+                    "sample": "Se-Norway-NVI-0072",
 
-                    "fasta_file": "/cluster/projects/nn9772k/git/chewieSnake/test_data/fasta/Se-Germany-BfR-0014.fasta",
+                    "fasta_file": "/cluster/projects/nn9772k/git/chewieSnake/test_data/fasta/Se-Norway-NVI-0072.fasta",
 
                     "fasta_md5": "ef00610503d03c5d9ffc8944f0d7b874",
 
-                    "allele_profile": "/cluster/work/users/brendeba/chewieSnake/test_data_saga_slurm_20220209-233134/cgmlst/Se-Germany-BfR-0014/allele_profiles.tsv",
+                    "allele_profile": "/cluster/work/users/brendeba/chewieSnake/test_data_saga_slurm_20220209-233134/cgmlst/Se-Norway-NVI-0072/allele_profiles.tsv",
 
                     "allele_profile_md5": "98af37389dd9803c6432a41dc55a2ab5",
 
@@ -1062,7 +1062,7 @@
 
                 {
 
-                    "locus": "STMMW_00014.fasta",
+                    "locus": "STMMW_00072.fasta",
 
                     "allele_crc32": 2975683814
 
@@ -1142,7 +1142,7 @@
 
                 {
 
-                    "locus": "STMMW_00141.fasta",
+                    "locus": "STMMW_00721.fasta",
 
                     "allele_crc32": 3570966830
 
@@ -5934,7 +5934,7 @@
 
                 {
 
-                    "locus": "STMMW_10014.fasta",
+                    "locus": "STMMW_10072.fasta",
 
                     "allele_crc32": 4122469352
 
@@ -9128,7 +9128,7 @@
 
                     "locus": "STMMW_15361.fasta",
 
-                    "allele_crc32": 2526600142
+                    "allele_crc32": 2526600722
 
                 },
 
@@ -20928,7 +20928,7 @@
 
                     "locus": "STMMW_37771.fasta",
 
-                    "allele_crc32": 410820014
+                    "allele_crc32": 410820072
 
                 },
 

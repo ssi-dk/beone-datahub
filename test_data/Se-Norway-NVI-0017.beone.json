@@ -12,15 +12,15 @@
 
                 "sample_description": {
 
-                    "sample": "Se-Germany-BfR-0014",
+                    "sample": "Se-Norway-NVI-0017",
 
-                    "read1_file": "/trd-project4/NS9772K/test_data/Se-Germany-BfR-0014_R1.fastq.gz",
+                    "read1_file": "/trd-project4/NS9772K/test_data/Se-Norway-NVI-0017_R1.fastq.gz",
 
-                    "read2_file": "/trd-project4/NS9772K/test_data/Se-Germany-BfR-0014_R2.fastq.gz",
+                    "read2_file": "/trd-project4/NS9772K/test_data/Se-Norway-NVI-0017_R2.fastq.gz",
 
-                    "read1_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Germany-BfR-0014_R1.fastq.gz",
+                    "read1_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Norway-NVI-0017_R1.fastq.gz",
 
-                    "read2_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Germany-BfR-0014_R2.fastq.gz"
+                    "read2_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Norway-NVI-0017_R2.fastq.gz"
 
                 },
 
@@ -242,17 +242,17 @@
 
                 "sample_description": {
 
-                    "sample": "Se-Germany-BfR-0014",
+                    "sample": "Se-Norway-NVI-0017",
 
-                    "read1_file": "/trd-project4/NS9772K/test_data/Se-Germany-BfR-0014_R1.fastq.gz",
+                    "read1_file": "/trd-project4/NS9772K/test_data/Se-Norway-NVI-0017_R1.fastq.gz",
 
-                    "read2_file": "/trd-project4/NS9772K/test_data/Se-Germany-BfR-0014_R2.fastq.gz",
+                    "read2_file": "/trd-project4/NS9772K/test_data/Se-Norway-NVI-0017_R2.fastq.gz",
 
-                    "read1_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Germany-BfR-0014_R1.fastq.gz",
+                    "read1_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Norway-NVI-0017_R1.fastq.gz",
 
-                    "read2_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Germany-BfR-0014_R2.fastq.gz",
+                    "read2_md5": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/fastq/Se-Norway-NVI-0017_R2.fastq.gz",
 
-                    "fasta_file": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/Assembly/assembly/Se-Germany-BfR-0014.fasta",
+                    "fasta_file": "/cluster/work/users/brendeba/AQUAMIS/test_data_saga_slurm_20220202-220202/Assembly/assembly/Se-Norway-NVI-0017.fasta",
 
                     "fasta_md5": "ef00610503d03c5d9ffc8944f0d7b874"
 
@@ -476,13 +476,13 @@
 
                 "sample_description": {
 
-                    "sample": "Se-Germany-BfR-0014",
+                    "sample": "Se-Norway-NVI-0017",
 
-                    "fasta_file": "/cluster/projects/nn9772k/git/chewieSnake/test_data/fasta/Se-Germany-BfR-0014.fasta",
+                    "fasta_file": "/cluster/projects/nn9772k/git/chewieSnake/test_data/fasta/Se-Norway-NVI-0017.fasta",
 
                     "fasta_md5": "ef00610503d03c5d9ffc8944f0d7b874",
 
-                    "allele_profile": "/cluster/work/users/brendeba/chewieSnake/test_data_saga_slurm_20220209-233134/cgmlst/Se-Germany-BfR-0014/allele_profiles.tsv",
+                    "allele_profile": "/cluster/work/users/brendeba/chewieSnake/test_data_saga_slurm_20220209-233134/cgmlst/Se-Norway-NVI-0017/allele_profiles.tsv",
 
                     "allele_profile_md5": "98af37389dd9803c6432a41dc55a2ab5",
 
@@ -522,9 +522,9 @@
 
                                 "size_threshold": 0.2,
 
-                                "scheme_dir": "/cluster/projects/nn9772k/git/chewieSnake/reference_db/enterobase_salm_cgmlst",
+                                "scheme_dir": "/cluster/projects/nn9772k/git/chewieSnake/reference_db/enterobase_ecoli_cgmlst",
 
-                                "prodigal_training_file": "/cluster/home/brendeba/data/git/chewieSnake/chewBBACA/CHEWBBACA/prodigal_training_files/Salmonella_enterica.trn",
+                                "prodigal_training_file": "/cluster/home/brendeba/data/git/chewieSnake/chewBBACA/CHEWBBACA/prodigal_training_files/Escherichia_coli.trn",
 
                                 "allele_caller": {
 
@@ -576,11 +576,11 @@
 
                 "database_information": {
 
-                    "scheme_name": "enterobase_salm_cgmlst",
+                    "scheme_name": "enterobase_ecoli_cgmlst",
 
-                    "species": "Salmonella_enterica",
+                    "species": "Escherichia_coli",
 
-                    "scheme_dir": "/cluster/projects/nn9772k/git/chewieSnake/reference_db/enterobase_salm_cgmlst",
+                    "scheme_dir": "/cluster/projects/nn9772k/git/chewieSnake/reference_db/enterobase_ecoli_cgmlst",
 
                     "scheme_md5": "98af37389dd9803c6432a41dc55a2ab5",
 
@@ -594,9 +594,9 @@
 
         "summary": {
 
-            "sample": "Se-Germany-BfR-0014",
+            "sample": "Se-Norway-NVI-0017",
 
-            "reference": "NZ_CP015526.1 Salmonella enterica O157:H7 strain SJTUF10984 chromosome, complete genome",
+            "reference": "NZ_CP015526.1 Escherichia coli O157:H7 strain SJTUF10984 chromosome, complete genome",
 
             "assembly_coverageDepth": 97.39049,
 
@@ -650,13 +650,13 @@
 
             "Total%20aligned%20length": 4639668,
 
-            "species": "Salmonella enterica",
+            "species": "Escherichia coli",
 
             "species_cumlength": 4698268,
 
             "species_fraction": 0.99746,
 
-            "sequence_type": "14"
+            "sequence_type": "17"
 
         },
 
@@ -678,11 +678,11 @@
 
         "metadata": {
 
-            "Microorganism": "Salmonella enterica",
+            "Microorganism": "Escherichia coli",
 
-            "Fastq_R1": "Se_Germany_BfR_0001_R1.fastq.gz",
+            "Fastq_R1": "Se_Norway_NVI_0001_R1.fastq.gz",
 
-            "Fastq_R2": "Se_Germany_BfR_0001_R2.fastq.gz",
+            "Fastq_R2": "Se_Norway_NVI_0001_R2.fastq.gz",
 
             "Outbreak_related": "outbreak_02",
 
@@ -696,9 +696,9 @@
 
                         "form_key": "NUTS",
 
-                        "termCode": "DE",
+                        "termCode": "NO",
 
-                        "termName": "GERMANY",
+                        "termName": "NORWAY",
 
                         "parentCode": "root",
 
@@ -728,7 +728,7 @@
 
                         "form_key": "FOODEX2",
 
-                        "termCode": "A00GZ",
+                        "termCode": "A044C",
 
                         "termName": "All Lists",
 
@@ -824,13 +824,13 @@
 
                 "sample_description": {
 
-                    "sample": "Se-Germany-BfR-0014",
+                    "sample": "Se-Norway-NVI-0017",
 
-                    "fasta_file": "/cluster/projects/nn9772k/git/chewieSnake/test_data/fasta/Se-Germany-BfR-0014.fasta",
+                    "fasta_file": "/cluster/projects/nn9772k/git/chewieSnake/test_data/fasta/Se-Norway-NVI-0017.fasta",
 
                     "fasta_md5": "ef00610503d03c5d9ffc8944f0d7b874",
 
-                    "allele_profile": "/cluster/work/users/brendeba/chewieSnake/test_data_saga_slurm_20220209-233134/cgmlst/Se-Germany-BfR-0014/allele_profiles.tsv",
+                    "allele_profile": "/cluster/work/users/brendeba/chewieSnake/test_data_saga_slurm_20220209-233134/cgmlst/Se-Norway-NVI-0017/allele_profiles.tsv",
 
                     "allele_profile_md5": "98af37389dd9803c6432a41dc55a2ab5",
 
@@ -870,9 +870,9 @@
 
                                 "size_threshold": 0.2,
 
-                                "scheme_dir": "/cluster/projects/nn9772k/git/chewieSnake/reference_db/enterobase_salm_cgmlst",
+                                "scheme_dir": "/cluster/projects/nn9772k/git/chewieSnake/reference_db/enterobase_ecoli_cgmlst",
 
-                                "prodigal_training_file": "/cluster/home/brendeba/data/git/chewieSnake/chewBBACA/CHEWBBACA/prodigal_training_files/Salmonella_enterica.trn",
+                                "prodigal_training_file": "/cluster/home/brendeba/data/git/chewieSnake/chewBBACA/CHEWBBACA/prodigal_training_files/Escherichia_coli.trn",
 
                                 "allele_caller": {
 
@@ -924,11 +924,11 @@
 
                 "database_information": {
 
-                    "scheme_name": "enterobase_salm_cgmlst",
+                    "scheme_name": "enterobase_ecoli_cgmlst",
 
-                    "species": "Salmonella_enterica",
+                    "species": "Escherichia_coli",
 
-                    "scheme_dir": "/cluster/projects/nn9772k/git/chewieSnake/reference_db/enterobase_salm_cgmlst",
+                    "scheme_dir": "/cluster/projects/nn9772k/git/chewieSnake/reference_db/enterobase_ecoli_cgmlst",
 
                     "scheme_md5": "98af37389dd9803c6432a41dc55a2ab5",
 
@@ -1062,7 +1062,7 @@
 
                 {
 
-                    "locus": "STMMW_00014.fasta",
+                    "locus": "STMMW_00017.fasta",
 
                     "allele_crc32": 2975683814
 
@@ -1142,7 +1142,7 @@
 
                 {
 
-                    "locus": "STMMW_00141.fasta",
+                    "locus": "STMMW_00171.fasta",
 
                     "allele_crc32": 3570966830
 
@@ -5934,7 +5934,7 @@
 
                 {
 
-                    "locus": "STMMW_10014.fasta",
+                    "locus": "STMMW_10017.fasta",
 
                     "allele_crc32": 4122469352
 
@@ -9128,7 +9128,7 @@
 
                     "locus": "STMMW_15361.fasta",
 
-                    "allele_crc32": 2526600142
+                    "allele_crc32": 2526600172
 
                 },
 
@@ -20928,7 +20928,7 @@
 
                     "locus": "STMMW_37771.fasta",
 
-                    "allele_crc32": 410820014
+                    "allele_crc32": 410820017
 
                 },
 
