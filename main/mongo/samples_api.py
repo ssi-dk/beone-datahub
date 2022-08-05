@@ -17,10 +17,13 @@ class API:
 
     def get_samples_of_species(self, species_name):
         pipeline = list()
-        if species_name != 'all':
-            pipeline.append(
-                {'$match': {FIELD_MAPPING['species']: species_name}}
-            )
+        if species_name == 'all':
+            match = dict()
+        else:
+            match = {FIELD_MAPPING['species']: species_name}
+        pipeline.append(
+            {'$match': match}
+        )
         projection = {'_id': '$_id'}
         for field in FIELD_MAPPING:
             projection[field] = f"${FIELD_MAPPING[field]}"
