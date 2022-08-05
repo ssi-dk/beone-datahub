@@ -211,7 +211,7 @@ def filter_qc(qc_list):
 
 
 # Need to clean this two functions
-def filter(species = None, species_source = None, group = None,
+def filter_func(species = None, species_source = None, group = None,
            qc_list = None, date_range = None, run_names = None, sample_ids = None,
            sample_names = None,
            pagination = None,
