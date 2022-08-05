@@ -11,9 +11,10 @@ FIELD_MAPPING = settings.MONGO_FIELD_MAPPING
 
 
 class API:
-    def __init__(self, connection_string):
+    def __init__(self, connection_string, field_mapping):
         self.connection = pymongo.MongoClient(connection_string)
         self.db = self.connection.get_database()
+        self.field_mapping = field_mapping
 
     def get_samples_of_species(self, species_name):
         pipeline = list()
