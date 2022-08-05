@@ -149,12 +149,6 @@ MONGO_FIELD_MAPPING = {
     "allele_profile": "pipelines.chewiesnake.allele_profile",
 }
 
-# Mapping for BeONE
-"""MONGO_FIELD_MAPPING = {
-    'name': 'sample.summary.sample',
-    'species': 'sample.summary.species',
-}"""
-
 ALL_SPECIES = (
     ('campy', 'Campylobacter jejuni'),
     ('coli', 'Escherichia coli'),
