@@ -16,9 +16,15 @@ class API:
         self.db = self.connection.get_database()
         self.field_mapping = field_mapping
 
-    def get_samples_of_species(self, species_name: str,
-        fields:list=['name', 'species', 'year', 'sequence_type']):
+    def get_samples_of_species(
+        self,
+        species_name: str,
+        filter: dict = dict(),
+        fields: list = ['name', 'species', 'year', 'sequence_type']
+    ):
         pipeline = list()
+
+        # Match on species or all
         if species_name == 'all':
             match = dict()
         else:
@@ -26,6 +32,19 @@ class API:
         pipeline.append(
             {'$match': match}
         )
+
+        # Further filtering
+        if filter:
+            for key in filter.keys():
+                if key == 'species':
+                     raise ValueError(
+                         "Filtering on species is not allowed here.")
+                if not key in self.field_mapping:
+                    raise ValueError(f"Unknown field: {key}.")
+                mongo_field = self.field_mapping[key]
+                match[mongo_field] = filter[key]
+
+        # Projection
         projection = dict()
         for field in fields:
             projection[field] = f"${FIELD_MAPPING[field]}"
@@ -33,6 +52,7 @@ class API:
             {'$project': projection
             }
         )
+
         return self.db.samples.aggregate(pipeline)
 
 
