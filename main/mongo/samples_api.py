@@ -11,7 +11,7 @@ FIELD_MAPPING = settings.MONGO_FIELD_MAPPING
 
 
 class API:
-    def __init__(self, connection_string, field_mapping):
+    def __init__(self, connection_string: str, field_mapping: dict):
         self.connection = pymongo.MongoClient(connection_string)
         self.db = self.connection.get_database()
         self.field_mapping = field_mapping
