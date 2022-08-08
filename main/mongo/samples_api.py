@@ -16,7 +16,8 @@ class API:
         self.db = self.connection.get_database()
         self.field_mapping = field_mapping
 
-    def get_samples_of_species(self, species_name):
+    def get_samples_of_species(self, species_name: str,
+        fields:list=['name', 'species', 'year', 'sequence_type']):
         pipeline = list()
         if species_name == 'all':
             match = dict()
@@ -25,8 +26,8 @@ class API:
         pipeline.append(
             {'$match': match}
         )
-        projection = {'_id': '$_id'}
-        for field in FIELD_MAPPING:
+        projection = dict()
+        for field in fields:
             projection[field] = f"${FIELD_MAPPING[field]}"
         pipeline.append(
             {'$project': projection
