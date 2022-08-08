@@ -20,7 +20,7 @@ class API:
         self,
         species_name: str,
         filter: dict = dict(),
-        fields: list = ['name', 'species', 'year', 'sequence_type']
+        fields: list = ['name', 'species', 'year', 'sequence_type', 'country', 'source_type']
     ):
         pipeline = list()
 
