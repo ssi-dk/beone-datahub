@@ -48,7 +48,9 @@ class API:
         projection = dict()
         for field in fields:
             projection[field] = f"${FIELD_MAPPING[field]}"
-        projection['country_name'] = { '$arrayElemAt': [ projection['country'], 0 ] }
+        p1 = { '$arrayElemAt': [ projection['country'], 0 ] }
+        p2 = { '$arrayElemAt': [ p1, 0 ] }
+        projection['country_name'] = p2
         pipeline.append(
             {'$project': projection
             }
