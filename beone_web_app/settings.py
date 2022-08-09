@@ -142,8 +142,8 @@ MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone'
 MONGO_FIELD_MAPPING = {
     "name": "sample.summary.sample",
     "species": "sample.summary.species",
-    "country": "sample.metadata.Country",
-    "source_type": "sample.metadata.Source_Type",
+    "country_root": "sample.metadata.Country",
+    "source_type_root": "sample.metadata.Source_Type",
     "year": "sample.metadata.Date_Sampling_YYYY",
     "sequence_type": "sample.summary.sequence_type",
     "allele_profile": "pipelines.chewiesnake.allele_profile",

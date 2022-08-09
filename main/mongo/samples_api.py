@@ -20,7 +20,7 @@ class API:
         self,
         species_name: str,
         filter: dict = dict(),
-        fields: list = ['name', 'species', 'year', 'sequence_type', 'country', 'source_type']
+        fields: list = ['name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
     ):
         pipeline = list()
 
@@ -50,12 +50,12 @@ class API:
             projection[field] = f"${FIELD_MAPPING[field]}"
         
         # Temporary fix for country
-        p1 = { '$arrayElemAt': [ projection['country'], 0 ] }
+        p1 = { '$arrayElemAt': [ projection['country_root'], 0 ] }
         p2 = { '$arrayElemAt': [ p1, 0 ] }
         projection['country'] = p2
 
         # Temporary fix for source_type
-        p1 = { '$arrayElemAt': [ projection['source_type'], 0 ] }
+        p1 = { '$arrayElemAt': [ projection['source_type_root'], 0 ] }
         p2 = { '$arrayElemAt': [ p1, 1 ] }
         projection['source_type'] = p2
 
