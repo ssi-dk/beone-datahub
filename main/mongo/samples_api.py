@@ -49,21 +49,15 @@ class API:
         for field in fields:
             projection[field] = f"${FIELD_MAPPING[field]}"
         
-        # Temporary fix for country
-        p1 = { '$arrayElemAt': [ projection['country_root'], 0 ] }
-        projection['country'] = { '$arrayElemAt': [ p1, 0 ] }
-
-        # Temporary fix for source_type
-        p1 = { '$arrayElemAt': [ projection['source_type_root'], 0 ] }
-        projection['source_type'] = { '$arrayElemAt': [ p1, 1 ] }
-
-
-        print(projection)
-
+        # Get more convenient access to some deeply nested fields
+        projection['country'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['country_root'], 0 ] }, 0 ] }
+        projection['source_type'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['source_type_root'], 0 ] }, 1 ] }
+        
         pipeline.append(
             {'$project': projection
             }
         )
+
         return self.db.samples.aggregate(pipeline)
 
 
