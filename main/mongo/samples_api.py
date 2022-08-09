@@ -51,13 +51,11 @@ class API:
         
         # Temporary fix for country
         p1 = { '$arrayElemAt': [ projection['country_root'], 0 ] }
-        p2 = { '$arrayElemAt': [ p1, 0 ] }
-        projection['country'] = p2
+        projection['country'] = { '$arrayElemAt': [ p1, 0 ] }
 
         # Temporary fix for source_type
         p1 = { '$arrayElemAt': [ projection['source_type_root'], 0 ] }
-        p2 = { '$arrayElemAt': [ p1, 1 ] }
-        projection['source_type'] = p2
+        projection['source_type'] = { '$arrayElemAt': [ p1, 1 ] }
 
 
         print(projection)
