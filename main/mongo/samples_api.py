@@ -50,12 +50,12 @@ class API:
             projection[field] = f"${FIELD_MAPPING[field]}"
         p1 = { '$arrayElemAt': [ projection['country'], 0 ] }
         p2 = { '$arrayElemAt': [ p1, 0 ] }
-        projection['country_name'] = p2
+        projection['country'] = p2
+        print(projection)
         pipeline.append(
             {'$project': projection
             }
         )
-        print(pipeline)
         return self.db.samples.aggregate(pipeline)
 
 
