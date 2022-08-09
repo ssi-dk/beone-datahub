@@ -19,9 +19,9 @@ def sample_list(request):
     if request.user.is_authenticated:
         user_profile, species_name = get_context(request)
         samples = list(api.get_samples_of_species(species_name))
-        for sample in samples:
-            sample['country_name'] = sample['country'][0][0]['termName']  # Why this complex structure?
-            sample['source_type_name'] = sample['source_type'][0][1]['termName']  # Why this complex structure?
+        # for sample in samples:
+        #     sample['country_name'] = sample['country'][0][0]['termName']  # Why this complex structure?
+        #     sample['source_type_name'] = sample['source_type'][0][1]['termName']  # Why this complex structure?
 
         return render(request, 'main/sample_list.html',{
             'user_profile': user_profile,

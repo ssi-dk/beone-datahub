@@ -48,11 +48,12 @@ class API:
         projection = dict()
         for field in fields:
             projection[field] = f"${FIELD_MAPPING[field]}"
+        projection['country_name'] = { '$arrayElemAt': [ projection['country'], 0 ] }
         pipeline.append(
             {'$project': projection
             }
         )
-
+        print(pipeline)
         return self.db.samples.aggregate(pipeline)
 
 
