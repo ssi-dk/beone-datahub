@@ -20,7 +20,7 @@ class API:
         self,
         species_name: str,
         filter: dict = dict(),
-        fields: list = ['name', 'species', 'year', 'sequence_type', 'country', 'source_type']
+        fields: list = ['name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
     ):
         pipeline = list()
 
@@ -48,6 +48,13 @@ class API:
         projection = dict()
         for field in fields:
             projection[field] = f"${FIELD_MAPPING[field]}"
+        
+        # Get more convenient access to some deeply nested fields
+        if 'country_root' in projection:
+            projection['country'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['country_root'], 0 ] }, 0 ] }
+        if 'source_type_root' in projection:
+            projection['source_type'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['source_type_root'], 0 ] }, 1 ] }
+        
         pipeline.append(
             {'$project': projection
             }
