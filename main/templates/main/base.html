@@ -15,8 +15,8 @@
         </div>
         {% if request.user.is_authenticated %}
         {% url 'sample_list' as sample_list_url %}
-        {% url 'login' as login_url %}
-        {% url 'select_species' as select_species_url %}
+        {% url 'data_sets' as data_sets_url %}
+        {% url 'dashboard' as dashboard_url %}
           <div class='column'>
             <nav>
               <span class="menu-item">
@@ -25,10 +25,14 @@
                 >Sample List</a>
               </span>
               <span class="menu-item">
-                <a href="{% url 'login' %}">Data Sets</a>
+                <a href="{% url 'data_sets' %}"
+                {% if request.path == data_sets_url %}class="current"{% endif %}
+                >Data Sets</a>
               </span>
               <span class="menu-item">
-                <a href="{% url 'select_species' %}">Dashboard</a>
+                <a href="{% url 'dashboard' %}"
+                {% if request.path == dashboard_url %}class="current"{% endif %}
+                >Dashboard</a>
               </span>
             <nav>
           </div>
