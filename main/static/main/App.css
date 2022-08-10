@@ -173,3 +173,12 @@ h3 {
 .margin {
   margin: 3px;
 }
+
+.menu-item{
+  padding: 3px;
+  margin: 3px;
+}
+
+.current {
+  background-color: lightblue;
+}

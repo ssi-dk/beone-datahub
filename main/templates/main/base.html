@@ -14,15 +14,20 @@
           <h1><a href="/">BeONE Web App</a></h1>
         </div>
         {% if request.user.is_authenticated %}
+        {% url 'sample_list' as sample_list_url %}
+        {% url 'login' as login_url %}
+        {% url 'select_species' as select_species_url %}
           <div class='column'>
             <nav>
-              <span class="rspace">
-                <a href="{% url 'sample_list' %}">Sample List</a>
+              <span class="menu-item">
+                <a href="{% url 'sample_list' %}"
+                {% if request.path == sample_list_url %}class="current"{% endif %}
+                >Sample List</a>
               </span>
-              <span class="rspace">
+              <span class="menu-item">
                 <a href="{% url 'login' %}">Data Sets</a>
               </span>
-              <span class="rspace">
+              <span class="menu-item">
                 <a href="{% url 'select_species' %}">Dashboard</a>
               </span>
             <nav>
