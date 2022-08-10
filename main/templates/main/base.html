@@ -13,15 +13,15 @@
         <div class='column'>
           <h1><a href="/">BeONE Web App</a></h1>
         </div>
-        <div class='column'>
-          <nav>
-            <span class="rspace"><a href="/">Sample List</a></span>
-            <span class="rspace"><a href="/">Data Sets</a></span>
-            <span class="rspace"><a href="/">Dashboard</a></span>
-          <nav>
-        </div>
-        <div class='right-justify'>
-          {% if request.user.is_authenticated %}
+        {% if request.user.is_authenticated %}
+          <div class='column'>
+            <nav>
+              <span class="rspace"><a href="/">Sample List</a></span>
+              <span class="rspace"><a href="/">Data Sets</a></span>
+              <span class="rspace"><a href="/">Dashboard</a></span>
+            <nav>
+          </div>
+          <div class='right-justify'>
             <span>Hello {{request.user.username}}</span>
             <span><a href=" {% url 'logout' %}">Logout</a></span>
             <div class='right-justify'>
