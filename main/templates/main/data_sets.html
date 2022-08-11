@@ -2,7 +2,7 @@
 
 {% block content%}
 <div class="pane">
-  <h2>Sample List</h2>
+  <h2>Data Sets</h2>
 
   <div class="overview-row">
     <div class="overview-firstcol-border">
@@ -10,64 +10,58 @@
       />
     </div>
     <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Owner</div>
+      <div class='overview-header-inner'>
+      </div>
+    </div>
+    <div class='overview-header' key={element['columnId']}>
       <div class='overview-header-inner-bold'>Name</div>
       <div class='overview-header-inner'>
-        <span>{filter}</span>
+      </div>
+    </div>
+ <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Created</div>
+      <div class='overview-header-inner'>
       </div>
     </div>
     <div class='overview-header' key={element['columnId']}>
-      <div class='overview-header-inner-bold'>Species</div>
+      <div class='overview-header-inner-bold'>Last modified</div>
       <div class='overview-header-inner'>
-        <span>{filter}</span>
       </div>
     </div>
     <div class='overview-header' key={element['columnId']}>
-      <div class='overview-header-inner-bold'>Country</div>
+      <div class='overview-header-inner-bold'>Description</div>
       <div class='overview-header-inner'>
-        <span>{filter}</span>
       </div>
     </div>
     <div class='overview-header' key={element['columnId']}>
-      <div class='overview-header-inner-bold'>Source</div>
+      <div class='overview-header-inner-bold'>Number of samples</div>
       <div class='overview-header-inner'>
-        <span>{filter}</span>
-      </div>
-    </div>
-    <div class='overview-header' key={element['columnId']}>
-      <div class='overview-header-inner-bold'>Year</div>
-      <div class='overview-header-inner'>
-        <span>{filter}</span>
-      </div>
-    </div>
-    <div class='overview-header' key={element['columnId']}>
-      <div class='overview-header-inner-bold'>ST</div>
-      <div class='overview-header-inner'>
-        <span>{filter}</span>
       </div>
     </div>
   </div>
-  {% for sample in samples %}
+  {% for data_set in data_sets %}
   <div class="row">
     <div class='overview-firstcol'>
       <input type='checkbox'/>
     </div>
     <div class='overview-datacolumn'>
-      {{ sample.name }}
+      {{ data_set.owner }}
     </div>
     <div class='overview-datacolumn'>
-      {{ sample.species }}
+      {{ data_set.name }}
     </div>
     <div class='overview-datacolumn'>
-      {{ sample.country.termName }}
+      {{ data_set.created_at }}
     </div>
     <div class='overview-datacolumn'>
-      {{ sample.source_type.termName }}
+      {{ data_set.modified_at }}
     </div>
     <div class='overview-datacolumn'>
-      {{ sample.year }}
+      {{ data_set.description }}
     </div>
     <div class='overview-datacolumn'>
-      {{ sample.sequence_type }}
+      {{ data_set.sample_mongo_ids|length }}
     </div>
   </div>
 {% endfor %}
