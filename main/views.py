@@ -5,7 +5,7 @@ from django.conf import settings
 
 from .mongo.samples_api import API
 from .forms import SpeciesForm
-from .models import UserProfile
+from .models import UserProfile, DataSet
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
 
@@ -27,6 +27,16 @@ def sample_list(request):
     else:
         return render(request, 'main/base.html')
 
+
+@login_required
+def data_sets(request):
+    user_profile, species_name = get_context(request)
+    data_sets = DataSet.objects.all()
+    return render(request, 'main/data_sets.html',{
+        'user_profile': user_profile,
+        'species_name': species_name,
+        'data_sets': data_sets
+        })
 
 @login_required
 def select_species(request):
