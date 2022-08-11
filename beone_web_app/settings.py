@@ -157,3 +157,7 @@ ALL_SPECIES = (
 )
 
 LOGIN_REDIRECT_URL = "/"
+
+DATETIME_FORMAT = 'Y-m-d G.i'
+
+USE_L10N = False
