@@ -17,3 +17,8 @@ class DataSet(models.Model):
    modified_at = models.DateTimeField(auto_now=True)
    description = models.CharField(max_length=200, blank=True, null=True)
    sample_mongo_ids = ArrayField(models.CharField(max_length=12))
+
+   class Meta:
+      constraints = [
+            models.UniqueConstraint(fields=['owner', 'name'], name='DataSet owner and name unique together')
+        ]
