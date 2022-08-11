@@ -5,46 +5,27 @@
   <h2>Data Sets</h2>
 
   <div class="overview-row">
-    <div class="overview-firstcol-border">
-      <input type="checkbox"
-      />
-    </div>
-    <div class='overview-header' key={element['columnId']}>
+    <div class='overview-header overview-firstcol-border' key={element['columnId']}>
       <div class='overview-header-inner-bold'>Owner</div>
-      <div class='overview-header-inner'>
-      </div>
     </div>
     <div class='overview-header' key={element['columnId']}>
       <div class='overview-header-inner-bold'>Name</div>
-      <div class='overview-header-inner'>
-      </div>
     </div>
  <div class='overview-header' key={element['columnId']}>
       <div class='overview-header-inner-bold'>Created</div>
-      <div class='overview-header-inner'>
-      </div>
     </div>
     <div class='overview-header' key={element['columnId']}>
       <div class='overview-header-inner-bold'>Last modified</div>
-      <div class='overview-header-inner'>
-      </div>
     </div>
     <div class='overview-header' key={element['columnId']}>
       <div class='overview-header-inner-bold'>Description</div>
-      <div class='overview-header-inner'>
-      </div>
     </div>
     <div class='overview-header' key={element['columnId']}>
       <div class='overview-header-inner-bold'>Number of samples</div>
-      <div class='overview-header-inner'>
-      </div>
     </div>
   </div>
   {% for data_set in data_sets %}
   <div class="row">
-    <div class='overview-firstcol'>
-      <input type='checkbox'/>
-    </div>
     <div class='overview-datacolumn'>
       {{ data_set.owner }}
     </div>
