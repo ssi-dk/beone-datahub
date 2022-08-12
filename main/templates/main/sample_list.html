@@ -58,7 +58,8 @@
   {% for sample in samples %}
   <div class="row">
     <div class='overview-firstcol'>
-      <input type='checkbox'/>
+      {{sample.in_dataset}}
+      <input type='checkbox' value={{sample.in_dataset}}/>
     </div>
     <div class='overview-datacolumn'>
       {{ sample.id }}

@@ -35,13 +35,17 @@ def sample_list(request):
     species = request.GET['species'] if 'species' in request.GET else None
     species_name = get_species_name(species)
     samples = list(api.get_samples_of_species(species_name))
-    for sample in samples:
-        sample['id'] = sample['_id']
     if 'dataset' in request.GET:
         dataset_pk = request.GET['dataset']
         data_set = DataSet.objects.get(pk=dataset_pk)
     else:
         data_set = None
+    for sample in samples:
+        sample['id'] = str(sample['_id'])
+        if data_set:
+            sample['in_dataset'] = sample['id'] in data_set.mongo_ids
+        else:
+            sample['in_dataset'] = False
     return render(request, 'main/sample_list.html',{
         'user_profile': user_profile,
         'species_name': species_name,
