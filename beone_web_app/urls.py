@@ -21,6 +21,7 @@ from main import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.redirect_root),
     path('login/', auth_views.LoginView.as_view(template_name='main/login.html', next_page='/sample_list'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/login'), name='logout'),
     path('sample_list/', views.sample_list, name='sample_list'),

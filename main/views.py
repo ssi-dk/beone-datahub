@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -13,6 +14,12 @@ def get_context(request):
         user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
         return user_profile
 
+
+def redirect_root(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/sample_list/')
+    else:
+        return HttpResponseRedirect('/login/')
 
 @login_required
 def sample_list(request):
