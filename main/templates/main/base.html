@@ -39,10 +39,6 @@
       <div class='right-justify'>
         <span>Hello {{request.user.username}}</span>
         <span><a href=" {% url 'logout' %}">Logout</a></span>
-        <div class='right-justify'>
-          <span>Current species:</span>
-          <span><a href=" {% url 'select_species' %}">{{ species_name }}</a></span>
-        </div>
       {% else %}
         <span>Please <a href=" {% url 'login' %}">login</a></span>
       {% endif %}
