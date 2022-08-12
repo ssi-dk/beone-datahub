@@ -37,10 +37,16 @@ def sample_list(request):
     samples = list(api.get_samples_of_species(species_name))
     for sample in samples:
         sample['id'] = sample['_id']
+    if 'dataset' in request.GET:
+        dataset_pk = request.GET['dataset']
+        data_set = DataSet.objects.get(pk=dataset_pk)
+    else:
+        data_set = None
     return render(request, 'main/sample_list.html',{
         'user_profile': user_profile,
         'species_name': species_name,
-        'samples': samples
+        'samples': samples,
+        'data_set': data_set
         })
 
 
