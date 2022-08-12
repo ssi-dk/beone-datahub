@@ -1,0 +1,50 @@
+{% extends "main/base.html" %}
+
+{% block content%}
+<div class="pane">
+  <h2>Data Sets</h2>
+
+  <div class="overview-row">
+    <div class='overview-header overview-firstcol-border' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Owner</div>
+    </div>
+    <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Name</div>
+    </div>
+ <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Created</div>
+    </div>
+    <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Last modified</div>
+    </div>
+    <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Description</div>
+    </div>
+    <div class='overview-header' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Number of samples</div>
+    </div>
+  </div>
+  {% for data_set in data_sets %}
+  <div class="row">
+    <div class='overview-datacolumn'>
+      {{ data_set.owner }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ data_set.name }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ data_set.created_at }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ data_set.modified_at }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ data_set.description }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ data_set.sample_mongo_ids|length }}
+    </div>
+  </div>
+{% endfor %}
+</div
+{% endblock %}

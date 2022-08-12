@@ -22,20 +22,20 @@ If you do not already have a MongoDB database that you can use for testing the B
 
 You will also need to start it by running:
 
-    sudo service start mongodb
+    sudo service mongodb start
 
 ## Load test data into MongoDB
 There is a small test data set included in the repository. It can be installed with the 'mongoimport' utility program that comes with MongoDB. The test data set consists of 10 JSON files, each containing data for one sample. However, 'mongoimport' can only import one file at a time. To make it less cumbersome (assuming you are running Ubuntu or another Linux OS), you should be able to install all the data with one command this way:
 
     cd test_data
-    cat *.json | mongoimport -d beone –c samples
+    cat *.json | mongoimport -d beone -c samples
 
 If you installed Compass, you can use it to verify that you now have a database named 'beone' with a collection named 'samples' which contains the samples from the test dataset.
 
 # Installation of the web app
 If you haven't done so already, check out this repository on your computer.
 
-## Configure MONGO_CONNECTION
+## Optional: change URI for MongoDB
 
 The URI for the MongoDB database is controlled by the MONGO_CONNECTION variable in settings.py. The following setting (which is the default) will connect to a MongoDB server instance running in the host OS and use a database named 'beone' for both authentication and data:
 

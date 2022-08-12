@@ -10,25 +10,57 @@ from .mongo_connection import get_connection
 FIELD_MAPPING = settings.MONGO_FIELD_MAPPING
 
 
-def get_samples_of_species(species_name):
-    connection = pymongo.MongoClient(settings.MONGO_CONNECTION)
-    db = connection.get_database()
-    pipeline = [
-        {'$match': {
-            FIELD_MAPPING['species']: species_name
-        }
-        },
-        {'$project': {'_id': '$_id',
-                      'name': f"${FIELD_MAPPING['name']}",
-                      'species': f"${FIELD_MAPPING['species']}",
-                      'country': f"${FIELD_MAPPING['country']}",
-                      'source_type': f"${FIELD_MAPPING['source_type']}",
-                      'year': f"${FIELD_MAPPING['year']}",
-                      'sequence_type': f"${FIELD_MAPPING['sequence_type']}",
-                      }
-        }
-    ]
-    return db.samples.aggregate(pipeline)
+class API:
+    def __init__(self, connection_string: str, field_mapping: dict):
+        self.connection = pymongo.MongoClient(connection_string)
+        self.db = self.connection.get_database()
+        self.field_mapping = field_mapping
+
+    def get_samples_of_species(
+        self,
+        species_name: str,
+        filter: dict = dict(),
+        fields: list = ['name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
+    ):
+        pipeline = list()
+
+        # Match on species or all
+        if species_name == 'all':
+            match = dict()
+        else:
+            match = {FIELD_MAPPING['species']: species_name}
+        pipeline.append(
+            {'$match': match}
+        )
+
+        # Further filtering
+        if filter:
+            for key in filter.keys():
+                if key == 'species':
+                     raise ValueError(
+                         "Filtering on species is not allowed here.")
+                if not key in self.field_mapping:
+                    raise ValueError(f"Unknown field: {key}.")
+                mongo_field = self.field_mapping[key]
+                match[mongo_field] = filter[key]
+
+        # Projection
+        projection = dict()
+        for field in fields:
+            projection[field] = f"${FIELD_MAPPING[field]}"
+        
+        # Get more convenient access to some deeply nested fields
+        if 'country_root' in projection:
+            projection['country'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['country_root'], 0 ] }, 0 ] }
+        if 'source_type_root' in projection:
+            projection['source_type'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['source_type_root'], 0 ] }, 1 ] }
+        
+        pipeline.append(
+            {'$project': projection
+            }
+        )
+
+        return self.db.samples.aggregate(pipeline)
 
 
 # Everything below this line is code inherited from Martin and Holger and may or may not work in this context.
@@ -207,7 +239,7 @@ def filter_qc(qc_list):
 
 
 # Need to clean this two functions
-def filter(species = None, species_source = None, group = None,
+def filter_func(species = None, species_source = None, group = None,
            qc_list = None, date_range = None, run_names = None, sample_ids = None,
            sample_names = None,
            pagination = None,
