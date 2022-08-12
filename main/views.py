@@ -35,6 +35,8 @@ def sample_list(request):
     species = request.GET['species'] if 'species' in request.GET else None
     species_name = get_species_name(species)
     samples = list(api.get_samples_of_species(species_name))
+    for sample in samples:
+        sample['id'] = sample['_id']
     return render(request, 'main/sample_list.html',{
         'user_profile': user_profile,
         'species_name': species_name,
