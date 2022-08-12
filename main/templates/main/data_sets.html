@@ -6,6 +6,9 @@
 
   <div class="overview-row">
     <div class='overview-header overview-firstcol-border' key={element['columnId']}>
+      <div class='overview-header-inner-bold'>Species</div>
+    </div>
+    <div class='overview-header overview-firstcol-border' key={element['columnId']}>
       <div class='overview-header-inner-bold'>Owner</div>
     </div>
     <div class='overview-header' key={element['columnId']}>
@@ -26,6 +29,9 @@
   </div>
   {% for data_set in data_sets %}
   <div class="row">
+    <div class='overview-datacolumn'>
+      {{ data_set.get_species_display }}
+    </div>
     <div class='overview-datacolumn'>
       {{ data_set.owner }}
     </div>
