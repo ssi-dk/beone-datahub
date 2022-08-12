@@ -14,6 +14,14 @@ def get_context(request):
         user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
         return user_profile
 
+def get_species_name(species: str=None):
+    if species is None:
+        return('all')
+    for s in settings.ALL_SPECIES:
+        if s[0] == species:
+            return s[1]
+    # If a full species name was not found, return shortname
+    return species
 
 def redirect_root(request):
     if request.user.is_authenticated:
@@ -24,7 +32,8 @@ def redirect_root(request):
 @login_required
 def sample_list(request):
     user_profile = get_context(request)
-    species_name = 'all' # Todo: take from request arguments
+    species = request.GET['species'] if 'species' in request.GET else None
+    species_name = get_species_name(species)
     samples = list(api.get_samples_of_species(species_name))
     return render(request, 'main/sample_list.html',{
         'user_profile': user_profile,
