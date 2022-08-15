@@ -29,9 +29,8 @@ def redirect_root(request):
         return HttpResponseRedirect('/login/')
 
 @login_required
-def sample_list(request):
+def sample_list(request, species:str=None):
     user_profile = get_context(request)
-    species = request.GET['species'] if 'species' in request.GET else None
     species_name = get_species_name(species)
     samples = list(api.get_samples_of_species(species_name))
     if 'dataset' in request.GET:
