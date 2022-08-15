@@ -3,9 +3,12 @@
 {% block content%}
 <div class="pane">
   {% if dataset%}
-    <h2>Data set: {{ dataset.name }}</h2>
-    <h2>Species: {{ species_name }}</h2>
+    <h2>Dataset: {{ dataset.name }}</h2>
+    <h3>Dataset owner: {{ dataset.owner.username }}</h3>
+    <h3>Species: {{ species_name }}</h3>
+    {% if request.user.username == dataset.owner.username %}
     <button class="margin-tb">Save selection to data set</button>
+    {% endif %}
   {% else %}
     <h2>Sample List</h2>
   {% endif %}
