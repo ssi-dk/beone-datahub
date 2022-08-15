@@ -55,7 +55,7 @@ def sample_list(request, dataset_key:int=None):
 
 
 @login_required
-def data_sets(request):
+def dataset_list(request):
     user_profile = get_context(request)
     data_sets = DataSet.objects.all()
     return render(request, 'main/data_sets.html',{
