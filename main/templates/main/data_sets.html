@@ -57,10 +57,10 @@
       {{ data_set.description }}
     </div>
     <div class='overview-datacolumn'>
-      {{ data_set.sample_mongo_ids|length }}
+      {{ data_set.mongo_ids|length }}
     </div>
     <div class='overview-datacolumn'>
-      <span class="rspace">List</span>
+      <span class="rspace"><a href="{% url 'sample_list' %}">List</a></span>
       <span class="rspace">View</span>
       <span class="rspace">Copy</span>
       {% if data_set.owner.username == request.user.username %}<span class="rspace">Edit</span>{% endif %}
