@@ -60,7 +60,7 @@
       {{ data_set.mongo_ids|length }}
     </div>
     <div class='overview-datacolumn'>
-      <span class="rspace"><a href="{% url 'sample_list' data_set.species %}">List</a></span>
+      <span class="rspace"><a href="{% url 'sample_list' data_set.pk %}">List</a></span>
       <span class="rspace">View</span>
       <span class="rspace">Copy</span>
       {% if data_set.owner.username == request.user.username %}<span class="rspace">Edit</span>{% endif %}
