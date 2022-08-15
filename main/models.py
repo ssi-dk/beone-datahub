@@ -13,13 +13,8 @@ class UserProfile(models.Model):
 class DataSet(models.Model):
    species = models.CharField(max_length=20, choices=settings.ALL_SPECIES, blank=True, null=True)
    owner = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
-   name = models.CharField(max_length=40)
+   name = models.CharField(max_length=40, unique=True)
    created_at = models.DateTimeField(auto_now_add=True)
    modified_at = models.DateTimeField(auto_now=True)
    description = models.CharField(max_length=200, blank=True, null=True)
-   mongo_ids = ArrayField(models.CharField(max_length=24))
-
-   class Meta:
-      constraints = [
-            models.UniqueConstraint(fields=['owner', 'name'], name='DataSet owner and name unique together')
-        ]
+   mongo_ids = ArrayField(models.CharField(max_length=24), blank=True, null=True)

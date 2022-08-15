@@ -29,6 +29,9 @@
     <div class='overview-header'>
       <div class='overview-header-inner-bold'>Number of samples</div>
     </div>
+    <div class='overview-header'>
+      <div class='overview-header-inner-bold'>Actions</div>
+    </div>
   </div>
   {% for data_set in data_sets %}
   <div class="row">
@@ -55,6 +58,12 @@
     </div>
     <div class='overview-datacolumn'>
       {{ data_set.sample_mongo_ids|length }}
+    </div>
+    <div class='overview-datacolumn'>
+      <span class="rspace">List</span>
+      <span class="rspace">View</span>
+      <span class="rspace">Copy</span>
+      {% if data_set.owner.username == request.user.username %}<span class="rspace">Edit</span>{% endif %}
     </div>
   </div>
 {% endfor %}
