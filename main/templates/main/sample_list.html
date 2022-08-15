@@ -2,12 +2,13 @@
 
 {% block content%}
 <div class="pane">
-  <h2>Sample List</h2>
   {% if dataset%}
-    <h3>Data set: {{ dataset.name }}</h3>
-    <h3>Species: {{ species_name }}</h3>
+    <h2>Data set: {{ dataset.name }}</h2>
+    <h2>Species: {{ species_name }}</h2>
+    <button class="margin-tb">Save selection to data set</button>
+  {% else %}
+    <h2>Sample List</h2>
   {% endif %}
-  <button class="margin-tb">Save selection to data set</button>
   <div class="overview-row">
     <div class="overview-firstcol-border">
       <input type="checkbox"
