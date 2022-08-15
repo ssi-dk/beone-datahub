@@ -1,6 +1,7 @@
 from django import forms
 from django.conf import settings
 
+# Not in use.
 class SpeciesForm(forms.Form):
     choice_list = [('all', 'All')]
     for species in settings.ALL_SPECIES:

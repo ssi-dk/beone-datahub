@@ -5,7 +5,6 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 
 from .mongo.samples_api import API
-from .forms import SpeciesForm
 from .models import UserProfile, DataSet
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
