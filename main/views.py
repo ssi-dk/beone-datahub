@@ -58,7 +58,7 @@ def sample_list(request, dataset_key:int=None):
 def dataset_list(request):
     user_profile = get_context(request)
     data_sets = DataSet.objects.all()
-    return render(request, 'main/data_sets.html',{
+    return render(request, 'main/dataset_list.html',{
         'user_profile': user_profile,
         'data_sets': data_sets
         })
