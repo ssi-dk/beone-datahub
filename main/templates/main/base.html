@@ -15,7 +15,7 @@
       </div>
       {% if request.user.is_authenticated %}
       {% url 'sample_list' as sample_list_url %}
-      {% url 'data_sets' as data_sets_url %}
+      {% url 'datasets' as datasets_url %}
       {% url 'dashboard' as dashboard_url %}
       <div class='column'>
         <nav>
@@ -25,8 +25,8 @@
             >Sample List</a>
           </span>
           <span class="menu-item">
-            <a href="{% url 'data_sets' %}"
-            {% if request.path == data_sets_url %}class="current"{% endif %}
+            <a href="{% url 'datasets' %}"
+            {% if request.path == datasets_url %}class="current"{% endif %}
             >Data Sets</a>
           </span>
           <span class="menu-item">

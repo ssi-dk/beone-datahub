@@ -50,15 +50,15 @@ def sample_list(request, dataset_key:int=None):
         'user_profile': user_profile,
         'species_name': species_name,
         'samples': samples,
-        'data_set': dataset
+        'dataset': dataset
         })
 
 
 @login_required
 def dataset_list(request):
     user_profile = get_context(request)
-    data_sets = DataSet.objects.all()
+    datasets = DataSet.objects.all()
     return render(request, 'main/dataset_list.html',{
         'user_profile': user_profile,
-        'data_sets': data_sets
+        'datasets': datasets
         })

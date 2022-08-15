@@ -33,37 +33,37 @@
       <div class='overview-header-inner-bold'>Actions</div>
     </div>
   </div>
-  {% for data_set in data_sets %}
+  {% for dataset in datasets %}
   <div class="row">
     <div class='overview-datacolumn'>
-      {{ data_set.pk }}
+      {{ dataset.pk }}
     </div>
     <div class='overview-datacolumn'>
-      {{ data_set.get_species_display }}
+      {{ dataset.get_species_display }}
     </div>
     <div class='overview-datacolumn'>
-      {{ data_set.owner }}
+      {{ dataset.owner }}
     </div>
     <div class='overview-datacolumn'>
-      {{ data_set.name }}
+      {{ dataset.name }}
     </div>
     <div class='overview-datacolumn'>
-      {{ data_set.created_at }}
+      {{ dataset.created_at }}
     </div>
     <div class='overview-datacolumn'>
-      {{ data_set.modified_at }}
+      {{ dataset.modified_at }}
     </div>
     <div class='overview-datacolumn'>
-      {{ data_set.description }}
+      {{ dataset.description }}
     </div>
     <div class='overview-datacolumn'>
-      {{ data_set.mongo_ids|length }}
+      {{ dataset.mongo_ids|length }}
     </div>
     <div class='overview-datacolumn'>
-      <span class="rspace"><a href="{% url 'sample_list' data_set.pk %}">List</a></span>
+      <span class="rspace"><a href="{% url 'sample_list' dataset.pk %}">List</a></span>
       <span class="rspace">View</span>
       <span class="rspace">Copy</span>
-      {% if data_set.owner.username == request.user.username %}<span class="rspace">Edit</span>{% endif %}
+      {% if dataset.owner.username == request.user.username %}<span class="rspace">Edit</span>{% endif %}
     </div>
   </div>
 {% endfor %}
