@@ -18,7 +18,7 @@ class API:
 
     def get_samples(
         self,
-        species_name: str,
+        species_name: str = None,
         filter: dict = dict(),
         fields: list = ['name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
     ):
