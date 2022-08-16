@@ -32,7 +32,7 @@ def redirect_root(request):
         return HttpResponseRedirect('/login/')
     
 
-class SampleList(View):
+class DataSetView(View):
     edit:bool=False
 
     @method_decorator(login_required)
