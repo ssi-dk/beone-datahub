@@ -48,7 +48,7 @@ class SampleList(View):
             dataset = None
             species = None
         species_name = get_species_name(species)
-        samples = list(api.get_samples_of_species(species_name))
+        samples = list(api.get_samples(species_name))
         for sample in samples:
             sample['id'] = str(sample['_id'])
             if dataset:

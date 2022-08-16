@@ -16,7 +16,7 @@ class API:
         self.db = self.connection.get_database()
         self.field_mapping = field_mapping
 
-    def get_samples_of_species(
+    def get_samples(
         self,
         species_name: str,
         filter: dict = dict(),
