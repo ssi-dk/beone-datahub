@@ -23,11 +23,12 @@ class API:
     ):
         pipeline = list()
 
-        # Match on species or all
-        if species_name == 'all':
-            match = dict()
-        else:
-            match = {FIELD_MAPPING['species']: species_name}
+        # Match
+        match = dict()
+        species_field = FIELD_MAPPING['species']
+        if species_name:
+            match[species_field ] = species_name
+
         pipeline.append(
             {'$match': match}
         )

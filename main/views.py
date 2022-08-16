@@ -18,7 +18,7 @@ def get_context(request):
 
 def get_species_name(species: str=None):
     if species is None:
-        return('all')
+        return None
     for s in settings.ALL_SPECIES:
         if s[0] == species:
             return s[1]
