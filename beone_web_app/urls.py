@@ -26,7 +26,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='/login'), name='logout'),
     path('sample_list/', views.SampleList.as_view(), name='sample_list'),
     path('sample_list/<int:dataset_key>/', views.SampleList.as_view(), name='view_dataset'),
-    path('sample_list/<int:dataset_key>/edit', views.SampleList.as_view(), name='edit_dataset'),
+    path('sample_list/<int:dataset_key>/edit', views.SampleList.as_view(edit=True), name='edit_dataset'),
     path('datasets/', views.dataset_list, name='datasets'),
     path('dashboard/', views.SampleList.as_view(), name='dashboard'),
 ]
