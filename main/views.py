@@ -33,7 +33,7 @@ def redirect_root(request):
 
 class SampleList(View):
     @method_decorator(login_required)
-    def get(self, request, dataset_key:int=None):
+    def get(self, request, dataset_key:int=None, edit:bool=False):
         user_profile = get_context(request)
         if dataset_key:
             dataset = DataSet.objects.get(pk=dataset_key)
@@ -53,7 +53,8 @@ class SampleList(View):
             'user_profile': user_profile,
             'species_name': species_name,
             'samples': samples,
-            'dataset': dataset
+            'dataset': dataset,
+            'edit': edit
             })
 
 
