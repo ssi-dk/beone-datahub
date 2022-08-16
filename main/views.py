@@ -51,14 +51,19 @@ class DataSetView(View):
     def get(self, request, dataset_key:int):
         user_profile = get_context(request)
         dataset = DataSet.objects.get(pk=dataset_key)
-        if self.edit and dataset.owner != request.user:
-            messages.add_message(request, messages.ERROR, 'You tried to edit a dataset that you do not own.')
-            return redirect(dataset_list)
         species_name = get_species_name(dataset.species)
-        samples = list(api.get_samples(species_name=species_name))
-        for sample in samples:
-            sample['id'] = str(sample['_id'])
-            sample['in_dataset'] = sample['id'] in dataset.mongo_ids
+        if self.edit:
+            if dataset.owner != request.user:
+                messages.add_message(request, messages.ERROR, 'You tried to edit a dataset that you do not own.')
+                return redirect(dataset_list)
+            samples = list(api.get_samples(species_name=species_name))
+            for sample in samples:
+                sample['id'] = str(sample['_id'])
+                sample['in_dataset'] = sample['id'] in dataset.mongo_ids
+        else:
+            samples = list(api.get_samples(mongo_ids=dataset.mongo_ids))
+            for sample in samples:
+                sample['id'] = str(sample['_id'])
         return render(request, 'main/sample_list.html',{
             'user_profile': user_profile,
             'species_name': species_name,
