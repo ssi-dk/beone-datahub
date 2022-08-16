@@ -61,9 +61,13 @@ class DataSetView(View):
                 sample['id'] = str(sample['_id'])
                 sample['in_dataset'] = sample['id'] in dataset.mongo_ids
         else:
-            samples = list(api.get_samples(mongo_ids=dataset.mongo_ids))
-            for sample in samples:
-                sample['id'] = str(sample['_id'])
+            if len(dataset.mongo_ids) > 0:
+                samples = list(api.get_samples(mongo_ids=dataset.mongo_ids))
+                for sample in samples:
+                    sample['id'] = str(sample['_id'])
+            else:
+                # Empty dataset
+                samples = list()
         return render(request, 'main/sample_list.html',{
             'user_profile': user_profile,
             'species_name': species_name,
