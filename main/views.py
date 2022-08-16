@@ -33,28 +33,14 @@ def redirect_root(request):
     
 
 @login_required
-def sample_list(request, dataset_key:int=None):
+def sample_list(request):
     user_profile = get_context(request)
-    if dataset_key:
-        dataset = DataSet.objects.get(pk=dataset_key)
-        species = dataset.species
-    else:
-        dataset = None
-        species = None
-    species_name = get_species_name(species)
-    samples = list(api.get_samples(species_name=species_name))
-    print(f"***Dataset: {dataset}")
+    samples = list(api.get_samples())
     for sample in samples:
         sample['id'] = str(sample['_id'])
-        if dataset:
-            sample['in_dataset'] = sample['id'] in dataset.mongo_ids
-        else:
-            sample['in_dataset'] = False
     return render(request, 'main/sample_list.html',{
         'user_profile': user_profile,
-        'species_name': species_name,
         'samples': samples,
-        'dataset': dataset
         })
 
 
