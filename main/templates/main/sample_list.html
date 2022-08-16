@@ -6,7 +6,7 @@
     <h2>Dataset: {{ dataset.name }}</h2>
     <h3>Dataset owner: {{ dataset.owner.username }}</h3>
     <h3>Species: {{ species_name }}</h3>
-    {% if request.user.username == dataset.owner.username %}
+    {% if edit %}
     <button class="margin-tb">Save selection to data set</button>
     {% endif %}
   {% else %}
