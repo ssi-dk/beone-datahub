@@ -17,73 +17,73 @@
       <input type="checkbox"
       />
     </div>
-    <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Mongo ID</div>
-      <div class='overview-header-inner'>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Mongo ID</div>
+      <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
     </div>
-    <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Name</div>
-      <div class='overview-header-inner'>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Name</div>
+      <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
     </div>
-    <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Species</div>
-      <div class='overview-header-inner'>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Species</div>
+      <div class="overview-header-inner">
         <span>{{species_name}}</span>
       </div>
     </div>
-    <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Country</div>
-      <div class='overview-header-inner'>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Country</div>
+      <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
     </div>
-    <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Source</div>
-      <div class='overview-header-inner'>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Source</div>
+      <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
     </div>
-    <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Year</div>
-      <div class='overview-header-inner'>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Year</div>
+      <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
     </div>
-    <div class='overview-header'>
-      <div class='overview-header-inner-bold'>ST</div>
-      <div class='overview-header-inner'>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">ST</div>
+      <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
     </div>
   </div>
   {% for sample in samples %}
   <div class="row">
-    <div class='overview-firstcol'>
-      <input type='checkbox' {% if sample.in_dataset %} checked {%endif %}/>
+    <div class="overview-firstcol">
+      <input type="checkbox" {% if sample.in_dataset %} checked {%endif %}/>
     </div>
-    <div class='overview-datacolumn'>
+    <div class="overview-datacolumn">
       {{ sample.id }}
     </div>
-    <div class='overview-datacolumn'>
+    <div class="overview-datacolumn">
       {{ sample.name }}
     </div>
-    <div class='overview-datacolumn'>
+    <div class="overview-datacolumn">
       {{ sample.species }}
     </div>
-    <div class='overview-datacolumn'>
+    <div class="overview-datacolumn">
       {{ sample.country.termName }}
     </div>
-    <div class='overview-datacolumn'>
+    <div class="overview-datacolumn">
       {{ sample.source_type.termName }}
     </div>
-    <div class='overview-datacolumn'>
+    <div class="overview-datacolumn">
       {{ sample.year }}
     </div>
-    <div class='overview-datacolumn'>
+    <div class="overview-datacolumn">
       {{ sample.sequence_type }}
     </div>
   </div>
