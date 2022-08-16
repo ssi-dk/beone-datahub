@@ -5,6 +5,7 @@ from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.views import View
+from django.contrib import messages
 
 from .mongo.samples_api import API
 from .models import UserProfile, DataSet
@@ -40,6 +41,7 @@ class SampleList(View):
         if dataset_key:
             dataset = DataSet.objects.get(pk=dataset_key)
             if dataset.owner != request.user:
+                messages.add_message(request, messages.ERROR, 'You tried to edit a dataset that you do not own.')
                 return redirect(dataset_list)
             species = dataset.species
         else:
