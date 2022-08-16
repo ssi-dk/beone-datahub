@@ -1,5 +1,5 @@
 from urllib import request
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
@@ -39,6 +39,8 @@ class SampleList(View):
         user_profile = get_context(request)
         if dataset_key:
             dataset = DataSet.objects.get(pk=dataset_key)
+            if dataset.owner != request.user:
+                return redirect(dataset_list)
             species = dataset.species
         else:
             dataset = None
