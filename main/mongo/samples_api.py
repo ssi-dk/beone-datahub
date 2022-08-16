@@ -18,6 +18,7 @@ class API:
 
     def get_samples(
         self,
+        mongo_ids = None,
         species_name: str = None,
         fields: list = ['name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
     ):
@@ -25,6 +26,8 @@ class API:
 
         # Match
         match = dict()
+        if mongo_ids:
+            match['_id'] = { '$in': mongo_ids }
         species_field = FIELD_MAPPING['species']
         if species_name:
             match[species_field ] = species_name
