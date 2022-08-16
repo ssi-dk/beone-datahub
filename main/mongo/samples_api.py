@@ -27,7 +27,8 @@ class API:
         # Match
         match = dict()
         if mongo_ids:
-            match['_id'] = { '$in': mongo_ids }
+            object_ids = [ObjectId(mongo_id) for mongo_id in mongo_ids]
+            match['_id'] = { '$in': object_ids }
         species_field = FIELD_MAPPING['species']
         if species_name:
             match[species_field ] = species_name
