@@ -19,7 +19,6 @@ class API:
     def get_samples(
         self,
         species_name: str = None,
-        filter: dict = dict(),
         fields: list = ['name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
     ):
         pipeline = list()
@@ -32,17 +31,6 @@ class API:
         pipeline.append(
             {'$match': match}
         )
-
-        # Further filtering
-        if filter:
-            for key in filter.keys():
-                if key == 'species':
-                     raise ValueError(
-                         "Filtering on species is not allowed here.")
-                if not key in self.field_mapping:
-                    raise ValueError(f"Unknown field: {key}.")
-                mongo_field = self.field_mapping[key]
-                match[mongo_field] = filter[key]
 
         # Projection
         projection = dict()
