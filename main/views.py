@@ -1,8 +1,10 @@
 from urllib import request
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.conf import settings
+from django.views import View
 
 from .mongo.samples_api import API
 from .models import UserProfile, DataSet
@@ -27,31 +29,33 @@ def redirect_root(request):
         return HttpResponseRedirect('/sample_list/')
     else:
         return HttpResponseRedirect('/login/')
+    
 
-@login_required
-def sample_list(request, dataset_key:int=None):
-    user_profile = get_context(request)
-    if dataset_key:
-        dataset = DataSet.objects.get(pk=dataset_key)
-        species = dataset.species
-    else:
-        dataset = None
-        species = None
-    species_name = get_species_name(species)
-    samples = list(api.get_samples_of_species(species_name))
-    print(f"***Dataset: {dataset}")
-    for sample in samples:
-        sample['id'] = str(sample['_id'])
-        if dataset:
-            sample['in_dataset'] = sample['id'] in dataset.mongo_ids
+class SampleList(View):
+    @method_decorator(login_required)
+    def get(self, request, dataset_key:int=None):
+        user_profile = get_context(request)
+        if dataset_key:
+            dataset = DataSet.objects.get(pk=dataset_key)
+            species = dataset.species
         else:
-            sample['in_dataset'] = False
-    return render(request, 'main/sample_list.html',{
-        'user_profile': user_profile,
-        'species_name': species_name,
-        'samples': samples,
-        'dataset': dataset
-        })
+            dataset = None
+            species = None
+        species_name = get_species_name(species)
+        samples = list(api.get_samples_of_species(species_name))
+        print(f"***Dataset: {dataset}")
+        for sample in samples:
+            sample['id'] = str(sample['_id'])
+            if dataset:
+                sample['in_dataset'] = sample['id'] in dataset.mongo_ids
+            else:
+                sample['in_dataset'] = False
+        return render(request, 'main/sample_list.html',{
+            'user_profile': user_profile,
+            'species_name': species_name,
+            'samples': samples,
+            'dataset': dataset
+            })
 
 
 @login_required

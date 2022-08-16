@@ -24,8 +24,9 @@ urlpatterns = [
     path('', views.redirect_root),
     path('login/', auth_views.LoginView.as_view(template_name='main/login.html', next_page='/sample_list'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/login'), name='logout'),
-    path('sample_list/', views.sample_list, name='sample_list'),
-    path('sample_list/<int:dataset_key>/', views.sample_list, name='sample_list'),
+    path('sample_list/', views.SampleList.as_view(), name='sample_list'),
+    path('sample_list/<int:dataset_key>/', views.SampleList.as_view(), name='sample_list'),
+    # path('sample_list/<int:dataset_key>/edit', views.sample_list, name='sample_list'),
     path('datasets/', views.dataset_list, name='datasets'),
-    path('dashboard/', views.sample_list, name='dashboard'),
+    path('dashboard/', views.SampleList.as_view(), name='dashboard'),
 ]
