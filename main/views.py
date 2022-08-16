@@ -35,7 +35,7 @@ class SampleList(View):
     edit:bool=False
 
     @method_decorator(login_required)
-    def get(self, request, dataset_key:int=None, edit:bool=False):
+    def get(self, request, dataset_key:int=None):
         user_profile = get_context(request)
         if dataset_key:
             dataset = DataSet.objects.get(pk=dataset_key)
