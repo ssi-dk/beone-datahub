@@ -13,10 +13,12 @@
     <h2>Sample List</h2>
   {% endif %}
   <div class="overview-row">
+    {% if edit %}
     <div class="overview-firstcol-border">
       <input type="checkbox"
       />
     </div>
+    {% endif %}
     <div class="overview-header">
       <div class="overview-header-inner-bold">Mongo ID</div>
       <div class="overview-header-inner">
@@ -62,9 +64,11 @@
   </div>
   {% for sample in samples %}
   <div class="row">
+    {% if edit %}
     <div class="overview-firstcol">
       <input type="checkbox" {% if sample.in_dataset %} checked {%endif %}/>
     </div>
+    {% endif %}
     <div class="overview-datacolumn">
       {{ sample.id }}
     </div>
