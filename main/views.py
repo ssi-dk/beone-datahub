@@ -40,7 +40,7 @@ class SampleList(View):
         user_profile = get_context(request)
         if dataset_key:
             dataset = DataSet.objects.get(pk=dataset_key)
-            if dataset.owner != request.user:
+            if self.edit and dataset.owner != request.user:
                 messages.add_message(request, messages.ERROR, 'You tried to edit a dataset that you do not own.')
                 return redirect(dataset_list)
             species = dataset.species
