@@ -9,6 +9,7 @@ from django.contrib import messages
 
 from .mongo.samples_api import API
 from .models import UserProfile, DataSet
+from .forms import NewDatasetForm
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
 
@@ -44,6 +45,18 @@ def sample_list(request):
         })
 
 
+@login_required
+def dataset_list(request):
+    user_profile = get_context(request)
+    form = NewDatasetForm()
+    datasets = DataSet.objects.all()
+    return render(request, 'main/dataset_list.html',{
+        'user_profile': user_profile,
+        'form': form,
+        'datasets': datasets
+        })
+
+
 class DataSetView(View):
     edit:bool=False
 
@@ -75,13 +88,3 @@ class DataSetView(View):
             'dataset': dataset,
             'edit': self.edit
             })
-
-
-@login_required
-def dataset_list(request):
-    user_profile = get_context(request)
-    datasets = DataSet.objects.all()
-    return render(request, 'main/dataset_list.html',{
-        'user_profile': user_profile,
-        'datasets': datasets
-        })

@@ -3,6 +3,11 @@
 {% block content%}
 <div class="pane">
   <h2>New Dataset</h2>
+  <form action="." method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+  </form>
 </div>
 <div class="pane">
   <h2>Datasets</h2>
