@@ -25,7 +25,7 @@ You will also need to start it by running:
     sudo service mongodb start
 
 ## Load test data into MongoDB
-There is a small test data set included in the repository. It can be installed with the 'mongoimport' utility program that comes with MongoDB. The test data set consists of 10 JSON files, each containing data for one sample. However, 'mongoimport' can only import one file at a time. To make it less cumbersome (assuming you are running Ubuntu or another Linux OS), you should be able to install all the data with one command this way:
+There is a small test dataset included in the repository. It can be installed with the 'mongoimport' utility program that comes with MongoDB. The test dataset consists of 10 JSON files, each containing data for one sample. However, 'mongoimport' can only import one file at a time. To make it less cumbersome (assuming you are running Ubuntu or another Linux OS), you should be able to install all the data with one command this way:
 
     cd test_data
     cat *.json | mongoimport -d beone -c samples
