@@ -85,12 +85,3 @@ def dataset_list(request):
         'user_profile': user_profile,
         'datasets': datasets
         })
-
-
-@login_required
-def new_dataset(request):
-    user_profile = get_context(request)
-    return render(request, 'main/new_dataset.html',{
-        'user_profile': user_profile,
-        })
-
