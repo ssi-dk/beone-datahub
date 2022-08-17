@@ -11,7 +11,7 @@ class UserProfile(models.Model):
 
 
 class DataSet(models.Model):
-   species = models.CharField(max_length=20, choices=settings.ALL_SPECIES, blank=True, null=True)
+   species = models.CharField(max_length=20, choices=settings.ALL_SPECIES)
    owner = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
    name = models.CharField(max_length=40, unique=True)
    created_at = models.DateTimeField(auto_now_add=True)
