@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.views import View
 from django.contrib import messages
+from django.urls import reverse
 
 from .mongo.samples_api import API
 from .models import UserProfile, DataSet
@@ -48,8 +49,18 @@ def sample_list(request):
 @login_required
 def dataset_list(request):
     user_profile = get_context(request)
-    form = NewDatasetForm()
     datasets = DataSet.objects.all()
+
+    if request.method == 'POST':
+            form = NewDatasetForm(request.POST)
+            if form.is_valid():
+                # process the data in form.cleaned_data as required
+                # ...
+                # redirect to a new URL:
+                return HttpResponseRedirect(reverse(dataset_list))
+    else:
+        form = NewDatasetForm()
+
     return render(request, 'main/dataset_list.html',{
         'user_profile': user_profile,
         'form': form,
