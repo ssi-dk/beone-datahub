@@ -54,9 +54,12 @@ def dataset_list(request):
     if request.method == 'POST':
             form = NewDatasetForm(request.POST)
             if form.is_valid():
-                # process the data in form.cleaned_data as required
-                # ...
-                # redirect to a new URL:
+                dataset = DataSet(
+                    owner=request.user,
+                    species=form.cleaned_data['species'],
+                    name=form.cleaned_data['name'],
+                    description=form.cleaned_data['description'])
+                dataset.save()
                 return HttpResponseRedirect(reverse(dataset_list))
     else:
         form = NewDatasetForm()
