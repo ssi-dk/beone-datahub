@@ -7,6 +7,7 @@ from django.conf import settings
 from django.views import View
 from django.contrib import messages
 from django.urls import reverse
+from django.db import IntegrityError
 
 from .mongo.samples_api import API
 from .models import UserProfile, DataSet
@@ -59,7 +60,11 @@ def dataset_list(request):
                     species=form.cleaned_data['species'],
                     name=form.cleaned_data['name'],
                     description=form.cleaned_data['description'])
-                dataset.save()
+                try:
+                    dataset.save()
+                except IntegrityError:
+                     messages.add_message(request, messages.ERROR, 
+                     f'Dataset was not created. probably there was already a dataset with that name.')
                 return HttpResponseRedirect(reverse(dataset_list))
     else:
         form = NewDatasetForm()
