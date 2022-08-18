@@ -158,6 +158,6 @@ ALL_SPECIES = (
 
 LOGIN_REDIRECT_URL = "/"
 
-DATETIME_FORMAT = 'Y-m-d G.i'
+DATETIME_FORMAT = 'Y-m-d H.i'
 
 USE_L10N = False
