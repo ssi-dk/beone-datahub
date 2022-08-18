@@ -92,13 +92,14 @@ class DataSetView(View):
                 return redirect(dataset_list)
             samples = list(api.get_samples(species_name=species_name))
             for sample in samples:
-                sample['id'] = str(sample['_id'])
-                sample['in_dataset'] = sample['id'] in dataset.mongo_ids
+                sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
+                if dataset.mongo_ids:
+                    sample['in_dataset'] = sample['id'] in dataset.mongo_ids
         else:
-            if len(dataset.mongo_ids) > 0:
+            if dataset.mongo_ids:
                 samples = list(api.get_samples(mongo_ids=dataset.mongo_ids))
                 for sample in samples:
-                    sample['id'] = str(sample['_id'])
+                    sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
             else:
                 # Empty dataset
                 samples = list()
