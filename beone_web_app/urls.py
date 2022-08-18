@@ -25,8 +25,8 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='main/login.html', next_page='/sample_list'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/login'), name='logout'),
     path('sample_list/', views.sample_list, name='sample_list'),
-    path('datasets/<int:dataset_key>/', views.DataSetView.as_view(), name='view_dataset'),
-    path('datasets/<int:dataset_key>/edit', views.DataSetView.as_view(edit=True), name='edit_dataset'),
     path('datasets/', views.dataset_list, name='datasets'),
-    path('dashboard/', views.DataSetView.as_view(), name='dashboard'),
+    path('datasets/<int:dataset_key>/', views.view_dataset, name='view_dataset'),
+    path('datasets/<int:dataset_key>/edit', views.edit_dataset, name='edit_dataset'),
+    path('dashboard/', views.sample_list, name='dashboard'),
 ]

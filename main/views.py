@@ -1,7 +1,6 @@
 from urllib import request
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.views import View
@@ -78,35 +77,44 @@ def dataset_list(request):
         })
 
 
-class DataSetView(View):
-    edit:bool=False
+@login_required
+def view_dataset(request, dataset_key:int):
+    user_profile = get_context(request)
+    dataset = DataSet.objects.get(pk=dataset_key)
+    species_name = get_species_name(dataset.species)
+    if dataset.mongo_ids:
+        samples = list(api.get_samples(mongo_ids=dataset.mongo_ids))
+        for sample in samples:
+            sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
+    else:
+        # Empty dataset
+        samples = list()
+    return render(request, 'main/sample_list.html',{
+        'user_profile': user_profile,
+        'species_name': species_name,
+        'samples': samples,
+        'dataset': dataset,
+        'edit': False
+        })
 
-    @method_decorator(login_required)
-    def get(self, request, dataset_key:int):
-        user_profile = get_context(request)
-        dataset = DataSet.objects.get(pk=dataset_key)
-        species_name = get_species_name(dataset.species)
-        if self.edit:
-            if dataset.owner != request.user:
-                messages.add_message(request, messages.ERROR, 'You tried to edit a dataset that you do not own.')
-                return redirect(dataset_list)
-            samples = list(api.get_samples(species_name=species_name))
-            for sample in samples:
-                sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
-                if dataset.mongo_ids:
-                    sample['in_dataset'] = sample['id'] in dataset.mongo_ids
-        else:
-            if dataset.mongo_ids:
-                samples = list(api.get_samples(mongo_ids=dataset.mongo_ids))
-                for sample in samples:
-                    sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
-            else:
-                # Empty dataset
-                samples = list()
-        return render(request, 'main/sample_list.html',{
-            'user_profile': user_profile,
-            'species_name': species_name,
-            'samples': samples,
-            'dataset': dataset,
-            'edit': self.edit
-            })
+@login_required
+def edit_dataset(request, dataset_key:int):
+    user_profile = get_context(request)
+    dataset = DataSet.objects.get(pk=dataset_key)
+    species_name = get_species_name(dataset.species)
+    if dataset.owner != request.user:
+        messages.add_message(request, messages.ERROR, 'You tried to edit a dataset that you do not own.')
+        return redirect(dataset_list)
+    samples = list(api.get_samples(species_name=species_name))
+    for sample in samples:
+        sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
+        if dataset.mongo_ids:
+            sample['in_dataset'] = sample['id'] in dataset.mongo_ids
+
+    return render(request, 'main/sample_list.html',{
+        'user_profile': user_profile,
+        'species_name': species_name,
+        'samples': samples,
+        'dataset': dataset,
+        'edit': True
+        })
