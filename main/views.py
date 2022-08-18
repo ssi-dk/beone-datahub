@@ -67,6 +67,7 @@ def dataset_list(request):
                      messages.add_message(request, messages.ERROR, 
                      'Dataset was not created. Probably there was already a dataset with that name.')
                 return HttpResponseRedirect(reverse(dataset_list))
+            
     else:
         form = NewDatasetForm()
 
@@ -103,9 +104,19 @@ def edit_dataset(request, dataset_key:int):
     dataset = DataSet.objects.get(pk=dataset_key)
     species_name = get_species_name(dataset.species)
     if dataset.owner != request.user:
-        messages.add_message(request, messages.ERROR, 'You tried to edit a dataset that you do not own.')
+        messages.add_message(request, messages.ERROR, f'You tried to edit the dataset {dataset.name}, which you do not own.')
         return redirect(dataset_list)
-    delete_form = DeleteDatasetForm()
+    
+    if request.method == 'POST':
+        print("POST")
+        form = DeleteDatasetForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['confirm_name'] == dataset.name:
+                dataset.delete()
+                messages.add_message(request, messages.INFO, f'Dataset {dataset.name} was deleted.')
+                return HttpResponseRedirect('/datasets/')
+
+    form = DeleteDatasetForm()
     samples = list(api.get_samples(species_name=species_name))
     for sample in samples:
         sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
@@ -115,7 +126,7 @@ def edit_dataset(request, dataset_key:int):
     return render(request, 'main/sample_list.html',{
         'user_profile': user_profile,
         'species_name': species_name,
-        'delete_form': delete_form,
+        'delete_form': form,
         'samples': samples,
         'dataset': dataset,
         'edit': True
