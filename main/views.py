@@ -62,9 +62,11 @@ def dataset_list(request):
                     description=form.cleaned_data['description'])
                 try:
                     dataset.save()
+                    messages.add_message(request, messages.ERROR,
+                    'A new empty dataset was created. Use the Edit function to add samples to it.')
                 except IntegrityError:
                      messages.add_message(request, messages.ERROR, 
-                     f'Dataset was not created. probably there was already a dataset with that name.')
+                     'Dataset was not created. Probably there was already a dataset with that name.')
                 return HttpResponseRedirect(reverse(dataset_list))
     else:
         form = NewDatasetForm()
