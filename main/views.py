@@ -10,7 +10,7 @@ from django.db import IntegrityError
 
 from .mongo.samples_api import API
 from .models import UserProfile, DataSet
-from .forms import NewDatasetForm
+from .forms import NewDatasetForm, DeleteDatasetForm
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
 
@@ -105,6 +105,7 @@ def edit_dataset(request, dataset_key:int):
     if dataset.owner != request.user:
         messages.add_message(request, messages.ERROR, 'You tried to edit a dataset that you do not own.')
         return redirect(dataset_list)
+    delete_form = DeleteDatasetForm()
     samples = list(api.get_samples(species_name=species_name))
     for sample in samples:
         sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
@@ -114,6 +115,7 @@ def edit_dataset(request, dataset_key:int):
     return render(request, 'main/sample_list.html',{
         'user_profile': user_profile,
         'species_name': species_name,
+        'delete_form': delete_form,
         'samples': samples,
         'dataset': dataset,
         'edit': True
