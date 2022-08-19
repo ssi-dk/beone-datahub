@@ -1,5 +1,11 @@
 {% extends "main/base.html" %}
 
+{% block header %}
+  {% if edit %}
+    <script src="/static/main/update_mongoids.js"></script> 
+  {% endif %}
+{% endblock %}
+
 {% block content%}
 <div class="pane">
   {% if dataset%}
