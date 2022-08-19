@@ -10,11 +10,12 @@ function addOrRemove(event) {
         jsonToSend["mongoId"] = event.target.id
         if (event.target.checked) {
             jsonToSend["action"] = 'Add'
-            message = "Sample id " + event.target.id + " was added."
+            message = "Mongo id " + event.target.id + " was added."
         } else {
             jsonToSend["action"] = 'Remove'
-            message = "Sample id " + event.target.id + " was removed."
+            message = "Mongo id " + event.target.id + " was removed."
         }
         console.log(message)
+        document.getElementById("js_message").innerText = message
     }
 }
