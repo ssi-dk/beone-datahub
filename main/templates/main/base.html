@@ -7,8 +7,6 @@
     <title>BeONE Web App</title>
     <link rel="stylesheet" type="text/css" href="{% static 'main/index.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'main/App.css' %}">
-    {% block header %}
-    {% endblock %}
   </head>
   <body>
     <div class='baseline-row pane'>
@@ -57,4 +55,6 @@
     {% block content %}
     {% endblock %}
   </body>
+  {% block footer %}
+  {% endblock %}
 </html>
