@@ -2,6 +2,7 @@ document.getElementById('sample_list').addEventListener('click', addOrRemove);
 
 function addOrRemove(event) {
     if (event.target.type === 'checkbox') {
+        let message
         let jsonToSend = {
             "datasetName": document.getElementById("dataset_name").innerText,
             "datasetOwner": document.getElementById("dataset_owner").innerText,
@@ -9,9 +10,11 @@ function addOrRemove(event) {
         jsonToSend["mongoId"] = event.target.id
         if (event.target.checked) {
             jsonToSend["action"] = 'Add'
+            message = "Sample id " + event.target.id + " was added."
         } else {
             jsonToSend["action"] = 'Remove'
+            message = "Sample id " + event.target.id + " was removed."
         }
-        console.log(jsonToSend)
+        console.log(message)
     }
 }
