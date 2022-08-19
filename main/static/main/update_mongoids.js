@@ -5,11 +5,15 @@ let jsonToSend = {
 console.log(jsonToSend)
 
 
-document.getElementById("sample_list").addEventListener("click", addOrRemove);
+document.getElementById('sample_list').addEventListener('click', addOrRemove);
 
 function addOrRemove(event) {
     if (event.target.type === 'checkbox') {
         console.log(event.target.id);
-        console.log(event.target.checked);
+        if (event.target.checked) {
+            console.log('Add')
+        } else {
+            console.log('Remove')
+        }
     }
 }
