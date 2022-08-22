@@ -5,6 +5,7 @@ function addOrRemove(event) {
         let jsonToSend = {
             "username": document.getElementById('username').innerText,
             "datasetName": document.getElementById("dataset_name").innerText,
+            "datasetKey": document.getElementById("dataset_key").innerText,
             "mongoId": event.target.id
         }
         if (event.target.checked) {
