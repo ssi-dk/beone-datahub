@@ -4,8 +4,8 @@ function addOrRemove(event) {
     if (event.target.type === 'checkbox') {
         let message
         let jsonToSend = {
+            "username": document.getElementById('username').innerText,
             "datasetName": document.getElementById("dataset_name").innerText,
-            "datasetOwner": document.getElementById("dataset_owner").innerText,
         }
         jsonToSend["mongoId"] = event.target.id
         if (event.target.checked) {

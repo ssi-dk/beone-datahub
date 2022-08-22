@@ -4,7 +4,7 @@
 <div class="pane">
   {% if dataset%}
     <h2>Dataset: <span id="dataset_name">{{ dataset.name }}</span></h2>
-    <h3>Owner: <span id="dataset_owner">{{ dataset.owner.username }}</span></h3>
+    <h3>Owner: {{ dataset.owner.username }}</h3>
     <h3>Species: {{ species_name }}</h3>
     {% if edit %}
     <form method="post">
