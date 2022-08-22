@@ -23,14 +23,13 @@ function addOrRemove(event) {
             return response.json() //Convert response to JSON
         })
         .then(data => {
+            let message
             if (data['status'] === 'OK') {
-                console.log('It went well!')
-                // Write message to user
-                let message = "Dataset " + jsonToSend["datasetName"] +  " was updated with MongoID " + jsonToSend["mongoId"] +  "."
+                message = "Dataset " + jsonToSend["datasetName"] +  " was updated with MongoID " + jsonToSend["mongoId"] +  "."
                 document.getElementById("js_message").innerText = message
             }
             else (
-                console.log("It dit NOT go well.")
+                message = "Dataset " + jsonToSend["datasetName"] +  " was NOT updated with MongoID " + jsonToSend["mongoId"] +  "!"
             )
         })
         
