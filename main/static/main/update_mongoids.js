@@ -29,7 +29,12 @@ function addOrRemove(event) {
             return response.json() //Convert response to JSON
         })
         .then(data => {
-            console.log(data)
+            if (data['status'] === 'OK') {
+                console.log('It went well!')
+            }
+            else (
+                console.log("It dit NOT go well.")
+            )
         })
         
     }
