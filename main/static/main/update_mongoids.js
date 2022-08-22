@@ -2,7 +2,6 @@ document.getElementById('sample_list').addEventListener('click', addOrRemove);
 
 function addOrRemove(event) {
     if (event.target.type === 'checkbox') {
-        let message
         let jsonToSend = {
             "username": document.getElementById('username').innerText,
             "datasetName": document.getElementById("dataset_name").innerText,
@@ -27,6 +26,7 @@ function addOrRemove(event) {
             if (data['status'] === 'OK') {
                 console.log('It went well!')
                 // Write message to user
+                let message = "Dataset " + jsonToSend["datasetName"] +  " was updated with MongoID " + jsonToSend["mongoId"] +  "."
                 document.getElementById("js_message").innerText = message
             }
             else (
