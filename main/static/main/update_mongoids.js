@@ -15,8 +15,6 @@ function addOrRemove(event) {
             jsonToSend["action"] = 'Remove'
             message = "Mongo id " + event.target.id + " was removed."
         }
-        console.log(message)
-        document.getElementById("js_message").innerText = message
         let url = window.location.origin + '/datasets/add_remove_sample/'
         console.log(url)
         fetch(url, {
@@ -31,6 +29,9 @@ function addOrRemove(event) {
         .then(data => {
             if (data['status'] === 'OK') {
                 console.log('It went well!')
+                console.log(message)
+                /* Write message to user */
+                document.getElementById("js_message").innerText = message
             }
             else (
                 console.log("It dit NOT go well.")
