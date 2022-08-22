@@ -42,6 +42,7 @@ function addOrRemove(event) {
                 'X-Requested-With': 'XMLHttpRequest',
                 'X-CSRFToken': csrftoken,
             },
+            body: JSON.stringify(jsonToSend) 
         })
         .then(response => {
             return response.json() //Convert response to JSON

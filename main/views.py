@@ -1,4 +1,6 @@
 from urllib import request
+import json
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
@@ -133,6 +135,9 @@ def edit_dataset(request, dataset_key:int):
 
 
 def add_remove_sample(request):
+    print(request)
+    data_from_post = json.load(request)
+    print(data_from_post['username'])
     data = {
             'status':'OK'
     }
