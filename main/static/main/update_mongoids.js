@@ -17,7 +17,7 @@ function addOrRemove(event) {
         }
         console.log(message)
         document.getElementById("js_message").innerText = message
-        let url = window.location.origin + '/add_remove_sample/'
+        let url = window.location.origin + '/datasets/add_remove_sample/'
         console.log(url)
         fetch(url, {
             headers:{
@@ -29,7 +29,7 @@ function addOrRemove(event) {
             return response.json() //Convert response to JSON
         })
         .then(data => {
-            //Perform actions with the response data from the view
+            console.log(data)
         })
         
     }

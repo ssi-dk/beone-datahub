@@ -1,9 +1,8 @@
 from urllib import request
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.conf import settings
-from django.views import View
 from django.contrib import messages
 from django.urls import reverse
 from django.db import IntegrityError
@@ -131,3 +130,10 @@ def edit_dataset(request, dataset_key:int):
         'dataset': dataset,
         'edit': True
         })
+
+
+def add_remove_sample(request):
+    data = {
+            'status':'OK'
+    }
+    return JsonResponse(data)
