@@ -6,17 +6,14 @@ function addOrRemove(event) {
         let jsonToSend = {
             "username": document.getElementById('username').innerText,
             "datasetName": document.getElementById("dataset_name").innerText,
+            "mongoId": event.target.id
         }
-        jsonToSend["mongoId"] = event.target.id
         if (event.target.checked) {
             jsonToSend["action"] = 'Add'
-            message = "Mongo id " + event.target.id + " was added."
         } else {
             jsonToSend["action"] = 'Remove'
-            message = "Mongo id " + event.target.id + " was removed."
         }
         let url = window.location.origin + '/datasets/add_remove_sample/'
-        console.log(url)
         fetch(url, {
             headers:{
                 'Accept': 'application/json',
@@ -29,8 +26,7 @@ function addOrRemove(event) {
         .then(data => {
             if (data['status'] === 'OK') {
                 console.log('It went well!')
-                console.log(message)
-                /* Write message to user */
+                // Write message to user
                 document.getElementById("js_message").innerText = message
             }
             else (
