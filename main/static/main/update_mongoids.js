@@ -17,5 +17,20 @@ function addOrRemove(event) {
         }
         console.log(message)
         document.getElementById("js_message").innerText = message
+        let url = window.location.origin + '/add_remove_sample/'
+        console.log(url)
+        fetch(url, {
+            headers:{
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        })
+        .then(response => {
+            return response.json() //Convert response to JSON
+        })
+        .then(data => {
+            //Perform actions with the response data from the view
+        })
+        
     }
 }
