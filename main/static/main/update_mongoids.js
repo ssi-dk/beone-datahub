@@ -49,22 +49,9 @@ function addOrRemove(event) {
         })
         .then(data => {
             console.log(data)
-            let message
-            if (data['status'] === 'OK') {
-                if (dataToSend['action'] === 'add') {
-                    message = "MongoID " + dataToSend["mongoId"] + " was added to dataset " + dataToSend["datasetName"] + "."
-                } else {
-                    message = "MongoID " + dataToSend["mongoId"] + " was removed from dataset " + dataToSend["datasetName"] + "."
-                }
-            }
-            else {
-                if (dataToSend['action'] === 'add') {
-                    message = "ERROR: MongoID " + dataToSend["mongoId"] + " could not be added to dataset " + dataToSend["datasetName"] + "."
-                } else {
-                    message = "MongoID " + dataToSend["mongoId"] + " could not be removed from dataset " + dataToSend["datasetName"] + "."
-                }
-            }
-            document.getElementById("js_message").innerText = message
+            document.getElementById("messages").style.display = "block"
+            let message = "<li>" + data.message + "</li>"
+            document.getElementById("message-list").innerHTML = document.getElementById("message-list").innerHTML + message
         })
         
     }

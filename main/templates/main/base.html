@@ -43,7 +43,7 @@
     </div>
       <div class="pane" id="messages" {% if not messages %} style="display:none" {% endif %}>
         <h2>Messages</h2>
-        <ul class="messages">
+        <ul id="message-list" class="messages">
             {% for message in messages %}
             <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
             {% endfor %}
