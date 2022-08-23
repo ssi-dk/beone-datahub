@@ -114,7 +114,7 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = False
+USE_I18N = True
 
 USE_TZ = True
 
@@ -131,7 +131,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Own additions below
 
-MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone'
+MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/dataset2'
 
 # Mapping for Bifrost 2.1 (SOFI)
 """MONGO_FIELD_MAPPING = {
@@ -142,12 +142,18 @@ MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone'
 MONGO_FIELD_MAPPING = {
     "name": "sample.summary.sample",
     "species": "sample.summary.species",
-    "country_root": "sample.metadata.Country",
-    "source_type_root": "sample.metadata.Source_Type",
+    "country": "sample.metadata.Country",
+    "source_type": "sample.metadata.Source_Type",
     "year": "sample.metadata.Date_Sampling_YYYY",
     "sequence_type": "sample.summary.sequence_type",
     "allele_profile": "pipelines.chewiesnake.allele_profile",
 }
+
+# Mapping for BeONE
+"""MONGO_FIELD_MAPPING = {
+    'name': 'sample.summary.sample',
+    'species': 'sample.summary.species',
+}"""
 
 ALL_SPECIES = (
     ('campy', 'Campylobacter jejuni'),
@@ -157,7 +163,3 @@ ALL_SPECIES = (
 )
 
 LOGIN_REDIRECT_URL = "/"
-
-DATETIME_FORMAT = 'Y-m-d G.i'
-
-USE_L10N = False

@@ -10,43 +10,21 @@
   </head>
   <body>
     <div class='baseline-row pane'>
-      <div class='column'>
-        <h1><a href="/">BeONE Web App</a></h1>
-      </div>
-      {% if request.user.is_authenticated %}
-      {% url 'sample_list' as sample_list_url %}
-      {% url 'data_sets' as data_sets_url %}
-      {% url 'dashboard' as dashboard_url %}
-      <div class='column'>
-        <nav>
-          <span class="menu-item">
-            <a href="{% url 'sample_list' %}"
-            {% if request.path == sample_list_url %}class="current"{% endif %}
-            >Sample List</a>
-          </span>
-          <span class="menu-item">
-            <a href="{% url 'data_sets' %}"
-            {% if request.path == data_sets_url %}class="current"{% endif %}
-            >Data Sets</a>
-          </span>
-          <span class="menu-item">
-            <a href="{% url 'dashboard' %}"
-            {% if request.path == dashboard_url %}class="current"{% endif %}
-            >Dashboard</a>
-          </span>
-        <nav>
-      </div>
-      <div class='right-justify'>
-        <span>Hello {{request.user.username}}</span>
-        <span><a href=" {% url 'logout' %}">Logout</a></span>
-        <div class='right-justify'>
-          <span>Current species:</span>
-          <span><a href=" {% url 'select_species' %}">{{ species_name }}</a></span>
+        <div class='column'>
+          <h1><a href="/">BeONE Web App</a></h1>
         </div>
-      {% else %}
-        <span>Please <a href=" {% url 'login' %}">login</a></span>
-      {% endif %}
-      </div>
+        <div class='right-justify'>
+          {% if request.user.is_authenticated %}
+            <span>Hello {{request.user.username}}</span>
+            <span><a href=" {% url 'logout' %}">Logout</a></span>
+            <div class='right-justify'>
+              <span>Current species:</span>
+              <span><a href=" {% url 'select_species' %}">{{ species_name }}</a></span>
+            </div>
+          {% else %}
+            <span>Please <a href=" {% url 'login' %}">login</a></span>
+          {% endif %}
+        </div>
     </div>
     {% block content %}
     {% endblock %}
