@@ -19,14 +19,14 @@
         <div class='column'>
           <nav>
             <span class="menu-item">
-              <a href="{% url 'sample_list' %}"
-              {% if request.path == sample_list_url %}class="current"{% endif %}
-              >Sample List</a>
-            </span>
-            <span class="menu-item">
               <a href="{% url 'datasets' %}"
               {% if request.path == datasets_url %}class="current"{% endif %}
               >Datasets</a>
+            </span>
+            <span class="menu-item">
+              <a href="{% url 'sample_list' %}"
+              {% if request.path == sample_list_url %}class="current"{% endif %}
+              >Sample List</a>
             </span>
             <span class="menu-item">
               <a href="/">Dashboard</a>
