@@ -53,14 +53,14 @@ function addOrRemove(event) {
                 if (dataToSend['action'] === 'add') {
                     message = "MongoID " + dataToSend["mongoId"] + " was added to dataset " + dataToSend["datasetName"] + "."
                 } else {
-                    message = "MongoID " + dataToSend["mongoId"] + " was deleted from dataset " + dataToSend["datasetName"] + "."
+                    message = "MongoID " + dataToSend["mongoId"] + " was removed from dataset " + dataToSend["datasetName"] + "."
                 }
             }
             else {
                 if (dataToSend['action'] === 'add') {
                     message = "ERROR: MongoID " + dataToSend["mongoId"] + " could not be added to dataset " + dataToSend["datasetName"] + "."
                 } else {
-                    message = "MongoID " + dataToSend["mongoId"] + " could not be deleted from dataset " + dataToSend["datasetName"] + "."
+                    message = "MongoID " + dataToSend["mongoId"] + " could not be removed from dataset " + dataToSend["datasetName"] + "."
                 }
             }
             document.getElementById("js_message").innerText = message
