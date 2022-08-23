@@ -8,6 +8,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse
 from django.db import IntegrityError
+from django.contrib.auth.models import User
 
 from .mongo.samples_api import API
 from .models import UserProfile, DataSet
@@ -135,10 +136,22 @@ def edit_dataset(request, dataset_key:int):
 
 
 def add_remove_sample(request):
-    print(request)
+    """
+            "username": document.getElementById('username').innerText,
+            "datasetName": document.getElementById("dataset_name").innerText,
+            "datasetKey": document.getElementById("dataset_key").innerText,
+            "mongoId": event.target.id
+    """
     data_from_post = json.load(request)
-    print(data_from_post['username'])
-    data = {
-            'status':'OK'
-    }
-    return JsonResponse(data)
+    request_user = User.objects.get(username=data_from_post['username'])
+    dataset = DataSet.objects.get(name=data_from_post['datasetName'])
+    if not request_user == dataset.owner:
+        data_to_send = {
+            'status':'ERROR',
+            'message': 'Request user is not dataset owner.'
+        }
+    else:
+        data_to_send = {
+                'status':'OK'
+        }
+    return JsonResponse(data_to_send)
