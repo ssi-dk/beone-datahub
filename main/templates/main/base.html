@@ -41,8 +41,7 @@
       {% endif %}
       </div>
     </div>
-    {% if messages %}
-      <div class="pane">
+      <div class="pane" id="messages" {% if not messages %} style="display:none" {% endif %}>
         <h2>Messages</h2>
         <ul class="messages">
             {% for message in messages %}
@@ -50,7 +49,6 @@
             {% endfor %}
         </ul>
       </div>
-    {% endif %}
     </div>
     {% block content %}
     {% endblock %}

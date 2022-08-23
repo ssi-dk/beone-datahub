@@ -159,7 +159,8 @@ def add_remove_sample(request):
             dataset.mongo_ids
             dataset.save()
             data_to_send = {
-                    'status':'OK'
+                'status': 'OK',
+                'message': 'Sample was added to dataset.'
             }
         except Exception as e:
             data_to_send = {
