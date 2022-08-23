@@ -50,7 +50,12 @@ function addOrRemove(event) {
         .then(data => {
             console.log(data)
             document.getElementById("messages").style.display = "block"
-            let message = "<li>" + data.message + "</li>"
+            let message
+            if (data.status === 'OK') {
+                message = '<li>' + data.message + '</li>'
+            } else {
+                message = '<li class="error">ERROR: ' + data.message + '</li>'
+            }
             document.getElementById("message-list").innerHTML = document.getElementById("message-list").innerHTML + message
         })
         
