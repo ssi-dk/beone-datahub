@@ -10,23 +10,49 @@
   </head>
   <body>
     <div class='baseline-row pane'>
+      <div class='column'>
+        <h1><a href="/">BeONE Web App</a></h1>
+      </div>
+      {% if request.user.is_authenticated %}
+        {% url 'sample_list' as sample_list_url %}
+        {% url 'datasets' as datasets_url %}
         <div class='column'>
-          <h1><a href="/">BeONE Web App</a></h1>
+          <nav>
+            <span class="menu-item">
+              <a href="{% url 'sample_list' %}"
+              {% if request.path == sample_list_url %}class="current"{% endif %}
+              >Sample List</a>
+            </span>
+            <span class="menu-item">
+              <a href="{% url 'datasets' %}"
+              {% if request.path == datasets_url %}class="current"{% endif %}
+              >Datasets</a>
+            </span>
+            <span class="menu-item">
+              <a href="/">Dashboard</a>
+            </span>
+          <nav>
         </div>
         <div class='right-justify'>
-          {% if request.user.is_authenticated %}
-            <span>Hello {{request.user.username}}</span>
-            <span><a href=" {% url 'logout' %}">Logout</a></span>
-            <div class='right-justify'>
-              <span>Current species:</span>
-              <span><a href=" {% url 'select_species' %}">{{ species_name }}</a></span>
-            </div>
-          {% else %}
-            <span>Please <a href=" {% url 'login' %}">login</a></span>
-          {% endif %}
-        </div>
+          <span>Hello </span><span id="username">{{request.user.username}}</span>
+          <span><a href=" {% url 'logout' %}">Logout</a></span>
+      {% else %}
+        <span>Please <a href=" {% url 'login' %}">login</a></span>
+      {% endif %}
+      </div>
+    </div>
+      <div class="pane" id="messages" {% if not messages %} style="display:none" {% endif %}>
+        <h2>Messages</h2>
+        <ul id="message-list" class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+      </div>
     </div>
     {% block content %}
     {% endblock %}
   </body>
+  {% block footer %}
+  {% endblock %}
 </html>

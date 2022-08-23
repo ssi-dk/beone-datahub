@@ -1,0 +1,78 @@
+{% extends "main/base.html" %}
+
+{% block content%}
+<div class="pane">
+  <h2>New Dataset</h2>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+  </form>
+</div>
+<div class="pane">
+  <h2>Datasets</h2>
+  <div class="overview-row">
+    <div class='overview-header overview-firstcol-border'>
+      <div class='overview-header-inner-bold'>Key</div>
+    </div>
+    <div class='overview-header overview-firstcol-border'>
+      <div class='overview-header-inner-bold'>Species</div>
+    </div>
+    <div class='overview-header overview-firstcol-border'>
+      <div class='overview-header-inner-bold'>Owner</div>
+    </div>
+    <div class='overview-header'>
+      <div class='overview-header-inner-bold'>Name</div>
+    </div>
+ <div class='overview-header'>
+      <div class='overview-header-inner-bold'>Created</div>
+    </div>
+    <div class='overview-header'>
+      <div class='overview-header-inner-bold'>Last modified</div>
+    </div>
+    <div class='overview-header'>
+      <div class='overview-header-inner-bold'>Description</div>
+    </div>
+    <div class='overview-header'>
+      <div class='overview-header-inner-bold'>Number of samples</div>
+    </div>
+    <div class='overview-header'>
+      <div class='overview-header-inner-bold'>Actions</div>
+    </div>
+  </div>
+  {% for dataset in datasets %}
+  <div class="row">
+    <div class='overview-datacolumn'>
+      {{ dataset.pk }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ dataset.get_species_display }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ dataset.owner }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ dataset.name }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ dataset.created_at }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ dataset.modified_at }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ dataset.description }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ dataset.mongo_ids|length }}
+    </div>
+    <div class='overview-datacolumn'>
+      <span class="rspace"><a href="{% url 'view_dataset' dataset.pk %}">List</a></span>
+      {% if dataset.owner.username == request.user.username %}
+        <span class="rspace"><a href="{% url 'edit_dataset' dataset.pk %}">Edit</a></span>
+      {% endif %}
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}

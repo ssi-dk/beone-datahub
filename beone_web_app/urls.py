@@ -21,8 +21,13 @@ from main import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.sample_list, name='sample_list'),
-    path('login/', auth_views.LoginView.as_view(template_name='main/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
-    path('select_species/', views.select_species, name='select_species'),
+    path('', views.redirect_root),
+    path('login/', auth_views.LoginView.as_view(template_name='main/login.html', next_page='/sample_list'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='/login'), name='logout'),
+    path('sample_list/', views.sample_list, name='sample_list'),
+    path('datasets/', views.dataset_list, name='datasets'),
+    path('datasets/<int:dataset_key>/', views.view_dataset, name='view_dataset'),
+    path('datasets/<int:dataset_key>/edit', views.edit_dataset, name='edit_dataset'),
+    path('datasets/add_remove_sample/', views.add_remove_sample),
+    path('dashboard/', views.sample_list, name='dashboard'),
 ]
