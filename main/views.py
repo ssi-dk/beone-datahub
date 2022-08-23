@@ -11,14 +11,11 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User
 
 from .mongo.samples_api import API
-from .models import UserProfile, DataSet
+from .models import DataSet
 from .forms import NewDatasetForm, DeleteDatasetForm
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
 
-def get_context(request):
-        user_profile = UserProfile.objects.get_or_create(user=request.user)[0]
-        return user_profile
 
 def get_species_name(species: str=None):
     if species is None:
@@ -38,19 +35,16 @@ def redirect_root(request):
 
 @login_required
 def sample_list(request):
-    user_profile = get_context(request)
     samples = list(api.get_samples())
     for sample in samples:
         sample['id'] = str(sample['_id'])
     return render(request, 'main/sample_list.html',{
-        'user_profile': user_profile,
         'samples': samples,
         })
 
 
 @login_required
 def dataset_list(request):
-    user_profile = get_context(request)
     datasets = DataSet.objects.all()
 
     if request.method == 'POST':
@@ -74,7 +68,6 @@ def dataset_list(request):
         form = NewDatasetForm()
 
     return render(request, 'main/dataset_list.html',{
-        'user_profile': user_profile,
         'form': form,
         'datasets': datasets
         })
@@ -82,7 +75,6 @@ def dataset_list(request):
 
 @login_required
 def view_dataset(request, dataset_key:int):
-    user_profile = get_context(request)
     dataset = DataSet.objects.get(pk=dataset_key)
     species_name = get_species_name(dataset.species)
     if dataset.mongo_ids:
@@ -93,7 +85,6 @@ def view_dataset(request, dataset_key:int):
         # Empty dataset
         samples = list()
     return render(request, 'main/sample_list.html',{
-        'user_profile': user_profile,
         'species_name': species_name,
         'samples': samples,
         'dataset': dataset,
@@ -102,7 +93,6 @@ def view_dataset(request, dataset_key:int):
 
 @login_required
 def edit_dataset(request, dataset_key:int):
-    user_profile = get_context(request)
     dataset = DataSet.objects.get(pk=dataset_key)
     species_name = get_species_name(dataset.species)
     if dataset.owner != request.user:
@@ -126,7 +116,6 @@ def edit_dataset(request, dataset_key:int):
             sample['in_dataset'] = sample['id'] in dataset.mongo_ids
 
     return render(request, 'main/sample_list.html',{
-        'user_profile': user_profile,
         'species_name': species_name,
         'delete_form': form,
         'samples': samples,
