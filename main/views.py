@@ -153,14 +153,14 @@ def add_remove_sample(request):
             'message': 'Request user is not dataset owner.'
         }
     else:
+        mongo_id = data_from_post['mongoId']
         if data_from_post['action'] == 'add':
             try:
-                dataset.mongo_ids.append(data_from_post['mongoId'])
-                dataset.mongo_ids
+                dataset.mongo_ids.append(mongo_id)
                 dataset.save()
                 data_to_send = {
                     'status': 'OK',
-                    'message': 'Sample was added to dataset.'
+                    'message': f'Sample {mongo_id} was added to dataset.'
                 }
             except Exception as e:
                 data_to_send = {
@@ -170,11 +170,10 @@ def add_remove_sample(request):
         if data_from_post['action'] == 'remove':
             try:
                 dataset.mongo_ids.remove(data_from_post['mongoId'])
-                dataset.mongo_ids
                 dataset.save()
                 data_to_send = {
                     'status': 'OK',
-                    'message': 'Sample was removed from dataset.'
+                    'message': f'Sample {mongo_id} was removed from dataset.'
                 }
             except Exception as e:
                 data_to_send = {
