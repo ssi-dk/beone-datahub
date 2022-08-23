@@ -144,7 +144,7 @@ def add_remove_sample(request):
     """
     data_from_post = json.load(request)
     request_user = User.objects.get(username=data_from_post['username'])
-    dataset = DataSet.objects.get(name=data_from_post['datasetName'])
+    dataset = DataSet.objects.get(pk=data_from_post['datasetKey'])
     if not request_user == dataset.owner:
         data_to_send = {
             'status':'ERROR',
