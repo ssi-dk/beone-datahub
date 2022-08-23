@@ -137,10 +137,12 @@ def edit_dataset(request, dataset_key:int):
 
 def add_remove_sample(request):
     """
-            "username": document.getElementById('username').innerText,
-            "datasetName": document.getElementById("dataset_name").innerText,
-            "datasetKey": document.getElementById("dataset_key").innerText,
-            "mongoId": event.target.id
+    update_mongids.js sends this in POST request:
+        "username": document.getElementById('username').innerText,
+        "datasetName": document.getElementById("dataset_name").innerText,
+        "datasetKey": document.getElementById("dataset_key").innerText,
+        "mongoId": event.target.id,
+        "action": 'add' | 'remove'
     """
     data_from_post = json.load(request)
     request_user = User.objects.get(username=data_from_post['username'])
@@ -151,10 +153,17 @@ def add_remove_sample(request):
             'message': 'Request user is not dataset owner.'
         }
     else:
-        dataset.mongo_ids.append(data_from_post['mongoId'])
-        dataset.mongo_ids
-        dataset.save()
-        data_to_send = {
-                'status':'OK'
+        # Todo: check action
+        try:
+            dataset.mongo_ids.append(data_from_post['mongoId'])
+            dataset.mongo_ids
+            dataset.save()
+            data_to_send = {
+                    'status':'OK'
+            }
+        except Exception as e:
+            data_to_send = {
+            'status':'ERROR',
+            'message': str(e)
         }
     return JsonResponse(data_to_send)

@@ -48,6 +48,7 @@ function addOrRemove(event) {
             return response.json()
         })
         .then(data => {
+            console.log(data)
             let message
             if (data['status'] === 'OK') {
                 if (dataToSend['action'] === 'add') {
