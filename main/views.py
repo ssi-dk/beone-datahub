@@ -151,6 +151,9 @@ def add_remove_sample(request):
             'message': 'Request user is not dataset owner.'
         }
     else:
+        dataset.mongo_ids.append(data_from_post['mongoId'])
+        dataset.mongo_ids
+        dataset.save()
         data_to_send = {
                 'status':'OK'
         }
