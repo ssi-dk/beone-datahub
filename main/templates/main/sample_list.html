@@ -3,7 +3,8 @@
 {% block content%}
 <div class="pane">
   {% if dataset%}
-    <h2>Dataset: {{ dataset.name }}</h2>
+    <h2>Dataset: <span id="dataset_name">{{ dataset.name }}</span></h2>
+    <h3>Key: <span id="dataset_key">{{ dataset.pk }}</span></h3>
     <h3>Owner: {{ dataset.owner.username }}</h3>
     <h3>Species: {{ species_name }}</h3>
     {% if edit %}
@@ -12,7 +13,7 @@
       {{ delete_form }}
       <input type="submit" value="Delete">
     </form>
-    <button class="margin-tb">Save sample selection to dataset</button>
+    <div id="js_message"></div>
     {% endif %}
   {% else %}
     <h2>Sample List</h2>
@@ -29,7 +30,7 @@
     {% else  %}
     <div class="overview-header overview-firstcol-border">
     {% endif %}
-      <div class="overview-header-inner-bold">Mongo ID</div>
+    <div class="overview-header-inner-bold">Mongo ID</div>
       <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
@@ -71,35 +72,43 @@
       </div>
     </div>
   </div>
+  <div id="sample_list">
   {% for sample in samples %}
-  <div class="row">
-    {% if edit %}
-    <div class="overview-firstcol">
-      <input type="checkbox" {% if sample.in_dataset %} checked {%endif %}/>
+    <div class="row">
+      {% if edit %}
+      <div class="overview-firstcol">
+        <input id="{{ sample.id }}" type="checkbox" {% if sample.in_dataset %} checked {%endif %}/>
+      </div>
+      {% endif %}
+      <div class="overview-datacolumn">
+        {{ sample.id }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.name }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.species }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.country.termName }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.source_type.termName }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.year }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.sequence_type }}
+      </div>
     </div>
-    {% endif %}
-    <div class="overview-datacolumn">
-      {{ sample.id }}
-    </div>
-    <div class="overview-datacolumn">
-      {{ sample.name }}
-    </div>
-    <div class="overview-datacolumn">
-      {{ sample.species }}
-    </div>
-    <div class="overview-datacolumn">
-      {{ sample.country.termName }}
-    </div>
-    <div class="overview-datacolumn">
-      {{ sample.source_type.termName }}
-    </div>
-    <div class="overview-datacolumn">
-      {{ sample.year }}
-    </div>
-    <div class="overview-datacolumn">
-      {{ sample.sequence_type }}
-    </div>
-  </div>
-{% endfor %}
-</div
+  {% endfor %}
+</div>
 {% endblock %}
+
+{% block footer %}
+  {% if edit %}
+    <script src="/static/main/update_mongoids.js"></script> 
+  {% endif %}
+{% endblock %}
+

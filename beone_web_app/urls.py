@@ -28,5 +28,6 @@ urlpatterns = [
     path('datasets/', views.dataset_list, name='datasets'),
     path('datasets/<int:dataset_key>/', views.view_dataset, name='view_dataset'),
     path('datasets/<int:dataset_key>/edit', views.edit_dataset, name='edit_dataset'),
+    path('datasets/add_remove_sample/', views.add_remove_sample),
     path('dashboard/', views.sample_list, name='dashboard'),
 ]

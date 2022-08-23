@@ -34,25 +34,25 @@
           <nav>
         </div>
         <div class='right-justify'>
-          <span>Hello {{request.user.username}}</span>
+          <span>Hello </span><span id="username">{{request.user.username}}</span>
           <span><a href=" {% url 'logout' %}">Logout</a></span>
       {% else %}
         <span>Please <a href=" {% url 'login' %}">login</a></span>
       {% endif %}
       </div>
     </div>
-    {% if messages %}
-      <div class="pane">
+      <div class="pane" id="messages" {% if not messages %} style="display:none" {% endif %}>
         <h2>Messages</h2>
-        <ul class="messages">
+        <ul id="message-list" class="messages">
             {% for message in messages %}
             <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
             {% endfor %}
         </ul>
       </div>
-    {% endif %}
     </div>
     {% block content %}
     {% endblock %}
   </body>
+  {% block footer %}
+  {% endblock %}
 </html>

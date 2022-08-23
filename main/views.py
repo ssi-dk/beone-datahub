@@ -1,12 +1,14 @@
 from urllib import request
+import json
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.conf import settings
-from django.views import View
 from django.contrib import messages
 from django.urls import reverse
 from django.db import IntegrityError
+from django.contrib.auth.models import User
 
 from .mongo.samples_api import API
 from .models import UserProfile, DataSet
@@ -131,3 +133,51 @@ def edit_dataset(request, dataset_key:int):
         'dataset': dataset,
         'edit': True
         })
+
+
+def add_remove_sample(request):
+    """
+    update_mongids.js sends this in POST request:
+        "username": document.getElementById('username').innerText,
+        "datasetName": document.getElementById("dataset_name").innerText,
+        "datasetKey": document.getElementById("dataset_key").innerText,
+        "mongoId": event.target.id,
+        "action": 'add' | 'remove'
+    """
+    data_from_post = json.load(request)
+    request_user = User.objects.get(username=data_from_post['username'])
+    dataset = DataSet.objects.get(pk=data_from_post['datasetKey'])
+    if not request_user == dataset.owner:
+        data_to_send = {
+            'status':'ERROR',
+            'message': 'Request user is not dataset owner.'
+        }
+    else:
+        mongo_id = data_from_post['mongoId']
+        if data_from_post['action'] == 'add':
+            try:
+                dataset.mongo_ids.append(mongo_id)
+                dataset.save()
+                data_to_send = {
+                    'status': 'OK',
+                    'message': f'Sample {mongo_id} was added to dataset.'
+                }
+            except Exception as e:
+                data_to_send = {
+                'status':'ERROR',
+                'message': str(e)
+            }
+        if data_from_post['action'] == 'remove':
+            try:
+                dataset.mongo_ids.remove(data_from_post['mongoId'])
+                dataset.save()
+                data_to_send = {
+                    'status': 'OK',
+                    'message': f'Sample {mongo_id} was removed from dataset.'
+                }
+            except Exception as e:
+                data_to_send = {
+                'status':'ERROR',
+                'message': str(e)
+            }
+    return JsonResponse(data_to_send)

@@ -17,4 +17,4 @@ class DataSet(models.Model):
    created_at = models.DateTimeField(auto_now_add=True)
    modified_at = models.DateTimeField(auto_now=True)
    description = models.CharField(max_length=200, blank=True, null=True)
-   mongo_ids = ArrayField(models.CharField(max_length=24), blank=True, null=True)
+   mongo_ids = ArrayField(models.CharField(max_length=24), default=list)
