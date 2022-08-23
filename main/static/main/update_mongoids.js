@@ -22,16 +22,16 @@ document.getElementById('sample_list').addEventListener('click', addOrRemove);
 
 function addOrRemove(event) {
     if (event.target.type === 'checkbox') {
-        let jsonToSend = {
+        let dataToSend = {
             "username": document.getElementById('username').innerText,
             "datasetName": document.getElementById("dataset_name").innerText,
             "datasetKey": document.getElementById("dataset_key").innerText,
             "mongoId": event.target.id
         }
         if (event.target.checked) {
-            jsonToSend["action"] = 'Add'
+            dataToSend["action"] = 'Add'
         } else {
-            jsonToSend["action"] = 'Remove'
+            dataToSend["action"] = 'Remove'
         }
         let url = window.location.origin + '/datasets/add_remove_sample/'
         fetch(url, {
@@ -42,7 +42,7 @@ function addOrRemove(event) {
                 'X-Requested-With': 'XMLHttpRequest',
                 'X-CSRFToken': csrftoken,
             },
-            body: JSON.stringify(jsonToSend) 
+            body: JSON.stringify(dataToSend) 
         })
         .then(response => {
             return response.json() //Convert response to JSON
@@ -50,17 +50,17 @@ function addOrRemove(event) {
         .then(data => {
             let message
             if (data['status'] === 'OK') {
-                if (jsonToSend['action'] === 'Add') {
-                    message = "MongoID " + jsonToSend["mongoId"] + " was added to dataset " + jsonToSend["datasetName"] + "."
+                if (dataToSend['action'] === 'Add') {
+                    message = "MongoID " + dataToSend["mongoId"] + " was added to dataset " + dataToSend["datasetName"] + "."
                 } else {
-                    message = "MongoID " + jsonToSend["mongoId"] + " was deleted from dataset " + jsonToSend["datasetName"] + "."
+                    message = "MongoID " + dataToSend["mongoId"] + " was deleted from dataset " + dataToSend["datasetName"] + "."
                 }
             }
             else {
-                if (jsonToSend['action'] === 'Add') {
-                    message = "ERROR: MongoID " + jsonToSend["mongoId"] + " could not be added to dataset " + jsonToSend["datasetName"] + "."
+                if (dataToSend['action'] === 'Add') {
+                    message = "ERROR: MongoID " + dataToSend["mongoId"] + " could not be added to dataset " + dataToSend["datasetName"] + "."
                 } else {
-                    message = "MongoID " + jsonToSend["mongoId"] + " could not be deleted from dataset " + jsonToSend["datasetName"] + "."
+                    message = "MongoID " + dataToSend["mongoId"] + " could not be deleted from dataset " + dataToSend["datasetName"] + "."
                 }
             }
             document.getElementById("js_message").innerText = message
