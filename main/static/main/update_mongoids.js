@@ -29,9 +29,9 @@ function addOrRemove(event) {
             "mongoId": event.target.id
         }
         if (event.target.checked) {
-            dataToSend["action"] = 'Add'
+            dataToSend["action"] = 'add'
         } else {
-            dataToSend["action"] = 'Remove'
+            dataToSend["action"] = 'remove'
         }
         let url = window.location.origin + '/datasets/add_remove_sample/'
         fetch(url, {
@@ -50,14 +50,14 @@ function addOrRemove(event) {
         .then(data => {
             let message
             if (data['status'] === 'OK') {
-                if (dataToSend['action'] === 'Add') {
+                if (dataToSend['action'] === 'add') {
                     message = "MongoID " + dataToSend["mongoId"] + " was added to dataset " + dataToSend["datasetName"] + "."
                 } else {
                     message = "MongoID " + dataToSend["mongoId"] + " was deleted from dataset " + dataToSend["datasetName"] + "."
                 }
             }
             else {
-                if (dataToSend['action'] === 'Add') {
+                if (dataToSend['action'] === 'add') {
                     message = "ERROR: MongoID " + dataToSend["mongoId"] + " could not be added to dataset " + dataToSend["datasetName"] + "."
                 } else {
                     message = "MongoID " + dataToSend["mongoId"] + " could not be deleted from dataset " + dataToSend["datasetName"] + "."
