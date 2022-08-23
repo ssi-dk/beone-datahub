@@ -45,7 +45,7 @@ function addOrRemove(event) {
             body: JSON.stringify(dataToSend) 
         })
         .then(response => {
-            return response.json() //Convert response to JSON
+            return response.json()
         })
         .then(data => {
             let message
