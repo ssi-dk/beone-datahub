@@ -153,18 +153,32 @@ def add_remove_sample(request):
             'message': 'Request user is not dataset owner.'
         }
     else:
-        # Todo: check action
-        try:
-            dataset.mongo_ids.append(data_from_post['mongoId'])
-            dataset.mongo_ids
-            dataset.save()
-            data_to_send = {
-                'status': 'OK',
-                'message': 'Sample was added to dataset.'
+        if data_from_post['action'] == 'add':
+            try:
+                dataset.mongo_ids.append(data_from_post['mongoId'])
+                dataset.mongo_ids
+                dataset.save()
+                data_to_send = {
+                    'status': 'OK',
+                    'message': 'Sample was added to dataset.'
+                }
+            except Exception as e:
+                data_to_send = {
+                'status':'ERROR',
+                'message': str(e)
             }
-        except Exception as e:
-            data_to_send = {
-            'status':'ERROR',
-            'message': str(e)
-        }
+        if data_from_post['action'] == 'remove':
+            try:
+                dataset.mongo_ids.remove(data_from_post['mongoId'])
+                dataset.mongo_ids
+                dataset.save()
+                data_to_send = {
+                    'status': 'OK',
+                    'message': 'Sample was removed from dataset.'
+                }
+            except Exception as e:
+                data_to_send = {
+                'status':'ERROR',
+                'message': str(e)
+            }
     return JsonResponse(data_to_send)
