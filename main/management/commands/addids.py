@@ -18,7 +18,7 @@ class Command(BaseCommand):
         number = db.samples.count_documents({})
         self.stdout.write(f"{str(number)} samples found.")
 
-        new_values = { "$set": { "owning_org": "SSI" } }
-        # db.samples.update_many({}, )
+        new_values = { "$set": { "owning_org": options['owning_org'] } }
+        db.samples.update_many({}, new_values)
 
         self.stdout.write(self.style.SUCCESS('Success!'))
