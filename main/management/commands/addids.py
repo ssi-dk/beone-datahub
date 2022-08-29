@@ -20,6 +20,6 @@ class Command(BaseCommand):
 
         new_values = { "$set": { "owning_org": options['owning_org'] } }
         # db.samples.update_many({}, new_values)
-        db.samples.update_many({}, [{'$set': {'foo_new': '$owning_org'}}], False)
+        db.samples.update_many({}, [{'$set': {'id': '$sample.summary.sample'}}], False)
 
         self.stdout.write(self.style.SUCCESS('Success!'))
