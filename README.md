@@ -32,6 +32,11 @@ There is a small test dataset included in the repository. It can be installed wi
 
 If you installed Compass, you can use it to verify that you now have a database named 'beone' with a collection named 'samples' which contains the samples from the test dataset.
 
+## Add unique index on sample name field
+The database that contains the BeONE data must have a unique index on the sample name field. You can create the index with this command using the 'mongo' shell provided by MongoDB:
+
+    db.samples.createIndex( { "sample.summary.sample": 1 }, { unique: true } )
+
 # Installation of the web app
 If you haven't done so already, check out this repository on your computer.
 
