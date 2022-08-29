@@ -16,12 +16,10 @@ class Command(BaseCommand):
         connection = pymongo.MongoClient(settings.MONGO_CONNECTION)
         db = connection.get_database()
         number = db.samples.count_documents({})
-        self.stdout.write(f"{str(number)} samples found.")
+        self.stdout.write(f'{str(number)} samples found.')
 
-        new_values = { "$set": { "owning_org": options['owning_org'] } }
-        # db.samples.update_many({}, new_values)
         db.samples.update_many({}, [
-                { "$set": { "owning_org": options['owning_org'] } },
+                { '$set': { 'owning_org': options['owning_org'] } },
                 {'$set': {'id': '$sample.summary.sample'}}
             ], False)
 
