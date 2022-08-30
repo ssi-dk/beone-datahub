@@ -59,7 +59,7 @@ class API:
     def get_samples_from_keys(
         self,
         key_list:list[dict],
-        fields: list = ['name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
+        fields: list = ['org', 'name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
     ):
 
         pipeline = list()

@@ -140,7 +140,8 @@ MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone'
 }"""
 
 MONGO_FIELD_MAPPING = {
-    "name": "sample.summary.sample",
+    "org": "org",
+    "name": "name",
     "species": "sample.summary.species",
     "country_root": "sample.metadata.Country",
     "source_type_root": "sample.metadata.Source_Type",
