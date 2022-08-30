@@ -62,6 +62,10 @@ class API:
         fields: list = ['org', 'name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
     ):
 
+        # We cannot search on an empty key_list.
+        if len(key_list) == 0:
+            return list()
+
         pipeline = list()
 
         # Match
