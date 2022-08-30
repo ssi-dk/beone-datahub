@@ -77,7 +77,7 @@
     <div class="row">
       {% if edit %}
       <div class="overview-firstcol">
-        <input id="{{ sample.id }}" type="checkbox" {% if sample.in_dataset %} checked {%endif %}/>
+        <input id="{{ sample.org }}.{{sample.name}}" type="checkbox" {% if sample.in_dataset %} checked {%endif %}/>
       </div>
       {% endif %}
       <div class="overview-datacolumn">
