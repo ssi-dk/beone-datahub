@@ -35,9 +35,7 @@ def redirect_root(request):
 
 @login_required
 def sample_list(request):
-    samples = list(api.get_samples())
-    for sample in samples:
-        sample['id'] = str(sample['_id'])
+    samples = list(api.get_samples())  # list()?
     return render(request, 'main/sample_list.html',{
         'samples': samples,
         })

@@ -20,7 +20,7 @@ class API:
         self,
         mongo_ids = None,
         species_name: str = None,
-        fields: list = ['name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
+        fields: list = ['org', 'name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
     ):
         pipeline = list()
 
