@@ -123,7 +123,7 @@ def add_remove_sample(request):
         "username": document.getElementById('username').innerText,
         "datasetName": document.getElementById("dataset_name").innerText,
         "datasetKey": document.getElementById("dataset_key").innerText,
-        "mongoId": event.target.id,
+        "mongoId": {"org": <org>, "name": <name>}
         "action": 'add' | 'remove'
     """
     data_from_post = json.load(request)
@@ -136,9 +136,10 @@ def add_remove_sample(request):
         }
     else:
         mongo_id = data_from_post['mongoId']
+        print(mongo_id)
         if data_from_post['action'] == 'add':
             try:
-                dataset.mongo_ids.append(mongo_id)
+                dataset.mongo_keys.append(mongo_id)
                 dataset.save()
                 data_to_send = {
                     'status': 'OK',
@@ -151,7 +152,7 @@ def add_remove_sample(request):
             }
         if data_from_post['action'] == 'remove':
             try:
-                dataset.mongo_ids.remove(data_from_post['mongoId'])
+                dataset.mongo_keys.remove(data_from_post['mongoId'])
                 dataset.save()
                 data_to_send = {
                     'status': 'OK',
