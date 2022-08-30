@@ -65,10 +65,8 @@ class API:
         pipeline = list()
 
         # Match
-        for key_pair in key_list:
-            print(key_pair)
-            pipeline.append(
-                {'$match': {'org': key_pair['org'], 'name': key_pair['name']}}
+        pipeline.append(
+                {'$match': {'$or': key_list}}
         )
 
         # Projection
