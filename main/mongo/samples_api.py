@@ -56,6 +56,41 @@ class API:
         return self.db.samples.aggregate(pipeline)
 
 
+    def get_samples_from_keys(
+        self,
+        key_list:list[tuple],
+        fields: list = ['name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
+    ):
+
+        pipeline = list()
+
+        # Match
+        for key_pair in key_list:
+            print(key_pair)
+            pipeline.append(
+                {'$match': {'org': key_pair['org'], 'name': key_pair['name']}}
+        )
+
+        # Projection
+        projection = dict()
+        for field in fields:
+            projection[field] = f"${FIELD_MAPPING[field]}"
+        
+        # Get more convenient access to some deeply nested fields
+        if 'country_root' in projection:
+            projection['country'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['country_root'], 0 ] }, 0 ] }
+        if 'source_type_root' in projection:
+            projection['source_type'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['source_type_root'], 0 ] }, 1 ] }
+        
+        pipeline.append(
+            {'$project': projection
+            }
+        )
+
+        return self.db.samples.aggregate(pipeline)
+
+
+
 # Everything below this line is code inherited from Martin and Holger and may or may not work in this context.
 
 

@@ -76,10 +76,8 @@ def dataset_list(request):
 @login_required
 def view_dataset(request, dataset_key:int):
     dataset = DataSet.objects.get(pk=dataset_key)
-    species_name = get_species_name(dataset.species)   
-    samples = list(api.get_samples(mongo_ids=dataset.mongo_ids))
-    for sample in samples:
-        sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
+    species_name = get_species_name(dataset.species)
+    samples = list(api.get_samples_from_keys(dataset.mongo_keys))
 
     return render(request, 'main/sample_list.html',{
         'species_name': species_name,
