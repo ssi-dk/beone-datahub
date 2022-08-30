@@ -8,10 +8,10 @@ class Command(BaseCommand):
     help = "Add root level id's to samples in MongoDB"
 
     def add_arguments(self, parser):
-        parser.add_argument('owning_org', type=str)
+        parser.add_argument('org', type=str)
 
     def handle(self, *args, **options):
-        print(options['owning_org'])
+        print(options['org'])
 
         connection = pymongo.MongoClient(settings.MONGO_CONNECTION)
         db = connection.get_database()
@@ -19,8 +19,8 @@ class Command(BaseCommand):
         self.stdout.write(f'{str(number)} samples found.')
 
         db.samples.update_many({}, [
-                { '$set': { 'owning_org': options['owning_org'] } },
-                {'$set': {'id': '$sample.summary.sample'}}
+                { '$set': { 'org': options['org'] } },
+                {'$set': {'name': '$sample.summary.sample'}}
             ], False)
 
         self.stdout.write(self.style.SUCCESS('Success!'))
