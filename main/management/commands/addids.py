@@ -1,3 +1,4 @@
+from enum import unique
 from lib2to3.pytree import Base
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
@@ -22,5 +23,7 @@ class Command(BaseCommand):
                 { '$set': { 'org': options['org'] } },
                 {'$set': {'name': '$sample.summary.sample'}}
             ], False)
+        
+        db.samples.create_index([('org', 1), ('name', 1)], unique=True)
 
         self.stdout.write(self.style.SUCCESS('Success!'))
