@@ -104,9 +104,9 @@ def edit_dataset(request, dataset_key:int):
     form = DeleteDatasetForm()
     samples = list(api.get_samples(species_name=species_name))
     for sample in samples:
-        sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
-        if dataset.mongo_ids:
-            sample['in_dataset'] = sample['id'] in dataset.mongo_ids
+        for key_pair in dataset.mongo_keys:
+            if key_pair['org'] == sample['org'] and key_pair['name'] == sample['name']:
+                sample['in_dataset'] = True
 
     return render(request, 'main/sample_list.html',{
         'species_name': species_name,
