@@ -64,7 +64,7 @@
       {{ dataset.description }}
     </div>
     <div class='overview-datacolumn'>
-      {{ dataset.mongo_ids|length }}
+      {{ dataset.mongo_keys|length }}
     </div>
     <div class='overview-datacolumn'>
       <span class="rspace"><a href="{% url 'view_dataset' dataset.pk %}">List</a></span>

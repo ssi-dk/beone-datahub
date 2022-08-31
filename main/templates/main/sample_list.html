@@ -30,7 +30,7 @@
     {% else  %}
     <div class="overview-header overview-firstcol-border">
     {% endif %}
-    <div class="overview-header-inner-bold">Mongo ID</div>
+    <div class="overview-header-inner-bold">Organization</div>
       <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
@@ -77,11 +77,11 @@
     <div class="row">
       {% if edit %}
       <div class="overview-firstcol">
-        <input id="{{ sample.id }}" type="checkbox" {% if sample.in_dataset %} checked {%endif %}/>
+        <input id="{{ sample.org }}.{{sample.name}}" type="checkbox" {% if sample.in_dataset %} checked {%endif %}/>
       </div>
       {% endif %}
       <div class="overview-datacolumn">
-        {{ sample.id }}
+        {{ sample.org }}
       </div>
       <div class="overview-datacolumn">
         {{ sample.name }}

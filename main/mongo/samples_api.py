@@ -20,7 +20,7 @@ class API:
         self,
         mongo_ids = None,
         species_name: str = None,
-        fields: list = ['name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
+        fields: list = ['org', 'name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
     ):
         pipeline = list()
 
@@ -54,6 +54,43 @@ class API:
         )
 
         return self.db.samples.aggregate(pipeline)
+
+
+    def get_samples_from_keys(
+        self,
+        key_list:list[dict],
+        fields: list = ['org', 'name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
+    ):
+
+        # We cannot search on an empty key_list.
+        if len(key_list) == 0:
+            return list()
+
+        pipeline = list()
+
+        # Match
+        pipeline.append(
+                {'$match': {'$or': key_list}}
+        )
+
+        # Projection
+        projection = dict()
+        for field in fields:
+            projection[field] = f"${FIELD_MAPPING[field]}"
+        
+        # Get more convenient access to some deeply nested fields
+        if 'country_root' in projection:
+            projection['country'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['country_root'], 0 ] }, 0 ] }
+        if 'source_type_root' in projection:
+            projection['source_type'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['source_type_root'], 0 ] }, 1 ] }
+        
+        pipeline.append(
+            {'$project': projection
+            }
+        )
+
+        return self.db.samples.aggregate(pipeline)
+
 
 
 # Everything below this line is code inherited from Martin and Holger and may or may not work in this context.

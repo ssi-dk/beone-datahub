@@ -35,9 +35,7 @@ def redirect_root(request):
 
 @login_required
 def sample_list(request):
-    samples = list(api.get_samples())
-    for sample in samples:
-        sample['id'] = str(sample['_id'])
+    samples = list(api.get_samples())  # list()?
     return render(request, 'main/sample_list.html',{
         'samples': samples,
         })
@@ -76,10 +74,8 @@ def dataset_list(request):
 @login_required
 def view_dataset(request, dataset_key:int):
     dataset = DataSet.objects.get(pk=dataset_key)
-    species_name = get_species_name(dataset.species)   
-    samples = list(api.get_samples(mongo_ids=dataset.mongo_ids))
-    for sample in samples:
-        sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
+    species_name = get_species_name(dataset.species)
+    samples = api.get_samples_from_keys(dataset.mongo_keys)
 
     return render(request, 'main/sample_list.html',{
         'species_name': species_name,
@@ -108,9 +104,9 @@ def edit_dataset(request, dataset_key:int):
     form = DeleteDatasetForm()
     samples = list(api.get_samples(species_name=species_name))
     for sample in samples:
-        sample['id'] = str(sample['_id'])  # Todo: maybe move to API layer
-        if dataset.mongo_ids:
-            sample['in_dataset'] = sample['id'] in dataset.mongo_ids
+        for key_pair in dataset.mongo_keys:
+            if key_pair['org'] == sample['org'] and key_pair['name'] == sample['name']:
+                sample['in_dataset'] = True
 
     return render(request, 'main/sample_list.html',{
         'species_name': species_name,
@@ -127,7 +123,7 @@ def add_remove_sample(request):
         "username": document.getElementById('username').innerText,
         "datasetName": document.getElementById("dataset_name").innerText,
         "datasetKey": document.getElementById("dataset_key").innerText,
-        "mongoId": event.target.id,
+        "mongoId": {"org": <org>, "name": <name>}
         "action": 'add' | 'remove'
     """
     data_from_post = json.load(request)
@@ -140,9 +136,10 @@ def add_remove_sample(request):
         }
     else:
         mongo_id = data_from_post['mongoId']
+        print(mongo_id)
         if data_from_post['action'] == 'add':
             try:
-                dataset.mongo_ids.append(mongo_id)
+                dataset.mongo_keys.append(mongo_id)
                 dataset.save()
                 data_to_send = {
                     'status': 'OK',
@@ -155,7 +152,7 @@ def add_remove_sample(request):
             }
         if data_from_post['action'] == 'remove':
             try:
-                dataset.mongo_ids.remove(data_from_post['mongoId'])
+                dataset.mongo_keys.remove(data_from_post['mongoId'])
                 dataset.save()
                 data_to_send = {
                     'status': 'OK',

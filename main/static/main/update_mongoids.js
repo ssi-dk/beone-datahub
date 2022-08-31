@@ -22,11 +22,14 @@ document.getElementById('sample_list').addEventListener('click', addOrRemove);
 
 function addOrRemove(event) {
     if (event.target.type === 'checkbox') {
+        let strParts = event.target.id.split('.')
+        let mongoId = {'org': strParts[0], 'name': strParts[1]}
+        console.log(mongoId)
         let dataToSend = {
             "username": document.getElementById('username').innerText,
             "datasetName": document.getElementById("dataset_name").innerText,
             "datasetKey": document.getElementById("dataset_key").innerText,
-            "mongoId": event.target.id
+            "mongoId": mongoId
         }
         if (event.target.checked) {
             dataToSend["action"] = 'add'
