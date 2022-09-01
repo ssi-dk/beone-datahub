@@ -39,7 +39,7 @@
         {{ job.dataset }}
       </div>
       <div class="overview-datacolumn">
-        {{ job.status }}
+        {{ job.get_status_display }}
       </div>
       <div class="overview-datacolumn">
         {{ job.started_at }}
