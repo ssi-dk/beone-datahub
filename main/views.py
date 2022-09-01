@@ -28,7 +28,7 @@ def get_species_name(species: str=None):
 
 def redirect_root(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/datasets/')
+        return HttpResponseRedirect('/sample_list/')
     else:
         return HttpResponseRedirect('/login/')
     
