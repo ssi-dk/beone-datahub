@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from django.contrib import admin
-from .models import DataSet
+from main.models import DataSet, RTJob
 
 admin.site.register(DataSet)
+admin.site.register(RTJob)
