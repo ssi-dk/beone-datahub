@@ -5,76 +5,55 @@
     <h2>ReporTree Jobs</h2>
   <div class="overview-row">
     <div class="overview-header overview-firstcol-border">
-    <div class="overview-header-inner-bold">Organization</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
+    <div class="overview-header-inner-bold">Owner</div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">Name</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
+      <div class="overview-header-inner-bold">Dataset</div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">Species</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
+      <div class="overview-header-inner-bold">Status</div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">Country</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
+        <div class="overview-header-inner-bold">Started At</div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">Source</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
+        <div class="overview-header-inner-bold">Finished At</div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">Year</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
+      <div class="overview-header-inner-bold">Path</div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">ST</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
+        <div class="overview-header-inner-bold">Newick</div>
+    </div>
+    <div class="overview-header">
+        <div class="overview-header-inner-bold">Actions</div>
     </div>
   </div>
-  <div id="sample_list">
-  {% for sample in samples %}
+  <div>
+  {% for job in rt_jobs %}
     <div class="row">
-      {% if edit %}
-      <div class="overview-firstcol">
-        <input id="{{ sample.org }}.{{sample.name}}" type="checkbox" {% if sample.in_dataset %} checked {%endif %}/>
-      </div>
-      {% endif %}
       <div class="overview-datacolumn">
-        {{ sample.org }}
+        {{ job.owner }}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.name }}
+        {{ job.dataset }}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.species }}
+        {{ job.status }}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.country.termName }}
+        {{ job.started_at }}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.source_type.termName }}
+        {{ job.finished_at }}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.year }}
+        {{ job.path }}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.sequence_type }}
+        {{ job.newick }}
+      </div>
+      <div class="overview-datacolumn">
       </div>
     </div>
   {% endfor %}
