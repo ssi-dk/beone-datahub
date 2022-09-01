@@ -29,5 +29,5 @@ class RTJob(models.Model):
    owner = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
    dataset = models.ForeignKey(DataSet, models.PROTECT)
    status = models.CharField(max_length=12, choices=STATUSES, default='INITIALIZING')
-   data_path = models.CharField(max_length=100, blank=True, null=True)
+   path = models.CharField(max_length=100, blank=True, null=True)
    newick = models.TextField(blank=True, null=True)
