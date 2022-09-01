@@ -15,3 +15,17 @@ class DataSet(models.Model):
 
    def __str__(self):
       return self.name
+
+
+class RTJob(models.Model):
+   STATUSES = [
+        ('INITIALIZING', 'Initializing'),
+        ('READY', 'Ready'),
+        ('RUNNING', 'Running'),
+        ('SUCCEEDED', 'Succeeded'),
+        ('FAILED', 'Failed'),
+        ('INVALID', 'Invalid')
+   ]
+   owner = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
+   dataset = models.ForeignKey(DataSet, models.PROTECT)
+   status = models.CharField(max_length=12, choices=STATUSES, default='INITIALIZING')
