@@ -10,9 +10,9 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 
-from .mongo.samples_api import API
-from .models import DataSet
-from .forms import NewDatasetForm, DeleteDatasetForm
+from main.mongo.samples_api import API
+from main.models import DataSet, RTJob
+from main.forms import NewDatasetForm, DeleteDatasetForm
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
 
@@ -35,7 +35,7 @@ def redirect_root(request):
 
 @login_required
 def sample_list(request):
-    samples = list(api.get_samples())  # list()?
+    samples = api.get_samples()
     return render(request, 'main/sample_list.html',{
         'samples': samples,
         })
@@ -164,3 +164,11 @@ def add_remove_sample(request):
                 'message': str(e)
             }
     return JsonResponse(data_to_send)
+
+        
+@login_required
+def rt_jobs(request):
+    rt_jobs = RTJob.objects.all()
+    return render(request, 'main/rt_jobs.html',{
+        'rt_jobs': rt_jobs,
+        })
