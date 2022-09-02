@@ -33,3 +33,7 @@ class RTJob(models.Model):
    ended_at = models.DateTimeField(blank=True, null=True)
    path = models.CharField(max_length=100, blank=True, null=True)
    newick = models.TextField(blank=True, null=True)
+
+   def initialize(self):
+      self.status = 'READY'
+      return self.status
