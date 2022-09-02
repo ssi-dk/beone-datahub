@@ -72,6 +72,9 @@
         {% else %}
           <span class="inactive">Delete</span>
         {% endif %}
+        {% if dataset %}
+          <a href=".">Run</a>
+        {% endif %}
       </div>
     </div>
   {% endfor %}
