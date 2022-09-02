@@ -196,9 +196,14 @@ def delete_rt_job(request, rt_job_key:str, dataset_page:bool=False):
 @login_required
 def run_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
-    print(f"Running ReporTree job #{rt_job.pk} on dataset {rt_job.dataset.name}...")
+    dataset = rt_job.dataset
+    print(f"Running ReporTree job #{rt_job.pk} on dataset {dataset.name}...")
     print(f"Job status is {rt_job.status}.")
     if rt_job.status == 'NEW':
+        print("Mongo keys:")
+        print(dataset.mongo_keys)
+        allele_profiles = api.get_allele_profiles(dataset.mongo_keys)
+        print(allele_profiles)
         rt_job.initialize()
     print(f"Job status is now {rt_job.status}.")
-    return HttpResponseRedirect(f'/rt_jobs/for_dataset/{rt_job.dataset.pk}')
+    return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
