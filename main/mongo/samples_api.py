@@ -92,31 +92,27 @@ class API:
         return self.db.samples.aggregate(pipeline)
 
 
+    def get_allele_profiles(self, sample_id_list: list = None, schema_name: str = 'enterobase_senterica_cgmlst'):
+        pipeline = [
+            {'$match': {
+                "$and": [
+                    {'categories.cgmlst.summary.allele_qc': 'PASS'},
+                    {'categories.cgmlst.report.chewiesnake.run_metadata.database_information.scheme_name': schema_name}
+                ]}
+            },
+            {'$project': {'_id'           : '$_id',
+                        'name'          : '$name',
+                        'display_name'  : '$display_name',
+                        'hashid'        : '$categories.cgmlst.summary.hashid',
+                        'allele_profile': '$categories.cgmlst.report.chewiesnake.allele_profile'}
+            }
+        ]
+        if sample_id_list is not None:
+            pipeline[0]['$match']['$and'].insert(0, {'_id': {'$in': sample_id_list}})
+        return list(self.db.samples.aggregate(pipeline))
+
 
 # Everything below this line is code inherited from Martin and Holger and may or may not work in this context.
-
-
-def get_allele_profiles(sample_id_list: list = None, schema_name: str = 'enterobase_senterica_cgmlst', connection_name = "default"):
-    connection = get_connection(connection_name)
-    db = connection.get_database()
-    pipeline = [
-        {'$match': {
-            "$and": [
-                {'categories.cgmlst.summary.allele_qc': 'PASS'},
-                {'categories.cgmlst.report.chewiesnake.run_metadata.database_information.scheme_name': schema_name}
-            ]}
-        },
-        {'$project': {'_id'           : '$_id',
-                      'name'          : '$name',
-                      'display_name'  : '$display_name',
-                      'hashid'        : '$categories.cgmlst.summary.hashid',
-                      'allele_profile': '$categories.cgmlst.report.chewiesnake.allele_profile'}
-         }
-    ]
-    if sample_id_list is not None:
-        pipeline[0]['$match']['$and'].insert(0, {'_id': {'$in': sample_id_list}})
-    return list(db.samples.aggregate(pipeline))
-
 
 def get_samples(sample_id_list, projection = None, connection_name = "default"):
     connection = get_connection(connection_name)
