@@ -170,12 +170,10 @@ def add_remove_sample(request):
 def rt_jobs(request, dataset_key:str=None):
     if dataset_key is not None:
         dataset = DataSet.objects.get(pk=dataset_key)
-        rt_jobs = RTJob.objects.filter(dataset=dataset_key)
-        if len(rt_jobs) == 0:
+        if request.method == 'POST':
             rt_job = RTJob(owner=request.user, dataset=dataset)
             rt_job.save()
-            rt_jobs = RTJob.objects.filter(dataset=dataset_key)
-         
+        rt_jobs = RTJob.objects.filter(dataset=dataset_key) 
     else:
         rt_jobs = RTJob.objects.all()
         dataset = None
