@@ -181,3 +181,11 @@ def rt_jobs(request, dataset_key:str=None):
         'rt_jobs': rt_jobs,
         'dataset': dataset
         })
+
+
+@login_required
+def delete_rt_job(request, rt_job_key:str):
+    rt_job = RTJob.objects.get(pk=rt_job_key)
+    dataset = rt_job.dataset
+    rt_job.delete()
+    return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')

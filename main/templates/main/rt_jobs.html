@@ -61,6 +61,7 @@
         {{ job.newick }}
       </div>
       <div class="overview-datacolumn">
+        <a href={% url 'delete_rt_job' job.pk %}>Delete</a>
       </div>
     </div>
   {% endfor %}
