@@ -19,7 +19,7 @@ class DataSet(models.Model):
 
 class RTJob(models.Model):
    STATUSES = [
-        ('INITIALIZING', 'Initializing'),
+        ('NEW', 'New'),
         ('READY', 'Ready'),
         ('RUNNING', 'Running'),
         ('SUCCEEDED', 'Succeeded'),
@@ -28,7 +28,7 @@ class RTJob(models.Model):
    ]
    owner = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
    dataset = models.ForeignKey(DataSet, models.PROTECT)
-   status = models.CharField(max_length=12, choices=STATUSES, default='INITIALIZING')
+   status = models.CharField(max_length=12, choices=STATUSES, default='NEW')
    started_at = models.DateTimeField(blank=True, null=True)
    ended_at = models.DateTimeField(blank=True, null=True)
    path = models.CharField(max_length=100, blank=True, null=True)
