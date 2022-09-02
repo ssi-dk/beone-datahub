@@ -31,5 +31,5 @@ urlpatterns = [
     path('datasets/add_remove_sample/', views.add_remove_sample),
     path('dashboard/', views.sample_list, name='dashboard'),
     path('rt_jobs/', views.rt_jobs, name='rt_jobs'),
-    path('rt_jobs/<int:dataset_key>/', views.rt_jobs, name='rt_jobs_for_dataset'),
+    path('rt_jobs/for_dataset/<int:dataset_key>/', views.rt_jobs, name='rt_jobs_for_dataset'),
 ]
