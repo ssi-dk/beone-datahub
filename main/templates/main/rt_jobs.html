@@ -2,6 +2,13 @@
 
 {% block content%}
 <div class="pane">
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Initialize new job">
+  </form>
+</div>
+<div class="pane">
     <h2>ReporTree jobs{% if dataset %} for dataset {{dataset.name}}{%endif%}</h2>
   <div class="overview-row">
     <div class="overview-header overview-firstcol-border">
