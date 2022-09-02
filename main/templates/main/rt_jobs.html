@@ -2,7 +2,7 @@
 
 {% block content%}
 <div class="pane">
-    <h2>ReporTree Jobs</h2>
+    <h2>ReporTree jobs{% if dataset %} for dataset {{dataset.name}}{%endif%}</h2>
   <div class="overview-row">
     <div class="overview-header overview-firstcol-border">
     <div class="overview-header-inner-bold">Owner</div>

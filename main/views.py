@@ -167,8 +167,14 @@ def add_remove_sample(request):
 
         
 @login_required
-def rt_jobs(request):
-    rt_jobs = RTJob.objects.all()
+def rt_jobs(request, dataset_key:str=None):
+    if dataset_key is not None:
+         rt_jobs = RTJob.objects.filter(dataset=dataset_key)
+         dataset = DataSet.objects.get(pk=dataset_key)
+    else:
+        rt_jobs = RTJob.objects.all()
+        dataset = None
     return render(request, 'main/rt_jobs.html',{
         'rt_jobs': rt_jobs,
+        'dataset': dataset
         })
