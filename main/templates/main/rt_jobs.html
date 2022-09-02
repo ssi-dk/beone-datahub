@@ -63,7 +63,11 @@
         {{ job.newick }}
       </div>
       <div class="overview-datacolumn">
-        <a href={% url 'delete_rt_job' job.pk %}>Delete</a>
+        {% if job.owner == request.user %}
+          <a href={% url 'delete_rt_job' job.pk %}>Delete</a>
+        {% else %}
+          <span class="inactive">Delete</span>
+        {% endif %}
       </div>
     </div>
   {% endfor %}
