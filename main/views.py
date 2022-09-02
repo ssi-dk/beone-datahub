@@ -197,4 +197,5 @@ def delete_rt_job(request, rt_job_key:str, dataset_page:bool=False):
 def run_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     dataset = rt_job.dataset
+    print(f"Running ReporTree job #{rt_job.pk} on dataset {dataset.name}...")
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
