@@ -64,7 +64,11 @@
       </div>
       <div class="overview-datacolumn">
         {% if job.owner == request.user %}
-          <a href={% url 'delete_rt_job' job.pk %}>Delete</a>
+          {% if dataset %}
+            <a href={% url 'delete_rt_job_for_dataset' job.pk %}>Delete</a>
+          {% else %}
+            <a href={% url 'delete_rt_job' job.pk %}>Delete</a>
+          {% endif %}
         {% else %}
           <span class="inactive">Delete</span>
         {% endif %}
