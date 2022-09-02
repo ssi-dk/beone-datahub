@@ -172,7 +172,7 @@ def rt_jobs(request, dataset_key:str=None):
         dataset = DataSet.objects.get(pk=dataset_key)
         rt_jobs = RTJob.objects.filter(dataset=dataset_key)
         if len(rt_jobs) == 0:
-            rt_job = RTJob(owner=request.user, dataset=dataset)
+            rt_job = RTJob(dataset=dataset)
             rt_job.save()
             rt_jobs = RTJob.objects.filter(dataset=dataset_key)
          
