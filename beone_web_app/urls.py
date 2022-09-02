@@ -32,7 +32,7 @@ urlpatterns = [
     path('dashboard/', views.sample_list, name='dashboard'),
     path('rt_jobs/', views.rt_jobs, name='rt_jobs'),
     path('rt_jobs/for_dataset/<int:dataset_key>/', views.rt_jobs, name='rt_jobs_for_dataset'),
-    path('rt_jobs/<int:rt_job_key>/delete/', views.delete_rt_job, name='delete_rt_job'),
-    path('rt_jobs/for_dataset/<int:rt_job_key>/delete', views.delete_rt_job_for_dataset, name='delete_rt_job_for_dataset'),
+    path('rt_jobs/<int:rt_job_key>/delete/', views.delete_rt_job, {'dataset_page': False}, name='delete_rt_job'),
+    path('rt_jobs/<int:rt_job_key>/delete/', views.delete_rt_job, {'dataset_page': True}, name='delete_rt_job_for_dataset'),
     path('rt_jobs/<int:rt_job_key>/run/', views.run_rt_job, name='run_rt_job'),
 ]
