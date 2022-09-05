@@ -1,4 +1,4 @@
-from urllib import request
+import pathlib
 import json
 
 from django.shortcuts import render, redirect
@@ -199,6 +199,16 @@ def run_rt_job(request, rt_job_key:str):
     dataset = rt_job.dataset
     print(f"Running ReporTree job #{rt_job.pk} on dataset {dataset.name}...")
     if rt_job.status == 'NEW':
+        # Create a folder for the run
+        root_folder = pathlib.Path('/rt_runs')
+        if not root_folder.exists():
+            root_folder.mkdir()
+        job_folder = pathlib.Path(root_folder, str(rt_job_key))
+        if job_folder.exists():
+            print(f"Job folder {job_folder} already exists! Reusing it.")
+        else:
+            job_folder.mkdir()
+            print(f"Created job folder {job_folder}.")
         samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys,
             fields={'allele_profile'})
         # Get allele profile for first sample so we can define TSV header
@@ -210,6 +220,6 @@ def run_rt_job(request, rt_job_key:str):
             if locus.endswith('.fasta'):
                 locus = locus[:-6]
             tsv_headers.append(locus)
-        print(tsv_headers)
+        # print(tsv_headers)
         rt_job.initialize()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
