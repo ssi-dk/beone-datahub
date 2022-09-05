@@ -198,12 +198,11 @@ def run_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     dataset = rt_job.dataset
     print(f"Running ReporTree job #{rt_job.pk} on dataset {dataset.name}...")
-    print(f"Job status is {rt_job.status}.")
     if rt_job.status == 'NEW':
-        print("Mongo keys:")
-        print(dataset.mongo_keys)
-        allele_profiles = api.get_allele_profiles(dataset.mongo_keys)
-        print(allele_profiles)
+        samples = api.get_samples_from_keys(dataset.mongo_keys,
+            fields=['org', 'name', 'allele_profile'])
+        print(samples)
+        for sample in samples:
+            print(sample)
         rt_job.initialize()
-    print(f"Job status is now {rt_job.status}.")
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
