@@ -59,12 +59,16 @@ class API:
     def get_samples_from_keys(
         self,
         key_list:list[dict],
-        fields: list = ['org', 'name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
+        fields: set = {'species', 'year', 'sequence_type', 'country_root', 'source_type_root'}
     ):
 
         # We cannot search on an empty key_list.
         if len(key_list) == 0:
-            return list()
+            return [list(), list()]
+
+        # Ensure we always have these two fields in the set
+        fields.add('org')
+        fields.add('name')
 
         pipeline = list()
 
@@ -89,7 +93,21 @@ class API:
             }
         )
 
-        return self.db.samples.aggregate(pipeline)
+        command_cursor = self.db.samples.aggregate(pipeline)
+
+        # Check if there are samples in key_list that was not found in MongoDB.
+        unmatched = list()
+        for key_pair in key_list:
+            match = False
+            for mongo_doc in command_cursor:
+                if mongo_doc['org'] == key_pair['org'] and mongo_doc['name'] == key_pair['name']:
+                    match = True
+                    break
+            if match == False:
+                unmatched.append(key_pair)
+
+        # MongoDB CommandCursor cannot rewind, so we make a new one
+        return (self.db.samples.aggregate(pipeline), unmatched)
 
 
 # Everything below this line is code inherited from Martin and Holger and may or may not work in this context.

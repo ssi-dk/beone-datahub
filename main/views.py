@@ -75,7 +75,7 @@ def dataset_list(request):
 def view_dataset(request, dataset_key:int):
     dataset = DataSet.objects.get(pk=dataset_key)
     species_name = get_species_name(dataset.species)
-    samples = api.get_samples_from_keys(dataset.mongo_keys)
+    samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys)
 
     return render(request, 'main/sample_list.html',{
         'species_name': species_name,
@@ -199,10 +199,13 @@ def run_rt_job(request, rt_job_key:str):
     dataset = rt_job.dataset
     print(f"Running ReporTree job #{rt_job.pk} on dataset {dataset.name}...")
     if rt_job.status == 'NEW':
-        samples = api.get_samples_from_keys(dataset.mongo_keys,
-            fields=['org', 'name', 'allele_profile'])
+        samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys,
+            fields={'year'})  # Just for now
+        print("Samples:")
         print(samples)
-        for sample in samples:
-            print(sample)
+        print("Unmatched:")
+        print(unmatched)
+        """for sample in samples:
+            print(sample)"""
         rt_job.initialize()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
