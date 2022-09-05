@@ -220,6 +220,8 @@ def run_rt_job(request, rt_job_key:str):
             if locus.endswith('.fasta'):
                 locus = locus[:-6]
             tsv_headers.append(locus)
+        with open(pathlib.Path(job_folder, 'allele_profiles.tsv'), 'w') as tsv_file:
+            tsv_file.write('\t'.join(tsv_headers))
         # print(tsv_headers)
         rt_job.initialize()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
