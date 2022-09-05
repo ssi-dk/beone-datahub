@@ -200,12 +200,12 @@ def run_rt_job(request, rt_job_key:str):
     print(f"Running ReporTree job #{rt_job.pk} on dataset {dataset.name}...")
     if rt_job.status == 'NEW':
         samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys,
-            fields={'year'})  # Just for now
+            fields={'allele_profile'})
         print("Samples:")
         print(samples)
         print("Unmatched:")
         print(unmatched)
-        """for sample in samples:
-            print(sample)"""
+        for sample in samples:
+            print(sample)
         rt_job.initialize()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
