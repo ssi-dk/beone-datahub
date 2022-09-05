@@ -201,11 +201,15 @@ def run_rt_job(request, rt_job_key:str):
     if rt_job.status == 'NEW':
         samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys,
             fields={'allele_profile'})
-        print("Samples:")
-        print(samples)
-        print("Unmatched:")
-        print(unmatched)
-        for sample in samples:
-            print(sample)
+        # Get allele profile for first sample so we can define TSV header
+        tsv_headers = list()
+        first_sample = next(samples)
+        first_allele_profile = first_sample['allele_profile']
+        for allele in first_allele_profile:
+            locus = allele['locus']
+            if locus.endswith('.fasta'):
+                locus = locus[:-6]
+            tsv_headers.append(locus)
+        print(tsv_headers)
         rt_job.initialize()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
