@@ -76,6 +76,8 @@ def view_dataset(request, dataset_key:int):
     dataset = DataSet.objects.get(pk=dataset_key)
     species_name = get_species_name(dataset.species)
     samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys)
+    if len(unmatched) != 0:
+        messages.add_message(request, messages.WARNING, f'Some keys in the dataset are unmatched: {unmatched}')
 
     return render(request, 'main/sample_list.html',{
         'species_name': species_name,
@@ -212,41 +214,43 @@ def run_rt_job(request, rt_job_key:str):
     elif rt_job.status not in ['NEW', 'READY']:
         messages.add_message(request, messages.ERROR, f'You tried to run a ReporTree job that has alreay been run: {dataset.name}.')
     else:
-        # Create a folder for the run
-        root_folder = pathlib.Path('/rt_runs')
-        if not root_folder.exists():
-            root_folder.mkdir()
-        job_folder = pathlib.Path(root_folder, str(rt_job_key))
-        if job_folder.exists():
-            print(f"Job folder {job_folder} already exists! Reusing it.")
+        samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields={'allele_profile'})
+        if len(unmatched) != 0:
+            messages.add_message(request, messages.ERROR, f'Some keys in the dataset are unmatched: {unmatched}. Please fix before running job.')
         else:
-            job_folder.mkdir()
-            print(f"Created job folder {job_folder}.")
-        samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys,
-            fields={'allele_profile'})
-        
-        with open(pathlib.Path(job_folder, 'allele_profiles.tsv'), 'w') as tsv_file:
-        
-            # Get allele profile for first sample so we can define TSV header
-            header_list = list()
-            first_sample = next(samples)
-            first_allele_profile = first_sample['allele_profile']
-            for allele in first_allele_profile:
-                locus = allele['locus']
-                if locus.endswith('.fasta'):
-                    locus = locus[:-6]
-                header_list.append(locus)
-            tsv_file.write('\t'.join(header_list))
-            tsv_file.write('\n')
+            # Create a folder for the run
+            root_folder = pathlib.Path('/rt_runs')
+            if not root_folder.exists():
+                root_folder.mkdir()
+            job_folder = pathlib.Path(root_folder, str(rt_job_key))
+            if job_folder.exists():
+                print(f"Job folder {job_folder} already exists! Reusing it.")
+            else:
+                job_folder.mkdir()
+                print(f"Created job folder {job_folder}.")
+            
+            with open(pathlib.Path(job_folder, 'allele_profiles.tsv'), 'w') as tsv_file:
+            
+                # Get allele profile for first sample so we can define TSV header
+                header_list = list()
+                first_sample = next(samples)
+                first_allele_profile = first_sample['allele_profile']
+                for allele in first_allele_profile:
+                    locus = allele['locus']
+                    if locus.endswith('.fasta'):
+                        locus = locus[:-6]
+                    header_list.append(locus)
+                tsv_file.write('\t'.join(header_list))
+                tsv_file.write('\n')
 
-            # Write first allele profile to file
-            add_tsv_line(first_allele_profile, tsv_file)
+                # Write first allele profile to file
+                add_tsv_line(first_allele_profile, tsv_file)
 
-            # Write subsequent allele profiles to file
-            for sample in samples:
-                allele_profile = sample['allele_profile']
-                add_tsv_line(allele_profile, tsv_file)
-        
-            # Set new status on job
-            rt_job.initialize()
+                # Write subsequent allele profiles to file
+                for sample in samples:
+                    allele_profile = sample['allele_profile']
+                    add_tsv_line(allele_profile, tsv_file)
+            
+                # Set new status on job
+                rt_job.initialize()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
