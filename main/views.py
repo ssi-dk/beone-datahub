@@ -189,7 +189,10 @@ def rt_jobs(request, dataset_key:str=None):
 def delete_rt_job(request, rt_job_key:str, dataset_page:bool=False):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     dataset = rt_job.dataset
-    rt_job.delete()
+    if rt_job.status != 'NEW':
+        messages.add_message(request, messages.ERROR, f'You can only delete a job that has status NEW.')
+    else:
+        rt_job.delete()
     if dataset_page:
         return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
     return HttpResponseRedirect('/rt_jobs/')
@@ -210,9 +213,9 @@ def run_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     dataset = rt_job.dataset
     if len(dataset.mongo_keys) == 0:
-        messages.add_message(request, messages.ERROR, f'You tried to run ReporTree on an empty dataset: {dataset.name}.')
+        messages.add_message(request, messages.ERROR, f'You tried to run ReporTree on an empty dataset.')
     elif rt_job.status not in ['NEW', 'READY']:
-        messages.add_message(request, messages.ERROR, f'You tried to run a ReporTree job that has alreay been run: {dataset.name}.')
+        messages.add_message(request, messages.ERROR, f'You tried to run a ReporTree job that has alreay been run.')
     else:
         samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields={'allele_profile'})
         if len(unmatched) != 0:
