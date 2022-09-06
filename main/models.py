@@ -36,4 +36,5 @@ class RTJob(models.Model):
 
    def initialize(self):
       self.status = 'READY'
+      self.save()
       return self.status

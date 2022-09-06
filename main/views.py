@@ -207,8 +207,11 @@ def add_tsv_line(allele_profile, tsv_file):
 def run_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     dataset = rt_job.dataset
-    print(f"Running ReporTree job #{rt_job.pk} on dataset {dataset.name}...")
-    if rt_job.status == 'NEW':
+    if len(dataset.mongo_keys) == 0:
+        messages.add_message(request, messages.ERROR, f'You tried to run ReporTree on an empty dataset: {dataset.name}.')
+    elif rt_job.status not in ['NEW', 'READY']:
+        messages.add_message(request, messages.ERROR, f'You tried to run a ReporTree job that has alreay been run: {dataset.name}.')
+    else:
         # Create a folder for the run
         root_folder = pathlib.Path('/rt_runs')
         if not root_folder.exists():
@@ -244,6 +247,6 @@ def run_rt_job(request, rt_job_key:str):
                 allele_profile = sample['allele_profile']
                 add_tsv_line(allele_profile, tsv_file)
         
-        # Set new status on job
-        rt_job.initialize()
+            # Set new status on job
+            rt_job.initialize()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
