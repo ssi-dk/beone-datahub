@@ -239,7 +239,10 @@ def run_rt_job(request, rt_job_key:str):
             # Write first allele profile to file
             add_tsv_line(first_allele_profile, tsv_file)
 
-            # Write subsequence allele profiles to file
+            # Write subsequent allele profiles to file
+            for sample in samples:
+                allele_profile = sample['allele_profile']
+                add_tsv_line(allele_profile, tsv_file)
         
         # Set new status on job
         rt_job.initialize()
