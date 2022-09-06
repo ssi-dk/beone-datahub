@@ -211,17 +211,22 @@ def run_rt_job(request, rt_job_key:str):
             print(f"Created job folder {job_folder}.")
         samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys,
             fields={'allele_profile'})
-        # Get allele profile for first sample so we can define TSV header
-        tsv_headers = list()
-        first_sample = next(samples)
-        first_allele_profile = first_sample['allele_profile']
-        for allele in first_allele_profile:
-            locus = allele['locus']
-            if locus.endswith('.fasta'):
-                locus = locus[:-6]
-            tsv_headers.append(locus)
+        
         with open(pathlib.Path(job_folder, 'allele_profiles.tsv'), 'w') as tsv_file:
+        
+            # Get allele profile for first sample so we can define TSV header
+            tsv_headers = list()
+            first_sample = next(samples)
+            first_allele_profile = first_sample['allele_profile']
+            for allele in first_allele_profile:
+                locus = allele['locus']
+                if locus.endswith('.fasta'):
+                    locus = locus[:-6]
+                tsv_headers.append(locus)
             tsv_file.write('\t'.join(tsv_headers))
-        # print(tsv_headers)
+            tsv_file.write('\n')
+
+        
+        # Set new status on job
         rt_job.initialize()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
