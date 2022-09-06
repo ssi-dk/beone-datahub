@@ -192,6 +192,16 @@ def delete_rt_job(request, rt_job_key:str, dataset_page:bool=False):
         return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
     return HttpResponseRedirect('/rt_jobs/')
 
+def add_tsv_line(allele_profile, tsv_file):
+    allele_list = list()
+    for allele in allele_profile:
+        allele_value = allele['allele_crc32']  # Maybe choose key name with a setting
+        if allele_value is None:
+            allele_list.append('-')
+        else:
+            allele_list.append(str(allele_value))
+    tsv_file.write('\t'.join(allele_list))
+    tsv_file.write('\n')
 
 @login_required
 def run_rt_job(request, rt_job_key:str):
@@ -215,17 +225,21 @@ def run_rt_job(request, rt_job_key:str):
         with open(pathlib.Path(job_folder, 'allele_profiles.tsv'), 'w') as tsv_file:
         
             # Get allele profile for first sample so we can define TSV header
-            tsv_headers = list()
+            header_list = list()
             first_sample = next(samples)
             first_allele_profile = first_sample['allele_profile']
             for allele in first_allele_profile:
                 locus = allele['locus']
                 if locus.endswith('.fasta'):
                     locus = locus[:-6]
-                tsv_headers.append(locus)
-            tsv_file.write('\t'.join(tsv_headers))
+                header_list.append(locus)
+            tsv_file.write('\t'.join(header_list))
             tsv_file.write('\n')
 
+            # Write first allele profile to file
+            add_tsv_line(first_allele_profile, tsv_file)
+
+            # Write subsequence allele profiles to file
         
         # Set new status on job
         rt_job.initialize()
