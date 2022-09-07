@@ -232,28 +232,30 @@ def run_rt_job(request, rt_job_key:str):
                 job_folder.mkdir()
                 print(f"Created job folder {job_folder}.")
             
-            with open(pathlib.Path(job_folder, 'allele_profiles.tsv'), 'w') as tsv_file:
+            tsv_file = open(pathlib.Path(job_folder, 'allele_profiles.tsv'), 'w')
             
-                # Get allele profile for first sample so we can define TSV header
-                header_list = list()
-                first_sample = next(samples)
-                first_allele_profile = first_sample['allele_profile']
-                for allele in first_allele_profile:
-                    locus = allele['locus']
-                    if locus.endswith('.fasta'):
-                        locus = locus[:-6]
-                    header_list.append(locus)
-                tsv_file.write('\t'.join(header_list))
-                tsv_file.write('\n')
+            # Get allele profile for first sample so we can define TSV header
+            header_list = list()
+            first_sample = next(samples)
+            first_allele_profile = first_sample['allele_profile']
+            for allele in first_allele_profile:
+                locus = allele['locus']
+                if locus.endswith('.fasta'):
+                    locus = locus[:-6]
+                header_list.append(locus)
+            tsv_file.write('\t'.join(header_list))
+            tsv_file.write('\n')
 
-                # Write first allele profile to file
-                add_tsv_line(first_allele_profile, tsv_file)
+            # Write first allele profile to file
+            add_tsv_line(first_allele_profile, tsv_file)
 
-                # Write subsequent allele profiles to file
-                for sample in samples:
-                    allele_profile = sample['allele_profile']
-                    add_tsv_line(allele_profile, tsv_file)
+            # Write subsequent allele profiles to file
+            for sample in samples:
+                allele_profile = sample['allele_profile']
+                add_tsv_line(allele_profile, tsv_file)
             
+            tsv_file.close()
+        
             # Set new status on job
             rt_job.initialize()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
