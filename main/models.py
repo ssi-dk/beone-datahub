@@ -52,16 +52,16 @@ class RTJob(models.Model):
       self.save()
    
    def add_sample_data_in_files(self, sample, tsv_file, metadata_file):
-    allele_profile = sample['allele_profile']
-    allele_list = list()
-    for allele in allele_profile:
-        allele_value = allele['allele_crc32']  # Maybe choose key name with a setting
-        if allele_value is None:
+      allele_profile = sample['allele_profile']
+      allele_list = list()
+      for allele in allele_profile:
+         allele_value = allele['allele_crc32']  # Maybe choose key name with a setting
+         if allele_value is None:
             allele_list.append('-')
-        else:
+         else:
             allele_list.append(str(allele_value))
-    tsv_file.write('\t'.join(allele_list))
-    tsv_file.write('\n')
+      tsv_file.write('\t'.join(allele_list))
+      tsv_file.write('\n')
    
    def prepare(self, samples):
       # Create a folder for the run
