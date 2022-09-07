@@ -43,7 +43,8 @@ class RTJob(models.Model):
    path = models.CharField(max_length=100, blank=True, null=True)
    newick = models.TextField(blank=True, null=True)
 
-   def initialize(self):
-      self.status = 'READY'
+   def set_status(self, new_status:str):
+      if new_status not in [status[0] for status in self.STATUSES]:
+         raise ValueError(f"Illegal job status: {new_status}")
+      self.status = new_status
       self.save()
-      return self.status

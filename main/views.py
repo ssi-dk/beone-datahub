@@ -258,5 +258,5 @@ def run_rt_job(request, rt_job_key:str):
             metadata_file.close()
         
             # Set new status on job
-            rt_job.initialize()
+            rt_job.set_status('READY')
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
