@@ -197,7 +197,7 @@ def delete_rt_job(request, rt_job_key:str, dataset_page:bool=False):
         return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
     return HttpResponseRedirect('/rt_jobs/')
 
-def add_tsv_line(sample, tsv_file):
+def add_sample_data_in_files(sample, tsv_file):
     allele_profile = sample['allele_profile']
     allele_list = list()
     for allele in allele_profile:
@@ -248,11 +248,11 @@ def run_rt_job(request, rt_job_key:str):
             tsv_file.write('\n')
 
             # Write data for first sample to files
-            add_tsv_line(first_sample, tsv_file)
+            add_sample_data_in_files(first_sample, tsv_file)
 
             # Write data for subsequent samples to files
             for sample in samples:
-                add_tsv_line(sample, tsv_file)
+                add_sample_data_in_files(sample, tsv_file)
             
             tsv_file.close()
             metadata_file.close()
