@@ -16,6 +16,14 @@ class DataSet(models.Model):
    def __str__(self):
       return self.name
 
+def get_default_metadata_fields():
+   return [
+      'Outbreak_related',
+      'Date_Sampling',
+      'Serotype',
+      'Latitude',
+      'Longitude',
+   ]
 
 class RTJob(models.Model):
    STATUSES = [
@@ -28,6 +36,7 @@ class RTJob(models.Model):
    ]
    owner = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
    dataset = models.ForeignKey(DataSet, models.PROTECT)
+   metadata_fields = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
    status = models.CharField(max_length=12, choices=STATUSES, default='NEW')
    started_at = models.DateTimeField(blank=True, null=True)
    ended_at = models.DateTimeField(blank=True, null=True)
