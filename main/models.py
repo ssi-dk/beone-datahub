@@ -93,11 +93,11 @@ class RTJob(models.Model):
       tsv_file.write('\t'.join(allele_header_list))
       tsv_file.write('\n')
 
-      # Write data for first sample to files
-      self.add_sample_data_in_files(first_sample, tsv_file, metadata_file)
-
       # Add header to metadata file
       metadata_file.write('\t'.join(self.metadata_fields))
+ 
+      # Write data for first sample to files
+      self.add_sample_data_in_files(first_sample, tsv_file, metadata_file)
 
       # Write data for subsequent samples to files
       for sample in samples:
