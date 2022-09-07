@@ -197,7 +197,8 @@ def delete_rt_job(request, rt_job_key:str, dataset_page:bool=False):
         return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
     return HttpResponseRedirect('/rt_jobs/')
 
-def add_tsv_line(allele_profile, tsv_file):
+def add_tsv_line(sample, tsv_file):
+    allele_profile = sample['allele_profile']
     allele_list = list()
     for allele in allele_profile:
         allele_value = allele['allele_crc32']  # Maybe choose key name with a setting
@@ -233,12 +234,12 @@ def run_rt_job(request, rt_job_key:str):
                 print(f"Created job folder {job_folder}.")
             
             tsv_file = open(pathlib.Path(job_folder, 'allele_profiles.tsv'), 'w')
+            metadata_file = open(pathlib.Path(job_folder, 'metadata.tsv'), 'w')
             
             # Get allele profile for first sample so we can define TSV header
             header_list = list()
             first_sample = next(samples)
-            first_allele_profile = first_sample['allele_profile']
-            for allele in first_allele_profile:
+            for allele in first_sample['allele_profile']:
                 locus = allele['locus']
                 if locus.endswith('.fasta'):
                     locus = locus[:-6]
@@ -246,15 +247,15 @@ def run_rt_job(request, rt_job_key:str):
             tsv_file.write('\t'.join(header_list))
             tsv_file.write('\n')
 
-            # Write first allele profile to file
-            add_tsv_line(first_allele_profile, tsv_file)
+            # Write data for first sample to files
+            add_tsv_line(first_sample, tsv_file)
 
-            # Write subsequent allele profiles to file
+            # Write data for subsequent samples to files
             for sample in samples:
-                allele_profile = sample['allele_profile']
-                add_tsv_line(allele_profile, tsv_file)
+                add_tsv_line(sample, tsv_file)
             
             tsv_file.close()
+            metadata_file.close()
         
             # Set new status on job
             rt_job.initialize()
