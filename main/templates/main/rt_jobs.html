@@ -23,6 +23,9 @@
       <div class="overview-header-inner-bold">Dataset</div>
     </div>
     <div class="overview-header">
+      <div class="overview-header-inner-bold">Metadata Fields</div>
+    </div>
+    <div class="overview-header">
       <div class="overview-header-inner-bold">Status</div>
     </div>
     <div class="overview-header">
@@ -52,6 +55,9 @@
       </div>
       <div class="overview-datacolumn">
         {{ job.dataset }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ job.metadata_fields }}
       </div>
       <div class="overview-datacolumn">
         {{ job.get_status_display }}
