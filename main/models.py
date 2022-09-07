@@ -82,7 +82,7 @@ class RTJob(models.Model):
       tsv_file = open(pathlib.Path(job_folder, 'allele_profiles.tsv'), 'w')
       metadata_file = open(pathlib.Path(job_folder, 'metadata.tsv'), 'w')
       
-      # Get allele profile for first sample so we can define TSV header
+      # Get allele profile for first sample so we can define allele file header line
       allele_header_list = list()
       first_sample = next(samples)
       for allele in first_sample['allele_profile']:
@@ -93,7 +93,7 @@ class RTJob(models.Model):
       tsv_file.write('\t'.join(allele_header_list))
       tsv_file.write('\n')
 
-      # Add header to metadata file
+      # Add header line to metadata file
       metadata_file.write('\t'.join(self.metadata_fields))
  
       # Write data for first sample to files
