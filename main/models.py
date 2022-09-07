@@ -97,7 +97,7 @@ class RTJob(models.Model):
       self.add_sample_data_in_files(first_sample, tsv_file, metadata_file)
 
       # Add header to metadata file
-      # for metadata_field in self.metadata_fields:
+      metadata_file.write('\t'.join(self.metadata_fields))
 
       # Write data for subsequent samples to files
       for sample in samples:
