@@ -52,6 +52,7 @@ class RTJob(models.Model):
       self.save()
    
    def add_sample_data_in_files(self, sample, tsv_file, metadata_file):
+      # TSV file
       allele_profile = sample['allele_profile']
       allele_list = list()
       for allele in allele_profile:
@@ -62,6 +63,9 @@ class RTJob(models.Model):
             allele_list.append(str(allele_value))
       tsv_file.write('\t'.join(allele_list))
       tsv_file.write('\n')
+
+      # Metadata file
+      # Todo
    
    def prepare(self, samples):
       # Create a folder for the run
@@ -79,18 +83,21 @@ class RTJob(models.Model):
       metadata_file = open(pathlib.Path(job_folder, 'metadata.tsv'), 'w')
       
       # Get allele profile for first sample so we can define TSV header
-      header_list = list()
+      allele_header_list = list()
       first_sample = next(samples)
       for allele in first_sample['allele_profile']:
             locus = allele['locus']
             if locus.endswith('.fasta'):
                locus = locus[:-6]
-            header_list.append(locus)
-      tsv_file.write('\t'.join(header_list))
+            allele_header_list.append(locus)
+      tsv_file.write('\t'.join(allele_header_list))
       tsv_file.write('\n')
 
       # Write data for first sample to files
       self.add_sample_data_in_files(first_sample, tsv_file, metadata_file)
+
+      # Add header to metadata file
+      # for metadata_field in self.metadata_fields:
 
       # Write data for subsequent samples to files
       for sample in samples:
