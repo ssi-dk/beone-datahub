@@ -1,4 +1,3 @@
-import pathlib
 import json
 
 from django.shortcuts import render, redirect
@@ -25,6 +24,7 @@ def get_species_name(species: str=None):
             return s[1]
     # If a full species name was not found, return shortname
     return species
+
 
 def redirect_root(request):
     if request.user.is_authenticated:
@@ -85,6 +85,7 @@ def view_dataset(request, dataset_key:int):
         'dataset': dataset,
         'edit': False
         })
+
 
 @login_required
 def edit_dataset(request, dataset_key:int):
@@ -197,17 +198,6 @@ def delete_rt_job(request, rt_job_key:str, dataset_page:bool=False):
         return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
     return HttpResponseRedirect('/rt_jobs/')
 
-def add_sample_data_in_files(sample, tsv_file, metadata_file):
-    allele_profile = sample['allele_profile']
-    allele_list = list()
-    for allele in allele_profile:
-        allele_value = allele['allele_crc32']  # Maybe choose key name with a setting
-        if allele_value is None:
-            allele_list.append('-')
-        else:
-            allele_list.append(str(allele_value))
-    tsv_file.write('\t'.join(allele_list))
-    tsv_file.write('\n')
 
 @login_required
 def run_rt_job(request, rt_job_key:str):
@@ -222,41 +212,5 @@ def run_rt_job(request, rt_job_key:str):
         if len(unmatched) != 0:
             messages.add_message(request, messages.ERROR, f'Some keys in the dataset are unmatched: {unmatched}. Please fix before running job.')
         else:
-            # Create a folder for the run
-            root_folder = pathlib.Path('/rt_runs')
-            if not root_folder.exists():
-                root_folder.mkdir()
-            job_folder = pathlib.Path(root_folder, str(rt_job_key))
-            if job_folder.exists():
-                print(f"Job folder {job_folder} already exists! Reusing it.")
-            else:
-                job_folder.mkdir()
-                print(f"Created job folder {job_folder}.")
-            
-            tsv_file = open(pathlib.Path(job_folder, 'allele_profiles.tsv'), 'w')
-            metadata_file = open(pathlib.Path(job_folder, 'metadata.tsv'), 'w')
-            
-            # Get allele profile for first sample so we can define TSV header
-            header_list = list()
-            first_sample = next(samples)
-            for allele in first_sample['allele_profile']:
-                locus = allele['locus']
-                if locus.endswith('.fasta'):
-                    locus = locus[:-6]
-                header_list.append(locus)
-            tsv_file.write('\t'.join(header_list))
-            tsv_file.write('\n')
-
-            # Write data for first sample to files
-            add_sample_data_in_files(first_sample, tsv_file, metadata_file)
-
-            # Write data for subsequent samples to files
-            for sample in samples:
-                add_sample_data_in_files(sample, tsv_file, metadata_file)
-            
-            tsv_file.close()
-            metadata_file.close()
-        
-            # Set new status on job
-            rt_job.set_status('READY')
+            rt_job.prepare(samples)
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
