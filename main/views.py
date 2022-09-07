@@ -254,6 +254,6 @@ def run_rt_job(request, rt_job_key:str):
                     allele_profile = sample['allele_profile']
                     add_tsv_line(allele_profile, tsv_file)
             
-                # Set new status on job
-                rt_job.initialize()
+            # Set new status on job
+            rt_job.initialize()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
