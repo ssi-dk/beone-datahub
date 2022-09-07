@@ -65,6 +65,7 @@ class RTJob(models.Model):
       tsv_file.write('\n')
 
       # Metadata file
+      print(sample['metadata'])
       # Todo
    
    def prepare(self, samples):

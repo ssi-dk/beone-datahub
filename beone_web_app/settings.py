@@ -148,6 +148,7 @@ MONGO_FIELD_MAPPING = {
     "year": "sample.metadata.Date_Sampling_YYYY",
     "sequence_type": "sample.summary.sequence_type",
     "allele_profile": "pipelines.chewiesnake.allele_profile",
+    "metadata": "sample.metadata",
 }
 
 ALL_SPECIES = (

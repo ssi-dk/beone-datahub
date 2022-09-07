@@ -208,7 +208,7 @@ def run_rt_job(request, rt_job_key:str):
     elif rt_job.status not in ['NEW', 'READY']:
         messages.add_message(request, messages.ERROR, f'You tried to run a ReporTree job that has alreay been run.')
     else:
-        samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields={'allele_profile'})
+        samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields={'allele_profile', 'metadata'})
         if len(unmatched) != 0:
             messages.add_message(request, messages.ERROR, f'Some keys in the dataset are unmatched: {unmatched}. Please fix before running job.')
         else:
