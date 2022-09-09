@@ -5,10 +5,15 @@ from bson.objectid import ObjectId
 from django.conf import settings
 
 
-FIELD_MAPPING = settings.MONGO_FIELD_MAPPING
+FIELD_MAPPING: dict = settings.MONGO_FIELD_MAPPING
 # Refer all hard-coded Mongo fields here so we fail immediately if a field is not defined in settings.py
-SPECIES_FIELD = FIELD_MAPPING['species']
-
+MONGO_FIELDS = (
+    'species',
+    'metadata',
+    'sequence_type',
+)
+for field in MONGO_FIELDS:
+    assert field in FIELD_MAPPING
 
 class API:
     def __init__(self, connection_string: str, field_mapping: dict):
