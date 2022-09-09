@@ -20,8 +20,13 @@ class API:
         self,
         mongo_ids = None,
         species_name: str = None,
-        fields: list = ['org', 'name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
+        fields: set = {'species', 'year', 'sequence_type', 'country_root', 'source_type_root'}
     ):
+
+        # Ensure we always have these two fields in the set
+        fields.add('org')
+        fields.add('name')
+
         pipeline = list()
 
         # Match
