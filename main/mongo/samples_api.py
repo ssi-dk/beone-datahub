@@ -6,6 +6,8 @@ from django.conf import settings
 
 
 FIELD_MAPPING = settings.MONGO_FIELD_MAPPING
+# Refer all hard-coded Mongo fields here so we fail immediately if a field is not defined in settings.py
+SPECIES_FIELD = FIELD_MAPPING['species']
 
 
 class API:
