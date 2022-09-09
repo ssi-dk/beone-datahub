@@ -64,9 +64,9 @@ class RTJob(models.Model):
       tsv_file.write('\t'.join(allele_list))
       tsv_file.write('\n')
 
-      # Metadata file
-      print(sample['metadata'])
-      # Todo
+      metadata_list = [ str(sample['metadata'][key]) for key in self.metadata_fields ]
+      metadata_file.write('\t'.join(metadata_list))
+      metadata_file.write('\n')
    
    def prepare(self, samples):
       # Create a folder for the run
@@ -96,6 +96,7 @@ class RTJob(models.Model):
 
       # Add header line to metadata file
       metadata_file.write('\t'.join(self.metadata_fields))
+      metadata_file.write('\n')
  
       # Write data for first sample to files
       self.add_sample_data_in_files(first_sample, tsv_file, metadata_file)
