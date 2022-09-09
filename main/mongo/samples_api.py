@@ -23,8 +23,10 @@ for field_name in HARDCODED_MONGO_FIELDS:
     for part in raw_field:
         if isinstance(part, str):
             elements.append(part)
-        elif isinstance(part, int):
-            # Todo
+        elif isinstance(part, tuple):
+            assert isinstance(part[0], str)
+            assert isinstance(part[1], int)
+            elements.append({ '$arrayElemAt': [ part[0], part[1] ] })
             pass
         else:
             raise ValueError()
