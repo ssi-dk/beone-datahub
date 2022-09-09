@@ -6,33 +6,6 @@ from django.conf import settings
 
 
 FIELD_MAPPING: dict = settings.MONGO_FIELD_MAPPING
-NEW_FIELD_MAPPING: dict = settings.NEW_MONGO_FIELD_MAPPING
-# Refer all hard-coded Mongo fields here so we fail immediately if a field is not defined in settings.py
-HARDCODED_MONGO_FIELDS = {
-    'org',
-    'name',
-    'species',
-    'metadata',
-    'sequence_type',
-    'country',
-    'source_type'
-}
-FIELDS = dict()
-for field_name in HARDCODED_MONGO_FIELDS:
-    assert field_name in NEW_FIELD_MAPPING
-    raw_field: list = NEW_FIELD_MAPPING[field_name]
-    elements = list()
-    for part in raw_field:
-        if isinstance(part, str):
-            elements.append(part)
-        elif isinstance(part, tuple):
-            assert isinstance(part[0], str) or isinstance(part[0], tuple)
-            assert isinstance(part[1], int)
-            elements.append({ '$arrayElemAt': [ part[0], part[1] ] })
-            pass
-        else:
-            raise ValueError()
-    # print(elements)
 
 class API:
     def __init__(self, connection_string: str, field_mapping: dict):
@@ -73,13 +46,6 @@ class API:
                 projection[field] = f"${FIELD_MAPPING[field]}"
             else:
                 projection[field] = FIELD_MAPPING[field]
-        
-        # Get more convenient access to some deeply nested fields
-        if 'country_root' in projection:
-            projection['country'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['country_root'], 0 ] }, 0 ] }
-        if 'source_type_root' in projection:
-            projection['source_type'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['source_type_root'], 0 ] }, 1 ] }
-        print(projection)
 
         pipeline.append(
             {'$project': projection
