@@ -151,6 +151,18 @@ MONGO_FIELD_MAPPING = {
     "metadata": "sample.metadata",
 }
 
+NEW_MONGO_FIELD_MAPPING = {
+    'org': ['org'],
+    'name': ['name'],
+    'species': ['sample', 'metadata', 'Microorganism'],
+    'country_root': ['sample', 'metadata', 'Country'],
+    'source_type_root': ['sample', 'metadata', 'Source_Type'],
+    'sampling_year': ['sample', 'metadata', 'Date_Sampling_YYYY'],
+    'sequence_type': ['sample', 'summary', 'sequence_type'],
+    'allele_profile': ['pipelines', 'chewiesnake', 'allele_profile'],
+    'metadata': ['sample', 'metadata'],
+}
+
 ALL_SPECIES = (
     ('campy', 'Campylobacter jejuni'),
     ('coli', 'Escherichia coli'),

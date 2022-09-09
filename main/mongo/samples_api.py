@@ -6,14 +6,32 @@ from django.conf import settings
 
 
 FIELD_MAPPING: dict = settings.MONGO_FIELD_MAPPING
+NEW_FIELD_MAPPING: dict = settings.NEW_MONGO_FIELD_MAPPING
 # Refer all hard-coded Mongo fields here so we fail immediately if a field is not defined in settings.py
-MONGO_FIELDS = (
+HARDCODED_MONGO_FIELDS = {
+    'org',
+    'name',
     'species',
     'metadata',
     'sequence_type',
-)
-for field in MONGO_FIELDS:
-    assert field in FIELD_MAPPING
+}
+FIELDS = dict()
+for field_name in HARDCODED_MONGO_FIELDS:
+    assert field_name in NEW_FIELD_MAPPING
+    raw_field: list = NEW_FIELD_MAPPING[field_name]
+    elements = list()
+    for part in raw_field:
+        if isinstance(part, str):
+            elements.append(part)
+        elif isinstance(part, int):
+            # Todo
+            pass
+        else:
+            raise ValueError()
+    parsed_field = '.'.join(elements)
+    FIELDS[field_name] = parsed_field
+
+print(FIELDS)
 
 class API:
     def __init__(self, connection_string: str, field_mapping: dict):
