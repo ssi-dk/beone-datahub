@@ -20,7 +20,7 @@ class API:
         self,
         mongo_ids = None,
         species_name: str = None,
-        fields: set = {'species', 'year', 'sequence_type', 'country_root', 'source_type_root'}
+        fields: set = {'metadata', 'sequence_type', 'country_root', 'source_type_root'}
     ):
 
         # Ensure we always have these two fields in the set
@@ -64,7 +64,7 @@ class API:
     def get_samples_from_keys(
         self,
         key_list:list[dict],
-        fields: set = {'species', 'year', 'sequence_type', 'country_root', 'source_type_root'}
+        fields: set = {'metadata', 'sequence_type', 'country_root', 'source_type_root'}
     ):
 
         # We cannot search on an empty key_list.
