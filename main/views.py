@@ -1,4 +1,3 @@
-from urllib import request
 import json
 
 from django.shortcuts import render, redirect
@@ -10,9 +9,9 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 
-from .mongo.samples_api import API
-from .models import DataSet
-from .forms import NewDatasetForm, DeleteDatasetForm
+from main.mongo.samples_api import API
+from main.models import DataSet, RTJob
+from main.forms import NewDatasetForm, DeleteDatasetForm
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
 
@@ -26,16 +25,17 @@ def get_species_name(species: str=None):
     # If a full species name was not found, return shortname
     return species
 
+
 def redirect_root(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/datasets/')
+        return HttpResponseRedirect('/sample_list/')
     else:
         return HttpResponseRedirect('/login/')
     
 
 @login_required
 def sample_list(request):
-    samples = list(api.get_samples())  # list()?
+    samples = api.get_samples()
     return render(request, 'main/sample_list.html',{
         'samples': samples,
         })
@@ -75,7 +75,9 @@ def dataset_list(request):
 def view_dataset(request, dataset_key:int):
     dataset = DataSet.objects.get(pk=dataset_key)
     species_name = get_species_name(dataset.species)
-    samples = api.get_samples_from_keys(dataset.mongo_keys)
+    samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys)
+    if len(unmatched) != 0:
+        messages.add_message(request, messages.WARNING, f'Some keys in the dataset are unmatched: {unmatched}')
 
     return render(request, 'main/sample_list.html',{
         'species_name': species_name,
@@ -83,6 +85,7 @@ def view_dataset(request, dataset_key:int):
         'dataset': dataset,
         'edit': False
         })
+
 
 @login_required
 def edit_dataset(request, dataset_key:int):
@@ -164,3 +167,50 @@ def add_remove_sample(request):
                 'message': str(e)
             }
     return JsonResponse(data_to_send)
+
+        
+@login_required
+def rt_jobs(request, dataset_key:str=None):
+    if dataset_key is not None:
+        dataset = DataSet.objects.get(pk=dataset_key)
+        if request.method == 'POST':
+            rt_job = RTJob(owner=request.user, dataset=dataset)
+            rt_job.save()
+        rt_jobs = RTJob.objects.filter(dataset=dataset_key) 
+    else:
+        rt_jobs = RTJob.objects.all()
+        dataset = None
+    return render(request, 'main/rt_jobs.html',{
+        'rt_jobs': rt_jobs,
+        'dataset': dataset
+        })
+
+
+@login_required
+def delete_rt_job(request, rt_job_key:str, dataset_page:bool=False):
+    rt_job = RTJob.objects.get(pk=rt_job_key)
+    dataset = rt_job.dataset
+    if rt_job.status != 'NEW':
+        messages.add_message(request, messages.ERROR, f'You can only delete a job that has status NEW.')
+    else:
+        rt_job.delete()
+    if dataset_page:
+        return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
+    return HttpResponseRedirect('/rt_jobs/')
+
+
+@login_required
+def run_rt_job(request, rt_job_key:str):
+    rt_job = RTJob.objects.get(pk=rt_job_key)
+    dataset = rt_job.dataset
+    if len(dataset.mongo_keys) == 0:
+        messages.add_message(request, messages.ERROR, f'You tried to run ReporTree on an empty dataset.')
+    elif rt_job.status not in ['NEW', 'READY']:
+        messages.add_message(request, messages.ERROR, f'You tried to run a ReporTree job that has alreay been run.')
+    else:
+        samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields={'allele_profile', 'metadata'})
+        if len(unmatched) != 0:
+            messages.add_message(request, messages.ERROR, f'Some keys in the dataset are unmatched: {unmatched}. Please fix before running job.')
+        else:
+            rt_job.prepare(samples)
+    return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')

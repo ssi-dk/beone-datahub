@@ -20,8 +20,13 @@ class API:
         self,
         mongo_ids = None,
         species_name: str = None,
-        fields: list = ['org', 'name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
+        fields: set = {'metadata', 'sequence_type', 'country_root', 'source_type_root'}
     ):
+
+        # Ensure we always have these two fields in the set
+        fields.add('org')
+        fields.add('name')
+
         pipeline = list()
 
         # Match
@@ -59,12 +64,16 @@ class API:
     def get_samples_from_keys(
         self,
         key_list:list[dict],
-        fields: list = ['org', 'name', 'species', 'year', 'sequence_type', 'country_root', 'source_type_root']
+        fields: set = {'metadata', 'sequence_type', 'country_root', 'source_type_root'}
     ):
 
         # We cannot search on an empty key_list.
         if len(key_list) == 0:
-            return list()
+            return [list(), list()]
+
+        # Ensure we always have these two fields in the set
+        fields.add('org')
+        fields.add('name')
 
         pipeline = list()
 
@@ -89,34 +98,24 @@ class API:
             }
         )
 
-        return self.db.samples.aggregate(pipeline)
+        command_cursor = self.db.samples.aggregate(pipeline)
 
+        # Check if there are samples in key_list that was not found in MongoDB.
+        unmatched = list()
+        for key_pair in key_list:
+            match = False
+            for mongo_doc in command_cursor:
+                if mongo_doc['org'] == key_pair['org'] and mongo_doc['name'] == key_pair['name']:
+                    match = True
+                    break
+            if match == False:
+                unmatched.append(key_pair)
+
+        # MongoDB CommandCursor cannot rewind, so we make a new one
+        return (self.db.samples.aggregate(pipeline), unmatched)
 
 
 # Everything below this line is code inherited from Martin and Holger and may or may not work in this context.
-
-
-def get_allele_profiles(sample_id_list: list = None, schema_name: str = 'enterobase_senterica_cgmlst', connection_name = "default"):
-    connection = get_connection(connection_name)
-    db = connection.get_database()
-    pipeline = [
-        {'$match': {
-            "$and": [
-                {'categories.cgmlst.summary.allele_qc': 'PASS'},
-                {'categories.cgmlst.report.chewiesnake.run_metadata.database_information.scheme_name': schema_name}
-            ]}
-        },
-        {'$project': {'_id'           : '$_id',
-                      'name'          : '$name',
-                      'display_name'  : '$display_name',
-                      'hashid'        : '$categories.cgmlst.summary.hashid',
-                      'allele_profile': '$categories.cgmlst.report.chewiesnake.allele_profile'}
-         }
-    ]
-    if sample_id_list is not None:
-        pipeline[0]['$match']['$and'].insert(0, {'_id': {'$in': sample_id_list}})
-    return list(db.samples.aggregate(pipeline))
-
 
 def get_samples(sample_id_list, projection = None, connection_name = "default"):
     connection = get_connection(connection_name)

@@ -68,9 +68,14 @@
     </div>
     <div class='overview-datacolumn'>
       <span class="rspace"><a href="{% url 'view_dataset' dataset.pk %}">List</a></span>
-      {% if dataset.owner.username == request.user.username %}
-        <span class="rspace"><a href="{% url 'edit_dataset' dataset.pk %}">Edit</a></span>
-      {% endif %}
+      <span class="rspace">
+        {% if dataset.owner.username == request.user.username %}
+          <a href="{% url 'edit_dataset' dataset.pk %}">Edit</a>
+        {% else %}
+          <span class="inactive">Edit</span>
+        {% endif %}
+      </span>
+      <span class="rspace"><a href="{% url 'rt_jobs_for_dataset' dataset.pk%}">RT</a></span>
     </div>
   </div>
 {% endfor %}

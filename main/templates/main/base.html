@@ -17,20 +17,23 @@
       {% if request.user.is_authenticated %}
         {% url 'sample_list' as sample_list_url %}
         {% url 'datasets' as datasets_url %}
+        {% url 'rt_jobs' as rt_jobs_url %}
         <div class='column'>
           <nav>
-            <span class="menu-item">
-              <a href="{% url 'datasets' %}"
-              {% if request.path == datasets_url %}class="current"{% endif %}
-              >Datasets</a>
-            </span>
             <span class="menu-item">
               <a href="{% url 'sample_list' %}"
               {% if request.path == sample_list_url %}class="current"{% endif %}
               >Sample List</a>
             </span>
             <span class="menu-item">
-              <a href="/">Dashboard</a>
+              <a href="{% url 'datasets' %}"
+              {% if request.path == datasets_url %}class="current"{% endif %}
+              >Datasets</a>
+            </span>
+            <span class="menu-item">
+              <a href="{% url 'rt_jobs' %}"
+              {% if request.path == rt_jobs_url %}class="current"{% endif %}
+              >ReporTree</a>
             </span>
           <nav>
         </div>
