@@ -39,13 +39,10 @@ class API:
             {'$match': match}
         )
 
-        # Projection
+        # Projection - map only the desired fields
         projection = dict()
         for field in fields:
-            if isinstance(FIELD_MAPPING[field], str):
-                projection[field] = f"${FIELD_MAPPING[field]}"
-            else:
-                projection[field] = FIELD_MAPPING[field]
+            projection[field] = FIELD_MAPPING[field]
 
         pipeline.append(
             {'$project': projection
