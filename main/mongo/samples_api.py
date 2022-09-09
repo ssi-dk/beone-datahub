@@ -44,7 +44,7 @@ class API:
         self,
         mongo_ids = None,
         species_name: str = None,
-        fields: set = {'metadata', 'sequence_type', 'country_root', 'source_type_root'}
+        fields: set = {'metadata', 'sequence_type', 'country', 'source_type'}
     ):
 
         # Ensure we always have these two fields in the set
@@ -69,7 +69,10 @@ class API:
         # Projection
         projection = dict()
         for field in fields:
-            projection[field] = f"${FIELD_MAPPING[field]}"
+            if isinstance(FIELD_MAPPING[field], str):
+                projection[field] = f"${FIELD_MAPPING[field]}"
+            else:
+                projection[field] = FIELD_MAPPING[field]
         
         # Get more convenient access to some deeply nested fields
         if 'country_root' in projection:
