@@ -14,6 +14,8 @@ HARDCODED_MONGO_FIELDS = {
     'species',
     'metadata',
     'sequence_type',
+    'country',
+    'source_type'
 }
 FIELDS = dict()
 for field_name in HARDCODED_MONGO_FIELDS:
@@ -24,16 +26,13 @@ for field_name in HARDCODED_MONGO_FIELDS:
         if isinstance(part, str):
             elements.append(part)
         elif isinstance(part, tuple):
-            assert isinstance(part[0], str)
+            assert isinstance(part[0], str) or isinstance(part[0], tuple)
             assert isinstance(part[1], int)
             elements.append({ '$arrayElemAt': [ part[0], part[1] ] })
             pass
         else:
             raise ValueError()
-    parsed_field = '.'.join(elements)
-    FIELDS[field_name] = parsed_field
-
-print(FIELDS)
+    print(elements)
 
 class API:
     def __init__(self, connection_string: str, field_mapping: dict):
