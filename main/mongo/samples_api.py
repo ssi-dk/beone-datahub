@@ -32,7 +32,7 @@ for field_name in HARDCODED_MONGO_FIELDS:
             pass
         else:
             raise ValueError()
-    print(elements)
+    # print(elements)
 
 class API:
     def __init__(self, connection_string: str, field_mapping: dict):
@@ -76,7 +76,8 @@ class API:
             projection['country'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['country_root'], 0 ] }, 0 ] }
         if 'source_type_root' in projection:
             projection['source_type'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['source_type_root'], 0 ] }, 1 ] }
-        
+        print(projection)
+
         pipeline.append(
             {'$project': projection
             }
