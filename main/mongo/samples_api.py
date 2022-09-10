@@ -55,7 +55,7 @@ class API:
     def get_samples_from_keys(
         self,
         key_list:list[dict],
-        fields: set = {'metadata', 'sequence_type', 'country_root', 'source_type_root'}
+        fields: set = {'metadata', 'sequence_type', 'country', 'source_type'}
     ):
 
         # We cannot search on an empty key_list.
@@ -73,16 +73,10 @@ class API:
                 {'$match': {'$or': key_list}}
         )
 
-        # Projection
+        # Projection - map only the desired fields
         projection = dict()
         for field in fields:
-            projection[field] = f"${FIELD_MAPPING[field]}"
-        
-        # Get more convenient access to some deeply nested fields
-        if 'country_root' in projection:
-            projection['country'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['country_root'], 0 ] }, 0 ] }
-        if 'source_type_root' in projection:
-            projection['source_type'] = { '$arrayElemAt': [ { '$arrayElemAt': [ projection['source_type_root'], 0 ] }, 1 ] }
+            projection[field] = FIELD_MAPPING[field]
         
         pipeline.append(
             {'$project': projection
