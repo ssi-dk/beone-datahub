@@ -140,15 +140,15 @@ MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone'
 }"""
 
 MONGO_FIELD_MAPPING = {
-    "org": "$org",
-    "name": "$name",
-    "species": "$sample.metadata.Microorganism",
-    "country_root": "$sample.metadata.Country",
-    "source_type_root": "$sample.metadata.Source_Type",
-    "sampling_year": "$sample.metadata.Date_Sampling_YYYY",
-    "sequence_type": "$sample.summary.sequence_type",
-    "allele_profile": "$pipelines.chewiesnake.allele_profile",
-    "metadata": "$sample.metadata",
+    "org": "org",
+    "name": "name",
+    "species": "sample.metadata.Microorganism",
+    "country_root": "sample.metadata.Country",
+    "source_type_root": "sample.metadata.Source_Type",
+    "sampling_year": "sample.metadata.Date_Sampling_YYYY",
+    "sequence_type": "sample.summary.sequence_type",
+    "allele_profile": "pipelines.chewiesnake.allele_profile",
+    "metadata": "sample.metadata",
     'country': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
     'source_type': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]}
 }
