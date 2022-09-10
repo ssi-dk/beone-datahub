@@ -79,7 +79,10 @@ class API:
         # Projection - map only the desired fields
         projection = dict()
         for field in fields:
-            projection[field] = FIELD_MAPPING[field]
+            if isinstance(FIELD_MAPPING[field], str):
+                projection[field] = f"${FIELD_MAPPING[field]}"
+            else:
+                projection[field] = FIELD_MAPPING[field]
         
         pipeline.append(
             {'$project': projection
