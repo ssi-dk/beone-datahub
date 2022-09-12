@@ -149,6 +149,8 @@ MONGO_FIELD_MAPPING = {
     "sequence_type": "sample.summary.sequence_type",
     "allele_profile": "pipelines.chewiesnake.allele_profile",
     "metadata": "sample.metadata",
+    'country': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
+    'source_type': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]}
 }
 
 ALL_SPECIES = (
