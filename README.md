@@ -6,55 +6,15 @@ BeONE Web App is the core web application for the BeONE project. At this point i
 ## Docker
 BeONE web app runs trough Docker, so you will need Docker on your computer in order to install it. Please see the Docker documentation for your platform. On Windows, the recommended way of running Docker is through Windows Subsystem for Linux (WSL) version 2. The application is being developed and tested with Ubuntu 20.02 on top of WSL2.
 
-## MongoDB
-In order to use BeONE Web App you must have access to a running instance of a MongoDB database that contains a BeONE data structure. At least for now, a read-only account for the MongoDB database will be sufficient as BeONE Web App will not write any data to the MongoDB database. If you don't have a MongoDB database already, see the paragraph 'Installing a local MongoDB'.
-
 ## Optional: install a tool for viewing MongoDB data
 During the testing process it can sometimes be desirable to be able to view the MongoDB data in another way separate from the web app. For this purpose, the MongoDB Compass data viewer can be recommended. Please see MongoDB website for hos to download and install MongoDB Compass.
 
-## A note about PostgreSQL
-BeONE Web App also uses a PostgreSQL database for storing user accounts and other user-related data. The PostgreSQL database is provided through the Docker infrastructure, so having a PostgreSQL database is NOT a prerequisite.
+# Installation
+If you haven't done so already, check out this repository on your computer (in Windows, do this on a Linux instance under WSL2).
 
-# Installing a local MongoDB
-If you do not already have a MongoDB database that you can use for testing the BeONE Web App, you can install MongoDB on your local machine. For development, a MongoDB 3.6 provided by the Ubuntu repositories is being used. Although this version is very old, it is currently sufficient for testing. You can install it in Ubuntu 20.04 with this command:
+'cd' to the installation directory.
 
-    sudo apt install mongodb
-
-You will also need to start it by running:
-
-    sudo service mongodb start
-
-## Load test data into MongoDB
-There is a small test dataset included in the repository. It can be installed with the 'mongoimport' utility program that comes with MongoDB. The test dataset consists of 10 JSON files, each containing data for one sample. However, 'mongoimport' can only import one file at a time. To make it less cumbersome (assuming you are running Ubuntu or another Linux OS), you should be able to install all the data with one command this way:
-
-    cd test_data
-    cat *.json | mongoimport -d beone -c samples
-
-If you installed Compass, you can use it to verify that you now have a database named 'beone' with a collection named 'samples' which contains the samples from the test dataset.
-
-## Add unique index on sample name field
-The database that contains the BeONE data must have a unique index on the sample name field. You can create the index with this command using the 'mongo' shell provided by MongoDB:
-
-    db.samples.createIndex( { "sample.summary.sample": 1 }, { unique: true } )
-
-# Installation of the web app
-If you haven't done so already, check out this repository on your computer.
-
-## Optional: change URI for MongoDB
-
-The URI for the MongoDB database is controlled by the MONGO_CONNECTION variable in settings.py. The following setting (which is the default) will connect to a MongoDB server instance running in the host OS and use a database named 'beone' for both authentication and data:
-
-    MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone'
-
-Note that since settings.py is a version-controlled file Git will see it as a code change if you make a change to it. This is not optimal and will be changed later.
-
-If you need to authenticate the MongoDB user through another database than the one that stores the data, can specify the authentication database this way:
-
-    MONGO_CONNECTION = 'mongodb://host.docker.internal:27017/beone?authSource=auth_db'
-
-## Build and run the Docker containers
-
-cd to the installation folder and type:
+In the installation directory, type:
 
     docker compose up
 
@@ -62,7 +22,7 @@ When Docker has finished downloading images and building and starting the contai
 
 Starting development server at http://0.0.0.0:8000/
 
-That address will probably not work. Use this address instead to see the user interface in a browser:
+That address might not work. Use this address instead to see the user interface in a browser:
 
 http://localhost:8000/
 
@@ -79,3 +39,25 @@ Then type in the same terminal window to create a user that can login to the web
 Enter user information at the prompts.
 
 You should now be able to login to the web application with the provided username and password.
+
+## Load test data into MongoDB
+There is a small test dataset included in the repository. The test dataset consists of a number of JSON files, each containing fake/anonymized data for one sample. The dataset can be installed this way:
+
+    docker exec -it beone_web_app-mongo-1 bash
+    cd /mnt/test_data
+    cat *.json | mongoimport -d beone -c samples
+    exit
+
+After this step, you should be able to see the samples in the 'sample list' in the UI (however, the fields 'Organization' and 'Name' will be empty).
+
+## Add extra database keys and a unique index
+Every organization that deals with sample data normally has internal rules and systems that ensures the uniqeness of sample names. However, the BeONE Web App - as well as the BeONE project itself - is about sharing data between organizations. This implies that there must be a way of ensuring the uniqueness of the samples so as to avoid that samples from two organizations are mixed up because the have the same sample name. Assuming that all samples received from a certain organization has unique names, we can solve the problem simply by adding a couple of extra keys and a unique index. This is not a part of the original BeONE MongoDB schema specification, so adding the keys and the index requires an extra step after importing the test data:
+
+    docker exec -it beone_web_app-web-1 python manage.py addids TEST
+
+This command will:
+    - add an 'org' field with the value 'TEST' to each sample
+    - Copy the field sample.summary.sample to a new 'name' field at the root level (as MongoDB cannot index non-root fields)
+    - Ceate a unique index on these two fields
+
+After this step, the fields 'Organization' and 'Name' in the UI should be filled.
