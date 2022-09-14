@@ -18,6 +18,7 @@
         {% url 'sample_list' as sample_list_url %}
         {% url 'datasets' as datasets_url %}
         {% url 'rt_jobs' as rt_jobs_url %}
+        {% url 'dashboard' as dashboard %}
         <div class='column'>
           <nav>
             <span class="menu-item">
@@ -34,6 +35,11 @@
               <a href="{% url 'rt_jobs' %}"
               {% if request.path == rt_jobs_url %}class="current"{% endif %}
               >ReporTree</a>
+            </span>
+            <span class="menu-item">
+              <a href="{% url 'dashboard' %}"
+              {% if request.path == dashboard %}class="current"{% endif %}
+              >Dashboard</a>
             </span>
           <nav>
         </div>

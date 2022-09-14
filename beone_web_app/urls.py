@@ -29,7 +29,7 @@ urlpatterns = [
     path('datasets/<int:dataset_key>/', views.view_dataset, name='view_dataset'),
     path('datasets/<int:dataset_key>/edit/', views.edit_dataset, name='edit_dataset'),
     path('datasets/add_remove_sample/', views.add_remove_sample),
-    path('dashboard/', views.sample_list, name='dashboard'),
+    path('dashboard/', views.dashboard, name='dashboard'),
     path('rt_jobs/', views.rt_jobs, name='rt_jobs'),
     path('rt_jobs/for_dataset/<int:dataset_key>/', views.rt_jobs, name='rt_jobs_for_dataset'),
     path('rt_jobs/<int:rt_job_key>/delete/', views.delete_rt_job, {'dataset_page': False}, name='delete_rt_job'),

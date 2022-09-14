@@ -214,3 +214,8 @@ def run_rt_job(request, rt_job_key:str):
         else:
             rt_job.prepare(samples)
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
+
+
+@login_required
+def dashboard(request):
+    return render(request, 'main/base.html')
