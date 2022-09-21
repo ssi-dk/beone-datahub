@@ -19,6 +19,7 @@ services:
   
   reportree:
     build: reportree
+    tty: true
     #volumes:
     #  - ./rt_runs:/rt_runs
 
