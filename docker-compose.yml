@@ -16,6 +16,11 @@ services:
       - "27107:27017"
     volumes:
       - ./test_data:/mnt/test_data
+  
+  reportree:
+    build: reportree
+    #volumes:
+    #  - ./rt_runs:/rt_runs
 
   web:
     build: .
@@ -32,3 +37,4 @@ services:
     depends_on:
       - db
       - mongo
+      - reportree
