@@ -20,8 +20,8 @@ services:
   reportree:
     build: reportree
     tty: true
-    #volumes:
-    #  - ./rt_runs:/rt_runs
+    volumes:
+      - ./rt_runs:/mnt/rt_runs
 
   web:
     build: .
