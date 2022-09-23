@@ -23,4 +23,5 @@ EXPOSE 7000
 
 # Start Uvicorn and listen on port
 WORKDIR /app/rest_interface/
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7000"]
+# Don't start Uvicorn here but in docker-compose.yml
+# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7000"]

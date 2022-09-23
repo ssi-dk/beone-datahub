@@ -24,6 +24,7 @@ services:
       - ./rt_runs:/mnt/rt_runs
     ports:
       - "7000:7000"
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7000"]
 
   web:
     build: .
