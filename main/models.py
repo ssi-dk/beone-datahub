@@ -51,19 +51,21 @@ class RTJob(models.Model):
       self.status = new_status
       self.save()
    
-   def add_sample_data_in_files(self, sample, tsv_file, metadata_file):
-      # TSV file
+   def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
+      # Allele profiles
       allele_profile = sample['allele_profile']
-      allele_list = list()
+      line = list()
+      line.append(sample['org'] + '.' + sample['name'])
       for allele in allele_profile:
          allele_value = allele['allele_crc32']  # Maybe choose key name with a setting
          if allele_value is None:
-            allele_list.append('-')
+            line.append('-')
          else:
-            allele_list.append(str(allele_value))
-      tsv_file.write('\t'.join(allele_list))
-      tsv_file.write('\n')
+            line.append(str(allele_value))
+      allele_profile_file.write('\t'.join(line))
+      allele_profile_file.write('\n')
 
+      # Metadata
       metadata_list = [ str(sample['metadata'][key]) for key in self.metadata_fields ]
       metadata_file.write('\t'.join(metadata_list))
       metadata_file.write('\n')
@@ -85,6 +87,7 @@ class RTJob(models.Model):
       
       # Get allele profile for first sample so we can define allele file header line
       allele_header_list = list()
+      allele_header_list.append('ID')
       first_sample = next(samples)
       for allele in first_sample['allele_profile']:
             locus = allele['locus']
