@@ -18,6 +18,7 @@
         {% url 'sample_list' as sample_list_url %}
         {% url 'datasets' as datasets_url %}
         {% url 'rt_jobs' as rt_jobs_url %}
+        {% comment %}
         <div class='column'>
           <nav>
             <span class="menu-item">
@@ -37,6 +38,7 @@
             </span>
           <nav>
         </div>
+        {% endcomment %}
         <div class='right-justify'>
           <span>Hello </span><span id="username">{{request.user.username}}</span>
           <span><a href=" {% url 'logout' %}">Logout</a></span>
