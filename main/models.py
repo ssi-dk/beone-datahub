@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 
+import requests
 
 class DataSet(models.Model):
    species = models.CharField(max_length=20, choices=settings.ALL_SPECIES)
