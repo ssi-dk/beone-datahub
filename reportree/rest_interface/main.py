@@ -37,6 +37,7 @@ async def start_job(job_number: int):
         elapsed_time = end_time - start_time
         return {
             "job_number": job_number,
+            "pid": p.pid,
             "start_time": start_time.isoformat(),
             "end_time": end_time.isoformat(),
             "elapsed_time": elapsed_time,
