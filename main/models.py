@@ -114,3 +114,7 @@ class RTJob(models.Model):
    
       # Set new status on job
       self.set_status('READY')
+
+   def run(self):
+      r = requests.post(f'http://reportree:7000/reportree/start_job/{self.pk}/')
+      print(r.json())

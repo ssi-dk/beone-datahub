@@ -213,4 +213,5 @@ def run_rt_job(request, rt_job_key:str):
             messages.add_message(request, messages.ERROR, f'Some keys in the dataset are unmatched: {unmatched}. Please fix before running job.')
         else:
             rt_job.prepare(samples)
+            rt_job.run()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
