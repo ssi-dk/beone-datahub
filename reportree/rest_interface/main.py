@@ -19,7 +19,8 @@ async def start_job(job_number: int):
         '--analysis',
         'HC'
         ]
-    p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    workdir = f'/mnt/rt_runs/{job_number}'
+    p = subprocess.Popen(command, cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     out, err = p.communicate()
     print('Subprocess error: ' + str(err))
     print('Subprocess stdout: ' + str(out.decode()))   
