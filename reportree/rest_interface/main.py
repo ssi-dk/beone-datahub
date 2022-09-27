@@ -12,8 +12,7 @@ async def root():
 @app.post("/reportree/start_job/{job_number}")
 async def start_job(job_number: int):
 
-    # p = subprocess.Popen(['python', 'reportree.py', '--help'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) 
-    p = subprocess.Popen(['pwd'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) 
+    p = subprocess.Popen(['python', '/app/ReporTree/reportree.py', '--help'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     out, err = p.communicate()
     print('Subprocess error: ' + str(err))
     print('Subprocess stdout: ' + str(out.decode()))   
