@@ -18,6 +18,8 @@ async def start_job(job_number: int):
         '/app/ReporTree/reportree.py',
         '-a',
         f'/mnt/rt_runs/{job_number}/allele_profiles.tsv',
+        '-m',
+        f'/mnt/rt_runs/{job_number}/metadata.tsv',
         '--analysis',
         'HC'
         ]
