@@ -1,3 +1,5 @@
+import subprocess
+
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -9,7 +11,15 @@ async def root():
 
 @app.post("/reportree/start_job/{job_number}")
 async def start_job(job_number: int):
+
+    # p = subprocess.Popen(['python', 'reportree.py', '--help'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) 
+    p = subprocess.Popen(['pwd'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT) 
+    out, err = p.communicate()
+    print('Subprocess error: ' + str(err))
+    print('Subprocess stdout: ' + str(out.decode()))   
+
     return {
         "job: number": job_number,
-        "status": "OK"
+        "out": out,
+        "err": err
         }
