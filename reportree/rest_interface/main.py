@@ -24,7 +24,7 @@ async def start_job(job_number: int):
     workdir = f'/mnt/rt_runs/{job_number}'
     p = subprocess.Popen(command, cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
-        output, error = p.communicate(timeout=1)
+        output, error = p.communicate(timeout=3)
         job_status = "finished"
     except subprocess.TimeoutExpired as e:
         output = None
