@@ -58,6 +58,9 @@ class RTJob(models.Model):
    cluster_composition = models.TextField(blank=True, null=True)
    partitions = models.TextField(blank=True, null=True)
 
+   def get_path(self):
+      return pathlib.Path(settings.REPORTREE_JOB_FOLDER, str(self.pk))
+   
    def set_status(self, new_status:str):
       if new_status not in [status[0] for status in self.STATUSES]:
          raise ValueError(f"Illegal job status: {new_status}")
@@ -85,10 +88,9 @@ class RTJob(models.Model):
    
    def prepare(self, samples):
       # Create a folder for the run
-      root_folder = pathlib.Path('/rt_runs')
-      if not root_folder.exists():
-            root_folder.mkdir()
-      job_folder = pathlib.Path(root_folder, str(self.pk))
+      job_folder = self.get_path()
+      if not job_folder.exists():
+            job_folder.mkdir()
       if job_folder.exists():
             print(f"Job folder {job_folder} already exists! Reusing it.")
       else:
@@ -140,4 +142,12 @@ class RTJob(models.Model):
          self.end_time = timezone.now()
          elapsed_time = self.end_time - self.start_time
          self.elapsed_time = elapsed_time.seconds
+      self.save()
+   
+   def load_results_from_files(self):
+      job_folder = self.get_path()
+      with open(pathlib.Path(job_folder, 'ReporTree_single_HC.nwk'), 'r') as newick_file:
+         self.newick = newick_file.readline()
+      
+      self.set_status('ALL_DONE')
       self.save()

@@ -214,4 +214,5 @@ def run_rt_job(request, rt_job_key:str):
         else:
             rt_job.prepare(samples)
             rt_job.run()
+            rt_job.load_results_from_files()
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
