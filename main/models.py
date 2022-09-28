@@ -1,3 +1,4 @@
+import json
 import pathlib
 
 from django.db import models
@@ -124,5 +125,12 @@ class RTJob(models.Model):
       self.set_status('READY')
 
    def run(self):
-      r = requests.post(f'http://reportree:7000/reportree/start_job/{self.pk}/')
-      print(r.json())
+      raw_response = requests.post(f'http://reportree:7000/reportree/start_job/{self.pk}/')
+      json_response = (raw_response.json())
+      self.pid = json_response['pid']
+      self.start_time = json_response['start_time']
+      self.end_time = json_response['end_time']
+      self.elapsed_time = int(json_response['elapsed_time'])
+      self.status = json_response['status']
+      self.error = json_response['error']
+      self.save()
