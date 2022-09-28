@@ -1,5 +1,4 @@
 import subprocess
-from datetime import datetime
 
 from fastapi import FastAPI
 
@@ -12,7 +11,6 @@ async def root():
 
 @app.post("/reportree/start_job/{job_number}")
 async def start_job(job_number: int):
-    start_time = datetime.now()
     command = [
         'python',
         '/app/ReporTree/reportree.py',
@@ -41,14 +39,9 @@ async def start_job(job_number: int):
         status = "OS_ERROR"
         error = e
     finally:
-        end_time = datetime.now()
-        elapsed_time = end_time - start_time
         return {
             "job_number": job_number,
             "pid": p.pid,
-            "start_time": start_time.isoformat(),
-            "end_time": end_time.isoformat(),
-            "elapsed_time": elapsed_time,
             "status": status,
             "error": error
             }

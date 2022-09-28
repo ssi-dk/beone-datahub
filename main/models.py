@@ -1,10 +1,10 @@
-import json
 import pathlib
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
+from django.utils import timezone
 
 import requests
 
@@ -33,6 +33,7 @@ class RTJob(models.Model):
    STATUSES = [
         ('NEW', 'New'),
         ('READY', 'Ready'),
+        ('STARTING', 'Starting'),
         ('RUNNING', 'Running'),
         ('RT_SUCCESSFUL', 'ReporTree successful'),
         ('ALL_DONE', 'All done'),
@@ -127,12 +128,16 @@ class RTJob(models.Model):
       self.set_status('READY')
 
    def run(self):
+      self.start_time = timezone.now()
+      self.set_status('STARTING')
+      self.save()
       raw_response = requests.post(f'http://reportree:7000/reportree/start_job/{self.pk}/')
       json_response = (raw_response.json())
       self.pid = json_response['pid']
-      self.start_time = json_response['start_time']
-      self.end_time = json_response['end_time']
-      self.elapsed_time = int(json_response['elapsed_time'])
       self.error = json_response['error']
       self.set_status(json_response['status'])
+      if self.status == 'RT_SUCCESSFUL':
+         self.end_time = timezone.now()
+         elapsed_time = self.end_time - self.start_time
+         self.elapsed_time = elapsed_time.seconds
       self.save()
