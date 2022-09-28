@@ -54,7 +54,7 @@ class RTJob(models.Model):
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
    newick = models.TextField(blank=True, null=True)
-   cluster_composition = models.TextField(blank=True, null=True)
+   clusters = models.TextField(blank=True, null=True)
    partitions = models.TextField(blank=True, null=True)
 
    def get_path(self):
@@ -150,9 +150,13 @@ class RTJob(models.Model):
    
    def load_results_from_files(self):
       job_folder = self.get_path()
-      with open(pathlib.Path(job_folder, 'ReporTree_single_HC.nwk'), 'r') as newick_file:
-         self.newick = newick_file.readline()
-      with open(pathlib.Path(job_folder, 'ReporTree.log'), 'r') as log_file:
-         self.log = log_file.read()
+      with open(pathlib.Path(job_folder, 'ReporTree_single_HC.nwk'), 'r') as f:
+         self.newick = f.read()
+      with open(pathlib.Path(job_folder, 'ReporTree.log'), 'r') as f:
+         self.log = f.read()
+      with open(pathlib.Path(job_folder, 'ReporTree_clusterComposition.tsv'), 'r') as f:
+         self.clusters = f.read()
+      with open(pathlib.Path(job_folder, 'ReporTree_partitions.tsv'), 'r') as f:
+         self.partitions = f.read()
       self.set_status('ALL_DONE')
       self.save()
