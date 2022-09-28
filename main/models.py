@@ -41,8 +41,8 @@ class RTJob(models.Model):
    dataset = models.ForeignKey(DataSet, models.PROTECT)
    metadata_fields = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
    status = models.CharField(max_length=12, choices=STATUSES, default='NEW')
-   started_at = models.DateTimeField(blank=True, null=True)
-   ended_at = models.DateTimeField(blank=True, null=True)
+   start_time = models.DateTimeField(blank=True, null=True)
+   end_time = models.DateTimeField(blank=True, null=True)
    path = models.CharField(max_length=100, blank=True, null=True)
    newick = models.TextField(blank=True, null=True)
 
