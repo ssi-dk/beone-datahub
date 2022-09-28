@@ -50,7 +50,6 @@ class RTJob(models.Model):
    end_time = models.DateTimeField(blank=True, null=True)
    elapsed_time = models.IntegerField(blank=True, null=True)
    error = models.TextField(blank=True, null=True)
-   path = models.CharField(max_length=100, blank=True, null=True)
 
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
