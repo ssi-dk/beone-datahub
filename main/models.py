@@ -147,6 +147,7 @@ class RTJob(models.Model):
       job_folder = self.get_path()
       with open(pathlib.Path(job_folder, 'ReporTree_single_HC.nwk'), 'r') as newick_file:
          self.newick = newick_file.readline()
-      
+      with open(pathlib.Path(job_folder, 'ReporTree.log'), 'r') as log_file:
+         self.log = log_file.read()
       self.set_status('ALL_DONE')
       self.save()
