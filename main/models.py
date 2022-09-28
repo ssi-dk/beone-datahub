@@ -34,9 +34,10 @@ class RTJob(models.Model):
         ('NEW', 'New'),
         ('READY', 'Ready'),
         ('RUNNING', 'Running'),
-        ('SUCCEEDED', 'Succeeded'),
-        ('FAILED', 'Failed'),
-        ('INVALID', 'Invalid')
+        ('FINISHED', 'Finished'),
+        ('OS_ERROR', 'OS Error'),
+        ('RT_ERROR', 'ReporTree Error'),
+        ('OBSOLETE', 'Obsolete')
    ]
    owner = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
    dataset = models.ForeignKey(DataSet, models.PROTECT)
@@ -131,6 +132,6 @@ class RTJob(models.Model):
       self.start_time = json_response['start_time']
       self.end_time = json_response['end_time']
       self.elapsed_time = int(json_response['elapsed_time'])
-      self.status = json_response['status']
       self.error = json_response['error']
+      self.set_status(json_response['status'])
       self.save()
