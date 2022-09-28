@@ -29,7 +29,7 @@ async def start_job(job_number: int):
         stdout, stderr = p.communicate(timeout=3)
         print(stderr)
         if stderr is None:
-            status = "FINISHED"
+            status = 'RT_SUCCESSFUL'
             error = None
         else:
             status = 'RT_ERROR'

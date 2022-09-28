@@ -34,15 +34,16 @@ class RTJob(models.Model):
         ('NEW', 'New'),
         ('READY', 'Ready'),
         ('RUNNING', 'Running'),
-        ('FINISHED', 'Finished'),
-        ('OS_ERROR', 'OS Error'),
-        ('RT_ERROR', 'ReporTree Error'),
+        ('RT_SUCCESSFUL', 'ReporTree successful'),
+        ('ALL_DONE', 'All done'),
+        ('OS_ERROR', 'OS error'),
+        ('RT_ERROR', 'ReporTree error'),
         ('OBSOLETE', 'Obsolete')
    ]
    owner = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
    dataset = models.ForeignKey(DataSet, models.PROTECT)
    metadata_fields = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
-   status = models.CharField(max_length=12, choices=STATUSES, default='NEW')
+   status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
    pid = models.IntegerField(blank=True, null=True)
    start_time = models.DateTimeField(blank=True, null=True)
    end_time = models.DateTimeField(blank=True, null=True)
