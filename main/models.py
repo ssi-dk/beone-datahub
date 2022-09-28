@@ -43,8 +43,15 @@ class RTJob(models.Model):
    status = models.CharField(max_length=12, choices=STATUSES, default='NEW')
    start_time = models.DateTimeField(blank=True, null=True)
    end_time = models.DateTimeField(blank=True, null=True)
+   elapsed_time = models.IntegerField(blank=True, null=True)
+   error = models.TextField(blank=True, null=True)
    path = models.CharField(max_length=100, blank=True, null=True)
+
+   # The following fields are loaded from ReporTree output files
+   log = models.TextField(blank=True, null=True)
    newick = models.TextField(blank=True, null=True)
+   cluster_composition = models.TextField(blank=True, null=True)
+   partitions = models.TextField(blank=True, null=True)
 
    def set_status(self, new_status:str):
       if new_status not in [status[0] for status in self.STATUSES]:
