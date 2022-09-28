@@ -66,6 +66,11 @@ class RTJob(models.Model):
       self.status = new_status
       self.save()
    
+   def get_status(self):
+      if self.status == 'RUNNING':
+         self.load_results_from_files()
+      return self.status
+   
    def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
       # Allele profiles
       allele_profile = sample['allele_profile']
