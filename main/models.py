@@ -35,7 +35,7 @@ class RTJob(models.Model):
         ('READY', 'Ready'),
         ('STARTING', 'Starting'),
         ('RUNNING', 'Running'),
-        ('RT_SUCCESSFUL', 'ReporTree successful'),
+        ('SUCCESS', 'ReporTree successful'),
         ('ALL_DONE', 'All done'),
         ('OS_ERROR', 'OS error'),
         ('RT_ERROR', 'ReporTree error'),
@@ -136,7 +136,7 @@ class RTJob(models.Model):
       self.pid = json_response['pid']
       self.error = json_response['error']
       self.set_status(json_response['status'])
-      if self.status == 'RT_SUCCESSFUL':
+      if self.status == 'SUCCESS':
          self.end_time = timezone.now()
          elapsed_time = self.end_time - self.start_time
          self.elapsed_time = elapsed_time.seconds
