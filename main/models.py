@@ -16,6 +16,10 @@ class DataSet(models.Model):
    modified_at = models.DateTimeField(auto_now=True)
    description = models.CharField(max_length=200, blank=True)
    mongo_keys = models.JSONField(blank=True, default=list)
+   
+   class Meta:
+      ordering = ['-modified_at']
+
 
    def __str__(self):
       return self.name
@@ -30,6 +34,10 @@ def get_default_metadata_fields():
    ]
 
 class RTJob(models.Model):
+
+   class Meta:
+      ordering = ['-pk']
+
    STATUSES = [
         ('NEW', 'New'),
         ('READY', 'Ready'),
