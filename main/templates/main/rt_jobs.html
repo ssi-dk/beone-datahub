@@ -35,12 +35,6 @@
         <div class="overview-header-inner-bold">End Time</div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">Path</div>
-    </div>
-    <div class="overview-header">
-        <div class="overview-header-inner-bold">Newick</div>
-    </div>
-    <div class="overview-header">
         <div class="overview-header-inner-bold">Actions</div>
     </div>
   </div>
@@ -67,12 +61,6 @@
       </div>
       <div class="overview-datacolumn">
         {{ job.end_time }}
-      </div>
-      <div class="overview-datacolumn">
-        {{ job.path }}
-      </div>
-      <div class="overview-datacolumn">
-        {{ job.newick }}
       </div>
       <div class="overview-datacolumn">
         {% if job.owner == request.user %}
