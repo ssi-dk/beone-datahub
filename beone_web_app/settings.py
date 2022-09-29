@@ -112,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Copenhagen'
 
 USE_I18N = False
 
@@ -165,3 +165,5 @@ LOGIN_REDIRECT_URL = "/"
 DATETIME_FORMAT = 'Y-m-d H.i'
 
 USE_L10N = False
+
+REPORTREE_JOB_FOLDER = Path('/rt_runs')  # Root is root of Docker container!

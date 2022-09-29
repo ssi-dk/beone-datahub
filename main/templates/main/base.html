@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>BeONE Web App</title>
+    <title>BeONE Data Hub</title>
     <link rel="shortcut icon" type="image/png" href="{% static 'main/favicon.ico' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'main/index.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'main/App.css' %}">
@@ -12,12 +12,13 @@
   <body>
     <div class='baseline-row pane'>
       <div class='column'>
-        <h1><a href="/">BeONE Web App</a></h1>
+        <h1><a href="/">BeONE Data Hub</a></h1>
       </div>
       {% if request.user.is_authenticated %}
         {% url 'sample_list' as sample_list_url %}
         {% url 'datasets' as datasets_url %}
         {% url 'rt_jobs' as rt_jobs_url %}
+        {% comment %}
         <div class='column'>
           <nav>
             <span class="menu-item">
@@ -37,6 +38,7 @@
             </span>
           <nav>
         </div>
+        {% endcomment %}
         <div class='right-justify'>
           <span>Hello </span><span id="username">{{request.user.username}}</span>
           <span><a href=" {% url 'logout' %}">Logout</a></span>

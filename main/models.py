@@ -4,7 +4,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
+from django.utils import timezone
 
+import requests
 
 class DataSet(models.Model):
    species = models.CharField(max_length=20, choices=settings.ALL_SPECIES)
@@ -14,6 +16,10 @@ class DataSet(models.Model):
    modified_at = models.DateTimeField(auto_now=True)
    description = models.CharField(max_length=200, blank=True)
    mongo_keys = models.JSONField(blank=True, default=list)
+   
+   class Meta:
+      ordering = ['-modified_at']
+
 
    def __str__(self):
       return self.name
@@ -28,28 +34,50 @@ def get_default_metadata_fields():
    ]
 
 class RTJob(models.Model):
+
+   class Meta:
+      ordering = ['-pk']
+
    STATUSES = [
         ('NEW', 'New'),
         ('READY', 'Ready'),
+        ('STARTING', 'Starting'),
         ('RUNNING', 'Running'),
-        ('SUCCEEDED', 'Succeeded'),
-        ('FAILED', 'Failed'),
-        ('INVALID', 'Invalid')
+        ('SUCCESS', 'ReporTree successful'),
+        ('ALL_DONE', 'All done'),
+        ('OS_ERROR', 'OS error'),
+        ('RT_ERROR', 'ReporTree error'),
+        ('OBSOLETE', 'Obsolete')
    ]
    owner = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
    dataset = models.ForeignKey(DataSet, models.PROTECT)
    metadata_fields = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
-   status = models.CharField(max_length=12, choices=STATUSES, default='NEW')
-   started_at = models.DateTimeField(blank=True, null=True)
-   ended_at = models.DateTimeField(blank=True, null=True)
-   path = models.CharField(max_length=100, blank=True, null=True)
-   newick = models.TextField(blank=True, null=True)
+   status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
+   pid = models.IntegerField(blank=True, null=True)
+   start_time = models.DateTimeField(blank=True, null=True)
+   end_time = models.DateTimeField(blank=True, null=True)
+   elapsed_time = models.IntegerField(blank=True, null=True)
+   error = models.TextField(blank=True, null=True)
 
+   # The following fields are loaded from ReporTree output files
+   log = models.TextField(blank=True, null=True)
+   newick = models.TextField(blank=True, null=True)
+   clusters = models.TextField(blank=True, null=True)
+   partitions = models.TextField(blank=True, null=True)
+
+   def get_path(self):
+      return pathlib.Path(settings.REPORTREE_JOB_FOLDER, str(self.pk))
+   
    def set_status(self, new_status:str):
       if new_status not in [status[0] for status in self.STATUSES]:
          raise ValueError(f"Illegal job status: {new_status}")
       self.status = new_status
       self.save()
+   
+   def get_status(self):
+      if self.status == 'RUNNING':
+         self.load_results_from_files()
+      return self.status
    
    def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
       # Allele profiles
@@ -72,10 +100,9 @@ class RTJob(models.Model):
    
    def prepare(self, samples):
       # Create a folder for the run
-      root_folder = pathlib.Path('/rt_runs')
-      if not root_folder.exists():
-            root_folder.mkdir()
-      job_folder = pathlib.Path(root_folder, str(self.pk))
+      job_folder = self.get_path()
+      if not job_folder.exists():
+            job_folder.mkdir()
       if job_folder.exists():
             print(f"Job folder {job_folder} already exists! Reusing it.")
       else:
@@ -113,3 +140,31 @@ class RTJob(models.Model):
    
       # Set new status on job
       self.set_status('READY')
+
+   def run(self):
+      self.start_time = timezone.now()
+      self.set_status('STARTING')
+      self.save()
+      raw_response = requests.post(f'http://reportree:7000/reportree/start_job/{self.pk}/')
+      json_response = (raw_response.json())
+      self.pid = json_response['pid']
+      self.error = json_response['error']
+      self.set_status(json_response['status'])
+      if self.status == 'SUCCESS':
+         self.end_time = timezone.now()
+         elapsed_time = self.end_time - self.start_time
+         self.elapsed_time = elapsed_time.seconds
+      self.save()
+   
+   def load_results_from_files(self):
+      job_folder = self.get_path()
+      with open(pathlib.Path(job_folder, 'ReporTree_single_HC.nwk'), 'r') as f:
+         self.newick = f.read()
+      with open(pathlib.Path(job_folder, 'ReporTree.log'), 'r') as f:
+         self.log = f.read()
+      with open(pathlib.Path(job_folder, 'ReporTree_clusterComposition.tsv'), 'r') as f:
+         self.clusters = f.read()
+      with open(pathlib.Path(job_folder, 'ReporTree_partitions.tsv'), 'r') as f:
+         self.partitions = f.read()
+      self.set_status('ALL_DONE')
+      self.save()

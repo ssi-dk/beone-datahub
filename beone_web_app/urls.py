@@ -35,4 +35,5 @@ urlpatterns = [
     path('rt_jobs/<int:rt_job_key>/delete/', views.delete_rt_job, {'dataset_page': False}, name='delete_rt_job'),
     path('rt_jobs/<int:rt_job_key>/delete/for_dataset', views.delete_rt_job, {'dataset_page': True}, name='delete_rt_job_for_dataset'),
     path('rt_jobs/<int:rt_job_key>/run/', views.run_rt_job, name='run_rt_job'),
+    path('rt_job/<int:rt_job_key>/', views.view_rt_job, name='view_rt_job'),
 ]

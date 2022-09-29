@@ -29,16 +29,10 @@
       <div class="overview-header-inner-bold">Status</div>
     </div>
     <div class="overview-header">
-        <div class="overview-header-inner-bold">Started At</div>
+        <div class="overview-header-inner-bold">Start Time</div>
     </div>
     <div class="overview-header">
-        <div class="overview-header-inner-bold">Finished At</div>
-    </div>
-    <div class="overview-header">
-      <div class="overview-header-inner-bold">Path</div>
-    </div>
-    <div class="overview-header">
-        <div class="overview-header-inner-bold">Newick</div>
+        <div class="overview-header-inner-bold">End Time</div>
     </div>
     <div class="overview-header">
         <div class="overview-header-inner-bold">Actions</div>
@@ -63,16 +57,10 @@
         {{ job.get_status_display }}
       </div>
       <div class="overview-datacolumn">
-        {{ job.started_at }}
+        {{ job.start_time }}
       </div>
       <div class="overview-datacolumn">
-        {{ job.ended_at }}
-      </div>
-      <div class="overview-datacolumn">
-        {{ job.path }}
-      </div>
-      <div class="overview-datacolumn">
-        {{ job.newick }}
+        {{ job.end_time }}
       </div>
       <div class="overview-datacolumn">
         {% if job.owner == request.user %}

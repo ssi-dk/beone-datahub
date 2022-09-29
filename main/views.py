@@ -28,7 +28,7 @@ def get_species_name(species: str=None):
 
 def redirect_root(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/sample_list/')
+        return HttpResponseRedirect('/datasets/')
     else:
         return HttpResponseRedirect('/login/')
     
@@ -139,7 +139,6 @@ def add_remove_sample(request):
         }
     else:
         mongo_id = data_from_post['mongoId']
-        print(mongo_id)
         if data_from_post['action'] == 'add':
             try:
                 dataset.mongo_keys.append(mongo_id)
@@ -213,4 +212,17 @@ def run_rt_job(request, rt_job_key:str):
             messages.add_message(request, messages.ERROR, f'Some keys in the dataset are unmatched: {unmatched}. Please fix before running job.')
         else:
             rt_job.prepare(samples)
+            rt_job.run()
+            if rt_job.status == 'SUCCESS':
+                rt_job.load_results_from_files()
+            else:
+                messages.add_message(request, messages.INFO,
+                    f"Job {rt_job.pk} is still running. Try to reload the page after a while.")
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
+
+
+def view_rt_job(request, rt_job_key:str):
+    rt_job = RTJob.objects.get(pk=rt_job_key)
+    return render(request, 'main/rt_job.html',{
+        'rt_job': rt_job,
+        })
