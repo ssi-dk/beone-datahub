@@ -219,3 +219,10 @@ def run_rt_job(request, rt_job_key:str):
                 messages.add_message(request, messages.INFO,
                     f"Job {rt_job.pk} is still running. Try to reload the page after a while.")
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
+
+
+def view_rt_job(request, rt_job_key:str):
+    rt_job = RTJob.objects.get(pk=rt_job_key)
+    return render(request, 'main/rt_job.html',{
+        'rt_job': rt_job,
+        })

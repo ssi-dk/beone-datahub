@@ -1,0 +1,89 @@
+{% extends "main/base.html" %}
+
+{% block content%}
+<div class="pane">
+  {% if dataset %}
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Initialize new job">
+  </form>
+  {% endif %}
+</div>
+<div class="pane">
+    <h2>ReporTree jobs{% if dataset %} for dataset {{dataset.name}}{%endif%}</h2>
+  <div class="overview-row">
+    <div class="overview-header overview-firstcol-border">
+    <div class="overview-header-inner-bold">Job Number</div>
+    </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Owner</div>
+    </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Dataset</div>
+    </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Metadata Fields</div>
+    </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Status</div>
+    </div>
+    <div class="overview-header">
+        <div class="overview-header-inner-bold">Start Time</div>
+    </div>
+    <div class="overview-header">
+        <div class="overview-header-inner-bold">End Time</div>
+    </div>
+    <div class="overview-header">
+        <div class="overview-header-inner-bold">Actions</div>
+    </div>
+  </div>
+  <div>
+  {% for job in rt_jobs %}
+    <div class="row">
+      <div class="overview-datacolumn">
+        {{ job.pk }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ job.owner }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ job.dataset }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ job.metadata_fields }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ job.get_status_display }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ job.start_time }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ job.end_time }}
+      </div>
+      <div class="overview-datacolumn">
+        {% if job.owner == request.user %}
+          {% if dataset %}
+            <a href={% url 'delete_rt_job_for_dataset' job.pk %}>Delete</a>
+          {% else %}
+            <a href={% url 'delete_rt_job' job.pk %}>Delete</a>
+          {% endif %}
+        {% else %}
+          <span class="inactive">Delete</span>
+        {% endif %}
+        {% if dataset %}
+          <a href={% url 'run_rt_job' job.pk %}>Run</a>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block footer %}
+  {% if edit %}
+    <script src="/static/main/update_mongoids.js"></script> 
+  {% endif %}
+{% endblock %}
+
