@@ -5,10 +5,22 @@
     <h2>ReporTree job #{{ rt_job.pk }} for dataset '{{ rt_job.dataset.name }}'</h2>
     <div class="row">
       <div class="overview-datacolumn">
-        Dataset name:
+        Start time:
       </div>
       <div class="overview-datacolumn">
-        {{ rt_job.dataset.name }}
+        {{ rt_job.start_time }}
+      </div>
+      <div class="overview-datacolumn">
+        End time:
+      </div>
+      <div class="overview-datacolumn">
+        {{ rt_job.end_time }}
+      </div>
+      <div class="overview-datacolumn">
+        Elapsed time (seconds):
+      </div>
+      <div class="overview-datacolumn">
+        {{ rt_job.elapsed_time }}
       </div>
     </div>
 </div>
