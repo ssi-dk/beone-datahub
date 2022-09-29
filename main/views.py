@@ -214,5 +214,9 @@ def run_rt_job(request, rt_job_key:str):
         else:
             rt_job.prepare(samples)
             rt_job.run()
-            rt_job.load_results_from_files()
+            if rt_job.status == 'SUCCESS':
+                rt_job.load_results_from_files()
+            else:
+                messages.add_message(request, messages.INFO,
+                    f"Job {rt_job.pk} is still running. Try to reload the page after a while.")
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
