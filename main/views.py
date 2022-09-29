@@ -139,7 +139,6 @@ def add_remove_sample(request):
         }
     else:
         mongo_id = data_from_post['mongoId']
-        print(mongo_id)
         if data_from_post['action'] == 'add':
             try:
                 dataset.mongo_keys.append(mongo_id)
