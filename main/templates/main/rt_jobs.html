@@ -63,12 +63,19 @@
         {{ job.end_time }}
       </div>
       <div class="overview-datacolumn">
-        {% if job.owner == request.user %}
+        {% if job.status == 'NEW' or job.status == 'OBSOLETE' %}
           <a href={% url 'delete_rt_job_for_dataset' job.pk %}>Delete</a>
         {% else %}
           <span class="inactive">Delete</span>
         {% endif %}
-        <a href={% url 'run_rt_job' job.pk %}>Run</a>
+        {% if job.status == 'NEW' or job.status == 'READY' %}
+          <a href={% url 'run_rt_job' job.pk %}>Run</a>
+        {% else %}
+        <span class="inactive">Run</span>
+        {% endif %}
+        {% if job.status == 'SUCCESS' or job.status == 'ALL_DONE' %}
+          <a href={% url 'view_rt_job' job.pk %}>View</a>
+        {% endif %}
       </div>
     </div>
   {% endfor %}
