@@ -78,9 +78,9 @@ class RTJob(models.Model):
       if self.status == 'RUNNING':
          try: 
             self.load_results_from_files()
-         except Exception as e:  # Todo: use relevant exeption for file not found
+         except FileNotFoundError as e:
             pass
-      return self.status
+      return self.get_status_display()
    
    def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
       # Allele profiles
