@@ -148,8 +148,10 @@ class RTJob(models.Model):
       self.start_time = timezone.now()
       self.set_status('STARTING')
       self.save()
-      raw_response = requests.post(f'http://reportree:7000/reportree/start_job/{self.pk}/')
+      raw_response = requests.post(f'http://reportree:7000/reportree/start_job/',
+         json={'job_number': self.pk, 'timeout': settings.REPORTREE_TIMEOUT})
       json_response = (raw_response.json())
+      print(json_response)
       self.pid = json_response['pid']
       self.error = json_response['error']
       self.set_status(json_response['status'])
