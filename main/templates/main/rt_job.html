@@ -17,79 +17,33 @@
     {% else  %}
     <div class="overview-header overview-firstcol-border">
     {% endif %}
-    <div class="overview-header-inner-bold">Organization</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
+    <div class="overview-header-inner-bold">Log</div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">Name</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
+      <div class="overview-header-inner-bold">Newick</div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">Species</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
+      <div class="overview-header-inner-bold">Clusters</div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">Country</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
-    </div>
-    <div class="overview-header">
-      <div class="overview-header-inner-bold">Source</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
-    </div>
-    <div class="overview-header">
-      <div class="overview-header-inner-bold">Sampling Year</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
-    </div>
-    <div class="overview-header">
-      <div class="overview-header-inner-bold">ST</div>
-      <div class="overview-header-inner">
-        <span>{filter}</span>
-      </div>
+      <div class="overview-header-inner-bold">Partitions</div>
     </div>
   </div>
   <div id="sample_list">
-  {% for sample in samples %}
     <div class="row">
-      {% if edit %}
-      <div class="overview-firstcol">
-        <input id="{{ sample.org }}.{{sample.name}}" type="checkbox" {% if sample.in_dataset %} checked {% endif %}/>
-      </div>
-      {% endif %}
       <div class="overview-datacolumn">
-        {{ sample.org }}
+        {{ rt_job.log }}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.name }}
+        {{ rt_job.newick }}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.metadata.Microorganism }}
+        {{ rt_job.clusters }}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.country.termName }}
-      </div>
-      <div class="overview-datacolumn">
-        {{ sample.source_type.termName }}
-      </div>
-      <div class="overview-datacolumn">
-        {{ sample.metadata.Date_Sampling_YYYY }}
-      </div>
-      <div class="overview-datacolumn">
-        {{ sample.sequence_type }}
+        {{ rt_job.partitions }}
       </div>
     </div>
-  {% endfor %}
 </div>
 {% endblock %}
 
