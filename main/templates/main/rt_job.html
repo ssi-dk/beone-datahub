@@ -2,9 +2,22 @@
 
 {% block content%}
 <div class="pane">
-    <h2>ReporTree job {{ rt_job.pk }} for dataset {{ rt_job.dataset.name }}</h2>
-    <h3>Owner: {{ rt_job.dataset.owner.username }}</h3>
-    <h3>Species: {{ species_name }}</h3>
+  <div class="baseline-row">
+    <div class="column">
+      <h2>ReporTree job {{ rt_job.pk }} for dataset {{ rt_job.dataset.name }}</h2>
+    </div>
+    <div class="column">
+      <h3>Owner: {{ rt_job.dataset.owner.username }}</h3>
+    </div>
+    <div class="column">
+      <h3>Species: {{ species_name }}</h3>
+    </div>
+    <div class="column right-justify">
+      <form>
+        <input type="submit" value="Show in Dashboard">
+      </form>
+    </div>
+  </div>
   <div class="overview-row">
     {% if edit %}
     <div class="overview-firstcol-border">
