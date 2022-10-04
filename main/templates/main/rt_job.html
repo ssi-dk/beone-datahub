@@ -2,26 +2,100 @@
 
 {% block content%}
 <div class="pane">
-    <h2>ReporTree job #{{ rt_job.pk }} for dataset '{{ rt_job.dataset.name }}'</h2>
-    <div class="row">
-      <div class="overview-datacolumn">
-        Start time:
-      </div>
-      <div class="overview-datacolumn">
-        {{ rt_job.start_time }}
-      </div>
-      <div class="overview-datacolumn">
-        End time:
-      </div>
-      <div class="overview-datacolumn">
-        {{ rt_job.end_time }}
-      </div>
-      <div class="overview-datacolumn">
-        Elapsed time (seconds):
-      </div>
-      <div class="overview-datacolumn">
-        {{ rt_job.elapsed_time }}
+    <h2>ReporTree job {{ rt_job.pk }} for dataset {{ rt_job.dataset.name }}</h2>
+    <h3>Owner: {{ rt_job.dataset.owner.username }}</h3>
+    <h3>Species: {{ species_name }}</h3>
+  <div class="overview-row">
+    {% if edit %}
+    <div class="overview-firstcol-border">
+      <input type="checkbox"
+      />
+    </div>
+    {% endif %}
+    {% if edit %}
+    <div class="overview-header">
+    {% else  %}
+    <div class="overview-header overview-firstcol-border">
+    {% endif %}
+    <div class="overview-header-inner-bold">Organization</div>
+      <div class="overview-header-inner">
+        <span>{filter}</span>
       </div>
     </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Name</div>
+      <div class="overview-header-inner">
+        <span>{filter}</span>
+      </div>
+    </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Species</div>
+      <div class="overview-header-inner">
+        <span>{filter}</span>
+      </div>
+    </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Country</div>
+      <div class="overview-header-inner">
+        <span>{filter}</span>
+      </div>
+    </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Source</div>
+      <div class="overview-header-inner">
+        <span>{filter}</span>
+      </div>
+    </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Sampling Year</div>
+      <div class="overview-header-inner">
+        <span>{filter}</span>
+      </div>
+    </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">ST</div>
+      <div class="overview-header-inner">
+        <span>{filter}</span>
+      </div>
+    </div>
+  </div>
+  <div id="sample_list">
+  {% for sample in samples %}
+    <div class="row">
+      {% if edit %}
+      <div class="overview-firstcol">
+        <input id="{{ sample.org }}.{{sample.name}}" type="checkbox" {% if sample.in_dataset %} checked {% endif %}/>
+      </div>
+      {% endif %}
+      <div class="overview-datacolumn">
+        {{ sample.org }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.name }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.metadata.Microorganism }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.country.termName }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.source_type.termName }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.metadata.Date_Sampling_YYYY }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.sequence_type }}
+      </div>
+    </div>
+  {% endfor %}
 </div>
 {% endblock %}
+
+{% block footer %}
+  {% if edit %}
+    <script src="/static/main/update_mongoids.js"></script> 
+  {% endif %}
+{% endblock %}
+
