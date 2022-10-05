@@ -12,18 +12,21 @@
     <div class="column">
       <h3>Species: {{ species_name }}</h3>
     </div>
-    <div class="column right-justify">
-      <form>
-        <input type="submit" value="Open in Dashboard">
-      </form>
-    </div>
   </div>
 </div>
-{% endblock %}
-
-{% block footer %}
-  {% if edit %}
-    <script src="/static/main/update_mongoids.js"></script> 
-  {% endif %}
+<div class='row'>
+  <div class='column pane'>
+      <h2>ReporTree Files</h2>
+  </div>
+  <div class='column pane'>
+      <h2>Sample List</h2>
+  </div>
+</div>
+<div class = 'row pane'>
+  <h2>Dashboard Launcher</h2>
+  <form>
+    <input type="submit" value="Open Dashboard">
+  </form>
+</div>
 {% endblock %}
 
