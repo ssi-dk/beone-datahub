@@ -18,45 +18,6 @@
       </form>
     </div>
   </div>
-  <div class="overview-row">
-    {% if edit %}
-    <div class="overview-firstcol-border">
-      <input type="checkbox"
-      />
-    </div>
-    {% endif %}
-    {% if edit %}
-    <div class="overview-header">
-    {% else  %}
-    <div class="overview-header overview-firstcol-border">
-    {% endif %}
-    <div class="overview-header-inner-bold">Log</div>
-    </div>
-    <div class="overview-header">
-      <div class="overview-header-inner-bold">Newick</div>
-    </div>
-    <div class="overview-header">
-      <div class="overview-header-inner-bold">Clusters</div>
-    </div>
-    <div class="overview-header">
-      <div class="overview-header-inner-bold">Partitions</div>
-    </div>
-  </div>
-  <div id="sample_list">
-    <div class="row">
-      <div class="overview-datacolumn">
-        {{ rt_job.log }}
-      </div>
-      <div class="overview-datacolumn">
-        {{ rt_job.newick }}
-      </div>
-      <div class="overview-datacolumn">
-        {{ rt_job.clusters }}
-      </div>
-      <div class="overview-datacolumn">
-        {{ rt_job.partitions }}
-      </div>
-    </div>
 </div>
 {% endblock %}
 
