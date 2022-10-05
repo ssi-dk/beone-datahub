@@ -26,13 +26,13 @@
       <div class="overview-header-inner-bold">Metadata Fields</div>
     </div>
     <div class="overview-header">
+      <div class="overview-header-inner-bold">Options</div>
+    </div>
+    <div class="overview-header">
       <div class="overview-header-inner-bold">Status</div>
     </div>
     <div class="overview-header">
         <div class="overview-header-inner-bold">Start Time</div>
-    </div>
-    <div class="overview-header">
-        <div class="overview-header-inner-bold">End Time</div>
     </div>
     <div class="overview-header">
         <div class="overview-header-inner-bold">Actions</div>
@@ -54,13 +54,13 @@
         {{ job.metadata_fields }}
       </div>
       <div class="overview-datacolumn">
+        Not yet implemented
+      </div>
+      <div class="overview-datacolumn">
         {{ job.get_status }}
       </div>
       <div class="overview-datacolumn">
         {{ job.start_time }}
-      </div>
-      <div class="overview-datacolumn">
-        {{ job.end_time }}
       </div>
       <div class="overview-datacolumn">
         {% if job.status == 'NEW' or job.status == 'OBSOLETE' %}
