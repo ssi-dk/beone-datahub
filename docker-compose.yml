@@ -50,8 +50,7 @@ services:
       - 8080:80
     restart: always
     volumes:
-      - static:/srv/app/static
-      - media:/srv/app/media
+      - static:/main/static
     depends_on:
       - django
 
