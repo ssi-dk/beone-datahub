@@ -240,8 +240,11 @@ def view_rt_output(request, rt_job_key:str, item: str='log'):
         content = rt_job.clusters
     if item == 'partitions':
         content = rt_job.partitions
+
+    content_lines = content.split('\n')
+
     return render(request, 'main/raw_file.html',{
         'rt_job': rt_job,
         'item': item,
-        'content': content
+        'content_lines': content_lines
         })

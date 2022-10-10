@@ -13,9 +13,9 @@
 <div class='row'>
   <div class='pane'>
       <h2>Output Item: {{ item }}</h2>
-      <div class='row'>
-        {{ content }}
-      </div>
+      {% for content_line in content_lines %}
+        <div class='row'> {{ content_line }} </div>
+      {% endfor %}
   </div>
 </div>
 {% endblock %}
