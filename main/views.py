@@ -232,6 +232,16 @@ def view_rt_job(request, rt_job_key:str):
 
 def view_rt_output(request, rt_job_key:str, item: str='log'):
     rt_job = RTJob.objects.get(pk=rt_job_key)
+    if item == 'log':
+        content = rt_job.log
+    if item == 'newick':
+        content = rt_job.newick
+    if item == 'clusters':
+        content = rt_job.clusters
+    if item == 'partitions':
+        content = rt_job.partitions
     return render(request, 'main/raw_file.html',{
         'rt_job': rt_job,
+        'item': item,
+        'content': content
         })
