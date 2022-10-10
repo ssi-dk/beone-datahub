@@ -228,3 +228,14 @@ def view_rt_job(request, rt_job_key:str):
         'species_name': species_name,
         'form': form.as_p
         })
+
+
+def view_rt_output(request, rt_job_key:str, item: str='log'):
+    rt_job = RTJob.objects.get(pk=rt_job_key)
+    species_name = get_species_name(rt_job.dataset.species)
+    form = DashboardLauncherForm()
+    return render(request, 'main/rt_job.html',{
+        'rt_job': rt_job,
+        'species_name': species_name,
+        'form': form.as_p
+        })

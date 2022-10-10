@@ -12,12 +12,12 @@
 </div>
 <div class='row'>
   <div class='pane'>
-      <h2>ReporTree Files</h2>
+      <h2>ReporTree Output</h2>
       <ul>
-        <li><a href=".">Log</a></li>
-        <li><a href=".">Newick</a></li>
-        <li><a href=".">Clusters</a></li>
-        <li><a href=".">Partitions</a></li>
+        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'log' %}" target="_blank">Log</a></li>
+        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'newick' %}" target="_blank">Newick</a></li>
+        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'clusters' %}" target="_blank">Clusters</a></li>
+        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'partitions' %}" target="_blank">Partitions</a></li>
       </ul>
   </div>
   <div class='pane'>
