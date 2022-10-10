@@ -42,3 +42,19 @@ services:
       - postgres
       - mongo
       - reportree
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - 8080:80
+    restart: always
+    volumes:
+      - static:/srv/app/static
+      - media:/srv/app/media
+    depends_on:
+      - django
+
+volumes:
+  media:
+  static:
