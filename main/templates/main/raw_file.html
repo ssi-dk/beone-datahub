@@ -1,0 +1,39 @@
+{% extends "main/base.html" %}
+
+{% block content%}
+<div class="pane">
+  <div class="baseline-row">
+    <div class="column">
+      <h2>ReporTree job {{ rt_job.pk }} for dataset {{ rt_job.dataset.name }}</h2>
+    </div>
+    <div class="column">Dataset Owner: {{ rt_job.dataset.owner.username }}</div>
+    <div class="column">Species: {{ species_name }}</div>
+  </div>
+</div>
+<div class='row'>
+  <div class='pane'>
+      <h2>ReporTree Output</h2>
+      <ul>
+        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'log' %}" target="_blank">Log</a></li>
+        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'newick' %}" target="_blank">Newick</a></li>
+        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'clusters' %}" target="_blank">Clusters</a></li>
+        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'partitions' %}" target="_blank">Partitions</a></li>
+      </ul>
+  </div>
+  <div class='pane'>
+    <h2>Dashboard Launcher</h2>
+    <form>
+      <div class="margin-tb">
+        <form action="" method="post">
+          {% csrf_token %}
+          {{ form }}
+          <input type="submit" value="Launch Dashboard">
+        </form>
+      </div>
+    </form>
+  </div>
+  </form>
+  </div>
+</div>
+{% endblock %}
+
