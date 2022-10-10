@@ -28,13 +28,13 @@ http://localhost:8000/
 
 Open another terminal window (while the containers are still running in the first one) and type the following to generate the table structure in PostgreSQL:
 
-    docker exec beone_web_app-web-1 python manage.py migrate
+    docker exec beone_web_app-django-1 python manage.py migrate
 
 This should produce som text output but no error messages.
 
 Then type in the same terminal window to create a user that can login to the web app:
 
-    docker exec -it beone_web_app-web-1 python manage.py createsuperuser
+    docker exec -it beone_web_app-django-1 python manage.py createsuperuser
 
 Enter user information at the prompts.
 
