@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 
 from main.mongo.samples_api import API
 from main.models import DataSet, RTJob
-from main.forms import NewDatasetForm, DeleteDatasetForm
+from main.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
 
@@ -223,5 +223,6 @@ def view_rt_job(request, rt_job_key:str):
     species_name = get_species_name(rt_job.dataset.species)
     return render(request, 'main/rt_job.html',{
         'rt_job': rt_job,
-        'species_name': species_name
+        'species_name': species_name,
+        'form': DashboardLauncherForm
         })

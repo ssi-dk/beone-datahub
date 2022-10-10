@@ -24,7 +24,11 @@
     <h2>Dashboard Launcher</h2>
     <form>
       <div class="margin-tb">
-        <input type="submit" value="Launch Dashboard">
+        <form action="" method="post">
+          {% csrf_token %}
+          {{ form }}
+          <input type="submit" value="Launch Dashboard">
+        </form>
       </div>
     </form>
   </div>
