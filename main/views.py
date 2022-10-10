@@ -1,4 +1,5 @@
 import json
+from re import template
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -221,8 +222,9 @@ def run_rt_job(request, rt_job_key:str):
 def view_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     species_name = get_species_name(rt_job.dataset.species)
+    form = DashboardLauncherForm()
     return render(request, 'main/rt_job.html',{
         'rt_job': rt_job,
         'species_name': species_name,
-        'form': DashboardLauncherForm
+        'form': form.as_p
         })
