@@ -53,6 +53,20 @@ services:
       - static:/main/static
     depends_on:
       - django
+  
+  react:
+    build: ./dashboard
+    command: npm start
+    ports:
+      - 3000:3000
+    # env_file:
+    #   - ./.env.dev
+    tty: true
+    # environment:
+    #   - SOME_ENVVAR=true
+    # volumes:
+    #   - ./frontend/:/srv/app
+    #   - /srv/app/node_modules
 
 volumes:
   static:
