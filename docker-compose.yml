@@ -49,8 +49,8 @@ services:
     ports:
       - 8080:80
     restart: always
-    volumes:
-      - static:/main/static
+    # volumes:
+    #   - static:/app/static
     depends_on:
       - django
   
@@ -65,8 +65,8 @@ services:
     # environment:
     #   - SOME_ENVVAR=true
     # volumes:
-    #   - ./frontend/:/srv/app
+    #   - ./dashboard/:/app
     #   - /srv/app/node_modules
 
-volumes:
-  static:
+# volumes:
+#   static:
