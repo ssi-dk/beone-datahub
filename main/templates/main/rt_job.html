@@ -1,5 +1,9 @@
 {% extends "main/base.html" %}
 
+{% block extra_header %}
+  <script defer src="/static/js/bundle.js"></script>
+{% endblock %}
+
 {% block content%}
 <div class="pane">
   <div class="baseline-row">
@@ -32,8 +36,6 @@
       </div>
     </form>
   </div>
-  </form>
-  </div>
 </div>
+<div id="root"></div>
 {% endblock %}
-
