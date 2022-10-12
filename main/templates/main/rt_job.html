@@ -24,6 +24,14 @@
         <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'partitions' %}" target="_blank">Partitions</a></li>
       </ul>
   </div>
+  <div style="display:none;">
+    <div id="sampleList">
+      {{ rt_job.dataset.mongo_keys }}
+    </div>
+    <div id="newick">
+      {{ rt_job.newick }}
+    </div>
+  </div>
   <div class='pane'>
     <h2>Dashboard Launcher</h2>
     <form>
