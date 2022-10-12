@@ -55,7 +55,7 @@ services:
       - django
   
   react:
-    build: ./dashboard
+    build: ./dashboard/beone-dashboard
     command: npm start
     ports:
       - 3000:3000
