@@ -17,12 +17,10 @@
 <div class='row'>
   <div class='pane'>
       <h2>ReporTree Output</h2>
-      <ul>
-        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'log' %}" target="_blank">Log</a></li>
-        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'newick' %}" target="_blank">Newick</a></li>
-        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'clusters' %}" target="_blank">Clusters</a></li>
-        <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'partitions' %}" target="_blank">Partitions</a></li>
-      </ul>
+      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'log' %}" target="_blank">Log</a>
+      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'newick' %}" target="_blank">Newick</a>
+      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'clusters' %}" target="_blank">Clusters</a>
+      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'partitions' %}" target="_blank">Partitions</a>
   </div>
 </div>
 <div id="reportree_job_number" style="display:none;">
