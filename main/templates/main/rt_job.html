@@ -24,18 +24,6 @@
         <li><a href="{% url 'view_rt_output' rt_job.dataset.pk 'partitions' %}" target="_blank">Partitions</a></li>
       </ul>
   </div>
-  <div class='pane'>
-    <h2>Dashboard Launcher</h2>
-    <form>
-      <div class="margin-tb">
-        <form action="" method="post">
-          {% csrf_token %}
-          {{ form }}
-          <input type="submit" value="Launch Dashboard">
-        </form>
-      </div>
-    </form>
-  </div>
 </div>
 <div id="reportree_job_number" style="display:none;">
   {{ rt_job.pk }}
