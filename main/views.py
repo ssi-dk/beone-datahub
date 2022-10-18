@@ -219,6 +219,7 @@ def run_rt_job(request, rt_job_key:str):
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
 
 
+@login_required
 def view_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     species_name = get_species_name(rt_job.dataset.species)
@@ -229,7 +230,7 @@ def view_rt_job(request, rt_job_key:str):
         'form': form.as_p
         })
 
-
+@login_required
 def view_rt_output(request, rt_job_key:str, item: str='log'):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     if item == 'log':
@@ -248,3 +249,8 @@ def view_rt_output(request, rt_job_key:str, item: str='log'):
         'item': item,
         'content_lines': content_lines
         })
+
+@login_required
+def get_rt_newick(request, rt_job_key: str):
+    rt_job = RTJob.objects.get(pk=rt_job_key)
+    return JsonResponse({'newick': rt_job.newick})
