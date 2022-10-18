@@ -253,4 +253,4 @@ def view_rt_output(request, rt_job_key:str, item: str='log'):
 @login_required
 def get_rt_data(request, rt_job_key: str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
-    return JsonResponse({'sample_ids': rt_job.dataset.mongo_keys, 'newick': rt_job.newick})
+    return JsonResponse({'newick': rt_job.newick, 'sample_ids': rt_job.dataset.mongo_keys})
