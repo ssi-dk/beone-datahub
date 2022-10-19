@@ -18,23 +18,19 @@ In the installation directory, type:
 
     docker compose up
 
-When Docker has finished downloading images and building and starting the containers you should see someting like:
+When Docker has finished downloading images and building and starting the containers, go to this address in a browser:
 
-Starting development server at http://0.0.0.0:8000/
-
-That address might not work. Use this address instead to see the user interface in a browser:
-
-http://localhost:8000/
+http://localhost:8080/
 
 Open another terminal window (while the containers are still running in the first one) and type the following to generate the table structure in PostgreSQL:
 
-    docker exec beone_web_app-web-1 python manage.py migrate
+    docker exec beone_web_app-django-1 python manage.py migrate
 
 This should produce som text output but no error messages.
 
 Then type in the same terminal window to create a user that can login to the web app:
 
-    docker exec -it beone_web_app-web-1 python manage.py createsuperuser
+    docker exec -it beone_web_app-django-1 python manage.py createsuperuser
 
 Enter user information at the prompts.
 

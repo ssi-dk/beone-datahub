@@ -1,4 +1,5 @@
 import json
+from re import template
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -11,7 +12,7 @@ from django.contrib.auth.models import User
 
 from main.mongo.samples_api import API
 from main.models import DataSet, RTJob
-from main.forms import NewDatasetForm, DeleteDatasetForm
+from main.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
 
@@ -218,10 +219,38 @@ def run_rt_job(request, rt_job_key:str):
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
 
 
+@login_required
 def view_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     species_name = get_species_name(rt_job.dataset.species)
+    form = DashboardLauncherForm()
     return render(request, 'main/rt_job.html',{
         'rt_job': rt_job,
-        'species_name': species_name
+        'species_name': species_name,
+        'form': form.as_p
         })
+
+@login_required
+def view_rt_output(request, rt_job_key:str, item: str='log'):
+    rt_job = RTJob.objects.get(pk=rt_job_key)
+    if item == 'log':
+        content = rt_job.log
+    if item == 'newick':
+        content = rt_job.newick
+    if item == 'clusters':
+        content = rt_job.clusters
+    if item == 'partitions':
+        content = rt_job.partitions
+
+    content_lines = content.split('\n')
+
+    return render(request, 'main/raw_file.html',{
+        'rt_job': rt_job,
+        'item': item,
+        'content_lines': content_lines
+        })
+
+@login_required
+def get_rt_data(request, rt_job_key: str):
+    rt_job = RTJob.objects.get(pk=rt_job_key)
+    return JsonResponse({'newick': rt_job.newick, 'sample_ids': rt_job.dataset.mongo_keys})

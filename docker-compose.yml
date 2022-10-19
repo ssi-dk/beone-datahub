@@ -1,10 +1,10 @@
 version: "3.9"
    
 services:
-  db:
+  postgres:
     image: postgres
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -26,7 +26,7 @@ services:
       - "7000:7000"
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7000"]
 
-  web:
+  django:
     build: .
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
@@ -39,6 +39,34 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     depends_on:
-      - db
+      - postgres
       - mongo
       - reportree
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - 8080:80
+    restart: always
+    # volumes:
+    #   - static:/app/static
+    depends_on:
+      - django
+  
+  react:
+    build: ./dashboard
+    command: npm start
+    ports:
+      - 3000:3000
+    # env_file:
+    #   - ./.env.dev
+    tty: true
+    # environment:
+    #   - SOME_ENVVAR=true
+    # volumes:
+    #   - ./dashboard/:/app
+    #   - /srv/app/node_modules
+
+# volumes:
+#   static:

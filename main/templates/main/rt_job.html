@@ -1,5 +1,9 @@
 {% extends "main/base.html" %}
 
+{% block extra_header %}
+  <script defer src="/static/js/bundle.js"></script>
+{% endblock %}
+
 {% block content%}
 <div class="pane">
   <div class="baseline-row">
@@ -12,18 +16,15 @@
 </div>
 <div class='row'>
   <div class='pane'>
-      <h2>ReporTree Files</h2>
-  </div>
-  <div class='pane'>
-    <h2>Dashboard Launcher</h2>
-    <form>
-      <div class="margin-tb">
-        <input type="submit" value="Launch Dashboard">
-      </div>
-    </form>
-  </div>
-  </form>
+      <h2>ReporTree Output</h2>
+      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'log' %}" target="_blank">Log</a>
+      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'newick' %}" target="_blank">Newick</a>
+      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'clusters' %}" target="_blank">Clusters</a>
+      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'partitions' %}" target="_blank">Partitions</a>
   </div>
 </div>
+<div id="reportree_job_number" style="display:none;">
+  {{ rt_job.pk }}
+</div>
+<div id="dashboard"></div>
 {% endblock %}
-
