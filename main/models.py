@@ -104,10 +104,8 @@ class RTJob(models.Model):
    def prepare(self, samples):
       # Create a folder for the run
       job_folder = self.get_path()
-      if not job_folder.exists():
-            job_folder.mkdir()
       if job_folder.exists():
-            print(f"Job folder {job_folder} already exists! Reusing it.")
+         print(f"WARNING: Job folder {job_folder} already exists! Reusing it.")
       else:
             job_folder.mkdir()
             print(f"Created job folder {job_folder}.")
