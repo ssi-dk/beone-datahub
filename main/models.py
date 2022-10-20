@@ -171,3 +171,16 @@ class RTJob(models.Model):
          self.partitions = f.read()
       self.set_status('ALL_DONE')
       self.save()
+
+
+class Cluster(models.Model):
+   rt_job = models.ForeignKey(RTJob, on_delete=models.CASCADE)
+   partition = models.CharField(max_length=30)
+   cluster_no = models.IntegerField()
+   allelic_distance = models.IntegerField()
+   samples = models.JSONField()
+
+   class Meta:
+      constraints = [
+         models.UniqueConstraint(fields=['rt_job', 'partition', 'cluster_no'], name='clusters_unique_constraint')
+      ]
