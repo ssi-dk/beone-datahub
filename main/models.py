@@ -74,13 +74,19 @@ class RTJob(models.Model):
       self.status = new_status
       self.save()
    
+   def rt_files_exist(self):
+      if pathlib.Path.exists(pathlib.Path(self.get_path(), 'ReporTree.log')) and \
+      pathlib.Path.exists(pathlib.Path(self.get_path(), 'ReporTree_single_HC.nwk')) and \
+      pathlib.Path.exists(pathlib.Path(self.get_path(), 'ReporTree_clusterComposition.tsv')) and \
+      pathlib.Path.exists(pathlib.Path(self.get_path(), 'ReporTree_partitions.tsv')):
+         return True
+      return False
+
    def get_status(self):
       if self.status == 'RUNNING':
-         try: 
-            self.load_results_from_files()
-         except FileNotFoundError as e:
-            pass
-      return self.get_status_display()
+         if self.rt_files_exist():
+            self.status = 'SUCCESS'
+      return self.status
    
    def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
       # Allele profiles
@@ -157,19 +163,6 @@ class RTJob(models.Model):
          self.end_time = timezone.now()
          elapsed_time = self.end_time - self.start_time
          self.elapsed_time = elapsed_time.seconds
-      self.save()
-   
-   def load_results_from_files(self):
-      job_folder = self.get_path()
-      with open(pathlib.Path(job_folder, 'ReporTree_single_HC.nwk'), 'r') as f:
-         self.newick = f.read()
-      with open(pathlib.Path(job_folder, 'ReporTree.log'), 'r') as f:
-         self.log = f.read()
-      with open(pathlib.Path(job_folder, 'ReporTree_clusterComposition.tsv'), 'r') as f:
-         self.clusters = f.read()
-      with open(pathlib.Path(job_folder, 'ReporTree_partitions.tsv'), 'r') as f:
-         self.partitions = f.read()
-      self.set_status('ALL_DONE')
       self.save()
 
 
