@@ -75,14 +75,23 @@ class RTJob(models.Model):
       self.status = new_status
       self.save()
    
-   # def get_log_path(self):
-   #    return 
+   def get_log_path(self):
+      return Path(self.get_path(), 'ReporTree.log')
+   
+   def get_newick_path(self):
+      return Path(self.get_path(), 'ReporTree_single_HC.nwk')
+   
+   def get_cluster_path(self):
+      return Path(self.get_path(), 'ReporTree_clusterComposition.tsv')
+   
+   def get_partitions_path(self):
+      return Path(self.get_path(), 'ReporTree_partitions.tsv')
    
    def rt_files_exist(self):
-      if Path.exists(Path(self.get_path(), 'ReporTree.log')) and \
-      Path.exists(Path(self.get_path(), 'ReporTree_single_HC.nwk')) and \
-      Path.exists(Path(self.get_path(), 'ReporTree_clusterComposition.tsv')) and \
-      Path.exists(Path(self.get_path(), 'ReporTree_partitions.tsv')):
+      if Path.exists(self.get_log_path()) \
+            and Path.exists(self.get_newick_path()) \
+            and Path.exists(self.get_cluster_path()) \
+            and Path.exists(self.get_partitions_path()):
          return True
       return False
 
@@ -185,17 +194,15 @@ class Cluster(models.Model):
 
 
 def parse_rt_output(rt_job: RTJob):
-   job_folder = rt_job.get_path()
-   # TODO: the file names here duplicate those in RTJob.rt_files_exist()
-   with open(Path(job_folder, 'ReporTree.log'), 'r') as f:
+   with open(rt_job.get_log_path(), 'r') as f:
       rt_job.log = f.read()
-   with open(Path(job_folder, 'ReporTree_single_HC.nwk'), 'r') as f:
+   with open(rt_job.get_newick_path(), 'r') as f:
       rt_job.newick = f.read()
-   with open(Path(job_folder, 'ReporTree_partitions.tsv'), 'r') as f:
+   with open(rt_job.get_partitions_path(), 'r') as f:
       rt_job.partitions = f.read()
    
    # Parse cluster report and create Cluster objects in db
-   with open(Path(job_folder, 'ReporTree_clusterComposition.tsv'), 'r') as f:
+   with open(rt_job.get_cluster_path(), 'r') as f:
       cluster_lines = f.readlines()
       cluster_lines = cluster_lines[1:]  # Skip header line.
    for cluster_line in cluster_lines:
