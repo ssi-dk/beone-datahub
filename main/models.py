@@ -205,7 +205,7 @@ def parse_rt_output(rt_job: RTJob):
       cluster_lines = f.readlines()
       cluster_lines = cluster_lines[1:]  # Skip header line.
    for cluster_line in cluster_lines:
-      print(cluster_line)
+      cluster_line = cluster_line.strip()
       pa, cn, clen, sam = cluster_line.split('\t')
       cluster = Cluster(partition=pa, cluster_no=int(cn))
       sample_str_list = sam.split(',')
@@ -216,7 +216,7 @@ def parse_rt_output(rt_job: RTJob):
          assert len(elements) == 2
          sample_dict = {'org': elements[0], 'name': elements[1]}
          sample_list.append(sample_dict)
-      cluster.samples = sample_dict
+      cluster.samples = sample_list
       cluster.rt_job = rt_job
       # TODO Infer allelic_sistance from pa(rtition)
       cluster.allelic_distance = 1
