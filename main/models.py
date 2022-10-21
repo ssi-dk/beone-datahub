@@ -1,4 +1,4 @@
-import pathlib
+from pathlib import Path
 import json
 
 from django.db import models
@@ -67,7 +67,7 @@ class RTJob(models.Model):
    partitions = models.TextField(blank=True, null=True)
 
    def get_path(self):
-      return pathlib.Path(settings.REPORTREE_JOB_FOLDER, str(self.pk))
+      return Path(settings.REPORTREE_JOB_FOLDER, str(self.pk))
    
    def set_status(self, new_status:str):
       if new_status not in [status[0] for status in self.STATUSES]:
@@ -75,11 +75,14 @@ class RTJob(models.Model):
       self.status = new_status
       self.save()
    
+   # def get_log_path(self):
+   #    return 
+   
    def rt_files_exist(self):
-      if pathlib.Path.exists(pathlib.Path(self.get_path(), 'ReporTree.log')) and \
-      pathlib.Path.exists(pathlib.Path(self.get_path(), 'ReporTree_single_HC.nwk')) and \
-      pathlib.Path.exists(pathlib.Path(self.get_path(), 'ReporTree_clusterComposition.tsv')) and \
-      pathlib.Path.exists(pathlib.Path(self.get_path(), 'ReporTree_partitions.tsv')):
+      if Path.exists(Path(self.get_path(), 'ReporTree.log')) and \
+      Path.exists(Path(self.get_path(), 'ReporTree_single_HC.nwk')) and \
+      Path.exists(Path(self.get_path(), 'ReporTree_clusterComposition.tsv')) and \
+      Path.exists(Path(self.get_path(), 'ReporTree_partitions.tsv')):
          return True
       return False
 
@@ -118,8 +121,8 @@ class RTJob(models.Model):
             job_folder.mkdir()
             print(f"Created job folder {job_folder}.")
       
-      tsv_file = open(pathlib.Path(job_folder, 'allele_profiles.tsv'), 'w')
-      metadata_file = open(pathlib.Path(job_folder, 'metadata.tsv'), 'w')
+      tsv_file = open(Path(job_folder, 'allele_profiles.tsv'), 'w')
+      metadata_file = open(Path(job_folder, 'metadata.tsv'), 'w')
       
       # Get allele profile for first sample so we can define allele file header line
       allele_header_list = list()
@@ -184,15 +187,15 @@ class Cluster(models.Model):
 def parse_rt_output(rt_job: RTJob):
    job_folder = rt_job.get_path()
    # TODO: the file names here duplicate those in RTJob.rt_files_exist()
-   with open(pathlib.Path(job_folder, 'ReporTree.log'), 'r') as f:
+   with open(Path(job_folder, 'ReporTree.log'), 'r') as f:
       rt_job.log = f.read()
-   with open(pathlib.Path(job_folder, 'ReporTree_single_HC.nwk'), 'r') as f:
+   with open(Path(job_folder, 'ReporTree_single_HC.nwk'), 'r') as f:
       rt_job.newick = f.read()
-   with open(pathlib.Path(job_folder, 'ReporTree_partitions.tsv'), 'r') as f:
+   with open(Path(job_folder, 'ReporTree_partitions.tsv'), 'r') as f:
       rt_job.partitions = f.read()
    
    # Parse cluster report and create Cluster objects in db
-   with open(pathlib.Path(job_folder, 'ReporTree_clusterComposition.tsv'), 'r') as f:
+   with open(Path(job_folder, 'ReporTree_clusterComposition.tsv'), 'r') as f:
       cluster_lines = f.readlines()
       cluster_lines = cluster_lines[1:]  # Skip header line.
    for cluster_line in cluster_lines:
