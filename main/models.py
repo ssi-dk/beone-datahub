@@ -1,5 +1,4 @@
 from pathlib import Path
-import json
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -217,7 +216,7 @@ def parse_rt_output(rt_job: RTJob):
          assert len(elements) == 2
          sample_dict = {'org': elements[0], 'name': elements[1]}
          sample_list.append(sample_dict)
-      cluster.samples = json.dumps(sample_dict)
+      cluster.samples = sample_dict
       cluster.rt_job = rt_job
       # TODO Infer allelic_sistance from pa(rtition)
       cluster.allelic_distance = 1
