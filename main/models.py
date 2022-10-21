@@ -1,4 +1,5 @@
 import pathlib
+import json
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -86,6 +87,7 @@ class RTJob(models.Model):
       if self.status == 'RUNNING':
          if self.rt_files_exist():
             self.status = 'SUCCESS'
+            #TODO asyncio.create_task parse_rt_output
       return self.status
    
    def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
@@ -177,3 +179,32 @@ class Cluster(models.Model):
       constraints = [
          models.UniqueConstraint(fields=['rt_job', 'partition', 'cluster_no'], name='clusters_unique_constraint')
       ]
+
+
+def parse_rt_output(rt_job: RTJob):
+   job_folder = rt_job.get_path()
+   # TODO: the file names here duplicate those in RTJob.rt_files_exist()
+   with open(pathlib.Path(job_folder, 'ReporTree.log'), 'r') as f:
+      rt_job.log = f.read()
+   with open(pathlib.Path(job_folder, 'ReporTree_single_HC.nwk'), 'r') as f:
+      rt_job.newick = f.read()
+   with open(pathlib.Path(job_folder, 'ReporTree_partitions.tsv'), 'r') as f:
+      rt_job.partitions = f.read()
+   
+   # Parse cluster report and create Cluster objects in db
+   with open(pathlib.Path(job_folder, 'ReporTree_clusterComposition.tsv'), 'r') as f:
+      cluster_lines = f.readlines()
+      cluster_lines = cluster_lines[1:]  # Skip header line.
+   for cluster_line in cluster_lines:
+      print(cluster_line)
+      pa, cn, clen, sam = cluster_line.split('\t')
+      cluster = Cluster(partition=pa, cluster_no=int(cn))
+      sample_str_list = sam.split(',')
+      # TODO transform sample_str_list to JSON
+      cluster.samples = json.dumps([{"org": "TEST", "name": "Se-Denmark-SSI-0068"}])
+      cluster.rt_job = rt_job
+      # TODO infer allelic_sistance from pa(rtition)
+      cluster.allelic_distance = 1
+      cluster.save()
+   rt_job.set_status('ALL_DONE')
+   rt_job.save()

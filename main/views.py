@@ -12,7 +12,7 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User
 
 from main.mongo.samples_api import API
-from main.models import DataSet, RTJob, Cluster
+from main.models import DataSet, RTJob, Cluster, parse_rt_output
 from main.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
@@ -216,35 +216,7 @@ def run_rt_job(request, rt_job_key:str):
             rt_job.prepare(samples)
             rt_job.run()
             if rt_job.get_status() == 'SUCCESS':
-                job_folder = rt_job.get_path()
-                # TODO: the file names here duplicate those in RTJob-rt_files_exist()
-                with open(Path(job_folder, 'ReporTree.log'), 'r') as f:
-                    rt_job.log = f.read()
-                with open(Path(job_folder, 'ReporTree_single_HC.nwk'), 'r') as f:
-                    rt_job.newick = f.read()
-                with open(Path(job_folder, 'ReporTree_partitions.tsv'), 'r') as f:
-                    rt_job.partitions = f.read()
-                
-                # Parse cluster report and create Cluster objects in db
-                with open(Path(job_folder, 'ReporTree_clusterComposition.tsv'), 'r') as f:
-                    cluster_lines = f.readlines()
-                    cluster_lines = cluster_lines[1:]  # Skip header line.
-                for cluster_line in cluster_lines:
-                    print("********CLUSTER LINE:")
-                    print(cluster_line)
-                    pa, cn, clen, sam = cluster_line.split('\t')
-                    cluster = Cluster(partition=pa, cluster_no=int(cn))
-                    sample_str_list = sam.split(',')
-                    print("Sample array:")
-                    print(sample_str_list)
-                    # Todo: transform sample_str_list to JSON
-                    cluster.samples = json.dumps([{"org": "TEST", "name": "Se-Denmark-SSI-0068"}])
-                    cluster.rt_job = rt_job
-                    # Todo: infer allelic_sistance from pa(rtition)
-                    cluster.allelic_distance = 1
-                    cluster.save()
-                rt_job.set_status('ALL_DONE')
-                rt_job.save()
+                parse_rt_output(rt_job)
 
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
 
