@@ -210,10 +210,16 @@ def parse_rt_output(rt_job: RTJob):
       pa, cn, clen, sam = cluster_line.split('\t')
       cluster = Cluster(partition=pa, cluster_no=int(cn))
       sample_str_list = sam.split(',')
-      # TODO transform sample_str_list to JSON
-      cluster.samples = json.dumps([{"org": "TEST", "name": "Se-Denmark-SSI-0068"}])
+      # Transform sample_str_list to list of dicts and then to JSON
+      sample_list = list()
+      for sample_str in sample_str_list:
+         elements = sample_str.split('.')
+         assert len(elements) == 2
+         sample_dict = {'org': elements[0], 'name': elements[1]}
+         sample_list.append(sample_dict)
+      cluster.samples = json.dumps(sample_dict)
       cluster.rt_job = rt_job
-      # TODO infer allelic_sistance from pa(rtition)
+      # TODO Infer allelic_sistance from pa(rtition)
       cluster.allelic_distance = 1
       cluster.save()
    rt_job.set_status('ALL_DONE')
