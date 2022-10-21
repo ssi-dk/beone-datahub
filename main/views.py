@@ -12,7 +12,7 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User
 
 from main.mongo.samples_api import API
-from main.models import DataSet, RTJob, Cluster, parse_rt_output
+from main.models import DataSet, RTJob, parse_rt_output
 from main.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
@@ -224,6 +224,8 @@ def run_rt_job(request, rt_job_key:str):
 @login_required
 def view_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
+    if rt_job.status == 'SUCCESS':
+        parse_rt_output(rt_job)
     species_name = get_species_name(rt_job.dataset.species)
     form = DashboardLauncherForm()
     return render(request, 'main/rt_job.html',{
