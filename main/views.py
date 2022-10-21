@@ -239,10 +239,6 @@ def view_rt_output(request, rt_job_key:str, item: str='log'):
         content = rt_job.log
     if item == 'newick':
         content = rt_job.newick
-    if item == 'clusters':
-        content = rt_job.clusters
-    if item == 'partitions':
-        content = rt_job.partitions
 
     content_lines = content.split('\n')
 
