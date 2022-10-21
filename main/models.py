@@ -209,7 +209,7 @@ def parse_rt_output(rt_job: RTJob):
       pa, cn, clen, sam = cluster_line.split('\t')
       cluster = Cluster(partition=pa, cluster_no=int(cn))
       sample_str_list = sam.split(',')
-      # Transform sample_str_list to list of dicts and then to JSON
+      # Transform sample_str_list to list of dicts
       sample_list = list()
       for sample_str in sample_str_list:
          elements = sample_str.split('.')
@@ -218,7 +218,7 @@ def parse_rt_output(rt_job: RTJob):
          sample_list.append(sample_dict)
       cluster.samples = sample_list
       cluster.rt_job = rt_job
-      # TODO Infer allelic_sistance from pa(rtition)
+      # TODO Use this field or delete it from model
       cluster.allelic_distance = 1
       cluster.save()
    rt_job.set_status('ALL_DONE')
