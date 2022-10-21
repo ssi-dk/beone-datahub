@@ -94,11 +94,13 @@ class RTJob(models.Model):
          return True
       return False
 
-   def get_status(self):
+   def update_status(self):
       if self.status == 'RUNNING':
          if self.rt_files_exist():
             self.status = 'SUCCESS'
-            #TODO asyncio.create_task parse_rt_output
+            self.save()
+      elif self.status == 'SUCCESS':
+         parse_rt_output(self)
       return self.status
    
    def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
