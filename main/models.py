@@ -208,8 +208,8 @@ def parse_rt_output(rt_job: RTJob):
       cluster_lines = cluster_lines[1:]  # Skip header line.
    for cluster_line in cluster_lines:
       cluster_line = cluster_line.strip()
-      pa, cn, clen, sam = cluster_line.split('\t')
-      cluster = Cluster(partition=pa, cluster_no=int(cn))
+      pa, cn, clen, sam = cluster_line.split('\t')  # partition, cluster name, cluster length, samples
+      cluster = Cluster(partition=pa, cluster_name=cn)
       sample_str_list = sam.split(',')
       # Transform sample_str_list to list of dicts
       sample_list = list()
