@@ -191,7 +191,7 @@ class Cluster(models.Model):
 
    class Meta:
       constraints = [
-         models.UniqueConstraint(fields=['rt_job', 'partition', 'cluster_no'], name='clusters_unique_constraint')
+         models.UniqueConstraint(fields=['rt_job', 'partition', 'cluster_name'], name='clusters_unique_constraint')
       ]
 
 
