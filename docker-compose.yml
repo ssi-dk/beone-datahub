@@ -48,7 +48,6 @@ services:
     container_name: nginx
     ports:
       - 8080:80
-    restart: always
     # volumes:
     #   - static:/app/static
     depends_on:
