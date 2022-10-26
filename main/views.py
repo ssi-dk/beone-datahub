@@ -255,11 +255,11 @@ def get_rt_data(request, rt_job_key: str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     return JsonResponse({'newick': rt_job.newick, 'sample_ids': rt_job.dataset.mongo_keys})
 
-@login_required
-def get_rt_clusters(request, rt_job_key: str):
-    rt_clusters = Cluster.objects.filter(rt_job=rt_job_key)
-    cluster_dict = dict()
-    for cluster in rt_clusters:
-        name = cluster.cluster_name
-        cluster_dict[name] = 'hej'
-    return JsonResponse(cluster_dict)
+# @login_required
+# def get_rt_clusters(request, rt_job_key: str):
+#     rt_clusters = Cluster.objects.filter(rt_job=rt_job_key)
+#     cluster_dict = dict()
+#     for cluster in rt_clusters:
+#         name = cluster.cluster_name
+#         cluster_dict[name] = 'hej'
+#     return JsonResponse(cluster_dict)
