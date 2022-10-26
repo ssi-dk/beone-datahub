@@ -12,7 +12,7 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User
 
 from main.mongo.samples_api import API
-from main.models import DataSet, RTJob, parse_rt_output
+from main.models import Cluster, DataSet, RTJob, parse_rt_output
 from main.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
@@ -254,3 +254,12 @@ def view_rt_output(request, rt_job_key:str, item: str='log'):
 def get_rt_data(request, rt_job_key: str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     return JsonResponse({'newick': rt_job.newick, 'sample_ids': rt_job.dataset.mongo_keys})
+
+@login_required
+def get_rt_clusters(request, rt_job_key: str):
+    rt_clusters = Cluster.objects.filter(rt_job=rt_job_key)
+    cluster_dict = dict()
+    for cluster in rt_clusters:
+        name = cluster.cluster_name
+        cluster_dict[name] = 'hej'
+    return JsonResponse(cluster_dict)
