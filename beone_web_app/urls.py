@@ -38,5 +38,5 @@ urlpatterns = [
     path('rt_jobs/<int:rt_job_key>/', views.view_rt_job, name='view_rt_job'),
     path('rt_jobs/<int:rt_job_key>/output/<str:item>/', views.view_rt_output, name='view_rt_output'),
     path('rt_jobs/<int:rt_job_key>/data/', views.get_rt_data),
-    path('rt_jobs/<int:rt_job_key>/clusters/', views.get_rt_clusters),
+    # path('rt_jobs/<int:rt_job_key>/clusters/', views.get_rt_clusters),
 ]
