@@ -217,25 +217,23 @@ def parse_rt_output(rt_job: RTJob):
          partition.save()
    
    # Parse cluster report and create Cluster objects in db
-   # with open(rt_job.get_cluster_path(), 'r') as f:
-   #    cluster_lines = f.readlines()
-   #    cluster_lines = cluster_lines[1:]  # Skip header line.
-   # for cluster_line in cluster_lines:
-   #    cluster_line = cluster_line.strip()
-   #    pa, cl, _len, sam = cluster_line.split('\t')  # partition, cluster, cluster length, samples
-   #    cluster = Cluster(partition=pa, cluster_name=cl)
-   #    sample_str_list = sam.split(',')
-   #    # Transform sample_str_list to list of dicts
-   #    sample_list = list()
-   #    for sample_str in sample_str_list:
-   #       elements = sample_str.split('.')
-   #       assert len(elements) == 2
-   #       sample_dict = {'org': elements[0], 'name': elements[1]}
-   #       sample_list.append(sample_dict)
-   #    cluster.samples = sample_list
-   #    cluster.rt_job = rt_job
-   #    # TODO Use this field or delete it from model
-   #    cluster.allelic_distance = 1
-   #    cluster.save()
-   # rt_job.set_status('ALL_DONE')
-   # rt_job.save()
+   with open(rt_job.get_cluster_path(), 'r') as f:
+      cluster_lines = f.readlines()
+      cluster_lines = cluster_lines[1:]  # Skip header line.
+   for cluster_line in cluster_lines:
+      cluster_line = cluster_line.strip()
+      pa, cl, _len, sam = cluster_line.split('\t')  # partition, cluster, cluster length, samples
+      partition = Partition.objects.get(rt_job=rt_job, name=pa)
+      cluster = Cluster(partition=partition, name=cl)
+      sample_str_list = sam.split(',')
+      # Transform sample_str_list to list of dicts
+      sample_list = list()
+      for sample_str in sample_str_list:
+         elements = sample_str.split('.')
+         assert len(elements) == 2
+         sample_dict = {'org': elements[0], 'name': elements[1]}
+         sample_list.append(sample_dict)
+      cluster.samples = sample_list
+      cluster.save()
+   rt_job.set_status('ALL_DONE')
+   rt_job.save()
