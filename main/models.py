@@ -62,7 +62,6 @@ class RTJob(models.Model):
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
    newick = models.TextField(blank=True, null=True)
-   partitions = models.TextField(blank=True, null=True)
 
    def get_path(self):
       return Path(settings.REPORTREE_JOB_FOLDER, str(self.pk))
