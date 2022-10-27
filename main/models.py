@@ -180,7 +180,13 @@ class RTJob(models.Model):
       self.save()
 
 
+class Partition(models.Model):
+   rt_job = models.ForeignKey(RTJob, on_delete=models.CASCADE)
+   name = models.CharField(max_length=30)
+
+
 class Cluster(models.Model):
+   partition = models.ForeignKey(Partition, on_delete=models.CASCADE)
    cluster_name = models.CharField(max_length=30)
    samples = models.JSONField()
 
