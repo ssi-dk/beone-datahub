@@ -192,12 +192,12 @@ class Partition(models.Model):
 
 class Cluster(models.Model):
    partition = models.ForeignKey(Partition, on_delete=models.CASCADE)
-   cluster_name = models.CharField(max_length=30)
+   name = models.CharField(max_length=30)
    samples = models.JSONField()
 
    class Meta:
       constraints = [
-         models.UniqueConstraint(fields=['partition', 'cluster_name'], name='clusters_unique_constraint')
+         models.UniqueConstraint(fields=['partition', 'name'], name='clusters_unique_constraint')
       ]
 
 
