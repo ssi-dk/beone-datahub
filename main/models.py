@@ -181,16 +181,13 @@ class RTJob(models.Model):
 
 
 class Cluster(models.Model):
-   rt_job = models.ForeignKey(RTJob, on_delete=models.CASCADE)
-   partition = models.CharField(max_length=30)
    cluster_name = models.CharField(max_length=30)
-   allelic_distance = models.IntegerField()
    samples = models.JSONField()
 
-   class Meta:
-      constraints = [
-         models.UniqueConstraint(fields=['rt_job', 'partition', 'cluster_name'], name='clusters_unique_constraint')
-      ]
+   # class Meta:
+   #    constraints = [
+   #       models.UniqueConstraint(fields=['rt_job', 'partition', 'cluster_name'], name='clusters_unique_constraint')
+   #    ]
 
 
 def parse_rt_output(rt_job: RTJob):
