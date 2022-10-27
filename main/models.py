@@ -184,16 +184,21 @@ class Partition(models.Model):
    rt_job = models.ForeignKey(RTJob, on_delete=models.CASCADE)
    name = models.CharField(max_length=30)
 
+   class Meta:
+      constraints = [
+         models.UniqueConstraint(fields=['rt_job', 'name'], name='partitions_unique_constraint')
+      ]
+
 
 class Cluster(models.Model):
    partition = models.ForeignKey(Partition, on_delete=models.CASCADE)
    cluster_name = models.CharField(max_length=30)
    samples = models.JSONField()
 
-   # class Meta:
-   #    constraints = [
-   #       models.UniqueConstraint(fields=['rt_job', 'partition', 'cluster_name'], name='clusters_unique_constraint')
-   #    ]
+   class Meta:
+      constraints = [
+         models.UniqueConstraint(fields=['partition', 'cluster_name'], name='clusters_unique_constraint')
+      ]
 
 
 def parse_rt_output(rt_job: RTJob):
