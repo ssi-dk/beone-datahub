@@ -259,4 +259,5 @@ def get_rt_data(request, rt_job_key: str):
 def get_partitions_for_job(request, rt_job_key: str):
     rt_partitions = Partition.objects.filter(rt_job=rt_job_key)
     partition_list = [ p.name for p in rt_partitions ]
-    return JsonResponse(partition_list, safe=False)
+    response = {'rt_job': rt_job_key, 'partitions': partition_list}
+    return JsonResponse(response)
