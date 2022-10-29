@@ -63,9 +63,5 @@ services:
     tty: true
     # environment:
     #   - SOME_ENVVAR=true
-    # volumes:
-    #   - ./dashboard/:/app
-    #   - /srv/app/node_modules
-
-# volumes:
-#   static:
+    volumes:
+       - ./dashboard/src:/app/src:ro  # Must be inside Dockerfile WORKDIR
