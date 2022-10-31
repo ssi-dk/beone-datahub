@@ -258,6 +258,13 @@ def get_rt_data(request, rt_job_key: str):
 @login_required
 def get_partitions_for_job(request, rt_job_key: str):
     rt_partitions = Partition.objects.filter(rt_job=rt_job_key)
-    partition_list = [ p.name for p in rt_partitions ]
-    response = {'rt_job': rt_job_key, 'partitions': partition_list}
+    partition_dict = dict()
+    for p in rt_partitions:
+        cluster_list = list()
+        for c in p.cluster_set.all():
+            print(f"Partition {p.name} contains cluster {c.name}")
+            cluster_list.append(c.name)
+        partition_dict[p.name] = cluster_list
+
+    response = {'rt_job': rt_job_key, 'partitions': partition_dict}
     return JsonResponse(response)
