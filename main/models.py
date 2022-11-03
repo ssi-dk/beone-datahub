@@ -135,19 +135,20 @@ class RTJob(models.Model):
       metadata_file = open(Path(job_folder, 'metadata.tsv'), 'w')
       
       # Get allele profile for first sample so we can define allele file header line
-      allele_header_list = list()
-      allele_header_list.append('ID')
+      allele_header_line = [ 'ID' ]
       first_sample = next(samples)
       for allele in first_sample['allele_profile']:
             locus = allele['locus']
             if locus.endswith('.fasta'):
                locus = locus[:-6]
-            allele_header_list.append(locus)
-      tsv_file.write('\t'.join(allele_header_list))
+            allele_header_line.append(locus)
+      tsv_file.write('\t'.join(allele_header_line))
       tsv_file.write('\n')
 
       # Add header line to metadata file
-      metadata_file.write('\t'.join(self.metadata_fields))
+      metadata_header_line = [ 'ID' ]
+      metadata_header_line.extend(self.metadata_fields)
+      metadata_file.write('\t'.join(metadata_header_line))
       metadata_file.write('\n')
  
       # Write data for first sample to files
