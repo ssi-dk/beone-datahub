@@ -102,22 +102,24 @@ class RTJob(models.Model):
       return self.status
    
    def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
+      sample_id = f"{sample['org']}.{sample['name']}"
       # Allele profiles
       allele_profile = sample['allele_profile']
-      line = list()
-      line.append(sample['org'] + '.' + sample['name'])
+      allele_line = [ sample_id ]
       for allele in allele_profile:
          allele_value = allele['allele_crc32']  # Maybe choose key name with a setting
          if allele_value is None:
-            line.append('-')
+            allele_line.append('-')
          else:
-            line.append(str(allele_value))
-      allele_profile_file.write('\t'.join(line))
+            allele_line.append(str(allele_value))
+      allele_profile_file.write('\t'.join(allele_line))
       allele_profile_file.write('\n')
 
       # Metadata
-      metadata_list = [ str(sample['metadata'][key]) for key in self.metadata_fields ]
-      metadata_file.write('\t'.join(metadata_list))
+      metadata_line = [ sample_id ]
+      for key in self.metadata_fields:
+         metadata_line.append(str(sample['metadata'][key]))
+      metadata_file.write('\t'.join(metadata_line))
       metadata_file.write('\n')
    
    def prepare(self, samples):
