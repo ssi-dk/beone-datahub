@@ -4,7 +4,7 @@ from pathlib import Path
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, StreamingHttpResponse
 from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse
@@ -249,6 +249,23 @@ def view_rt_output(request, rt_job_key:str, item: str='log'):
         'item': item,
         'content_lines': content_lines
         })
+
+@login_required
+def download_rt_file(request, rt_job_key:str, item: str='log'):
+    rt_job: RTJob = RTJob.objects.get(pk=rt_job_key)
+    if item == 'log':
+        file = rt_job.get_log_path()
+    if item == 'newick':
+        file = rt_job.get_newick_path()
+
+    file_name = str(rt_job.pk) + '_' + file.name
+    stream = open(file, 'r')
+
+    return StreamingHttpResponse(
+        streaming_content=stream,
+        content_type="text/csv",
+        headers={'Content-Disposition': f'attachment; filename="{file_name}"'},
+    )
 
 @login_required
 def get_rt_data(request, rt_job_key: str):
