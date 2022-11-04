@@ -169,7 +169,12 @@ class RTJob(models.Model):
       self.set_status('STARTING')
       self.save()
       raw_response = requests.post(f'http://reportree:7000/reportree/start_job/',
-         json={'job_number': self.pk, 'timeout': settings.REPORTREE_TIMEOUT})
+         json={
+            'job_number': self.pk,
+            'timeout': settings.REPORTREE_TIMEOUT,
+            'columns_summary_report': self.metadata_fields,
+            }
+      )
       json_response = (raw_response.json())
       print(json_response)
       self.pid = json_response['pid']

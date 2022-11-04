@@ -9,7 +9,7 @@ app = FastAPI()
 class Job(BaseModel):
     job_number: int
     timeout: int = 2
-
+    columns_summary_report: list
 
 @app.get("/")
 async def root():
@@ -20,13 +20,12 @@ async def start_job(job: Job):
     command = [
         'python',
         '/app/ReporTree/reportree.py',
-        '-a',
-        f'/mnt/rt_runs/{job.job_number}/allele_profiles.tsv',
-        '-m',
-        f'/mnt/rt_runs/{job.job_number}/metadata.tsv',
-        '--analysis',
-        'HC'
+        '-a', f'/mnt/rt_runs/{job.job_number}/allele_profiles.tsv',
+        '-m', f'/mnt/rt_runs/{job.job_number}/metadata.tsv',
+        '--analysis', 'HC',
+        '--columns_summary_report', ','.join(job.columns_summary_report),
         ]
+    print(command)
     workdir = f'/mnt/rt_runs/{job.job_number}'
     p = subprocess.Popen(command, cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
