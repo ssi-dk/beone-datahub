@@ -257,6 +257,16 @@ def download_rt_file(request, rt_job_key:str, item: str='log'):
         file = rt_job.get_log_path()
     if item == 'newick':
         file = rt_job.get_newick_path()
+    if item == 'clusters':
+        file = rt_job.get_cluster_path()
+    if item == 'partitions':
+        file = rt_job.get_partitions_path()
+    if item == 'summary':
+        file = rt_job.get_partitions_summary_path()
+    if item == 'distances':
+        file = rt_job.get_distance_matrix_path()
+    if item == 'metapart':
+        file = rt_job.get_metadata_w_partitions_path()
 
     file_name = str(rt_job.pk) + '_' + file.name
     stream = open(file, 'r')
