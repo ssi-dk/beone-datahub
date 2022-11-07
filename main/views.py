@@ -255,25 +255,32 @@ def download_rt_file(request, rt_job_key:str, item: str='log'):
     rt_job: RTJob = RTJob.objects.get(pk=rt_job_key)
     if item == 'log':
         file = rt_job.get_log_path()
+        content_type = 'text/plain'
     if item == 'newick':
         file = rt_job.get_newick_path()
+        content_type = 'text/plain'
     if item == 'clusters':
         file = rt_job.get_cluster_path()
+        content_type = 'tab-separated-values'
     if item == 'partitions':
         file = rt_job.get_partitions_path()
+        content_type = 'tab-separated-values'
     if item == 'summary':
         file = rt_job.get_partitions_summary_path()
+        content_type = 'tab-separated-values'
     if item == 'distances':
         file = rt_job.get_distance_matrix_path()
+        content_type = 'tab-separated-values'
     if item == 'metapart':
         file = rt_job.get_metadata_w_partitions_path()
+        content_type = 'tab-separated-values'
 
     file_name = str(rt_job.pk) + '_' + file.name
     stream = open(file, 'r')
 
     return StreamingHttpResponse(
         streaming_content=stream,
-        content_type="text/csv",
+        content_type=content_type,
         headers={'Content-Disposition': f'attachment; filename="{file_name}"'},
     )
 
