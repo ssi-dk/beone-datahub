@@ -297,7 +297,11 @@ def get_partitions_for_job(request, rt_job_key: str):
         cluster_list = list()
         for c in p.cluster_set.all():
             print(f"Partition {p.name} contains cluster {c.name}")
-            cluster_list.append(c.name)
+            print(f"Cluster {c.name} contains these samples:")
+            print(c.samples)
+            cluster_dict = {'name': c.name}
+            cluster_dict['samples'] = list(c.samples)
+            cluster_list.append(cluster_dict)
         partition_dict[p.name] = cluster_list
 
     response = {'rt_job': rt_job_key, 'partitions': partition_dict}
