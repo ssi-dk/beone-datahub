@@ -6,7 +6,7 @@ from django.conf import settings
 import pymongo
 
 class Command(BaseCommand):
-    help = "Add root level id's to samples in MongoDB"
+    help = "Add root level names and org's to ALL samples in MongoDB. Use with care!"
 
     def add_arguments(self, parser):
         parser.add_argument('org', type=str)
