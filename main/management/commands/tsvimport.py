@@ -13,8 +13,8 @@ class Command(BaseCommand):
             "allele profiles and metadata, respectively."
 
     def add_arguments(self, parser):
-        parser.add_argument('folder', type=str)
-        # parser.add_argument('org', type=str)
+        parser.add_argument('folder', type=str, help="Folder containing alleles.tsv and metadata.tsv")
+        parser.add_argument('org', type=str, help="Organization which these samples belong to")
         # parser.add_argument('dataset', type=str)
 
     def handle(self, *args, **options):
