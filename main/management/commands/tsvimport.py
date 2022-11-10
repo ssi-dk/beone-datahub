@@ -22,13 +22,21 @@ class Command(BaseCommand):
         if not folder.exists():
             self.stderr.write(f"Folder {folder} does not exist!")
             exit()
+        a_path = Path(folder, 'alleles.tsv')
+        if not a_path.exists():
+            self.stderr.write(f"File {a_path} does not exist!")
+            exit()
+        m_path = Path(folder, 'metadata.tsv')    
+        if not m_path.exists():
+            self.stderr.write(f"File {m_path} does not exist!")
+            exit()
 
         self.stdout.write(f"You selected folder {options['folder']} as input folder.")
 
         connection = pymongo.MongoClient(settings.MONGO_CONNECTION)
         db = connection.get_database()
         number = db.samples.count_documents({})
-        self.stdout.write(f'MongoDB currently contains {str(number)} samples.')
+        self.stdout.write(f'MongoDB currently contains {str(number)} samples (before import).')
 
 
         # for line in the two files:
