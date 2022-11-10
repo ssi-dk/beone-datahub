@@ -43,10 +43,9 @@ class Command(BaseCommand):
             with open(m_path) as m_file:
                 a_header_list = a_file.readline().strip().split('\t')
                 a_header_list.pop(0)  # First item is useless; throw away
-                print("Allele header list:")
-                print(a_header_list)
                 m_header_list = m_file.readline().strip().split('\t')
                 m_header_list.pop(0)  # Useless item; throw away
+                #TODO Remove thise print statements.
                 print("Metadata header list:")
                 print(m_header_list)
                 count = 0
@@ -64,8 +63,17 @@ class Command(BaseCommand):
                     m_list = m_line.split('\t')
                     m_name = m_list.pop(0)
                     assert a_name == m_name
-                    self.stdout.write(f"Importing sample {a_name}")
+                    self.stdout.write(f"Importing sample {a_name}...")
                     # Create document in MongoDB, popping off items of both a_list and m_list as they are needed
+                    result = db.samples.insert_one(
+                        {
+                            'org': options['org'],
+                            'name': a_name
+                        }
+                    )
+                    if result.acknowledged:
+                        self.stdout.write(self.style.SUCCESS('Success.'))
+
                     count += 1
 
         # for line in the two files:
@@ -78,4 +86,5 @@ class Command(BaseCommand):
         #         # Add metadata from metadata_generator
         #         })
 
-        self.stdout.write(self.style.SUCCESS('Success!'))
+        number = db.samples.count_documents({})
+        self.stdout.write(f'MongoDB currently contains {str(number)} samples (after import).')
