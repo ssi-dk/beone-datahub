@@ -1,9 +1,10 @@
-from enum import unique
-from lib2to3.pytree import Base
-from django.core.management.base import BaseCommand, CommandError
-from django.conf import settings
+from pathlib import Path
+from sys import exit
 
 import pymongo
+
+from django.core.management.base import BaseCommand, CommandError
+from django.conf import settings
 
 class Command(BaseCommand):
     help = "Import allele profile and metadata from TSV files." + \
@@ -17,7 +18,12 @@ class Command(BaseCommand):
         # parser.add_argument('dataset', type=str)
 
     def handle(self, *args, **options):
-        print(options['folder'])
+        folder = Path(options['folder'])
+        if not folder.exists():
+            self.stderr.write(f"Folder {folder} does not exist!")
+            exit()
+
+        self.stdout.write(f"You selected folder {options['folder']} as input folder.")
 
         connection = pymongo.MongoClient(settings.MONGO_CONNECTION)
         db = connection.get_database()
