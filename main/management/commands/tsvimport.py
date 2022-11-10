@@ -38,43 +38,41 @@ class Command(BaseCommand):
         number = db.samples.count_documents({})
         self.stdout.write(f'MongoDB currently contains {str(number)} samples (before import).')
 
-        
-        with open(a_path) as a_file:
-            with open(m_path) as m_file:
-                a_header_list = a_file.readline().strip().split('\t')
-                a_header_list.pop(0)  # First item is useless; throw away
-                m_header_list = m_file.readline().strip().split('\t')
-                m_header_list.pop(0)  # Useless item; throw away
-                #TODO Remove thise print statements.
-                print("Metadata header list:")
-                print(m_header_list)
-                count = 0
-                while True:
-                    a_line = a_file.readline().strip()
-                    if not a_line:
-                        self.stdout.write(f"No more lines in allele file. I have read {count} lines.")
-                        break
-                    m_line = m_file.readline().strip()
-                    if not m_line:
-                        self.stdout.write(f"No more lines in metadata file. I have read {count} lines.")
-                        break
-                    a_list = a_line.split('\t')
-                    a_name = a_list.pop(0)
-                    m_list = m_line.split('\t')
-                    m_name = m_list.pop(0)
-                    assert a_name == m_name
-                    self.stdout.write(f"Importing sample {a_name}...")
-                    # Create document in MongoDB, popping off items of both a_list and m_list as they are needed
-                    result = db.samples.insert_one(
-                        {
-                            'org': options['org'],
-                            'name': a_name
-                        }
-                    )
-                    if result.acknowledged:
-                        self.stdout.write(self.style.SUCCESS('Success.'))
+        with open(a_path) as a_file, open(m_path) as m_file:
+            a_header_list = a_file.readline().strip().split('\t')
+            a_header_list.pop(0)  # First item is useless; throw away
+            m_header_list = m_file.readline().strip().split('\t')
+            m_header_list.pop(0)  # Useless item; throw away
+            #TODO Remove thise print statements.
+            print("Metadata header list:")
+            print(m_header_list)
+            count = 0
+            while True:
+                a_line = a_file.readline().strip()
+                if not a_line:
+                    self.stdout.write(f"No more lines in allele file. I have read {count} lines.")
+                    break
+                m_line = m_file.readline().strip()
+                if not m_line:
+                    self.stdout.write(f"No more lines in metadata file. I have read {count} lines.")
+                    break
+                a_list = a_line.split('\t')
+                a_name = a_list.pop(0)
+                m_list = m_line.split('\t')
+                m_name = m_list.pop(0)
+                assert a_name == m_name
+                self.stdout.write(f"Importing sample {a_name}...")
+                # Create document in MongoDB, popping off items of both a_list and m_list as they are needed
+                result = db.samples.insert_one(
+                    {
+                        'org': options['org'],
+                        'name': a_name
+                    }
+                )
+                if result.acknowledged:
+                    self.stdout.write(self.style.SUCCESS('Success.'))
 
-                    count += 1
+                count += 1
 
         # for line in the two files:
         #     # Or maybe through API?
