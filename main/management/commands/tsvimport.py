@@ -13,6 +13,8 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('folder', type=str)
+        # parser.add_argument('org', type=str)
+        # parser.add_argument('dataset', type=str)
 
     def handle(self, *args, **options):
         print(options['folder'])
@@ -22,22 +24,15 @@ class Command(BaseCommand):
         number = db.samples.count_documents({})
         self.stdout.write(f'MongoDB currently contains {str(number)} samples.')
 
-        # Open allele profile file and make an iterator/generator stuff thingy.
-        allele_profile_file = "My allele profile file"
-        allele_generator = "My allele generator thingy"
 
-        # Also open metadata file
-        metadata_file = "My metadata file"
-        metadata_generator_thingy = "My metadata generator thingy"
-
-        for line in allele_generator:
-            # Or maybe through API?
-            db.samples.insert({
-                'org': options['org'],
-                'name': '$sample.summary.sample'
-                # Add allele profile from allele_generator
-                # Assert that sample name from metadata_generator == sample name from allele_generator
-                # Add metadata from metadata_generator
-                })
+        # for line in allele_generator:
+        #     # Or maybe through API?
+        #     db.samples.insert({
+        #         'org': options['org'],
+        #         'name': '$sample.summary.sample'
+        #         # Add allele profile from allele_generator
+        #         # Assert that sample name from metadata_generator == sample name from allele_generator
+        #         # Add metadata from metadata_generator
+        #         })
 
         self.stdout.write(self.style.SUCCESS('Success!'))
