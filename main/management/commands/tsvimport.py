@@ -41,21 +41,21 @@ class Command(BaseCommand):
         
         with open(a_path) as a_file:
             with open(m_path) as m_file:
-                a_header_list = a_file.readline().split('\t')
-                a_header_list.pop()  # First item is useless; throw away
+                a_header_list = a_file.readline().strip().split('\t')
+                a_header_list.pop(0)  # First item is useless; throw away
                 print("Allele header list:")
                 print(a_header_list)
-                m_header_list = m_file.readline().split('\t')
-                m_header_list.pop()  # Useless item; throw away
+                m_header_list = m_file.readline().strip().split('\t')
+                m_header_list.pop(0)  # Useless item; throw away
                 print("Metadata header list:")
                 print(m_header_list)
                 count = 0
                 while True:
-                    a_line = a_file.readline()
+                    a_line = a_file.readline().strip()
                     if not a_line:
                         self.stdout.write(f"No more lines in allele file. I have read {count} lines.")
                         break
-                    m_line = m_file.readline()
+                    m_line = m_file.readline().strip()
                     if not m_line:
                         self.stdout.write(f"No more lines in metadata file. I have read {count} lines.")
                         break
