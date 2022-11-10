@@ -9,8 +9,8 @@ from django.conf import settings
 class Command(BaseCommand):
     help = "Import allele profile and metadata from TSV files." + \
             "'folder' must be a valid path to a folder which contains two files with TSV data; " + \
-            "one named like '*alleles.tsv' and the other named like '_metadata.tsv', containing" + \
-            " allele profiles and metadata, respectively."
+            "one named like 'alleles.tsv' and the other named like 'metadata.tsv', containing " + \
+            "allele profiles and metadata, respectively."
 
     def add_arguments(self, parser):
         parser.add_argument('folder', type=str)
@@ -31,7 +31,7 @@ class Command(BaseCommand):
         self.stdout.write(f'MongoDB currently contains {str(number)} samples.')
 
 
-        # for line in allele_generator:
+        # for line in the two files:
         #     # Or maybe through API?
         #     db.samples.insert({
         #         'org': options['org'],
