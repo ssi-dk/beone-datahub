@@ -49,17 +49,24 @@ class Command(BaseCommand):
                 m_header_list.pop()  # Useless item; throw away
                 print("Metadata header list:")
                 print(m_header_list)
-                # while True:
-                #     try:
-                #         a_list = a_file.readline().split('\t')
-                #         a_name = a_list.pop(0)
-                #         m_list = m_file.readline().split('\t')
-                #         m_name = m_list.pop(0)
-                #         assert a_name == m_name
-                #         self.stdout.write(f"Importing sample {a_name}")
-                #         # Create document in MongoDB, popping off items of both a_list and m_list as they are needed
-                #     except EOFError as e:
-                #         print(e)  # Just to see which file threw the EOF
+                count = 0
+                while True:
+                    a_line = a_file.readline()
+                    if not a_line:
+                        self.stdout.write(f"No more lines in allele file. I have read {count} lines.")
+                        break
+                    m_line = m_file.readline()
+                    if not m_line:
+                        self.stdout.write(f"No more lines in metadata file. I have read {count} lines.")
+                        break
+                    a_list = a_line.split('\t')
+                    a_name = a_list.pop(0)
+                    m_list = m_line.split('\t')
+                    m_name = m_list.pop(0)
+                    assert a_name == m_name
+                    self.stdout.write(f"Importing sample {a_name}")
+                    # Create document in MongoDB, popping off items of both a_list and m_list as they are needed
+                    count += 1
 
         # for line in the two files:
         #     # Or maybe through API?
