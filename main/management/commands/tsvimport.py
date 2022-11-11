@@ -10,7 +10,8 @@ class Command(BaseCommand):
     help = "Import allele profile and metadata from TSV files." + \
             "'folder' must be a valid path to a folder which contains two files with TSV data; " + \
             "one named like 'alleles.tsv' and the other named like 'metadata.tsv', containing " + \
-            "allele profiles and metadata, respectively."
+            "allele profiles and metadata, respectively." + \
+            "The headers in metadata.tsv must have identical entries in settings.MONGO_FIELD_MAPPING."
 
     def add_arguments(self, parser):
         parser.add_argument('folder', type=str, help="Folder containing alleles.tsv and metadata.tsv")
@@ -66,7 +67,8 @@ class Command(BaseCommand):
                 result = db.samples.insert_one(
                     {
                         'org': options['org'],
-                        'name': a_name
+                        'name': a_name,
+                        # settings.MONGO_FIELD_MAPPING['country_code']: 
                     }
                 )
                 if result.acknowledged:
