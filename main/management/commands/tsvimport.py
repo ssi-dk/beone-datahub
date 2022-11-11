@@ -46,10 +46,11 @@ class Command(BaseCommand):
             m_header_list.pop(0)  # Useless item; throw away
 
             # Map metadata headers to Mongo fields
-            FIELD_MAPPING = settings.MONGO_FIELD_MAPPING
+            mapping = dict()
             for header in m_header_list:
                 try:
-                    field = FIELD_MAPPING[header]
+                    field = settings.MONGO_FIELD_MAPPING[header]
+                    mapping[header] = field
                     self.stdout.write(f"Header '{header}' maps to {field}")
                 except KeyError:
                     self.stdout.write(self.style.WARNING(f"WARNING: Header '{header}' was not found in settings.MONGO_FIELD_MAPPING."))
@@ -72,13 +73,15 @@ class Command(BaseCommand):
                 self.stdout.write(f"Importing sample {a_name}...")
 
                 # Create document in MongoDB, popping off items of both a_list and m_list as they are needed
-                result = db.samples.insert_one(
-                    {
+                data = {
                         'org': options['org'],
                         'name': a_name,
-                        # settings.MONGO_FIELD_MAPPING['country_code']: 
                     }
-                )
+
+                # for header in m_header_list:
+                #     data[header] = mapping[header]
+                    
+                result = db.samples.insert_one(data)
                 if result.acknowledged:
                     self.stdout.write(self.style.SUCCESS('Success.'))
 
