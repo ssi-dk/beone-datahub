@@ -1,5 +1,6 @@
 from pathlib import Path
 from sys import exit
+from collections import OrderedDict
 
 import pymongo
 
@@ -46,13 +47,14 @@ class Command(BaseCommand):
             m_header_list.pop(0)  # Useless item; throw away
 
             # Map metadata headers to Mongo fields
-            mapping = dict()
+            mapping = OrderedDict()  # Or maybe just a dict?
             for header in m_header_list:
                 try:
                     field = settings.MONGO_FIELD_MAPPING[header]
                     mapping[header] = field
                     self.stdout.write(f"Header '{header}' maps to {field}")
                 except KeyError:
+                    mapping[header] = None
                     self.stdout.write(self.style.WARNING(f"WARNING: Header '{header}' was not found in settings.MONGO_FIELD_MAPPING."))
 
             count = 0
@@ -77,25 +79,26 @@ class Command(BaseCommand):
                         'org': options['org'],
                         'name': a_name,
                     }
+                
+                field_list = list(mapping.values())
+                print(f"Field list: {field_list}")
 
-                # for header in m_header_list:
-                #     data[header] = mapping[header]
+                for header_number in range(0, len(mapping.keys())):
+                    print(f"Header number: {header_number}")
+                    field = field_list[header_number]
+                    print(f"Field: {field}")
+                    if field is not None:
+                        value = m_list[header_number]
+                        print(f"Value to insert: {value}")
+                        data[field] = value
+                print("Data to insert in DB:")
+                print(data)
                     
-                result = db.samples.insert_one(data)
-                if result.acknowledged:
-                    self.stdout.write(self.style.SUCCESS('Success.'))
+                # result = db.samples.insert_one(data)
+                # if result.acknowledged:
+                #     self.stdout.write(self.style.SUCCESS('Success.'))
 
                 count += 1
-
-        # for line in the two files:
-        #     # Or maybe through API?
-        #     db.samples.insert({
-        #         'org': options['org'],
-        #         'name': '$sample.summary.sample'
-        #         # Add allele profile from allele_generator
-        #         # Assert that sample name from metadata_generator == sample name from allele_generator
-        #         # Add metadata from metadata_generator
-        #         })
 
         number = db.samples.count_documents({})
         self.stdout.write(f'MongoDB currently contains {str(number)} samples (after import).')
