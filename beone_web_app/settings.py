@@ -140,17 +140,26 @@ MONGO_CONNECTION = 'mongodb://mongo:27017/beone'
 }"""
 
 MONGO_FIELD_MAPPING = {
-    "org": "org",
-    "name": "name",
-    "species": "sample.metadata.Microorganism",
-    "country_root": "sample.metadata.Country",
-    "source_type_root": "sample.metadata.Source_Type",
-    "sampling_year": "sample.metadata.Date_Sampling_YYYY",
-    "sequence_type": "sample.summary.sequence_type",
-    "allele_profile": "pipelines.chewiesnake.allele_profile",
-    "metadata": "sample.metadata",
+    # Common
+    'org': 'org',
+    'name': 'name',
+    'species': 'sample.metadata.Microorganism',
+    'sequence_type': 'sample.summary.sequence_type',
+    
+    # Specific for BeONE data structure
+    'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
+    'allele_profile': 'pipelines.chewiesnake.allele_profile',
+    'metadata': 'sample.metadata',
     'country': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
-    'source_type': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]}
+    'source_type': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]},
+    # 'country_root': 'sample.metadata.Country',  Probably not is use?
+    # 'source_type_root': 'sample.metadata.Source_Type', Probably not in use?
+    
+    # Specific for ReporTree outbreak example
+    'country_code': 'sample.metadata.country_code',
+    'region_code': 'sample.metadata.region_code',
+    'source': 'sample.metadata.source',
+    'sampling_date': 'sample.metadata.sampling_date',
 }
 
 ALL_SPECIES = (
