@@ -47,12 +47,12 @@ class Command(BaseCommand):
 
             # Map metadata headers to Mongo fields
             FIELD_MAPPING = settings.MONGO_FIELD_MAPPING
-            for metadata_header in m_header_list:
+            for header in m_header_list:
                 try:
-                    mongo_field = FIELD_MAPPING[metadata_header]
-                    self.stdout.write(f"Header '{metadata_header}' maps to {mongo_field}")
+                    mongo_field = FIELD_MAPPING[header]
+                    self.stdout.write(f"Header '{header}' maps to {mongo_field}")
                 except KeyError:
-                    self.stdout.write(self.style.WARNING(f"WARNING: Header '{metadata_header}' was not found in settings.MONGO_FIELD_MAPPING."))
+                    self.stdout.write(self.style.WARNING(f"WARNING: Header '{header}' was not found in settings.MONGO_FIELD_MAPPING."))
 
             count = 0
             while True:
