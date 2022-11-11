@@ -1,4 +1,4 @@
-sample	country	region	source	date	ST	note
+sample	country_code	region_code	source	sampling_date	sequence_type	note
 sample_0001	A	A1	clinical	21/11/2021	na	not_real_data_test_only
 sample_0002	B	B1	clinical	10/11/2021	na	not_real_data_test_only
 sample_0003	C	B1	clinical	24/10/2021	388	not_real_data_test_only
