@@ -49,8 +49,8 @@ class Command(BaseCommand):
             FIELD_MAPPING = settings.MONGO_FIELD_MAPPING
             for header in m_header_list:
                 try:
-                    mongo_field = FIELD_MAPPING[header]
-                    self.stdout.write(f"Header '{header}' maps to {mongo_field}")
+                    field = FIELD_MAPPING[header]
+                    self.stdout.write(f"Header '{header}' maps to {field}")
                 except KeyError:
                     self.stdout.write(self.style.WARNING(f"WARNING: Header '{header}' was not found in settings.MONGO_FIELD_MAPPING."))
 
