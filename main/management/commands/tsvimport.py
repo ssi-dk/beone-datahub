@@ -44,9 +44,16 @@ class Command(BaseCommand):
             a_header_list.pop(0)  # First item is useless; throw away
             m_header_list = m_file.readline().strip().split('\t')
             m_header_list.pop(0)  # Useless item; throw away
-            #TODO Remove thise print statements.
-            print("Metadata header list:")
-            print(m_header_list)
+
+            # Map metadata headers to Mongo fields
+            FIELD_MAPPING = settings.MONGO_FIELD_MAPPING
+            for metadata_header in m_header_list:
+                try:
+                    mongo_field = FIELD_MAPPING[metadata_header]
+                    self.stdout.write(f"Header '{metadata_header}' maps to {mongo_field}")
+                except KeyError:
+                    self.stdout.write(self.style.WARNING(f"WARNING: Header '{metadata_header}' was not found in settings.MONGO_FIELD_MAPPING."))
+
             count = 0
             while True:
                 a_line = a_file.readline().strip()
@@ -63,6 +70,7 @@ class Command(BaseCommand):
                 m_name = m_list.pop(0)
                 assert a_name == m_name
                 self.stdout.write(f"Importing sample {a_name}...")
+
                 # Create document in MongoDB, popping off items of both a_list and m_list as they are needed
                 result = db.samples.insert_one(
                     {
