@@ -7,6 +7,16 @@ import pymongo
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
+def dots2dicts(dot_str: str):
+    """Helper function that converts a string with dotted notation to a recursive structure of dicts
+    """
+    keys: list = dot_str.split('.')
+    new_dict = current = {}
+    for name in keys:
+        current[name] = {}
+        current = current[name]
+    return new_dict
+
 class Command(BaseCommand):
     help = "Import allele profile and metadata from TSV files." + \
             "'folder' must be a valid path to a folder which contains two files with TSV data; " + \
@@ -88,15 +98,16 @@ class Command(BaseCommand):
                     field = field_list[header_number]
                     print(f"Field: {field}")
                     if field is not None:
+                        dicts = dots2dicts(field)
+                        data.update(dicts)
                         value = m_list[header_number]
                         print(f"Value to insert: {value}")
-                        data[field] = value
                 print("Data to insert in DB:")
                 print(data)
                     
-                result = db.samples.insert_one(data)
-                if result.acknowledged:
-                    self.stdout.write(self.style.SUCCESS('Success.'))
+                # result = db.samples.insert_one(data)
+                # if result.acknowledged:
+                #     self.stdout.write(self.style.SUCCESS('Success.'))
 
                 count += 1
 
