@@ -94,9 +94,9 @@ class Command(BaseCommand):
                 print("Data to insert in DB:")
                 print(data)
                     
-                # result = db.samples.insert_one(data)
-                # if result.acknowledged:
-                #     self.stdout.write(self.style.SUCCESS('Success.'))
+                result = db.samples.insert_one(data)
+                if result.acknowledged:
+                    self.stdout.write(self.style.SUCCESS('Success.'))
 
                 count += 1
 
