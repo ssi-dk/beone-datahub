@@ -7,14 +7,19 @@ import pymongo
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
-def dots2dicts(dot_str: str):
+def dots2dicts(dot_str: str, value):
     """Helper function that converts a string with dotted notation to a recursive structure of dicts
     """
     keys: list = dot_str.split('.')
     new_dict = current = {}
+    counter = 1
     for name in keys:
-        current[name] = {}
-        current = current[name]
+        if counter == len(keys):
+            current[name] = value
+        else:
+            current[name] = {}
+            current = current[name]
+        counter += 1
     return new_dict
 
 class Command(BaseCommand):
@@ -97,9 +102,9 @@ class Command(BaseCommand):
                     print(f"Field: {field}")
                     # print(f"Field: {field}")
                     if field is not None:
-                        dicts = dots2dicts(field)
+                        dicts = dots2dicts(field, m_list[header_number])
+                        print(f"Dicts: {dicts}")
                         # data.update(dicts)
-                        value = m_list[header_number]
                         # print(f"Value to insert: {value}")
                 # print("Data to insert in DB:")
                 # print(data)
