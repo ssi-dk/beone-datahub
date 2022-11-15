@@ -67,6 +67,8 @@ class Command(BaseCommand):
                     mapping[header] = None
                     self.stdout.write(self.style.WARNING(f"WARNING: Header '{header}' was not found in settings.MONGO_FIELD_MAPPING."))
 
+            field_list = list(mapping.values())
+            print(f"Field list: {field_list}")
             count = 0
             while True:
                 a_line = a_file.readline().strip()
@@ -89,21 +91,18 @@ class Command(BaseCommand):
                         'org': options['org'],
                         'name': a_name,
                     }
-                
-                field_list = list(mapping.values())
-                print(f"Field list: {field_list}")
 
                 for header_number in range(0, len(mapping.keys())):
-                    print(f"Header number: {header_number}")
                     field = field_list[header_number]
                     print(f"Field: {field}")
+                    # print(f"Field: {field}")
                     if field is not None:
                         dicts = dots2dicts(field)
-                        data.update(dicts)
+                        # data.update(dicts)
                         value = m_list[header_number]
-                        print(f"Value to insert: {value}")
-                print("Data to insert in DB:")
-                print(data)
+                        # print(f"Value to insert: {value}")
+                # print("Data to insert in DB:")
+                # print(data)
                     
                 # result = db.samples.insert_one(data)
                 # if result.acknowledged:
