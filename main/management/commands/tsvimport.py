@@ -74,15 +74,15 @@ class Command(BaseCommand):
 
             field_list = list(mapping.values())
             print(f"Field list: {field_list}")
-            count = 0
+            sample_count = 0
             while True:
                 a_line = a_file.readline().strip()
                 if not a_line:
-                    self.stdout.write(f"No more lines in allele file. I have read {count} lines.")
+                    self.stdout.write(f"No more lines in allele file. I have read {sample_count} lines.")
                     break
                 m_line = m_file.readline().strip()
                 if not m_line:
-                    self.stdout.write(f"No more lines in metadata file. I have read {count} lines.")
+                    self.stdout.write(f"No more lines in metadata file. I have read {sample_count} lines.")
                     break
                 a_list = a_line.split('\t')
                 a_name = a_list.pop(0)
@@ -92,28 +92,26 @@ class Command(BaseCommand):
                 self.stdout.write(f"Importing sample {a_name}...")
 
                 # Create document in MongoDB, popping off items of both a_list and m_list as they are needed
-                data = {
+                sample_id = {
                         'org': options['org'],
                         'name': a_name,
                     }
+                result = db.samples.insert_one(sample_id)
+                if result.acknowledged:
+                # if True:
+                    self.stdout.write(self.style.SUCCESS('Success.'))
 
-                for header_number in range(0, len(mapping.keys())):
-                    field = field_list[header_number]
-                    print(f"Field: {field}")
-                    # print(f"Field: {field}")
-                    if field is not None:
-                        dicts = dots2dicts(field, m_list[header_number])
-                        print(f"Dicts: {dicts}")
-                        # data.update(dicts)
-                        # print(f"Value to insert: {value}")
-                # print("Data to insert in DB:")
-                # print(data)
-                    
-                # result = db.samples.insert_one(data)
-                # if result.acknowledged:
-                #     self.stdout.write(self.style.SUCCESS('Success.'))
+                    for header_number in range(0, len(mapping.keys())):
+                        field = field_list[header_number]
+                        # print(f"Field: {field}")
+                        # print(f"Field: {field}")
+                        if field is not None:
+                            dicts = dots2dicts(field, m_list[header_number])
+                            print("Dicts:")
+                            print(dicts)
+                            result = db.samples.update_one(sample_id, {'$set': dicts})
 
-                count += 1
+                sample_count += 1
 
         number = db.samples.count_documents({})
         self.stdout.write(f'MongoDB currently contains {str(number)} samples (after import).')
