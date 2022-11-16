@@ -76,7 +76,6 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.WARNING(f"WARNING: Header '{header}' was not found in settings.MONGO_FIELD_MAPPING."))
 
             field_list = list(mapping.values())
-            print(f"Field list: {field_list}")
             sample_count = 0
             while True:
                 a_line = a_file.readline().strip()
