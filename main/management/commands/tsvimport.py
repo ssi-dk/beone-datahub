@@ -95,24 +95,24 @@ class Command(BaseCommand):
                 self.stdout.write(f"Importing sample {a_name}...")
 
                 # Create document in MongoDB, using data items from both m_list and a_list
-                sample_id = {
+                sample_dict = {
                         'org': options['org'],
                         'name': a_name,
                     }
-                result = db.samples.insert_one(sample_id)
+                result = db.samples.insert_one(sample_dict)
                 if result.acknowledged:
                     for header_number in range(0, len(mapping.keys())):
                         field = field_list[header_number]
                         if field is not None:
                             dicts = dots2dicts(field, m_list[header_number])
-                            result = db.samples.update_one(sample_id, {'$set': dicts})
+                            result = db.samples.update_one(sample_dict, {'$set': dicts})
                             if not result.acknowledged:
-                                exit(f"Could not update sample in MongoDB: org: {sample_id['org']}, sample:  {sample_id['name']}")
+                                exit(f"Could not update sample in MongoDB: org: {sample_dict['org']}, sample:  {sample_dict['name']}")
                 else:
-                    exit(f"Could not write sample to MongoDB: org: {sample_id['org']}, sample:  {sample_id['name']}")
+                    exit(f"Could not write sample to MongoDB: org: {sample_dict['org']}, sample:  {sample_dict['name']}")
 
-                self.stdout.write(self.style.SUCCESS(f"Sample added to MongoDB: org: {sample_id['org']}, sample:  {sample_id['name']}"))
-                mongo_keys.append({'org': sample_id['org'], 'name': sample_id['name']})  # We do not want MongoDB _id
+                self.stdout.write(self.style.SUCCESS(f"Sample added to MongoDB: org: {sample_dict['org']}, sample:  {sample_dict['name']}"))
+                mongo_keys.append({'org': sample_dict['org'], 'name': sample_dict['name']})  # We do not want MongoDB _id
                 sample_count += 1
 
         number = db.samples.count_documents({})
