@@ -23,6 +23,24 @@ def dots2dicts(dot_str: str, value):
         counter += 1
     return new_dict
 
+def merge_dictionaries(dict1, dict2):
+    """
+    Recursive merge dictionaries.
+
+    :param dict1: Base dictionary to merge.
+    :param dict2: Dictionary to merge on top of base dictionary.
+    :return: Merged dictionary
+    """
+    for key, val in dict1.items():
+        if isinstance(val, dict):
+            dict2_node = dict2.setdefault(key, {})
+            merge_dictionaries(val, dict2_node)
+        else:
+            if key not in dict2:
+                dict2[key] = val
+
+    return dict2
+
 class Command(BaseCommand):
     help = "Import allele profile and metadata from TSV files." + \
             "'folder' must be a valid path to a folder which contains two files with TSV data; " + \
@@ -99,20 +117,23 @@ class Command(BaseCommand):
                         'org': options['org'],
                         'name': a_name,
                     }
-                result = db.samples.insert_one(sample_dict)
-                if result.acknowledged:
-                    for header_number in range(0, len(mapping.keys())):
-                        field = field_list[header_number]
-                        if field is not None:
-                            dicts = dots2dicts(field, m_list[header_number])
-                            result = db.samples.update_one(sample_dict, {'$set': dicts})
-                            if not result.acknowledged:
-                                exit(f"Could not update sample in MongoDB: org: {sample_dict['org']}, sample:  {sample_dict['name']}")
-                else:
-                    exit(f"Could not write sample to MongoDB: org: {sample_dict['org']}, sample:  {sample_dict['name']}")
+                print("Sample dict:")
+                print(sample_dict)
+                for header_number in range(0, len(mapping.keys())):
+                    field = field_list[header_number]
+                    print(f"Adding field: {field}")
+                    if field is not None:
+                        dicts_to_add = dots2dicts(field, m_list[header_number])
+                        sample_dict = merge_dictionaries(sample_dict, dicts_to_add)
+                        print("Merged sample dictionary:")
+                        print(sample_dict)
 
-                self.stdout.write(self.style.SUCCESS(f"Sample added to MongoDB: org: {sample_dict['org']}, sample:  {sample_dict['name']}"))
-                mongo_keys.append({'org': sample_dict['org'], 'name': sample_dict['name']})  # We do not want MongoDB _id
+                result = db.samples.insert_one(sample_dict)
+                if not result.acknowledged:
+                     self.stdout.write(self.style.ERROR(f"Could not update sample in MongoDB: org: {sample_dict}"))
+                     exit
+                self.stdout.write(self.style.SUCCESS(f"Sample added to MongoDB: org: {sample_dict}"))
+                mongo_keys.append({'org': sample_dict['org'], 'name': sample_dict['name']})
                 sample_count += 1
 
         number = db.samples.count_documents({})
