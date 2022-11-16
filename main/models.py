@@ -39,15 +39,16 @@ class RTJob(models.Model):
       ordering = ['-pk']
 
    STATUSES = [
-        ('NEW', 'New'),
-        ('READY', 'Ready'),
-        ('STARTING', 'Starting'),
-        ('RUNNING', 'Running'),
-        ('SUCCESS', 'ReporTree successful'),
-        ('ALL_DONE', 'All done'),
-        ('OS_ERROR', 'OS error'),
-        ('RT_ERROR', 'ReporTree error'),
-        ('OBSOLETE', 'Obsolete')
+       ('NEW', 'New'),
+       ('READY', 'Ready'),
+       ('STARTING', 'Starting'),
+       ('RUNNING', 'Running'),
+       ('SUCCESS', 'ReporTree successful'),
+       ('ALL_DONE', 'All done'),
+       ('OS_ERROR', 'OS error'),
+       ('RT_ERROR', 'ReporTree error'),
+       ('OBSOLETE', 'Obsolete'),
+       ('SAMPLE_ERROR', 'Sample error'),
    ]
    owner = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
    dataset = models.ForeignKey(DataSet, models.PROTECT)
@@ -111,7 +112,12 @@ class RTJob(models.Model):
             self.status = 'SUCCESS'
             self.save()
       elif self.status == 'SUCCESS':
-         parse_rt_output(self)
+         try:
+            parse_rt_output(self)
+         except FileNotFoundError as e:
+            print("ERROR: file not found")
+            print(e)
+            self.status = 'FAILED'
       return self.status
    
    def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
@@ -144,60 +150,68 @@ class RTJob(models.Model):
             job_folder.mkdir()
             print(f"Created job folder {job_folder}.")
       
-      tsv_file = open(Path(job_folder, 'allele_profiles.tsv'), 'w')
-      metadata_file = open(Path(job_folder, 'metadata.tsv'), 'w')
+      with \
+      open(Path(job_folder, 'allele_profiles.tsv'), 'w') as allele_profile_file, \
+      open(Path(job_folder, 'metadata.tsv'), 'w') as metadata_file:
       
-      # Get allele profile for first sample so we can define allele file header line
-      allele_header_line = [ 'ID' ]
-      first_sample = next(samples)
-      for allele in first_sample['allele_profile']:
-            locus = allele['locus']
-            if locus.endswith('.fasta'):
-               locus = locus[:-6]
-            allele_header_line.append(locus)
-      tsv_file.write('\t'.join(allele_header_line))
-      tsv_file.write('\n')
+         # Get allele profile for first sample so we can define allele file header line
+         allele_header_line = [ 'ID' ]
+         first_sample = next(samples)
+         if not 'allele_profile' in first_sample:
+            print("ERROR: no allele profile!")
+            self.set_status('SAMPLE_ERROR')
+            self.save()
+            return
+         
+         for allele in first_sample['allele_profile']:
+               locus = allele['locus']
+               if locus.endswith('.fasta'):
+                  locus = locus[:-6]
+               allele_header_line.append(locus)
+         allele_profile_file.write('\t'.join(allele_header_line))
+         allele_profile_file.write('\n')
 
-      # Add header line to metadata file
-      metadata_header_line = [ 'ID' ]
-      metadata_header_line.extend(self.metadata_fields)
-      metadata_file.write('\t'.join(metadata_header_line))
-      metadata_file.write('\n')
- 
-      # Write data for first sample to files
-      self.add_sample_data_in_files(first_sample, tsv_file, metadata_file)
-
-      # Write data for subsequent samples to files
-      for sample in samples:
-            self.add_sample_data_in_files(sample, tsv_file, metadata_file)
-      
-      tsv_file.close()
-      metadata_file.close()
+         # Add header line to metadata file
+         metadata_header_line = [ 'ID' ]
+         metadata_header_line.extend(self.metadata_fields)
+         metadata_file.write('\t'.join(metadata_header_line))
+         metadata_file.write('\n')
    
-      # Set new status on job
-      self.set_status('READY')
+         # Write data for first sample to files
+         self.add_sample_data_in_files(first_sample, allele_profile_file, metadata_file)
+
+         # Write data for subsequent samples to files
+         for sample in samples:
+               self.add_sample_data_in_files(sample, allele_profile_file, metadata_file)
+      
+         # Set new status on job
+         self.set_status('READY')
+         self.save()
 
    def run(self):
-      self.start_time = timezone.now()
-      self.set_status('STARTING')
-      self.save()
-      raw_response = requests.post(f'http://reportree:7000/reportree/start_job/',
-         json={
-            'job_number': self.pk,
-            'timeout': settings.REPORTREE_TIMEOUT,
-            'columns_summary_report': self.metadata_fields,
-            }
-      )
-      json_response = (raw_response.json())
-      print(json_response)
-      self.pid = json_response['pid']
-      self.error = json_response['error']
-      self.set_status(json_response['status'])
-      if self.status == 'SUCCESS':
-         self.end_time = timezone.now()
-         elapsed_time = self.end_time - self.start_time
-         self.elapsed_time = elapsed_time.seconds
-      self.save()
+      if self.status == 'READY':
+         self.start_time = timezone.now()
+         self.set_status('STARTING')
+         self.save()
+         raw_response = requests.post(f'http://reportree:7000/reportree/start_job/',
+            json={
+               'job_number': self.pk,
+               'timeout': settings.REPORTREE_TIMEOUT,
+               'columns_summary_report': self.metadata_fields,
+               }
+         )
+         json_response = (raw_response.json())
+         print(json_response)
+         self.pid = json_response['pid']
+         self.error = json_response['error']
+         self.set_status(json_response['status'])
+         if self.status == 'SUCCESS':
+            self.end_time = timezone.now()
+            elapsed_time = self.end_time - self.start_time
+            self.elapsed_time = elapsed_time.seconds
+         self.save()
+      else:
+         print(f"ERROR: trying to run ReporTree job {self.pk} which has status {self.status}")
 
 
 class Partition(models.Model):
