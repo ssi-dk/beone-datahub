@@ -140,24 +140,17 @@ MONGO_CONNECTION = 'mongodb://mongo:27017/beone'
 }"""
 
 MONGO_FIELD_MAPPING = {
-    # Common
     'org': 'org',
     'name': 'name',
     'species': 'sample.metadata.Microorganism',
     'sequence_type': 'sample.summary.sequence_type',
-    'metadata': 'sample.metadata',
-    
-    # Specific for BeONE data structure
-    # 'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
-    # 'country_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
-    # 'source_type_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]},
-    # 'allele_profile': 'pipelines.chewiesnake.allele_profile',
-    
-    # Specific for ReporTree outbreak example
+    'metadata': 'sample.metadata',  #TODO Remove
+    'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
+    'country_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
+    'source_type_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]},
     'sampling_date': 'sample.metadata.sampling_date',
     'country_code': 'sample.metadata.country_code',
     'source_type': 'sample.metadata.source',
-    'allele_profile': 'pipelines.reportree_ex.allele_profile',
 }
 
 ALL_SPECIES = (
