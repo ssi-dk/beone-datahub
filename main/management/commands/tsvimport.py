@@ -6,6 +6,7 @@ import pymongo
 
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
+from main.models import DataSet
 
 def dots2dicts(dot_str: str, value):
     """Helper function that converts a string with dotted notation to a recursive structure of dicts
@@ -27,12 +28,14 @@ class Command(BaseCommand):
             "'folder' must be a valid path to a folder which contains two files with TSV data; " + \
             "one named like 'alleles.tsv' and the other named like 'metadata.tsv', containing " + \
             "allele profiles and metadata, respectively." + \
-            "The headers in metadata.tsv must have identical entries in settings.MONGO_FIELD_MAPPING."
+            "The headers in metadata.tsv must have identical entries in settings.MONGO_FIELD_MAPPING." + \
+            "The species shortform argument must match an entry in ALL_SPECIES in settings.py."
 
     def add_arguments(self, parser):
         parser.add_argument('folder', type=str, help="Folder containing alleles.tsv and metadata.tsv")
         parser.add_argument('org', type=str, help="Organization which these samples belong to")
-        # parser.add_argument('dataset', type=str)
+        parser.add_argument('species', type=str, help="Species shortform")
+        parser.add_argument('dataset', type=str, help="A name for the dataset (must not already exist)")
 
     def handle(self, *args, **options):
         folder = Path(options['folder'])
@@ -115,3 +118,10 @@ class Command(BaseCommand):
 
         number = db.samples.count_documents({})
         self.stdout.write(f'MongoDB now contains {str(number)} samples (after import).')
+
+        # Create dataset
+        dataset = DataSet(
+            species=options['species'],
+            name=options['dataset'],
+            description="Imported with tsvimport")
+        dataset.save()
