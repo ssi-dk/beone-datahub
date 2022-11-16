@@ -87,16 +87,16 @@
         {{ sample.name }}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.metadata.Microorganism }}
+        {{ sample.species }}  {# sample.metadata.Microorganism #}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.country.termName }}
+        {{ sample.country }}   {# sample.country.termName #}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.source_type.termName }}
+        {{ sample.source }}   {# sample.source_type.termName #}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.metadata.Date_Sampling_YYYY }}
+        {{ sample.sampling_date }}   {# sample.metadata.Date_Sampling_YYYY #}
       </div>
       <div class="overview-datacolumn">
         {{ sample.sequence_type }}

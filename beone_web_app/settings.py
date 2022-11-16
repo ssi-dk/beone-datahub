@@ -152,8 +152,6 @@ MONGO_FIELD_MAPPING = {
     'metadata': 'sample.metadata',
     'country': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
     'source_type': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]},
-    # 'country_root': 'sample.metadata.Country',  Probably not is use?
-    # 'source_type_root': 'sample.metadata.Source_Type', Probably not in use?
     
     # Specific for ReporTree outbreak example
     'country_code': 'sample.metadata.country_code',
