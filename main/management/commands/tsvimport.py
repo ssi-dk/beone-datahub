@@ -105,8 +105,6 @@ class Command(BaseCommand):
                         field = field_list[header_number]
                         if field is not None:
                             dicts = dots2dicts(field, m_list[header_number])
-                            print("Dicts:")
-                            print(dicts)
                             result = db.samples.update_one(sample_id, {'$set': dicts})
                             if not result.acknowledged:
                                 exit(f"Could not update sample in MongoDB: org: {sample_id['org']}, sample:  {sample_id['name']}")
