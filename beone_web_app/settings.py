@@ -154,6 +154,15 @@ MONGO_FIELD_MAPPING = {
     'allele_profile': 'pipelines.chewiesnake.allele_profile',
 }
 
+SAMPLE_VIEW_COLUMNS = [
+    ('org', 'Organization'),
+    ('name', 'Name'),
+    ('country_code', 'Country Code'),
+    ('source_type', 'Source Type'),
+    ('sampling_date', 'Sampling Date'),
+    ('sequence_type', 'Sequence Type'),
+]
+
 ALL_SPECIES = (
     ('campy', 'Campylobacter jejuni'),
     ('coli', 'Escherichia coli'),
