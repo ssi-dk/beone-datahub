@@ -91,7 +91,7 @@ class Command(BaseCommand):
                 assert a_name == m_name
                 self.stdout.write(f"Importing sample {a_name}...")
 
-                # Create document in MongoDB, popping off items of both a_list and m_list as they are needed
+                # Create document in MongoDB, using data items from both m_list and a_list
                 sample_id = {
                         'org': options['org'],
                         'name': a_name,
@@ -114,4 +114,4 @@ class Command(BaseCommand):
                 sample_count += 1
 
         number = db.samples.count_documents({})
-        self.stdout.write(f'MongoDB currently contains {str(number)} samples (after import).')
+        self.stdout.write(f'MongoDB now contains {str(number)} samples (after import).')
