@@ -77,7 +77,8 @@ class Command(BaseCommand):
 
             field_list = list(mapping.values())
             sample_count = 0
-            while True:
+            mongo_keys = list()  # org, name key pairs to add to dataset
+            while True:  # As long as there are more sample lines to read
                 a_line = a_file.readline().strip()
                 if not a_line:
                     self.stdout.write(f"No more lines in allele file. I have read {sample_count} lines.")
@@ -111,6 +112,7 @@ class Command(BaseCommand):
                     exit(f"Could not write sample to MongoDB: org: {sample_id['org']}, sample:  {sample_id['name']}")
 
                 self.stdout.write(self.style.SUCCESS(f"Sample added to MongoDB: org: {sample_id['org']}, sample:  {sample_id['name']}"))
+                mongo_keys.append({'org': sample_id['org'], 'name': sample_id['name']})  # We do not want MongoDB _id
                 sample_count += 1
 
         number = db.samples.count_documents({})
@@ -120,6 +122,8 @@ class Command(BaseCommand):
         dataset = DataSet(
             species=options['species'],
             name=options['dataset'],
-            description="Imported with tsvimport")
+            description="Imported with tsvimport",
+            mongo_keys=mongo_keys
+            )
         dataset.save()
         self.stdout.write(self.style.SUCCESS(f"Created dataset:  {options['dataset']}"))
