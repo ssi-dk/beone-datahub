@@ -101,19 +101,19 @@ class Command(BaseCommand):
                     }
                 result = db.samples.insert_one(sample_id)
                 if result.acknowledged:
-                # if True:
-                    self.stdout.write(self.style.SUCCESS('Success.'))
-
                     for header_number in range(0, len(mapping.keys())):
                         field = field_list[header_number]
-                        # print(f"Field: {field}")
-                        # print(f"Field: {field}")
                         if field is not None:
                             dicts = dots2dicts(field, m_list[header_number])
                             print("Dicts:")
                             print(dicts)
                             result = db.samples.update_one(sample_id, {'$set': dicts})
+                            if not result.acknowledged:
+                                exit(f"Could not update sample in MongoDB: org: {sample_id['org']}, sample:  {sample_id['name']}")
+                else:
+                    exit(f"Could not write sample to MongoDB: org: {sample_id['org']}, sample:  {sample_id['name']}")
 
+                self.stdout.write(self.style.SUCCESS(f"Sample added to MongoDB: org: {sample_id['org']}, sample:  {sample_id['name']}"))
                 sample_count += 1
 
         number = db.samples.count_documents({})
@@ -125,3 +125,4 @@ class Command(BaseCommand):
             name=options['dataset'],
             description="Imported with tsvimport")
         dataset.save()
+        self.stdout.write(self.style.SUCCESS(f"Created dataset:  {options['dataset']}"))
