@@ -54,7 +54,7 @@
       </div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">Source</div>
+      <div class="overview-header-inner-bold">Source Type</div>
       <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
@@ -66,7 +66,7 @@
       </div>
     </div>
     <div class="overview-header">
-      <div class="overview-header-inner-bold">ST</div>
+      <div class="overview-header-inner-bold">Sequence Type</div>
       <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
@@ -90,10 +90,10 @@
         {{ sample.species }}  {# sample.metadata.Microorganism #}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.country }}   {# sample.country.termName #}
+        {{ sample.country_code }}   {# sample.country.termName #}
       </div>
       <div class="overview-datacolumn">
-        {{ sample.source }}   {# sample.source_type.termName #}
+        {{ sample.source_type }}   {# sample.source_type.termName #}
       </div>
       <div class="overview-datacolumn">
         {{ sample.sampling_date }}   {# sample.metadata.Date_Sampling_YYYY #}

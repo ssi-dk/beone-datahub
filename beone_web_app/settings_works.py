@@ -148,9 +148,9 @@ MONGO_FIELD_MAPPING = {
     'metadata': 'sample.metadata',
     
     # Specific for BeONE data structure
-    # 'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
-    # 'country_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
-    # 'source_type_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]},
+    # 'sampling_date': 'sample.metadata.Date_Sampling_YYYY',
+    # 'country_code': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
+    # 'source_type': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]},
     # 'allele_profile': 'pipelines.chewiesnake.allele_profile',
     
     # Specific for ReporTree outbreak example
