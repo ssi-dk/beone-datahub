@@ -120,16 +120,12 @@ class Command(BaseCommand):
                         'name': a_name,
                         'sample': {'metadata': {'Microorganism': all_species[options['sp']]}}
                     }
-                print("Sample dict:")
-                print(sample_dict)
                 for header_number in range(0, len(mapping.keys())):
                     field = field_list[header_number]
-                    print(f"Adding field: {field}")
+                    print(f"Adding metadata field: {field}")
                     if field is not None:
                         dicts_to_add = dots2dicts(field, m_list[header_number])
                         sample_dict = merge_dictionaries(sample_dict, dicts_to_add)
-                        print("Merged sample dictionary:")
-                        print(sample_dict)
 
                 result = db.samples.insert_one(sample_dict)
                 if not result.acknowledged:
