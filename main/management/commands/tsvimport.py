@@ -152,7 +152,7 @@ class Command(BaseCommand):
                 if not result.acknowledged:
                      self.stdout.write(self.style.ERROR(f"Could not update sample in MongoDB: org: {sample_dict}"))
                      exit
-                self.stdout.write(self.style.SUCCESS(f"Sample added to MongoDB: {sample_dict}"))
+                self.stdout.write(self.style.SUCCESS(f"Sample {sample_dict['name']} added to MongoDB."))
                 mongo_keys.append({'org': sample_dict['org'], 'name': sample_dict['name']})
                 sample_count += 1
 
