@@ -81,6 +81,8 @@ class Command(BaseCommand):
         with open(a_path) as a_file, open(m_path) as m_file:
             a_header_list = a_file.readline().strip().split('\t')
             a_header_list.pop(0)  # First item is useless; throw away
+            allele_count = len(a_header_list)
+            print(f"Allele count: {allele_count}")
             m_header_list = m_file.readline().strip().split('\t')
             m_header_list.pop(0)  # Useless item; throw away
 
@@ -109,6 +111,7 @@ class Command(BaseCommand):
                     break
                 a_list = a_line.split('\t')
                 a_name = a_list.pop(0)
+                assert len(a_list) == allele_count
                 m_list = m_line.split('\t')
                 m_name = m_list.pop(0)
                 assert a_name == m_name
@@ -129,7 +132,13 @@ class Command(BaseCommand):
                         dicts_to_add = dots2dicts(field, m_list[header_number])
                         sample_dict = merge_dictionaries(sample_dict, dicts_to_add)
                 
-                # Add allele profile fields to sample_dict
+                # Read allele profile fields from a_list
+                allele_profile = dict()
+               
+
+                # Add allele profile to sample_dict
+                # For now, assume the pipeline is chewieSnake
+                # sample_dict['pipelines'] = {'chewiesnake': allele_profile}
 
                  # Create document in MongoDB
                 result = db.samples.insert_one(sample_dict)
