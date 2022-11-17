@@ -136,19 +136,19 @@ class Command(BaseCommand):
                 allele_profile = dict()
                 for allele_name in a_header_list:
                     allele_profile[allele_name ] = a_list.pop(0)
-                print(f"Allele profile for {m_name}:")
-                print(allele_profile)
+                # print(f"Allele profile for {m_name}:")
+                # print(allele_profile)
 
                 # Add allele profile to sample_dict
                 # For now, assume the pipeline is chewieSnake
-                # sample_dict['pipelines'] = {'chewiesnake': allele_profile}
+                sample_dict['pipelines'] = {'chewiesnake': {'allele_profile': allele_profile}}
 
                  # Create document in MongoDB
                 result = db.samples.insert_one(sample_dict)
                 if not result.acknowledged:
                      self.stdout.write(self.style.ERROR(f"Could not update sample in MongoDB: org: {sample_dict}"))
                      exit
-                self.stdout.write(self.style.SUCCESS(f"Sample added to MongoDB: org: {sample_dict}"))
+                self.stdout.write(self.style.SUCCESS(f"Sample added to MongoDB: {sample_dict}"))
                 mongo_keys.append({'org': sample_dict['org'], 'name': sample_dict['name']})
                 sample_count += 1
 
