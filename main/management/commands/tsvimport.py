@@ -134,7 +134,10 @@ class Command(BaseCommand):
                 
                 # Read allele profile fields from a_list
                 allele_profile = dict()
-               
+                for allele_name in a_header_list:
+                    allele_profile[allele_name ] = a_list.pop(0)
+                print(f"Allele profile for {m_name}:")
+                print(allele_profile)
 
                 # Add allele profile to sample_dict
                 # For now, assume the pipeline is chewieSnake
