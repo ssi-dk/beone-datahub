@@ -114,19 +114,24 @@ class Command(BaseCommand):
                 assert a_name == m_name
                 self.stdout.write(f"Importing sample {a_name}...")
 
-                # Create document in MongoDB, using data items from both m_list and a_list
+                # Create the basic structure that will be inserted in MongoDB
                 sample_dict = {
                         'org': options['org'],
                         'name': a_name,
                         'sample': {'metadata': {'Microorganism': all_species[options['sp']]}}
                     }
+                
+                # Add metadata fields to sample_dict
                 for header_number in range(0, len(mapping.keys())):
                     field = field_list[header_number]
                     print(f"Adding metadata field: {field}")
                     if field is not None:
                         dicts_to_add = dots2dicts(field, m_list[header_number])
                         sample_dict = merge_dictionaries(sample_dict, dicts_to_add)
+                
+                # Add allele profile fields to sample_dict
 
+                 # Create document in MongoDB
                 result = db.samples.insert_one(sample_dict)
                 if not result.acknowledged:
                      self.stdout.write(self.style.ERROR(f"Could not update sample in MongoDB: org: {sample_dict}"))
