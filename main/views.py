@@ -19,8 +19,6 @@ api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
 
 
 def get_species_name(species: str=None):
-    if species is None or species=='none':
-        return None
     for s in settings.ALL_SPECIES:
         if s[0] == species:
             return s[1]
