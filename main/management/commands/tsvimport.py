@@ -8,6 +8,8 @@ from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from main.models import DataSet
 
+all_species = { short:long for short, long in settings.ALL_SPECIES }
+
 def dots2dicts(dot_str: str, value):
     """Helper function that converts a string with dotted notation to a recursive structure of dicts
     """
@@ -52,7 +54,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('folder', type=str, help="Folder containing alleles.tsv and metadata.tsv")
         parser.add_argument('org', type=str, help="Organization which these samples belong to")
-        parser.add_argument('species', type=str, help="Species shortform")
+        parser.add_argument('sp', type=str, help="Species shortform")
         parser.add_argument('dataset', type=str, help="A name for the dataset (must not already exist)")
 
     def handle(self, *args, **options):
@@ -116,6 +118,7 @@ class Command(BaseCommand):
                 sample_dict = {
                         'org': options['org'],
                         'name': a_name,
+                        'sample': {'metadata': {'Microorganism': all_species[options['sp']]}}
                     }
                 print("Sample dict:")
                 print(sample_dict)
@@ -141,7 +144,7 @@ class Command(BaseCommand):
 
         # Create dataset
         dataset = DataSet(
-            species=options['species'],
+            species=options['sp'],
             name=options['dataset'],
             description="Imported with tsvimport",
             mongo_keys=mongo_keys
