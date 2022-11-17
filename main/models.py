@@ -26,11 +26,9 @@ class DataSet(models.Model):
 
 def get_default_metadata_fields():
    return [
-      'Outbreak_related',
-      'Date_Sampling',
-      'Serotype',
-      'Latitude',
-      'Longitude',
+      'country_code',
+      'source_type',
+      'sampling_date',
    ]
 
 class RTJob(models.Model):
@@ -136,6 +134,7 @@ class RTJob(models.Model):
 
       # Metadata
       metadata_line = [ sample_id ]
+      print(self.metadata_fields)
       for key in self.metadata_fields:
          metadata_line.append(str(sample['metadata'][key]))
       metadata_file.write('\t'.join(metadata_line))

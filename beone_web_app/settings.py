@@ -150,7 +150,7 @@ MONGO_FIELD_MAPPING = {
     'source_type_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]},
     'sampling_date': 'sample.metadata.sampling_date',
     'country_code': 'sample.metadata.country_code',
-    'source_type': 'sample.metadata.source',
+    'source_type': 'sample.metadata.source_type',
     'allele_profile': 'pipelines.chewiesnake.allele_profile',
 }
 
