@@ -17,7 +17,7 @@ class API:
         self,
         mongo_ids = None,
         species_name: str = None,
-        fields: set = {'metadata', 'sequence_type', 'country', 'source_type'}
+        fields: set = {'metadata', 'sequence_type', 'country_code', 'source_type'}
     ):
 
         # Ensure we always have these two fields in the set
