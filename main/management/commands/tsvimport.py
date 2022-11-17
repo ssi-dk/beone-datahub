@@ -133,11 +133,15 @@ class Command(BaseCommand):
                         sample_dict = merge_dictionaries(sample_dict, dicts_to_add)
                 
                 # Read allele profile fields from a_list
-                allele_profile = dict()
-                for allele_name in a_header_list:
-                    allele_profile[allele_name ] = a_list.pop(0)
-                # print(f"Allele profile for {m_name}:")
-                # print(allele_profile)
+                allele_profile = list()
+                for locus in a_header_list:
+                    allele = {'locus': locus}
+                    allele_str = a_list.pop(0)
+                    if allele_str.isdigit:
+                        allele['allele_crc32'] = int(allele_str)
+                    else:
+                        allele['allele_crc32'] = None
+                    allele_profile.append(allele)
 
                 # Add allele profile to sample_dict
                 # For now, assume the pipeline is chewieSnake
