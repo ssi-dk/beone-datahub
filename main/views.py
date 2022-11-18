@@ -96,7 +96,6 @@ def edit_dataset(request, dataset_key:int):
         return redirect(dataset_list)
     
     if request.method == 'POST':
-        print("POST")
         form = DeleteDatasetForm(request.POST)
         if form.is_valid():
             if form.cleaned_data['confirm_name'] == dataset.name:
@@ -294,9 +293,6 @@ def get_partitions_for_job(request, rt_job_key: str):
     for p in rt_partitions:
         cluster_list = list()
         for c in p.cluster_set.all():
-            print(f"Partition {p.name} contains cluster {c.name}")
-            print(f"Cluster {c.name} contains these samples:")
-            print(c.samples)
             cluster_dict = {'name': c.name}
             cluster_dict['samples'] = list(c.samples)
             cluster_list.append(cluster_dict)
