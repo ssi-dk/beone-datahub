@@ -105,9 +105,18 @@ class RTJob(models.Model):
          return True
       return False
 
+   def rt_done(self):
+      done = False
+      if Path.exists(self.get_log_path()):
+         with open(self.get_log_path(), 'r') as file:
+            log = file.read()
+            if 'ReporTree is done!' in log:
+               done = True
+      return done
+
    def update_status(self):
       if self.status == 'RUNNING':
-         if self.rt_files_exist():
+         if self.rt_done():
             self.status = 'SUCCESS'
             self.save()
       elif self.status == 'SUCCESS':
