@@ -1,4 +1,5 @@
 from pathlib import Path
+from datetime import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -235,6 +236,7 @@ class Cluster(models.Model):
 
 
 def parse_rt_output(rt_job: RTJob):
+   started_at = datetime.now()
    with open(rt_job.get_log_path(), 'r') as f:
       rt_job.log = f.read()
    with open(rt_job.get_newick_path(), 'r') as f:
@@ -271,3 +273,5 @@ def parse_rt_output(rt_job: RTJob):
       cluster.save()
    rt_job.set_status('ALL_DONE')
    rt_job.save()
+   elapsed_time = datetime.now() - started_at
+   print(f"parse_rt_output took {elapsed_time}")
