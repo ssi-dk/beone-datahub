@@ -256,7 +256,6 @@ def parse_rt_output(rt_job: RTJob):
       lines = f.readlines()
       partition_names = lines[0].strip().split('\t')
       partition_names = partition_names[1:]
-      print(partition_names)
       for name in partition_names:
          partition = Partition(rt_job=rt_job, name=name)
          partition.save()
