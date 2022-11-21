@@ -21,9 +21,10 @@ async def start_job(job: Job):
         'python', '/app/ReporTree/reportree.py',
         '-a', f'/mnt/rt_runs/{job.job_number}/allele_profiles.tsv',
         '-m', f'/mnt/rt_runs/{job.job_number}/metadata.tsv',
+        '--output', f'/mnt/rt_runs/{job.job_number}/ReporTree',
         '--analysis', 'grapetree',
         '-thr 4,7,14',
-        '--matrix-4-grapetree'
+        '--matrix-4-grapetree',
         '--mx-transpose'
         ]
     print(command)
