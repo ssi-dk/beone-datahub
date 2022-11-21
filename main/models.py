@@ -246,6 +246,7 @@ class Cluster(models.Model):
 
 def parse_rt_output(rt_job: RTJob):
    started_at = datetime.now()
+   print(f" {started_at}: parse_rt_output started")
    with open(rt_job.get_log_path(), 'r') as f:
       rt_job.log = f.read()
    with open(rt_job.get_newick_path(), 'r') as f:
@@ -259,6 +260,7 @@ def parse_rt_output(rt_job: RTJob):
       for name in partition_names:
          partition = Partition(rt_job=rt_job, name=name)
          partition.save()
+      print((f" {datetime.now()}: partitions saved in db"))
    
    # Parse cluster report and create Cluster objects in db
    with open(rt_job.get_cluster_path(), 'r') as f:
@@ -279,6 +281,7 @@ def parse_rt_output(rt_job: RTJob):
          sample_list.append(sample_dict)
       cluster.samples = sample_list
       cluster.save()
+   print((f" {datetime.now()}: clusters saved in db"))
    rt_job.set_status('ALL_DONE')
    rt_job.save()
    elapsed_time = datetime.now() - started_at
