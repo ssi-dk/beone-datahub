@@ -23,11 +23,16 @@ async def start_job(job: Job):
         '-m', f'/mnt/rt_runs/{job.job_number}/metadata.tsv',
         '--output', f'/mnt/rt_runs/{job.job_number}/ReporTree',
         '--analysis', 'grapetree',
+        '--columns_summary_report', ','.join(job.columns_summary_report),
+        '--metadata2report', ','.join(job.columns_summary_report),
         '-thr 4,7,14',
+        '--frequency-matrix', ','.join(job.columns_summary_report),
         '--matrix-4-grapetree',
         '--mx-transpose'
         ]
-    print(command)
+    
+    print("ReporTree command:")
+    print(' '.join(command))
     workdir = f'/mnt/rt_runs/{job.job_number}'
     p = subprocess.Popen(command, cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
