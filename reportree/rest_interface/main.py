@@ -23,10 +23,10 @@ async def start_job(job: Job):
         '-m', f'/mnt/rt_runs/{job.job_number}/metadata.tsv',
         '--output', f'/mnt/rt_runs/{job.job_number}/ReporTree',
         '--analysis', 'grapetree',
-        '--columns_summary_report', ','.join(job.columns_summary_report),
-        '--metadata2report', ','.join(job.columns_summary_report),
+        #'--columns_summary_report', ','.join(job.columns_summary_report),
+        #'--metadata2report', ','.join(job.columns_summary_report),
         '-thr 4,7,14',
-        '--frequency-matrix', ','.join(job.columns_summary_report),
+        #'--frequency-matrix', ','.join(job.columns_summary_report),
         '--matrix-4-grapetree',
         '--mx-transpose'
         ]
