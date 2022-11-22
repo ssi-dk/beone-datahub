@@ -30,6 +30,7 @@ def get_default_metadata_fields():
       'country_code',
       'source_type',
       'sampling_date',
+      #'sequence_type'
    ]
 
 class RTJob(models.Model):
