@@ -17,19 +17,38 @@ async def root():
 
 @app.post("/reportree/start_job/")
 async def start_job(job: Job):
+    
+    # Original command from
+    # https://github.com/insapathogenomics/ReporTree/wiki/4.-Examples#outbreak-detection---bacterial-foodborne-pathogen-eg-listeria-monocytogenes
+    """
+    command = ['python', 'reportree.py',
+        '-m', 'Listeria_input_metadata.tsv',
+        '-a', 'Listeria_input_alleles.tsv',
+        '--columns_summary_report', 'n_sample,source,n_country,country,n_region,region,first_seq_date,last_seq_date,timespan_days,ST',
+        '--metadata2report', 'ST,source,iso_year',
+        '-thr', '4,7,14',
+        '--frequency-matrix', 'ST,iso_year',
+        '--count-matrix', 'ST,iso_year',
+        '--matrix-4-grapetree',
+        '--mx-transpose',
+        '-out', 'Listeria_outbreak_level_example',
+        '--analysis', 'grapetree'
+    ]
+    """
+    
     command = [
         'python', '/app/ReporTree/reportree.py',
-        '-a', f'/mnt/rt_runs/{job.job_number}/allele_profiles.tsv',
         '-m', f'/mnt/rt_runs/{job.job_number}/metadata.tsv',
-        '--output', f'/mnt/rt_runs/{job.job_number}/ReporTree',
-        '--analysis', 'grapetree',
-        #'--columns_summary_report', ','.join(job.columns_summary_report),
-        #'--metadata2report', ','.join(job.columns_summary_report),
+        '-a', f'/mnt/rt_runs/{job.job_number}/allele_profiles.tsv',
+        '--columns_summary_report', ','.join(job.columns_summary_report),
+        '--metadata2report', ','.join(job.columns_summary_report),
         '-thr 4,7,14',
-        #'--frequency-matrix', ','.join(job.columns_summary_report),
+        '--frequency-matrix', ','.join(job.columns_summary_report),
         '--matrix-4-grapetree',
-        '--mx-transpose'
-        ]
+        '--mx-transpose',
+        '-out', f'/mnt/rt_runs/{job.job_number}/ReporTree',
+        '--analysis', 'grapetree'
+    ]
     
     print("ReporTree command:")
     print(' '.join(command))

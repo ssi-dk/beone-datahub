@@ -76,7 +76,7 @@ class RTJob(models.Model):
       return Path(self.get_path(), 'ReporTree.log')
    
    def get_newick_path(self):
-      return Path(self.get_path(), 'ReporTree_single_HC.nwk')
+      return Path(self.get_path(), 'ReporTree.nwk')
    
    def get_cluster_path(self):
       return Path(self.get_path(), 'ReporTree_clusterComposition.tsv')
