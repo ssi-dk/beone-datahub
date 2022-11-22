@@ -40,15 +40,15 @@ async def start_job(job: Job):
         'python', '/app/ReporTree/reportree.py',
         '-m', f'/mnt/rt_runs/{job.job_number}/metadata.tsv',
         '-a', f'/mnt/rt_runs/{job.job_number}/allele_profiles.tsv',
-        '--columns_summary_report', 'country_code, source_type',
-        '--metadata2report', 'country_code, source_type',
+        '--columns_summary_report', 'country_code,source_type',
+        '--metadata2report', 'country_code,source_type',
         '-thr 4,7,14',
-        '--frequency-matrix', 'country_code, source_type',
+        '--frequency-matrix', 'country_code,source_type',
         '--matrix-4-grapetree',
         '--mx-transpose',
         '-out', f'/mnt/rt_runs/{job.job_number}/ReporTree',
         '--analysis', 'grapetree',
-        '--partitions2report' 'country_code,source_type'
+        '--partitions2report', 'country_code,source_type'
     ]
     
     print("ReporTree command:")
