@@ -49,6 +49,7 @@ class RTJob(models.Model):
        ('RT_ERROR', 'ReporTree error'),
        ('OBSOLETE', 'Obsolete'),
        ('SAMPLE_ERROR', 'Sample error'),
+       ('UNKNOWN', 'Unknown error'),
    ]
    owner = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
    dataset = models.ForeignKey(DataSet, models.PROTECT)

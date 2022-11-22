@@ -15,9 +15,7 @@ class Job(BaseModel):
 async def root():
     return {"message": "Hello World"}
 
-@app.post("/reportree/start_job/")
-async def start_job(job: Job):
-    
+def run_subprocess(job_number, timeout=5):
     # Original command from
     # https://github.com/insapathogenomics/ReporTree/wiki/4.-Examples#outbreak-detection---bacterial-foodborne-pathogen-eg-listeria-monocytogenes
     """
@@ -38,25 +36,25 @@ async def start_job(job: Job):
     
     command = [
         'python', '/app/ReporTree/reportree.py',
-        '-m', f'/mnt/rt_runs/{job.job_number}/metadata.tsv',
-        '-a', f'/mnt/rt_runs/{job.job_number}/allele_profiles.tsv',
+        '-m', f'/mnt/rt_runs/{job_number}/metadata.tsv',
+        '-a', f'/mnt/rt_runs/{job_number}/allele_profiles.tsv',
         '--columns_summary_report', 'country_code,source_type',
         '--metadata2report', 'country_code,source_type',
         '-thr 4,7,14',
         '--frequency-matrix', 'country_code,source_type',
         '--matrix-4-grapetree',
         '--mx-transpose',
-        '-out', f'/mnt/rt_runs/{job.job_number}/ReporTree',
+        '-out', f'/mnt/rt_runs/{job_number}/ReporTree',
         '--analysis', 'grapetree',
         '--partitions2report', 'country_code,source_type'
     ]
     
     print("ReporTree command:")
     print(' '.join(command))
-    workdir = f'/mnt/rt_runs/{job.job_number}'
+    workdir = f'/mnt/rt_runs/{job_number}'
     p = subprocess.Popen(command, cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
-        stdout, stderr = p.communicate(timeout=job.timeout)
+        stdout, stderr = p.communicate(timeout=timeout)
         print(stderr)
         if stderr is None:
             status = 'SUCCESS'
@@ -70,10 +68,19 @@ async def start_job(job: Job):
     except OSError as e:
         status = "OS_ERROR"
         error = e
+    except Exception as e:
+        status = "UNKNOWN"
+        error = e
     finally:
         return {
-            "job_number": job.job_number,
+            "job_number": job_number,
             "pid": p.pid,
             "status": status,
             "error": error
             }
+
+@app.post("/reportree/start_job/")
+async def start_job(job: Job):
+    result = run_subprocess(job.job_number)
+    print(result)
+    return result
