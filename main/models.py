@@ -134,13 +134,6 @@ class RTJob(models.Model):
          if self.rt_done():
             self.status = 'SUCCESS'
             self.save()
-      elif self.status == 'SUCCESS':
-         try:
-            parse_rt_output(self)
-         except FileNotFoundError as e:
-            print("ERROR: file not found")
-            print(e)
-            self.status = 'FAILED'
       return self.status
    
    def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
