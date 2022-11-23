@@ -159,6 +159,8 @@ class RTJob(models.Model):
       metadata_file.write('\n')
    
    def prepare(self, samples):
+      start_time = timezone.now()
+      print(f"prepare started at {self.start_time}")
       # Create a folder for the run
       job_folder = self.get_path()
       if job_folder.exists():
@@ -204,12 +206,15 @@ class RTJob(models.Model):
          # Set new status on job
          self.set_status('READY')
          self.save()
+         elapsed_time = timezone.now() - start_time
+         print(f"prepare took {elapsed_time}")
 
    def run(self):
       if self.status == 'READY':
          self.start_time = timezone.now()
          self.set_status('STARTING')
          self.save()
+         print(f"run started at {self.start_time}")
          print("self.metadata_fields:")
          print(self.metadata_fields)
          raw_response = requests.post(f'http://reportree:7000/reportree/start_job/',
@@ -237,6 +242,7 @@ class RTJob(models.Model):
             elapsed_time = self.end_time - self.start_time
             self.elapsed_time = elapsed_time.seconds
          self.save()
+         print(f"Run took {self.end_time}")
       else:
          print(f"ERROR: trying to run ReporTree job {self.pk} which has status {self.status}")
 
@@ -263,7 +269,7 @@ class Cluster(models.Model):
 
 
 def parse_rt_output(rt_job: RTJob):
-   started_at = datetime.now()
+   started_at = timezone.now()
    print(f" {started_at}: parse_rt_output started")
    with open(rt_job.get_log_path(), 'r') as f:
       rt_job.log = f.read()
@@ -278,7 +284,7 @@ def parse_rt_output(rt_job: RTJob):
       for name in partition_names:
          partition = Partition(rt_job=rt_job, name=name)
          partition.save()
-      print((f" {datetime.now()}: partitions saved in db"))
+      print((f" {timezone.now()}: partitions saved in db"))
    
    # Parse cluster report and create Cluster objects in db
    with open(rt_job.get_cluster_path(), 'r') as f:
@@ -299,8 +305,8 @@ def parse_rt_output(rt_job: RTJob):
          sample_list.append(sample_dict)
       cluster.samples = sample_list
       cluster.save()
-   print((f" {datetime.now()}: clusters saved in db"))
+   print((f" {timezone.now()}: clusters saved in db"))
    rt_job.set_status('ALL_DONE')
    rt_job.save()
-   elapsed_time = datetime.now() - started_at
+   elapsed_time = timezone.now() - started_at
    print(f"parse_rt_output took {elapsed_time}")
