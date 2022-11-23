@@ -56,7 +56,7 @@ async def start_job(job: Job):
     ]
 
     if len(job.threshold) > 0:
-        command.extend('--threshold', ','.join(job.threshold))
+        command.extend(['--threshold', ','.join(job.threshold)])
 
     if job.matrix_4_grapetree:
         command.append('--matrix-4-grapetree')

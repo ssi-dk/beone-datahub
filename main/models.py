@@ -227,7 +227,7 @@ class RTJob(models.Model):
                'matrix_4_grapetree': self.matrix_4_grapetree,
                'mx_transpose': self.mx_transpose,
                'analysis': self.analysis,
-               'threshold': self.threshold
+               'threshold': [ str(thr) for thr in self.threshold ]
                }
          )
          json_response = (raw_response.json())
