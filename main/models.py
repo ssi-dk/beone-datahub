@@ -234,12 +234,13 @@ class RTJob(models.Model):
          self.pid = json_response['pid']
          self.error = json_response['error']
          self.set_status(json_response['status'])
+         end_time = timezone.now()
+         elapsed_time = end_time - self.start_time
+         print(f"Run took {elapsed_time}")
          if self.status == 'SUCCESS':
-            self.end_time = timezone.now()
-            elapsed_time = self.end_time - self.start_time
+            self.end_time = end_time
             self.elapsed_time = elapsed_time.seconds
          self.save()
-         print(f"Run took {self.end_time}")
       else:
          print(f"ERROR: trying to run ReporTree job {self.pk} which has status {self.status}")
 
