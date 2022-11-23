@@ -56,7 +56,8 @@ def run_subprocess(job_number, timeout=5):
     status = "UNKNOWN"
     error = None
     workdir = f'/mnt/rt_runs/{job_number}'
-    p = subprocess.Popen(command, cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    # p = subprocess.Popen(command, cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    p = subprocess.Popen(command)
     try:
         stdout, stderr = p.communicate(timeout=timeout)
         print(stderr)
