@@ -42,7 +42,7 @@ def run_subprocess(job_number, timeout=5):
         '-a', f'/mnt/rt_runs/{job_number}/allele_profiles.tsv',
         '--columns_summary_report', 'country_code,source_type',
         '--metadata2report', 'country_code,source_type',
-        '-thr 4,7,14',
+        '-thr', '4,7,14',
         '--frequency-matrix', 'country_code,source_type',
         '--matrix-4-grapetree',
         '--mx-transpose',
