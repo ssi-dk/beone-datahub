@@ -62,7 +62,7 @@ def run_subprocess(job_number, timeout=5):
         stdout, stderr = p.communicate(timeout=timeout)
         print(stderr)
         if stderr is None:
-            status = "SUCCESS'"
+            status = "SUCCESS"
             error = None
         else:
             status = "RT_ERROR"
