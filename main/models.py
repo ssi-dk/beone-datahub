@@ -152,7 +152,6 @@ class RTJob(models.Model):
 
       # Metadata
       metadata_line = [ sample_id ]
-      print(self.metadata_fields)
       for key in self.metadata_fields:
          metadata_line.append(str(sample['metadata'][key]))
       metadata_file.write('\t'.join(metadata_line))
@@ -215,8 +214,6 @@ class RTJob(models.Model):
          self.set_status('STARTING')
          self.save()
          print(f"run started at {self.start_time}")
-         print("self.metadata_fields:")
-         print(self.metadata_fields)
          raw_response = requests.post(f'http://reportree:7000/reportree/start_job/',
             json={
                'job_number': self.pk,
