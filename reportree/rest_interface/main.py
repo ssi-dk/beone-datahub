@@ -1,7 +1,5 @@
 import subprocess
 from typing import Union
-from argparse import ArgumentParser
-
 from pydantic import BaseModel
 
 from fastapi import FastAPI
@@ -17,7 +15,9 @@ class Job(BaseModel):
 async def root():
     return {"message": "Hello World"}
 
-def run_subprocess(job_number, timeout=5):
+@app.post("/reportree/start_job/")
+async def start_job(job: Job):
+    
     # Original command from
     # https://github.com/insapathogenomics/ReporTree/wiki/4.-Examples#outbreak-detection---bacterial-foodborne-pathogen-eg-listeria-monocytogenes
     """
@@ -38,34 +38,31 @@ def run_subprocess(job_number, timeout=5):
     
     command = [
         'python', '/app/ReporTree/reportree.py',
-        '-m', f'/mnt/rt_runs/{job_number}/metadata.tsv',
-        '-a', f'/mnt/rt_runs/{job_number}/allele_profiles.tsv',
+        '-m', f'/mnt/rt_runs/{job.job_number}/metadata.tsv',
+        '-a', f'/mnt/rt_runs/{job.job_number}/allele_profiles.tsv',
         '--columns_summary_report', 'country_code,source_type',
         '--metadata2report', 'country_code,source_type',
         '-thr', '4,7,14',
         '--frequency-matrix', 'country_code,source_type',
         '--matrix-4-grapetree',
         '--mx-transpose',
-        '-out', f'/mnt/rt_runs/{job_number}/ReporTree',
+        '-out', f'/mnt/rt_runs/{job.job_number}/ReporTree',
         '--analysis', 'grapetree',
         '--partitions2report', 'country_code,source_type'
     ]
     
     print("ReporTree command:")
     print(' '.join(command))
-    status = "UNKNOWN"
-    error = None
-    workdir = f'/mnt/rt_runs/{job_number}'
-    # p = subprocess.Popen(command, cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    p = subprocess.Popen(command)
+    workdir = f'/mnt/rt_runs/{job.job_number}'
+    p = subprocess.Popen(command, cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
-        stdout, stderr = p.communicate(timeout=timeout)
+        stdout, stderr = p.communicate(timeout=job.timeout)
         print(stderr)
         if stderr is None:
-            status = "SUCCESS"
+            status = 'SUCCESS'
             error = None
         else:
-            status = "RT_ERROR"
+            status = 'RT_ERROR'
             error = stderr
     except subprocess.TimeoutExpired as e:
         status = "RUNNING"
@@ -73,25 +70,10 @@ def run_subprocess(job_number, timeout=5):
     except OSError as e:
         status = "OS_ERROR"
         error = e
-    
-    return {
-        "job_number": job_number,
-        "pid": p.pid,
-        "status": status,
-        "error": error
-        }
-
-@app.post("/reportree/start_job/")
-async def start_job(job: Job):
-    result = run_subprocess(job.job_number)
-    print(result)
-    return result
-
-
-if __name__ == '__main__':
-    parser = ArgumentParser()
-    parser.add_argument('job_number')
-    parser.add_argument('timeout')
-    args = parser.parse_args()
-    result = run_subprocess(args.job_number, int(args.timeout))
-    print(result)
+    finally:
+        return {
+            "job_number": job.job_number,
+            "pid": p.pid,
+            "status": status,
+            "error": error
+            }
