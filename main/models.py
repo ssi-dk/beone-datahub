@@ -221,6 +221,7 @@ class RTJob(models.Model):
                'job_number': self.pk,
                'timeout': settings.REPORTREE_TIMEOUT,
                'columns_summary_report': self.columns_summary_report,
+               'metadata2report': self.metadata2report,
                'frequency_matrix': self.frequency_matrix,
                'count_matrix': self.count_matrix,
                'matrix_4_grapetree': self.matrix_4_grapetree,
