@@ -140,28 +140,25 @@ MONGO_CONNECTION = 'mongodb://mongo:27017/beone'
 }"""
 
 MONGO_FIELD_MAPPING = {
+    # Common
     'org': 'org',
     'name': 'name',
     'species': 'sample.metadata.Microorganism',
     'sequence_type': 'sample.summary.sequence_type',
-    'metadata': 'sample.metadata',  #TODO Remove
-    'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
-    'country_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
-    'source_type_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]},
+    'metadata': 'sample.metadata',
+    
+    # Specific for BeONE data structure
+    # 'sampling_date': 'sample.metadata.Date_Sampling_YYYY',
+    # 'country_code': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
+    # 'source_type': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]},
+    # 'allele_profile': 'pipelines.chewiesnake.allele_profile',
+    
+    # Specific for ReporTree outbreak example
     'sampling_date': 'sample.metadata.sampling_date',
     'country_code': 'sample.metadata.country_code',
-    'source_type': 'sample.metadata.source_type',
-    'allele_profile': 'pipelines.chewiesnake.allele_profile',
+    'source_type': 'sample.metadata.source',
+    'allele_profile': 'pipelines.reportree_ex.allele_profile',
 }
-
-SAMPLE_VIEW_COLUMNS = [
-    ('org', 'Organization'),
-    ('name', 'Name'),
-    ('country_code', 'Country Code'),
-    ('source_type', 'Source Type'),
-    ('sampling_date', 'Sampling Date'),
-    ('sequence_type', 'Sequence Type'),
-]
 
 ALL_SPECIES = (
     ('campy', 'Campylobacter jejuni'),
@@ -179,4 +176,4 @@ USE_L10N = False
 
 REPORTREE_JOB_FOLDER = Path('/rt_runs')  # Root is root of Docker container!
 
-REPORTREE_TIMEOUT = 5  # The number of seconds to wait for at REST response before setting job state to 'RUNNING'
+REPORTREE_TIMEOUT = 2  # The number of seconds to wait for at REST response before setting job state to 'RUNNING'

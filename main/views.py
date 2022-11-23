@@ -1,9 +1,10 @@
 import json
 from re import template
+from pathlib import Path
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, StreamingHttpResponse
 from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse
@@ -11,15 +12,13 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User
 
 from main.mongo.samples_api import API
-from main.models import DataSet, RTJob
+from main.models import DataSet, RTJob, Partition,  Cluster, parse_rt_output
 from main.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
 
 api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
 
 
 def get_species_name(species: str=None):
-    if species is None:
-        return None
     for s in settings.ALL_SPECIES:
         if s[0] == species:
             return s[1]
@@ -97,7 +96,6 @@ def edit_dataset(request, dataset_key:int):
         return redirect(dataset_list)
     
     if request.method == 'POST':
-        print("POST")
         form = DeleteDatasetForm(request.POST)
         if form.is_valid():
             if form.cleaned_data['confirm_name'] == dataset.name:
@@ -214,14 +212,17 @@ def run_rt_job(request, rt_job_key:str):
         else:
             rt_job.prepare(samples)
             rt_job.run()
-            if rt_job.status == 'SUCCESS':
-                rt_job.load_results_from_files()
+            if rt_job.update_status() == 'SUCCESS':
+                parse_rt_output(rt_job)
+
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
 
 
 @login_required
 def view_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
+    if rt_job.status == 'SUCCESS':
+        parse_rt_output(rt_job)
     species_name = get_species_name(rt_job.dataset.species)
     form = DashboardLauncherForm()
     return render(request, 'main/rt_job.html',{
@@ -237,10 +238,6 @@ def view_rt_output(request, rt_job_key:str, item: str='log'):
         content = rt_job.log
     if item == 'newick':
         content = rt_job.newick
-    if item == 'clusters':
-        content = rt_job.clusters
-    if item == 'partitions':
-        content = rt_job.partitions
 
     content_lines = content.split('\n')
 
@@ -251,6 +248,55 @@ def view_rt_output(request, rt_job_key:str, item: str='log'):
         })
 
 @login_required
+def download_rt_file(request, rt_job_key:str, item: str='log'):
+    rt_job: RTJob = RTJob.objects.get(pk=rt_job_key)
+    if item == 'log':
+        file = rt_job.get_log_path()
+        content_type = 'text/plain'
+    if item == 'newick':
+        file = rt_job.get_newick_path()
+        content_type = 'text/plain'
+    if item == 'clusters':
+        file = rt_job.get_cluster_path()
+        content_type = 'tab-separated-values'
+    if item == 'partitions':
+        file = rt_job.get_partitions_path()
+        content_type = 'tab-separated-values'
+    if item == 'summary':
+        file = rt_job.get_partitions_summary_path()
+        content_type = 'tab-separated-values'
+    if item == 'distances':
+        file = rt_job.get_distance_matrix_path()
+        content_type = 'tab-separated-values'
+    if item == 'metapart':
+        file = rt_job.get_metadata_w_partitions_path()
+        content_type = 'tab-separated-values'
+
+    file_name = str(rt_job.pk) + '_' + file.name
+    stream = open(file, 'r')
+
+    return StreamingHttpResponse(
+        streaming_content=stream,
+        content_type=content_type,
+        headers={'Content-Disposition': f'attachment; filename="{file_name}"'},
+    )
+
+@login_required
 def get_rt_data(request, rt_job_key: str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     return JsonResponse({'newick': rt_job.newick, 'sample_ids': rt_job.dataset.mongo_keys})
+
+@login_required
+def get_partitions_for_job(request, rt_job_key: str):
+    rt_partitions = Partition.objects.filter(rt_job=rt_job_key)
+    partition_dict = dict()
+    for p in rt_partitions:
+        cluster_list = list()
+        for c in p.cluster_set.all():
+            cluster_dict = {'name': c.name}
+            cluster_dict['samples'] = list(c.samples)
+            cluster_list.append(cluster_dict)
+        partition_dict[p.name] = cluster_list
+
+    response = {'rt_job': rt_job_key, 'partitions': partition_dict}
+    return JsonResponse(response)

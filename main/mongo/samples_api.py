@@ -17,7 +17,7 @@ class API:
         self,
         mongo_ids = None,
         species_name: str = None,
-        fields: set = {'metadata', 'sequence_type', 'country', 'source_type'}
+        fields: set = {'metadata', 'sequence_type', 'country_code', 'source_type'}
     ):
 
         # Ensure we always have these two fields in the set
@@ -58,7 +58,7 @@ class API:
     def get_samples_from_keys(
         self,
         key_list:list[dict],
-        fields: set = {'metadata', 'sequence_type', 'country', 'source_type'}
+        fields: set = set(settings.MONGO_FIELD_MAPPING.keys())
     ):
 
         # We cannot search on an empty key_list.

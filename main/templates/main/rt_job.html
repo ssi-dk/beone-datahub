@@ -17,10 +17,19 @@
 <div class='row'>
   <div class='pane'>
       <h2>ReporTree Output</h2>
-      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'log' %}" target="_blank">Log</a>
-      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'newick' %}" target="_blank">Newick</a>
-      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'clusters' %}" target="_blank">Clusters</a>
-      <a href="{% url 'view_rt_output' rt_job.dataset.pk 'partitions' %}" target="_blank">Partitions</a>
+      <nav>
+        View files:
+        <a href="{% url 'view_rt_output' rt_job.pk 'log' %}" target="_blank" class="menu-item">Log</a>
+        <a href="{% url 'view_rt_output' rt_job.pk 'newick' %}" target="_blank">Newick</a>
+        Download files:
+        <a href="{% url 'download_rt_file' rt_job.pk 'log' %}" target="_blank" class="menu-item">Log</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'newick' %}" target="_blank">Newick</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'clusters' %}" target="_blank" class="menu-item">Clusters</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'partitions' %}" target="_blank">Partitions</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'summary' %}" target="_blank" class="menu-item">Summary</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'distances' %}" target="_blank">Distances</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'metapart' %}" target="_blank">Metadata w. partitions</a>
+      </nav>
   </div>
 </div>
 <div id="reportree_job_number" style="display:none;">

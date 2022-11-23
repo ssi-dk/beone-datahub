@@ -49,7 +49,7 @@ After this step, you should be able to see the samples in the 'sample list' in t
 ## Add extra database keys and a unique index
 Every organization that deals with sample data normally has internal rules and systems that ensures the uniqeness of sample names. However, the BeONE Web App - as well as the BeONE project itself - is about sharing data between organizations. This implies that there must be a way of ensuring the uniqueness of the samples so as to avoid that samples from two organizations are mixed up because the have the same sample name. Assuming that all samples received from a certain organization has unique names, we can solve the problem simply by adding a couple of extra keys and a unique index. This is not a part of the original BeONE MongoDB schema specification, so adding the keys and the index requires an extra step after importing the test data:
 
-    docker exec -it beone_web_app-web-1 python manage.py addids TEST
+    docker exec -it beone_web_app-django-1 python manage.py addids TEST
 
 This command will:
     - add an 'org' field with the value 'TEST' to each sample

@@ -18,13 +18,14 @@ services:
       - ./test_data:/mnt/test_data
   
   reportree:
-    build: reportree
+    build: ./reportree
     tty: true
     volumes:
       - ./rt_runs:/mnt/rt_runs
+      - ./reportree/rest_interface:/app/rest_interface:ro
     ports:
       - "7000:7000"
-    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7000"]
+    command: ["uvicorn", "rest_interface.main:app", "--host", "0.0.0.0", "--port", "7000", "--reload"]
 
   django:
     build: .
@@ -48,7 +49,6 @@ services:
     container_name: nginx
     ports:
       - 8080:80
-    restart: always
     # volumes:
     #   - static:/app/static
     depends_on:
@@ -64,9 +64,5 @@ services:
     tty: true
     # environment:
     #   - SOME_ENVVAR=true
-    # volumes:
-    #   - ./dashboard/:/app
-    #   - /srv/app/node_modules
-
-# volumes:
-#   static:
+    volumes:
+       - ./dashboard/src:/app/src:ro  # Must be inside Dockerfile WORKDIR
