@@ -44,6 +44,7 @@ async def start_job(job: Job):
         '--metadata2report', ','.join(job.columns_summary_report),
         '-thr', '4,7,14',
         '--frequency-matrix', ','.join(job.columns_summary_report),
+        '--count-matrix', ','.join(job.columns_summary_report),
         '--matrix-4-grapetree',
         '--mx-transpose',
         '-out', f'/mnt/rt_runs/{job.job_number}/ReporTree',
