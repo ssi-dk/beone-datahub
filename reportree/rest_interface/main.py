@@ -10,6 +10,13 @@ class Job(BaseModel):
     job_number: int
     timeout: int = 2
     columns_summary_report: list
+    metadata2report: list
+    frequency_matrix: list
+    count_matrix: list
+    matrix_4_grapetree: bool
+    mx_transpose: bool
+    analysis: str
+    threshold: list
 
 @app.get("/")
 async def root():
@@ -41,18 +48,25 @@ async def start_job(job: Job):
         '-m', f'/mnt/rt_runs/{job.job_number}/metadata.tsv',
         '-a', f'/mnt/rt_runs/{job.job_number}/allele_profiles.tsv',
         '--columns_summary_report', ','.join(job.columns_summary_report),
-        '--metadata2report', ','.join(job.columns_summary_report),
-        '-thr', '4,7,14',
-        '--frequency-matrix', ','.join(job.columns_summary_report),
-        '--count-matrix', ','.join(job.columns_summary_report),
-        '--matrix-4-grapetree',
-        '--mx-transpose',
+        '--metadata2report', ','.join(job.metadata2report),
+        '--frequency-matrix', ','.join(job.frequency_matrix),
+        '--count-matrix', ','.join(job.count_matrix),
         '-out', f'/mnt/rt_runs/{job.job_number}/ReporTree',
-        '--analysis', 'grapetree',
+        '--analysis', job.analysis,
     ]
+
+    if len(job.threshold) > 0:
+        command.extend(['--threshold', ','.join(job.threshold)])
+
+    if job.matrix_4_grapetree:
+        command.append('--matrix-4-grapetree')
+    
+    if job.mx_transpose:
+        command.append('--mx-transpose')
     
     print("ReporTree command:")
-    print(' '.join(command))
+    print(command)
+    # print(' '.join(command))
     workdir = f'/mnt/rt_runs/{job.job_number}'
     p = subprocess.Popen(command, cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:

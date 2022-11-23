@@ -33,6 +33,9 @@ def get_default_metadata_fields():
       #'sequence_type'
    ]
 
+def get_default_thresholds():
+   return([4, 7, 14])
+
 class RTJob(models.Model):
 
    class Meta:
@@ -60,6 +63,16 @@ class RTJob(models.Model):
    end_time = models.DateTimeField(blank=True, null=True)
    elapsed_time = models.IntegerField(blank=True, null=True)
    error = models.TextField(blank=True, null=True)
+
+   # Command line options
+   columns_summary_report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
+   metadata2report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
+   frequency_matrix = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
+   count_matrix = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
+   matrix_4_grapetree = models.BooleanField(default=True)
+   mx_transpose = models.BooleanField(default=True)
+   analysis = models.CharField(max_length=25, default='grapetree')
+   threshold = ArrayField(models.IntegerField(), default=get_default_thresholds)
 
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
@@ -121,13 +134,6 @@ class RTJob(models.Model):
          if self.rt_done():
             self.status = 'SUCCESS'
             self.save()
-      elif self.status == 'SUCCESS':
-         try:
-            parse_rt_output(self)
-         except FileNotFoundError as e:
-            print("ERROR: file not found")
-            print(e)
-            self.status = 'FAILED'
       return self.status
    
    def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
@@ -146,13 +152,14 @@ class RTJob(models.Model):
 
       # Metadata
       metadata_line = [ sample_id ]
-      print(self.metadata_fields)
       for key in self.metadata_fields:
          metadata_line.append(str(sample['metadata'][key]))
       metadata_file.write('\t'.join(metadata_line))
       metadata_file.write('\n')
    
    def prepare(self, samples):
+      start_time = timezone.now()
+      print(f"prepare started at {self.start_time}")
       # Create a folder for the run
       job_folder = self.get_path()
       if job_folder.exists():
@@ -198,19 +205,27 @@ class RTJob(models.Model):
          # Set new status on job
          self.set_status('READY')
          self.save()
+         elapsed_time = timezone.now() - start_time
+         print(f"prepare took {elapsed_time}")
 
    def run(self):
       if self.status == 'READY':
          self.start_time = timezone.now()
          self.set_status('STARTING')
          self.save()
-         print("self.metadata_fields:")
-         print(self.metadata_fields)
+         print(f"run started at {self.start_time}")
          raw_response = requests.post(f'http://reportree:7000/reportree/start_job/',
             json={
                'job_number': self.pk,
                'timeout': settings.REPORTREE_TIMEOUT,
-               'columns_summary_report': self.metadata_fields,
+               'columns_summary_report': self.columns_summary_report,
+               'metadata2report': self.metadata2report,
+               'frequency_matrix': self.frequency_matrix,
+               'count_matrix': self.count_matrix,
+               'matrix_4_grapetree': self.matrix_4_grapetree,
+               'mx_transpose': self.mx_transpose,
+               'analysis': self.analysis,
+               'threshold': [ str(thr) for thr in self.threshold ]
                }
          )
          json_response = (raw_response.json())
@@ -219,9 +234,11 @@ class RTJob(models.Model):
          self.pid = json_response['pid']
          self.error = json_response['error']
          self.set_status(json_response['status'])
+         end_time = timezone.now()
+         elapsed_time = end_time - self.start_time
+         print(f"Run took {elapsed_time}")
          if self.status == 'SUCCESS':
-            self.end_time = timezone.now()
-            elapsed_time = self.end_time - self.start_time
+            self.end_time = end_time
             self.elapsed_time = elapsed_time.seconds
          self.save()
       else:
@@ -250,7 +267,7 @@ class Cluster(models.Model):
 
 
 def parse_rt_output(rt_job: RTJob):
-   started_at = datetime.now()
+   started_at = timezone.now()
    print(f" {started_at}: parse_rt_output started")
    with open(rt_job.get_log_path(), 'r') as f:
       rt_job.log = f.read()
@@ -265,7 +282,7 @@ def parse_rt_output(rt_job: RTJob):
       for name in partition_names:
          partition = Partition(rt_job=rt_job, name=name)
          partition.save()
-      print((f" {datetime.now()}: partitions saved in db"))
+      print((f" {timezone.now()}: partitions saved in db"))
    
    # Parse cluster report and create Cluster objects in db
    with open(rt_job.get_cluster_path(), 'r') as f:
@@ -286,8 +303,8 @@ def parse_rt_output(rt_job: RTJob):
          sample_list.append(sample_dict)
       cluster.samples = sample_list
       cluster.save()
-   print((f" {datetime.now()}: clusters saved in db"))
+   print((f" {timezone.now()}: clusters saved in db"))
    rt_job.set_status('ALL_DONE')
    rt_job.save()
-   elapsed_time = datetime.now() - started_at
+   elapsed_time = timezone.now() - started_at
    print(f"parse_rt_output took {elapsed_time}")
