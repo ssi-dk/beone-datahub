@@ -48,7 +48,6 @@ async def start_job(job: Job):
         '--mx-transpose',
         '-out', f'/mnt/rt_runs/{job.job_number}/ReporTree',
         '--analysis', 'grapetree',
-        '--partitions2report', ','.join(job.columns_summary_report),
     ]
     
     print("ReporTree command:")
