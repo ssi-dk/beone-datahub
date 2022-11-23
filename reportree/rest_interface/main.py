@@ -1,5 +1,7 @@
 import subprocess
 from typing import Union
+from argparse import ArgumentParser
+
 from pydantic import BaseModel
 
 from fastapi import FastAPI
@@ -51,16 +53,18 @@ def run_subprocess(job_number, timeout=5):
     
     print("ReporTree command:")
     print(' '.join(command))
+    status = "UNKNOWN"
+    error = None
     workdir = f'/mnt/rt_runs/{job_number}'
     p = subprocess.Popen(command, cwd=workdir, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
         stdout, stderr = p.communicate(timeout=timeout)
         print(stderr)
         if stderr is None:
-            status = 'SUCCESS'
+            status = "SUCCESS'"
             error = None
         else:
-            status = 'RT_ERROR'
+            status = "RT_ERROR"
             error = stderr
     except subprocess.TimeoutExpired as e:
         status = "RUNNING"
@@ -68,19 +72,25 @@ def run_subprocess(job_number, timeout=5):
     except OSError as e:
         status = "OS_ERROR"
         error = e
-    except Exception as e:
-        status = "UNKNOWN"
-        error = e
-    finally:
-        return {
-            "job_number": job_number,
-            "pid": p.pid,
-            "status": status,
-            "error": error
-            }
+    
+    return {
+        "job_number": job_number,
+        "pid": p.pid,
+        "status": status,
+        "error": error
+        }
 
 @app.post("/reportree/start_job/")
 async def start_job(job: Job):
     result = run_subprocess(job.job_number)
     print(result)
     return result
+
+
+if __name__ == '__main__':
+    parser = ArgumentParser()
+    parser.add_argument('job_number')
+    parser.add_argument('timeout')
+    args = parser.parse_args()
+    result = run_subprocess(args.job_number, int(args.timeout))
+    print(result)
