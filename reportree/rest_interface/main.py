@@ -10,6 +10,13 @@ class Job(BaseModel):
     job_number: int
     timeout: int = 2
     columns_summary_report: list
+    metadata2report: list
+    frequency_matrix: list
+    count_matrix: list
+    matrix_4_grapetree: bool
+    mx_transpose: bool
+    analysis: str
+    threshold: list
 
 @app.get("/")
 async def root():

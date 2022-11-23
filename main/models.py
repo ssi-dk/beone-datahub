@@ -69,7 +69,7 @@ class RTJob(models.Model):
    matrix_4_grapetree = models.BooleanField(default=True)
    mx_transpose = models.BooleanField(default=True)
    analysis = models.CharField(max_length=25, default='grapetree')
-   threshold = ArrayField(models.IntegerField(default=list()))
+   threshold = ArrayField(models.IntegerField(), default=list)
 
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
@@ -220,7 +220,13 @@ class RTJob(models.Model):
             json={
                'job_number': self.pk,
                'timeout': settings.REPORTREE_TIMEOUT,
-               'columns_summary_report': self.metadata_fields,  # Change to self.columns_summary_report
+               'columns_summary_report': self.columns_summary_report,
+               'frequency_matrix': self.frequency_matrix,
+               'count_matrix': self.count_matrix,
+               'matrix_4_grapetree': self.matrix_4_grapetree,
+               'mx_transpose': self.mx_transpose,
+               'analysis': self.analysis,
+               'threshold': self.threshold
                }
          )
          json_response = (raw_response.json())
