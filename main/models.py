@@ -33,6 +33,9 @@ def get_default_metadata_fields():
       #'sequence_type'
    ]
 
+def get_default_thresholds():
+   return([4, 7, 14])
+
 class RTJob(models.Model):
 
    class Meta:
@@ -69,7 +72,7 @@ class RTJob(models.Model):
    matrix_4_grapetree = models.BooleanField(default=True)
    mx_transpose = models.BooleanField(default=True)
    analysis = models.CharField(max_length=25, default='grapetree')
-   threshold = ArrayField(models.IntegerField(), default=list)
+   threshold = ArrayField(models.IntegerField(), default=get_default_thresholds)
 
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
