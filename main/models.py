@@ -61,6 +61,16 @@ class RTJob(models.Model):
    elapsed_time = models.IntegerField(blank=True, null=True)
    error = models.TextField(blank=True, null=True)
 
+   # Command line options
+   columns_summary_report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
+   metadata2report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
+   frequency_matrix = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
+   count_matrix = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
+   matrix_4_grapetree = models.BooleanField(default=True)
+   mx_transpose = models.BooleanField(default=True)
+   analysis = models.CharField(max_length=25, default='grapetree')
+   threshold = ArrayField(models.IntegerField(default=list()))
+
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
    newick = models.TextField(blank=True, null=True)
@@ -210,7 +220,7 @@ class RTJob(models.Model):
             json={
                'job_number': self.pk,
                'timeout': settings.REPORTREE_TIMEOUT,
-               'columns_summary_report': self.metadata_fields,
+               'columns_summary_report': self.metadata_fields,  # Change to self.columns_summary_report
                }
          )
          json_response = (raw_response.json())
