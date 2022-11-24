@@ -1,5 +1,6 @@
 from pathlib import Path
 from sys import exit
+import json
 
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
@@ -27,13 +28,24 @@ class Command(BaseCommand):
         if not folder.exists():
             self.stderr.write(self.style.ERROR(f"Folder {folder} does not exist!"))
             exit()
+        
+        p = folder.glob('*.json')
+        files = [x for x in p if x.is_file()]
 
-        # For each JSON file
-        # db.samples.insert_one({}, [
-        #         { '$set': { 'org': options['org'] } },
-        #         {'$set': {'name': '$sample.summary.sample'}}
-        #     ], False)
+        for file in files:
+            self.stdout.write(f"Importing file {file.name}...")
+            with open(file, 'r') as f:
+                content = json.loads(f.read())
+                sample = content['sample']
+                sample['org'] = options['org']
+                sample['name'] = sample['summary']['sample']
+                result = db.samples.insert_one(sample)
+                if result.acknowledged:
+                    self.stdout.write(self.style.SUCCESS(f"Sample {sample['name']} added to MongoDB."))
+                else:
+                    self.stdout.write(self.style.ERROR(f"Could not update sample in MongoDB: org: {sample}"))
+                
 
         number = db.samples.count_documents({})
-        self.stdout.write(f'After import MongoDB contains{str(number)} samples.')
+        self.stdout.write(f'After import MongoDB contains {str(number)} samples.')
         self.stdout.write(self.style.SUCCESS('Success!'))
