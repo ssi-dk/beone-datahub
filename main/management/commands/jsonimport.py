@@ -13,6 +13,8 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('folder', type=str, help="Folder containing JSON files.")
         parser.add_argument('org', type=str, help="Acronym for the owning organization; f. ex. 'SSI'.")
+        parser.add_argument('sp', type=str, help="Species shortform, for ex. 'salmonella'.")
+        parser.add_argument('dataset', type=str, help="A name for the dataset (must not already exist).")
 
     def handle(self, *args, **options):
 
