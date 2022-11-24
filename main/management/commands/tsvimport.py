@@ -48,7 +48,7 @@ class Command(BaseCommand):
             "'folder' must be a valid path to a folder which contains two files with TSV data; " + \
             "one named like 'alleles.tsv' and the other named like 'metadata.tsv', containing " + \
             "allele profiles and metadata, respectively." + \
-            "The headers in metadata.tsv must have identical entries in settings.MONGO_FIELD_MAPPING." + \
+            "The headers in metadata.tsv must have matching entries in settings.MONGO_FIELD_MAPPING." + \
             "The species shortform argument must match an entry in ALL_SPECIES in settings.py."
 
     def add_arguments(self, parser):
