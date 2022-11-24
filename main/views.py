@@ -35,7 +35,8 @@ def redirect_root(request):
 
 @login_required
 def sample_list(request):
-    samples = api.get_samples()
+    fields_to_get = { entry[0] for entry in settings.SAMPLE_VIEW_COLUMNS }
+    samples = api.get_samples(fields=fields_to_get)
     return render(request, 'main/sample_list.html',{
         'samples': samples,
         })
@@ -104,7 +105,8 @@ def edit_dataset(request, dataset_key:int):
                 return HttpResponseRedirect('/datasets/')
 
     form = DeleteDatasetForm()
-    samples = list(api.get_samples(species_name=species_name))
+    fields_to_get = { entry[0] for entry in settings.SAMPLE_VIEW_COLUMNS }
+    samples = list(api.get_samples(species_name=species_name, fields=fields_to_get))
     for sample in samples:
         for key_pair in dataset.mongo_keys:
             if key_pair['org'] == sample['org'] and key_pair['name'] == sample['name']:

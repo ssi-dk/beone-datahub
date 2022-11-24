@@ -157,6 +157,7 @@ MONGO_FIELD_MAPPING = {
 SAMPLE_VIEW_COLUMNS = [
     ('org', 'Organization'),
     ('name', 'Name'),
+    ('species', 'Species'),
     ('country_code', 'Country Code'),
     ('source_type', 'Source Type'),
     ('sampling_date', 'Sampling Date'),
