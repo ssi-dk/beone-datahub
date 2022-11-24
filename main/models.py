@@ -94,24 +94,15 @@ class RTJob(models.Model):
    def get_partitions_path(self):
       return Path(self.get_path(), 'ReporTree_partitions.tsv')
    
-   def get_partitions_summary_path(self):
-      return Path(self.get_path(), 'ReporTree_partitions_summary.tsv')
-   
    def get_distance_matrix_path(self):
       return Path(self.get_path(), 'ReporTree_dist.tsv')
-   
-   def get_metadata_w_partitions_path(self):
-      return Path(self.get_path(), 'ReporTree_metadata_w_partitions.tsv')
-   
-   
+
    def rt_files_exist(self):
       if Path.exists(self.get_log_path()) \
             and Path.exists(self.get_newick_path()) \
             and Path.exists(self.get_cluster_path()) \
             and Path.exists(self.get_partitions_path()) \
-            and Path.exists(self.get_partitions_summary_path()) \
-            and Path.exists(self.get_distance_matrix_path()) \
-            and Path.exists(self.get_metadata_w_partitions_path()):
+            and Path.exists(self.get_distance_matrix_path()):
          return True
       return False
 
