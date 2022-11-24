@@ -53,10 +53,10 @@ class Command(BaseCommand):
             "The species shortform argument must match an entry in ALL_SPECIES in settings.py."
 
     def add_arguments(self, parser):
-        parser.add_argument('folder', type=str, help="Folder containing alleles.tsv and metadata.tsv")
-        parser.add_argument('org', type=str, help="Organization which these samples belong to")
-        parser.add_argument('sp', type=str, help="Species shortform")
-        parser.add_argument('dataset', type=str, help="A name for the dataset (must not already exist)")
+        parser.add_argument('folder', type=str, help="Folder containing alleles.tsv and metadata.tsv.")
+        parser.add_argument('org', type=str, help="Acronym for the owning organization; f. ex. 'SSI'.")
+        parser.add_argument('sp', type=str, help="Species shortform, for ex. 'salmonella'.")
+        parser.add_argument('dataset', type=str, help="A name for the dataset (must not already exist).")
 
     def handle(self, *args, **options):
         folder = Path(options['folder'])
