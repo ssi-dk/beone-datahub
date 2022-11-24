@@ -144,7 +144,7 @@ MONGO_FIELD_MAPPING = {
     'name': 'name',
     'species': 'sample.metadata.Microorganism',
     'sequence_type': 'sample.metadata.sequence_type',
-    'metadata': 'sample.metadata',  #TODO Remove
+    'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
     'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
     'country_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
     'source_type_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]},
