@@ -26,12 +26,7 @@ class DataSet(models.Model):
       return self.name
 
 def get_default_metadata_fields():
-   return [
-      'country_code',
-      'source_type',
-      'sampling_date',
-      #'sequence_type'
-   ]
+   return settings.DEFAULT_RT_METADATA_FIELDS
 
 def get_default_thresholds():
    return([4, 7, 14])
@@ -153,7 +148,12 @@ class RTJob(models.Model):
       # Metadata
       metadata_line = [ sample_id ]
       for key in self.metadata_fields:
-         metadata_line.append(str(sample['metadata'][key]))
+         if key in sample['metadata']:
+            metadata_line.append(str(sample['metadata'][key]))
+         else:
+            print(f"WARNING: metadata field {key} was not present in sample {sample_id}")
+            print("An empty field will be used")
+            metadata_line.append('')
       metadata_file.write('\t'.join(metadata_line))
       metadata_file.write('\n')
    

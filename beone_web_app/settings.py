@@ -163,6 +163,14 @@ SAMPLE_VIEW_COLUMNS = [
     ('sequence_type', 'Sequence Type'),
 ]
 
+# This will be the default for all field-related options to ReporTree
+DEFAULT_RT_METADATA_FIELDS = [
+      'country_code',
+      'source_type',
+      'sampling_date',
+      'sequence_type',
+]
+
 ALL_SPECIES = (
     ('campy', 'Campylobacter jejuni'),
     ('coli', 'Escherichia coli'),
