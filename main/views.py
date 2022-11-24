@@ -76,7 +76,8 @@ def dataset_list(request):
 def view_dataset(request, dataset_key:int):
     dataset = DataSet.objects.get(pk=dataset_key)
     species_name = get_species_name(dataset.species)
-    samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys)
+    fields_to_get = { entry[0] for entry in settings.SAMPLE_VIEW_COLUMNS }
+    samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields=fields_to_get)
     if len(unmatched) != 0:
         messages.add_message(request, messages.WARNING, f'Some keys in the dataset are unmatched: {unmatched}')
 

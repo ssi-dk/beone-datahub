@@ -17,7 +17,7 @@ class API:
         self,
         mongo_ids = None,
         species_name: str = None,
-        fields: set = {'metadata', 'sequence_type', 'country_code', 'source_type'}
+        fields: set = set(settings.MONGO_FIELD_MAPPING.keys())
     ):
 
         # Ensure we always have these two fields in the set
