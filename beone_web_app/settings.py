@@ -143,7 +143,7 @@ MONGO_FIELD_MAPPING = {
     'org': 'org',
     'name': 'name',
     'species': 'sample.metadata.Microorganism',
-    'sequence_type': 'sample.summary.sequence_type',
+    'sequence_type': 'sample.metadata.sequence_type',
     'metadata': 'sample.metadata',  #TODO Remove
     'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
     'country_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
