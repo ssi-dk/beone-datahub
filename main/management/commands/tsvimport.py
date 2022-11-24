@@ -61,15 +61,15 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         folder = Path(options['folder'])
         if not folder.exists():
-            self.stderr.write(f"Folder {folder} does not exist!")
+            self.stderr.write(self.style.ERROR(f"Folder {folder} does not exist!"))
             exit()
         a_path = Path(folder, 'alleles.tsv')
         if not a_path.exists():
-            self.stderr.write(f"File {a_path} does not exist!")
+            self.stderr.write(self.style.ERROR(f"File {a_path} does not exist!"))
             exit()
         m_path = Path(folder, 'metadata.tsv')    
         if not m_path.exists():
-            self.stderr.write(f"File {m_path} does not exist!")
+            self.stderr.write(self.style.ERROR(f"File {m_path} does not exist!"))
             exit()
 
         self.stdout.write(f"You selected folder {options['folder']} as input folder.")

@@ -1,5 +1,6 @@
-from enum import unique
-from lib2to3.pytree import Base
+from pathlib import Path
+from sys import exit
+
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
@@ -21,6 +22,11 @@ class Command(BaseCommand):
 
         self.stdout.write("Creating unique index on org+name if missing...")
         db.samples.create_index([('org', 1), ('name', 1)], unique=True)
+
+        folder = Path(options['folder'])
+        if not folder.exists():
+            self.stderr.write(self.style.ERROR(f"Folder {folder} does not exist!"))
+            exit()
 
         # For each JSON file
         # db.samples.insert_one({}, [
