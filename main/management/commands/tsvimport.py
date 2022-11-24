@@ -46,9 +46,10 @@ def merge_dictionaries(dict1, dict2):
 class Command(BaseCommand):
     help = "Import allele profile and metadata from TSV files." + \
             "'folder' must be a valid path to a folder which contains two files with TSV data; " + \
-            "one named like 'alleles.tsv' and the other named like 'metadata.tsv', containing " + \
+            "one named 'alleles.tsv' and the other named 'metadata.tsv', containing " + \
             "allele profiles and metadata, respectively." + \
-            "The headers in metadata.tsv must have matching entries in settings.MONGO_FIELD_MAPPING." + \
+            "The headers in metadata.tsv will only be imported if they have matching entries in " + \
+            "settings.MONGO_FIELD_MAPPING; otherwise they will be ignored. " + \
             "The species shortform argument must match an entry in ALL_SPECIES in settings.py."
 
     def add_arguments(self, parser):
