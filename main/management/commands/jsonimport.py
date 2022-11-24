@@ -36,14 +36,13 @@ class Command(BaseCommand):
             self.stdout.write(f"Importing file {file.name}...")
             with open(file, 'r') as f:
                 content = json.loads(f.read())
-                sample = content['sample']
-                sample['org'] = options['org']
-                sample['name'] = sample['summary']['sample']
-                result = db.samples.insert_one(sample)
+                content['org'] = options['org']
+                content['name'] = content['sample']['summary']['sample']
+                result = db.samples.insert_one(content)
                 if result.acknowledged:
-                    self.stdout.write(self.style.SUCCESS(f"Sample {sample['name']} added to MongoDB."))
+                    self.stdout.write(self.style.SUCCESS(f"Org {content['org']} name {content['name']} added to MongoDB."))
                 else:
-                    self.stdout.write(self.style.ERROR(f"Could not update sample in MongoDB: org: {sample}"))
+                    self.stdout.write(self.style.ERROR(f"Could not update sample in MongoDB: org: {content['org']}, name {content['name']}"))
                 
 
         number = db.samples.count_documents({})
