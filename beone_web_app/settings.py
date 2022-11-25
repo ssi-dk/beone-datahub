@@ -143,7 +143,8 @@ MONGO_FIELD_MAPPING = {
     'org': 'org',
     'name': 'name',
     'species': 'sample.metadata.Microorganism',
-    'sequence_type': 'sample.metadata.sequence_type',
+    'sequence_type': 'sample.summary.sequence_type',
+    #'sequence_type': 'sample.metadata.sequence_type',
     'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
     'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
     'country_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
@@ -162,6 +163,10 @@ SAMPLE_VIEW_COLUMNS = [
     ('source_type', 'Source Type'),
     ('sampling_date', 'Sampling Date'),
     ('sequence_type', 'Sequence Type'),
+    # ('sampling_year', 'Sampling Year'),
+    # ('country_complex', 'Country'),
+    # ('source_type_complex', 'Source'),
+    # ('sampling_date', 'Sampling Date'),
 ]
 
 # This will be the default for all field-related options to ReporTree
@@ -169,7 +174,6 @@ DEFAULT_RT_METADATA_FIELDS = [
       'country_code',
       'source_type',
       'sampling_date',
-      'sequence_type',
 ]
 
 ALL_SPECIES = (
