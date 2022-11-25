@@ -147,9 +147,9 @@ MONGO_FIELD_MAPPING = {
     #'sequence_type': 'sample.metadata.sequence_type',
     'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
     'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
-    'country_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Country', 0]}, 0]},
-    'source_type_complex': {'$arrayElemAt': [{'$arrayElemAt': ['$sample.metadata.Source_Type', 0]}, 1]},
-    'sampling_date': 'sample.metadata.sampling_date',
+    'country_complex': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
+    'source_type_complex': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
+    'sampling_date': 'sample.metadata.Date_Sampling',
     'country_code': 'sample.metadata.country_code',
     'source_type': 'sample.metadata.source_type',
     'allele_profile': 'pipelines.chewiesnake.allele_profile',
@@ -164,9 +164,9 @@ SAMPLE_VIEW_COLUMNS = [
     ('sampling_date', 'Sampling Date'),
     ('sequence_type', 'Sequence Type'),
     # ('sampling_year', 'Sampling Year'),
-    # ('country_complex', 'Country'),
-    # ('source_type_complex', 'Source'),
-    # ('sampling_date', 'Sampling Date'),
+    ('country_complex', 'Country'),
+    ('source_type_complex', 'Source Type'),
+    ('sampling_date', 'Sampling Date'),
 ]
 
 # This will be the default for all field-related options to ReporTree
