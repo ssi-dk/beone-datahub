@@ -125,6 +125,9 @@ class RTJob(models.Model):
    def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
       sample_id = f"{sample['org']}.{sample['name']}"
       # Allele profiles
+      if 'allele_profile' not in sample:
+         print(f"WARNING: not allele profile found in sample {sample_id}.")
+         return
       allele_profile = sample['allele_profile']
       allele_line = [ sample_id ]
       for allele in allele_profile:
