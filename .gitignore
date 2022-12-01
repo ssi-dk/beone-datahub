@@ -2,4 +2,4 @@ data/
 rt_runs/
 .venv
 __pycache__
-test_data/json_beone/
+test_data/exercise/
