@@ -16,6 +16,8 @@ If you haven't done so already, check out this repository on your computer (in W
 
 In the installation directory, type:
 
+    git submodule update --init --recursive
+    export DOCKER_BUILDKIT=0 (on Mac: DOCKER_BUILDKIT=0)
     docker compose up
 
 When Docker has finished downloading images and building and starting the containers, go to this address in a browser:
