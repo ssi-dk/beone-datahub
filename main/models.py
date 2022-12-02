@@ -73,6 +73,9 @@ class RTJob(models.Model):
    log = models.TextField(blank=True, null=True)
    newick = models.TextField(blank=True, null=True)
 
+   def __str__(self):
+        return f"rt_job_{str(self.pk)}"
+   
    def get_path(self):
       return Path(settings.REPORTREE_JOB_FOLDER, str(self.pk))
    
@@ -243,6 +246,9 @@ class Partition(models.Model):
    rt_job = models.ForeignKey(RTJob, on_delete=models.CASCADE)
    name = models.CharField(max_length=30)
 
+   def __str__(self):
+        return self.rt_job.__str__() + '_' + self.name
+
    class Meta:
       constraints = [
          models.UniqueConstraint(fields=['rt_job', 'name'], name='partitions_unique_constraint')
@@ -258,6 +264,9 @@ class Cluster(models.Model):
       constraints = [
          models.UniqueConstraint(fields=['partition', 'name'], name='clusters_unique_constraint')
       ]
+   
+   def __str__(self):
+        return self.partition.__str__() + '_' + self.name
 
 
 def parse_rt_output(rt_job: RTJob):
