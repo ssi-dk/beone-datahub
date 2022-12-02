@@ -28,12 +28,12 @@ class RTJobAdmin(admin.ModelAdmin):
 admin.site.register(RTJob, RTJobAdmin)
 
 class PartitionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'rt_job')
+    list_display = ('rt_job', 'name')
 
 admin.site.register(Partition, PartitionAdmin)
 
 class ClusterAdmin(admin.ModelAdmin):
-    list_display = ('name', 'partition')
+    list_display = ( 'partition', 'name')
 
 admin.site.register(Cluster, ClusterAdmin)
 
