@@ -196,3 +196,8 @@ USE_L10N = False
 REPORTREE_JOB_FOLDER = Path('/rt_runs')  # Root is root of Docker container!
 
 REPORTREE_TIMEOUT = 5  # The number of seconds to wait for at REST response before setting job state to 'RUNNING'
+
+try:
+    from settings_local import *
+except ImportError:
+    pass
