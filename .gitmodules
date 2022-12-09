@@ -1,3 +1,6 @@
 [submodule "beone-dashboard"]
 	path = dashboard
 	url = git@github.com:ssi-dk/beone-dashboard.git
+[submodule "sa_dashboard"]
+	path = sa_dashboard
+	url = git@github.com:ssi-dk/beone-dashboard.git
