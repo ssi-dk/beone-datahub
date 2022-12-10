@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 import requests
 
@@ -33,6 +34,13 @@ def get_default_matrix_fields():
 
 def get_default_thresholds():
    return([4, 7, 14])
+
+def validate_two_elements(value):
+    if len(value) != 2:
+        raise ValidationError(
+            'There must always be exactly two elements in this value.',
+            params={'value': value},
+        )
 
 class RTJob(models.Model):
 
@@ -65,8 +73,14 @@ class RTJob(models.Model):
    # Command line options
    columns_summary_report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
    metadata2report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
-   frequency_matrix = ArrayField(models.CharField(max_length=25), default=get_default_matrix_fields)
-   count_matrix = ArrayField(models.CharField(max_length=25), default=get_default_matrix_fields)
+   frequency_matrix = ArrayField(models.CharField(
+      max_length=25),
+      default=get_default_matrix_fields,
+      validators= [validate_two_elements])
+   count_matrix = ArrayField(models.CharField(
+      max_length=25),
+      default=get_default_matrix_fields,
+       validators= [validate_two_elements])
    matrix_4_grapetree = models.BooleanField(default=True)
    mx_transpose = models.BooleanField(default=True)
    analysis = models.CharField(max_length=25, default='grapetree')
