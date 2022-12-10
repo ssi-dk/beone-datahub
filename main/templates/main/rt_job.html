@@ -24,7 +24,8 @@
         Download files:
         <a href="{% url 'download_rt_file' rt_job.pk 'log' %}" target="_blank" class="menu-item">Log</a>
         <a href="{% url 'download_rt_file' rt_job.pk 'newick' %}" target="_blank">Newick</a>
-        <a href="{% url 'download_rt_file' rt_job.pk 'clusters' %}" target="_blank" class="menu-item">Clusters</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'partitions_summary' %}" target="_blank">Partitions Summary</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'metadata_w_partitions' %}" target="_blank">Metadata w. Partitions</a>
         <a href="{% url 'download_rt_file' rt_job.pk 'partitions' %}" target="_blank">Partitions</a>
         <a href="{% url 'download_rt_file' rt_job.pk 'distances' %}" target="_blank">Distances</a>
       </nav>

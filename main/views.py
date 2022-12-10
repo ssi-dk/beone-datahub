@@ -259,6 +259,12 @@ def download_rt_file(request, rt_job_key:str, item: str='log'):
     if item == 'newick':
         file = rt_job.get_newick_path()
         content_type = 'text/plain'
+    if item == 'partitions_summary':
+        file = rt_job.get_partitions_summary_path()
+        content_type = 'tab-separated-values'
+    if item == 'metadata_w_partitions':
+        file = rt_job.get_metadata_w_partitions_path()
+        content_type = 'tab-separated-values'
     if item == 'clusters':
         file = rt_job.get_cluster_path()
         content_type = 'tab-separated-values'

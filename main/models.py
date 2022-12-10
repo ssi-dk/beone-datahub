@@ -108,6 +108,12 @@ class RTJob(models.Model):
    def get_newick_path(self):
       return Path(self.get_path(), 'ReporTree.nwk')
    
+   def get_partitions_summary_path(self):
+      return Path(self.get_path(), 'ReporTree_partitions_summary.tsv')
+   
+   def get_metadata_w_partitions_path(self):
+      return Path(self.get_path(), 'ReporTree_metadata_w_partitions.tsv')
+   
    def get_cluster_path(self):
       return Path(self.get_path(), 'ReporTree_clusterComposition.tsv')
    
