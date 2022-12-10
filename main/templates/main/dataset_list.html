@@ -69,7 +69,7 @@
     <div class='overview-datacolumn'>
       <span class="rspace"><a href="{% url 'view_dataset' dataset.pk %}">List</a></span>
       <span class="rspace">
-        {% if dataset.owner.username == request.user.username %}
+        {% if dataset.owner.username == request.user.username or dataset.owner.username == None %}
           <a href="{% url 'edit_dataset' dataset.pk %}">Edit</a>
         {% else %}
           <span class="inactive">Edit</span>

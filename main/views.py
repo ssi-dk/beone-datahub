@@ -93,7 +93,7 @@ def view_dataset(request, dataset_key:int):
 def edit_dataset(request, dataset_key:int):
     dataset = DataSet.objects.get(pk=dataset_key)
     species_name = get_species_name(dataset.species)
-    if dataset.owner != request.user:
+    if not dataset.owner in [request.user, None]:
         messages.add_message(request, messages.ERROR, f'You tried to edit the dataset {dataset.name}, which you do not own.')
         return redirect(dataset_list)
     
@@ -134,10 +134,10 @@ def add_remove_sample(request):
     data_from_post = json.load(request)
     request_user = User.objects.get(username=data_from_post['username'])
     dataset = DataSet.objects.get(pk=data_from_post['datasetKey'])
-    if not request_user == dataset.owner:
+    if not dataset.owner in [request_user, None]:
         data_to_send = {
             'status':'ERROR',
-            'message': 'Request user is not dataset owner.'
+            'message': 'Dataset is owned by another user.'
         }
     else:
         mongo_id = data_from_post['mongoId']
