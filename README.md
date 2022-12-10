@@ -36,6 +36,10 @@ Then type in the same terminal window to create a user that can login to the web
 
 Enter user information at the prompts.
 
+Finally, type:
+
+    docker exec -it beone-datahub_django_1 python manage.py loaddata dumps/group.json
+
 You should now be able to login to the web application with the provided username and password.
 
 ## Load test data into MongoDB
