@@ -20,14 +20,14 @@
       <nav>
         View files:
         <a href="{% url 'view_rt_output' rt_job.pk 'log' %}" target="_blank" class="menu-item">Log</a>
-        <a href="{% url 'view_rt_output' rt_job.pk 'newick' %}" target="_blank">Newick</a>
+        <a href="{% url 'view_rt_output' rt_job.pk 'newick' %}" target="_blank" class="menu-item">Newick</a>
         Download files:
         <a href="{% url 'download_rt_file' rt_job.pk 'log' %}" target="_blank" class="menu-item">Log</a>
-        <a href="{% url 'download_rt_file' rt_job.pk 'newick' %}" target="_blank">Newick</a>
-        <a href="{% url 'download_rt_file' rt_job.pk 'partitions_summary' %}" target="_blank">Partitions Summary</a>
-        <a href="{% url 'download_rt_file' rt_job.pk 'metadata_w_partitions' %}" target="_blank">Metadata w. Partitions</a>
-        <a href="{% url 'download_rt_file' rt_job.pk 'partitions' %}" target="_blank">Partitions</a>
-        <a href="{% url 'download_rt_file' rt_job.pk 'distances' %}" target="_blank">Distances</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'newick' %}" target="_blank class="menu-item" class="menu-item">Newick</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'partitions_summary' %}" target="_blank" class="menu-item">Partitions Summary</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'metadata_w_partitions' %}" target="_blank" class="menu-item">Metadata w. Partitions</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'partitions' %}" target="_blank" class="menu-item">Partitions</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'distances' %}" target="_blank" class="menu-item">Distances</a>
       </nav>
   </div>
 </div>

@@ -179,8 +179,9 @@ h3 {
 }
 
 .menu-item{
-  padding: 3px;
+  padding: 1px 3px 3px 3px;
   margin: 3px;
+  background-color: #eeeeee;
 }
 
 .current {
