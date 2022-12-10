@@ -28,6 +28,9 @@ class DataSet(models.Model):
 def get_default_metadata_fields():
    return settings.DEFAULT_RT_METADATA_FIELDS
 
+def get_default_matrix_fields():
+   return settings.DEFAULT_RT_MATRIX_FIELDS
+
 def get_default_thresholds():
    return([4, 7, 14])
 
@@ -62,8 +65,8 @@ class RTJob(models.Model):
    # Command line options
    columns_summary_report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
    metadata2report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
-   frequency_matrix = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
-   count_matrix = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
+   frequency_matrix = ArrayField(models.CharField(max_length=25), default=get_default_matrix_fields)
+   count_matrix = ArrayField(models.CharField(max_length=25), default=get_default_matrix_fields)
    matrix_4_grapetree = models.BooleanField(default=True)
    mx_transpose = models.BooleanField(default=True)
    analysis = models.CharField(max_length=25, default='grapetree')
