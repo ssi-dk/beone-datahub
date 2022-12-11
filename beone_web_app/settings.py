@@ -177,6 +177,9 @@ DEFAULT_RT_METADATA_FIELDS = [
       'country_code',
       'source_type',
       'sampling_date',
+      'sequence_type',
+      'country_complex',
+      'source_type_complex',
 ]
 
 # This will be the default for the --frequency-matrix and --count-matrix arguments to ReporTree.
