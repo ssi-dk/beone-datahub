@@ -191,7 +191,7 @@ ALL_SPECIES = (
     ('coli', 'Escherichia coli'),
     ('listeria', 'Listeria monocytogenes'),
     ('salmonella', 'Salmonella enterica'),
-    ('none', 'Not species-specific'),
+    ('mixed', 'Mixed species'),
 )
 
 LOGIN_REDIRECT_URL = "/"

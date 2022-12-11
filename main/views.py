@@ -107,7 +107,10 @@ def edit_dataset(request, dataset_key:int):
 
     form = DeleteDatasetForm()
     fields_to_get = { entry[0] for entry in settings.SAMPLE_VIEW_COLUMNS }
-    samples = list(api.get_samples(species_name=species_name, fields=fields_to_get))
+    if dataset.species == 'mixed':
+         samples = list(api.get_samples(fields=fields_to_get))
+    else:
+        samples = list(api.get_samples(species_name=species_name, fields=fields_to_get))
     for sample in samples:
         for key_pair in dataset.mongo_keys:
             if key_pair['org'] == sample['org'] and key_pair['name'] == sample['name']:
