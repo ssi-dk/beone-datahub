@@ -2,5 +2,5 @@ data/
 rt_runs/
 .venv
 __pycache__
-test_data/beone_exercise/
+test_data/beone_excercise/
 beone_web_app/settings_local.py

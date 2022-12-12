@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 import requests
 
@@ -28,8 +29,18 @@ class DataSet(models.Model):
 def get_default_metadata_fields():
    return settings.DEFAULT_RT_METADATA_FIELDS
 
+def get_default_matrix_fields():
+   return settings.DEFAULT_RT_MATRIX_FIELDS
+
 def get_default_thresholds():
    return([4, 7, 14])
+
+def validate_two_elements(value):
+    if len(value) != 2:
+        raise ValidationError(
+            'There must always be exactly two elements in this value.',
+            params={'value': value},
+        )
 
 class RTJob(models.Model):
 
@@ -62,8 +73,14 @@ class RTJob(models.Model):
    # Command line options
    columns_summary_report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
    metadata2report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
-   frequency_matrix = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
-   count_matrix = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
+   frequency_matrix = ArrayField(models.CharField(
+      max_length=25),
+      default=get_default_matrix_fields,
+      validators= [validate_two_elements])
+   count_matrix = ArrayField(models.CharField(
+      max_length=25),
+      default=get_default_matrix_fields,
+       validators= [validate_two_elements])
    matrix_4_grapetree = models.BooleanField(default=True)
    mx_transpose = models.BooleanField(default=True)
    analysis = models.CharField(max_length=25, default='grapetree')
@@ -90,6 +107,12 @@ class RTJob(models.Model):
    
    def get_newick_path(self):
       return Path(self.get_path(), 'ReporTree.nwk')
+   
+   def get_partitions_summary_path(self):
+      return Path(self.get_path(), 'ReporTree_partitions_summary.tsv')
+   
+   def get_metadata_w_partitions_path(self):
+      return Path(self.get_path(), 'ReporTree_metadata_w_partitions.tsv')
    
    def get_cluster_path(self):
       return Path(self.get_path(), 'ReporTree_clusterComposition.tsv')
@@ -274,40 +297,49 @@ def parse_rt_output(rt_job: RTJob):
    print(f" {started_at}: parse_rt_output started")
    with open(rt_job.get_log_path(), 'r') as f:
       rt_job.log = f.read()
-   with open(rt_job.get_newick_path(), 'r') as f:
-      rt_job.newick = f.read()
-   
-   # Parse partitions report and create Partition objects in db
-   with open(rt_job.get_partitions_path(), 'r') as f:
-      lines = f.readlines()
-      partition_names = lines[0].strip().split('\t')
-      partition_names = partition_names[1:]
-      for name in partition_names:
-         partition = Partition(rt_job=rt_job, name=name)
-         partition.save()
-      print((f" {timezone.now()}: partitions saved in db"))
-   
-   # Parse cluster report and create Cluster objects in db
-   with open(rt_job.get_cluster_path(), 'r') as f:
-      cluster_lines = f.readlines()
-      cluster_lines = cluster_lines[1:]  # Skip header line.
-   for cluster_line in cluster_lines:
-      cluster_line = cluster_line.strip()
-      pa, cl, _len, sam = cluster_line.split('\t')  # partition, cluster, cluster length, samples
-      partition = Partition.objects.get(rt_job=rt_job, name=pa)
-      cluster = Cluster(partition=partition, name=cl)
-      sample_str_list = sam.split(',')
-      # Transform sample_str_list to list of dicts
-      sample_list = list()
-      for sample_str in sample_str_list:
-         elements = sample_str.split('.')
-         assert len(elements) == 2
-         sample_dict = {'org': elements[0], 'name': elements[1]}
-         sample_list.append(sample_dict)
-      cluster.samples = sample_list
-      cluster.save()
-   print((f" {timezone.now()}: clusters saved in db"))
-   rt_job.set_status('ALL_DONE')
-   rt_job.save()
-   elapsed_time = timezone.now() - started_at
-   print(f"parse_rt_output took {elapsed_time}")
+      rt_job.save()
+   try:
+      # Read Newick file into db
+      with open(rt_job.get_newick_path(), 'r') as f:
+         rt_job.newick = f.read()
+      
+      # Parse partitions report and create Partition objects in db
+      with open(rt_job.get_partitions_path(), 'r') as f:
+         lines = f.readlines()
+         partition_names = lines[0].strip().split('\t')
+         partition_names = partition_names[1:]
+         for name in partition_names:
+            partition = Partition(rt_job=rt_job, name=name)
+            partition.save()
+         print((f" {timezone.now()}: partitions saved in db"))
+      
+      # Parse cluster report and create Cluster objects in db
+      with open(rt_job.get_cluster_path(), 'r') as f:
+         cluster_lines = f.readlines()
+         cluster_lines = cluster_lines[1:]  # Skip header line.
+      for cluster_line in cluster_lines:
+         cluster_line = cluster_line.strip()
+         pa, cl, _len, sam = cluster_line.split('\t')  # partition, cluster, cluster length, samples
+         partition = Partition.objects.get(rt_job=rt_job, name=pa)
+         cluster = Cluster(partition=partition, name=cl)
+         sample_str_list = sam.split(',')
+         # Transform sample_str_list to list of dicts
+         sample_list = list()
+         for sample_str in sample_str_list:
+            elements = sample_str.split('.')
+            assert len(elements) == 2
+            sample_dict = {'org': elements[0], 'name': elements[1]}
+            sample_list.append(sample_dict)
+         cluster.samples = sample_list
+         cluster.save()
+      print((f" {timezone.now()}: clusters saved in db"))
+      rt_job.set_status('ALL_DONE')
+      rt_job.save()
+      elapsed_time = timezone.now() - started_at
+      print(f"parse_rt_output took {elapsed_time}")
+      #TODO Use the return value.
+      return True
+   except FileNotFoundError as e:
+      print(f"All expected output files could not be read from RT job {rt_job.pk}!")
+      print(e)
+      return False

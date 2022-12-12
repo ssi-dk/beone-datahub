@@ -172,10 +172,20 @@ SAMPLE_VIEW_COLUMNS = [
     ('sampling_date', 'Sampling Date'),
 ]
 
-# This will be the default for all field-related options to ReporTree
+# This will be the default for most field-related options to ReporTree
 DEFAULT_RT_METADATA_FIELDS = [
       'country_code',
       'source_type',
+      'sampling_date',
+      'sequence_type',
+      'country_complex',
+      'source_type_complex',
+]
+
+# This will be the default for the --frequency-matrix and --count-matrix arguments to ReporTree.
+# There must always be two entries in this list; no more, no less.
+DEFAULT_RT_MATRIX_FIELDS = [
+      'country_code',
       'sampling_date',
 ]
 
@@ -184,7 +194,7 @@ ALL_SPECIES = (
     ('coli', 'Escherichia coli'),
     ('listeria', 'Listeria monocytogenes'),
     ('salmonella', 'Salmonella enterica'),
-    ('none', 'Not species-specific'),
+    ('mixed', 'Mixed species'),
 )
 
 LOGIN_REDIRECT_URL = "/"

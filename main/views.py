@@ -93,7 +93,7 @@ def view_dataset(request, dataset_key:int):
 def edit_dataset(request, dataset_key:int):
     dataset = DataSet.objects.get(pk=dataset_key)
     species_name = get_species_name(dataset.species)
-    if dataset.owner != request.user:
+    if not dataset.owner in [request.user, None]:
         messages.add_message(request, messages.ERROR, f'You tried to edit the dataset {dataset.name}, which you do not own.')
         return redirect(dataset_list)
     
@@ -107,7 +107,10 @@ def edit_dataset(request, dataset_key:int):
 
     form = DeleteDatasetForm()
     fields_to_get = { entry[0] for entry in settings.SAMPLE_VIEW_COLUMNS }
-    samples = list(api.get_samples(species_name=species_name, fields=fields_to_get))
+    if dataset.species == 'mixed':
+         samples = list(api.get_samples(fields=fields_to_get))
+    else:
+        samples = list(api.get_samples(species_name=species_name, fields=fields_to_get))
     for sample in samples:
         for key_pair in dataset.mongo_keys:
             if key_pair['org'] == sample['org'] and key_pair['name'] == sample['name']:
@@ -134,10 +137,10 @@ def add_remove_sample(request):
     data_from_post = json.load(request)
     request_user = User.objects.get(username=data_from_post['username'])
     dataset = DataSet.objects.get(pk=data_from_post['datasetKey'])
-    if not request_user == dataset.owner:
+    if not dataset.owner in [request_user, None]:
         data_to_send = {
             'status':'ERROR',
-            'message': 'Request user is not dataset owner.'
+            'message': 'Dataset is owned by another user.'
         }
     else:
         mongo_id = data_from_post['mongoId']
@@ -259,6 +262,12 @@ def download_rt_file(request, rt_job_key:str, item: str='log'):
     if item == 'newick':
         file = rt_job.get_newick_path()
         content_type = 'text/plain'
+    if item == 'partitions_summary':
+        file = rt_job.get_partitions_summary_path()
+        content_type = 'tab-separated-values'
+    if item == 'metadata_w_partitions':
+        file = rt_job.get_metadata_w_partitions_path()
+        content_type = 'tab-separated-values'
     if item == 'clusters':
         file = rt_job.get_cluster_path()
         content_type = 'tab-separated-values'
