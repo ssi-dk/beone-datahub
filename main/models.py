@@ -33,7 +33,7 @@ def get_default_matrix_fields():
    return settings.DEFAULT_RT_MATRIX_FIELDS
 
 def get_default_thresholds():
-   return([4, 7, 14])
+   return([4, 7])
 
 def validate_two_elements(value):
     if len(value) != 2:
