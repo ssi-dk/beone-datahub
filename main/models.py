@@ -80,7 +80,7 @@ class RTJob(models.Model):
    count_matrix = ArrayField(models.CharField(
       max_length=25),
       default=get_default_matrix_fields,
-       validators= [validate_two_elements])
+      validators= [validate_two_elements])
    matrix_4_grapetree = models.BooleanField(default=True)
    mx_transpose = models.BooleanField(default=True)
    analysis = models.CharField(max_length=25, default='grapetree')
