@@ -14,8 +14,6 @@ services:
     image: mongo
     ports:
       - "27107:27017"
-    volumes:
-      - ./test_data:/mnt/test_data
   
   reportree:
     build: ./reportree
@@ -33,6 +31,7 @@ services:
     volumes:
       - .:/code
       - ./rt_runs:/rt_runs
+      - ./test_data:/mnt/test_data
     ports:
       - "8000:8000"
     environment:
