@@ -65,16 +65,3 @@ services:
     #   - SOME_ENVVAR=true
     volumes:
        - ./dashboard/src:/app/src:ro  # Must be inside Dockerfile WORKDIR
-
-  sa_dashboard:
-    build: ./sa_dashboard
-    command: npm start
-    ports:
-      - 4000:3000
-    # env_file:
-    #   - ./.env.dev
-    tty: true
-    # environment:
-    #   - SOME_ENVVAR=true
-    volumes:
-       - ./sa_dashboard/src:/app/src:ro  # Must be inside Dockerfile WORKDIR
