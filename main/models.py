@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.postgres.fields import ArrayField
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
 
 import requests
 
@@ -310,8 +311,15 @@ def parse_rt_output(rt_job: RTJob):
          partition_names = partition_names[1:]
          for name in partition_names:
             partition = Partition(rt_job=rt_job, name=name)
-            partition.save()
-         print((f" {timezone.now()}: partitions saved in db"))
+            print(f"Will now try save partition {partition} in database...")
+            try:
+               partition.save()
+            except IntegrityError as e:
+               print(f"Got Integrity error when trying to save partition {partition}:")
+               print(e)
+               print("This probably just means parse_rt_output has already run.")
+               return "IntegrityError"
+         print((f" {timezone.now()}: partitions saved in db."))
       
       # Parse cluster report and create Cluster objects in db
       with open(rt_job.get_cluster_path(), 'r') as f:
@@ -338,8 +346,8 @@ def parse_rt_output(rt_job: RTJob):
       elapsed_time = timezone.now() - started_at
       print(f"parse_rt_output took {elapsed_time}")
       #TODO Use the return value.
-      return True
+      return "Success"
    except FileNotFoundError as e:
       print(f"All expected output files could not be read from RT job {rt_job.pk}!")
       print(e)
-      return False
+      return "FileNotFoundError"
