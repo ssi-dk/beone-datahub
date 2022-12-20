@@ -191,7 +191,7 @@ class RTJob(models.Model):
       metadata_file.write('\t'.join(metadata_line))
       metadata_file.write('\n')
    
-   def prepare(self, samples):
+   def prepare(self, mongo_cursor):
       start_time = timezone.now()
       print(f"prepare started at {self.start_time}")
       # Create a folder for the run
@@ -208,7 +208,7 @@ class RTJob(models.Model):
       
          # Get allele profile for first sample so we can define allele file header line
          allele_header_line = [ 'ID' ]
-         first_sample = next(samples)
+         first_sample = next(mongo_cursor)
          if not 'allele_profile' in first_sample:
             print("ERROR: no allele profile!")
             self.set_status('SAMPLE_ERROR')
@@ -233,7 +233,7 @@ class RTJob(models.Model):
          self.add_sample_data_in_files(first_sample, allele_profile_file, metadata_file)
 
          # Write data for subsequent samples to files
-         for sample in samples:
+         for sample in mongo_cursor:
             self.add_sample_data_in_files(sample, allele_profile_file, metadata_file)
       
          # Set new status on job
