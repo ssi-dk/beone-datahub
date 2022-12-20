@@ -223,13 +223,11 @@ def run_rt_job(request, rt_job_key:str):
         """
         for metadata_field in rt_job.metadata_fields:
             pseudo_fields.add(metadata_field)
-        samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields=pseudo_fields)
+        mongo_cursor, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields=pseudo_fields)
         if len(unmatched) != 0:
             messages.add_message(request, messages.ERROR, f'Some keys in the dataset are unmatched: {unmatched}. Please fix before running job.')
         else:
-            print("These are the sample data that we send to rt_job:")
-            print(samples)
-            rt_job.prepare(samples)
+            rt_job.prepare(mongo_cursor)
             rt_job.run()
             if rt_job.update_status() == 'SUCCESS':
                 parse_rt_output(rt_job)
