@@ -212,10 +212,23 @@ def run_rt_job(request, rt_job_key:str):
     elif rt_job.status not in ['NEW', 'READY']:
         messages.add_message(request, messages.ERROR, f'You tried to run a ReporTree job that has alreay been run.')
     else:
-        samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields={'allele_profile', 'metadata'})
+        # Make sure we get the necessary fields from MongoDB.
+        pseudo_fields = set()
+        pseudo_fields.add( 'allele_profile')
+        """TODO Note for a future improvement: instead of hardcoding the allele profile fields this way,
+        the RT job could have a field for which mongo field contains the allele profile. This would add more flexibility
+        so that different RT jobs could use different allele schemas stores in different Mongo fields.
+        However, this would imply that the API should be enhanced so we could specify fields directly as mongo fields instead of
+        'pseudo fields' (that need to go through MONGO_FIELD_MAPPING to get the real mongo fields).
+        """
+        for metadata_field in rt_job.metadata_fields:
+            pseudo_fields.add(metadata_field)
+        samples, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields=pseudo_fields)
         if len(unmatched) != 0:
             messages.add_message(request, messages.ERROR, f'Some keys in the dataset are unmatched: {unmatched}. Please fix before running job.')
         else:
+            print("These are the sample data that we send to rt_job:")
+            print(samples)
             rt_job.prepare(samples)
             rt_job.run()
             if rt_job.update_status() == 'SUCCESS':
