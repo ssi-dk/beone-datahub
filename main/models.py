@@ -233,8 +233,9 @@ class RTJob(models.Model):
          self.add_sample_data_in_files(first_sample, allele_profile_file, metadata_file)
 
          # Write data for subsequent samples to files
-         for sample in mongo_cursor:
-            self.add_sample_data_in_files(sample, allele_profile_file, metadata_file)
+         for mongo_thing in mongo_cursor:
+            # print(mongo_thing)
+            self.add_sample_data_in_files(mongo_thing, allele_profile_file, metadata_file)
       
          # Set new status on job
          self.set_status('READY')
