@@ -168,13 +168,27 @@ class RTJob(models.Model):
 
       # Metadata
       metadata_line = [ sample_id ]
+      print("This is the real metadata structure:")
       print(sample['metadata'])
-      for key in self.metadata_fields:
-         if key in sample['metadata']:
-            metadata_line.append(str(sample['metadata'][key]))
+      for metadata_field in self.metadata_fields:
+         print(f"Look up key for field {metadata_field} in metadata...")
+         try:
+            key = settings.MONGO_FIELD_MAPPING[metadata_field]
+            print(f"Key is {key}")
+         except KeyError as e:
+            #TODO handle this in a proper way
+            raise e
+         print(type(sample))
+         if key in sample: 
+            """TODO This does not work. A key like 'sample.metadata.Date_Sampling'
+            does not exist DIRECTLY in sample (which is a dict). To make it work,
+            we'll have to convert it to sample['metadata']['Date_Sampling'].
+            Did I find a way to do this somewhere else?"""
+            print(f"OK, key {key} exists in sample {sample_id}")
+            metadata_line.append(str(sample['metadata'][metadata_field]))
          else:
-            # print(f"WARNING: metadata field {key} was not present in sample {sample_id}")
-            # print("An empty field will be used")
+            print(f"WARNING: metadata field {key} was not present in sample {sample_id}")
+            print("An empty field will be used")
             #TODO The user should be warned about this
             metadata_line.append('')
       metadata_file.write('\t'.join(metadata_line))
