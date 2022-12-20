@@ -294,20 +294,6 @@ def download_rt_file(request, rt_job_key:str, item: str='log'):
     )
 
 @login_required
-def download_sample_metadata(request, rt_job_key:str, item: str='log'):
-    #rt_job: RTJob = RTJob.objects.get(pk=rt_job_key)
-    file = Path('/code/test_data/BeONEexercise_sample_metadata.zip')
-    assert(file.exists())
-    file_name = file.name
-    content_type = 'application/zip'
-    stream = open(file, 'rb')
-    return StreamingHttpResponse(
-        streaming_content=stream,
-        content_type=content_type,
-        headers={'Content-Disposition': f'attachment; filename="{file_name}"'},
-    )
-
-@login_required
 def get_rt_data(request, rt_job_key: str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     return JsonResponse({'newick': rt_job.newick, 'sample_ids': rt_job.dataset.mongo_keys})

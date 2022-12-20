@@ -40,5 +40,4 @@ urlpatterns = [
     path('rt_jobs/<int:rt_job_key>/download/<str:item>/', views.download_rt_file, name='download_rt_file'),
     path('rt_jobs/<int:rt_job_key>/data/', views.get_rt_data),
     path('rt_jobs/<int:rt_job_key>/partitions/', views.get_partitions_for_job),
-    path('rt_jobs/<int:rt_job_key>/sampledata/<str:item>',views.download_sample_metadata, name='download_sample_metadata'),
 ]
