@@ -153,7 +153,7 @@ class RTJob(models.Model):
       sample_id = f"{sample['org']}.{sample['name']}"
       # Allele profiles
       if 'allele_profile' not in sample:
-         print(f"WARNING: not allele profile found in sample {sample_id}.")
+         print(f"WARNING: no allele profile found in sample {sample_id}.")
          return
       allele_profile = sample['allele_profile']
       allele_line = [ sample_id ]
@@ -168,12 +168,14 @@ class RTJob(models.Model):
 
       # Metadata
       metadata_line = [ sample_id ]
+      print(sample['metadata'])
       for key in self.metadata_fields:
          if key in sample['metadata']:
             metadata_line.append(str(sample['metadata'][key]))
          else:
-            print(f"WARNING: metadata field {key} was not present in sample {sample_id}")
-            print("An empty field will be used")
+            # print(f"WARNING: metadata field {key} was not present in sample {sample_id}")
+            # print("An empty field will be used")
+            #TODO The user should be warned about this
             metadata_line.append('')
       metadata_file.write('\t'.join(metadata_line))
       metadata_file.write('\n')
@@ -221,7 +223,7 @@ class RTJob(models.Model):
 
          # Write data for subsequent samples to files
          for sample in samples:
-               self.add_sample_data_in_files(sample, allele_profile_file, metadata_file)
+            self.add_sample_data_in_files(sample, allele_profile_file, metadata_file)
       
          # Set new status on job
          self.set_status('READY')
