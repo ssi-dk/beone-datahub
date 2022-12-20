@@ -208,14 +208,14 @@ class RTJob(models.Model):
       
          # Get allele profile for first sample so we can define allele file header line
          allele_header_line = [ 'ID' ]
-         first_sample = next(mongo_cursor)
-         if not 'allele_profile' in first_sample:
+         first_mongo_thing = next(mongo_cursor)
+         if not 'allele_profile' in first_mongo_thing:
             print("ERROR: no allele profile!")
             self.set_status('SAMPLE_ERROR')
             self.save()
             return
          
-         for allele in first_sample['allele_profile']:
+         for allele in first_mongo_thing['allele_profile']:
                locus = allele['locus']
                if locus.endswith('.fasta'):
                   locus = locus[:-6]
@@ -230,7 +230,7 @@ class RTJob(models.Model):
          metadata_file.write('\n')
    
          # Write data for first sample to files
-         self.add_sample_data_in_files(first_sample, allele_profile_file, metadata_file)
+         self.add_sample_data_in_files(first_mongo_thing, allele_profile_file, metadata_file)
 
          # Write data for subsequent samples to files
          for mongo_thing in mongo_cursor:
