@@ -149,13 +149,13 @@ class RTJob(models.Model):
             self.save()
       return self.status
    
-   def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
-      sample_id = f"{sample['org']}.{sample['name']}"
+   def add_sample_data_in_files(self, mongo_thing, allele_profile_file, metadata_file):
+      sample_id = f"{mongo_thing['org']}.{mongo_thing['name']}"
       # Allele profiles
-      if 'allele_profile' not in sample:
+      if 'allele_profile' not in mongo_thing:
          print(f"WARNING: no allele profile found in sample {sample_id}.")
          return
-      allele_profile = sample['allele_profile']
+      allele_profile = mongo_thing['allele_profile']
       allele_line = [ sample_id ]
       for allele in allele_profile:
          allele_value = allele['allele_crc32']  # Maybe choose key name with a setting
@@ -176,13 +176,13 @@ class RTJob(models.Model):
          except KeyError as e:
             #TODO handle this in a proper way
             raise e
-         if key in sample: 
+         if key in mongo_thing: 
             """TODO This does not work. A key like 'sample.metadata.Date_Sampling'
             does not exist DIRECTLY in sample (which is a dict). To make it work,
             we'll have to convert it to sample['metadata']['Date_Sampling'].
             Did I find a way to do this somewhere else?"""
             print(f"OK, key {key} exists in sample {sample_id}")
-            metadata_line.append(str(sample['metadata'][metadata_field]))
+            metadata_line.append(str(mongo_thing['metadata'][metadata_field]))
          else:
             # print(f"WARNING: metadata field {key} was not present in sample {sample_id}")
             # print("An empty field will be used")
