@@ -149,13 +149,13 @@ class RTJob(models.Model):
             self.save()
       return self.status
    
-   def add_sample_data_in_files(self, mongo_thing, allele_profile_file, metadata_file):
-      sample_id = f"{mongo_thing['org']}.{mongo_thing['name']}"
+   def add_sample_data_in_files(self, mongo_item, allele_profile_file, metadata_file):
+      sample_id = f"{mongo_item['org']}.{mongo_item['name']}"
       # Allele profiles
-      if 'allele_profile' not in mongo_thing:
+      if 'allele_profile' not in mongo_item:
          print(f"WARNING: no allele profile found in sample {sample_id}.")
          return
-      allele_profile = mongo_thing['allele_profile']
+      allele_profile = mongo_item['allele_profile']
       allele_line = [ sample_id ]
       for allele in allele_profile:
          allele_value = allele['allele_crc32']  # Maybe choose key name with a setting
@@ -169,9 +169,9 @@ class RTJob(models.Model):
       # Metadata
       metadata_line = [ sample_id ]
       for metadata_field in self.metadata_fields:
-         if metadata_field in mongo_thing:
-            print(f"OK, metadata field {metadata_field} found in MongoDB result for {sample_id}")
-            metadata_line.append(str(mongo_thing[metadata_field]))
+         if metadata_field in mongo_item:
+            # print(f"OK, metadata field {metadata_field} found in MongoDB result for {sample_id}")
+            metadata_line.append(str(mongo_item[metadata_field]))
          else:
             print(f"WARNING: metadata field {key} was not present in sample {sample_id}")
             print("An empty field will be used")
@@ -197,14 +197,14 @@ class RTJob(models.Model):
       
          # Get allele profile for first sample so we can define allele file header line
          allele_header_line = [ 'ID' ]
-         first_mongo_thing = next(mongo_cursor)
-         if not 'allele_profile' in first_mongo_thing:
+         first_mongo_item = next(mongo_cursor)
+         if not 'allele_profile' in first_mongo_item:
             print("ERROR: no allele profile!")
             self.set_status('SAMPLE_ERROR')
             self.save()
             return
          
-         for allele in first_mongo_thing['allele_profile']:
+         for allele in first_mongo_item['allele_profile']:
                locus = allele['locus']
                if locus.endswith('.fasta'):
                   locus = locus[:-6]
@@ -219,12 +219,12 @@ class RTJob(models.Model):
          metadata_file.write('\n')
    
          # Write data for first sample to files
-         self.add_sample_data_in_files(first_mongo_thing, allele_profile_file, metadata_file)
+         self.add_sample_data_in_files(first_mongo_item, allele_profile_file, metadata_file)
 
          # Write data for subsequent samples to files
-         for mongo_thing in mongo_cursor:
-            # print(mongo_thing)
-            self.add_sample_data_in_files(mongo_thing, allele_profile_file, metadata_file)
+         for mongo_item in mongo_cursor:
+            # print(mongo_item)
+            self.add_sample_data_in_files(mongo_item, allele_profile_file, metadata_file)
       
          # Set new status on job
          self.set_status('READY')
