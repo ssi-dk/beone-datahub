@@ -180,8 +180,9 @@ DEFAULT_RT_METADATA_FIELDS = [
     'source_type_complex',
 ]
 
-# This will be the default for the --frequency-matrix and --count-matrix arguments to ReporTree.
-# There must always be two entries in this list; no more, no less.
+"""These are the default fields for the --frequency-matrix and --count-matrix arguments to ReporTree.
+There must always be exactly two entries in this list, and both entries must also exist in
+DEFAULT_RT_METADATA_FIELDS."""
 DEFAULT_RT_MATRIX_FIELDS = [
       'sequence_type',
       'sampling_date',

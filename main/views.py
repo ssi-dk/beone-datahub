@@ -207,30 +207,41 @@ def delete_rt_job(request, rt_job_key:str, dataset_page:bool=False):
 def run_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
     dataset = rt_job.dataset
-    if len(dataset.mongo_keys) == 0:
-        messages.add_message(request, messages.ERROR, f'You tried to run ReporTree on an empty dataset.')
-    elif rt_job.status not in ['NEW', 'READY']:
-        messages.add_message(request, messages.ERROR, f'You tried to run a ReporTree job that has alreay been run.')
-    else:
-        # Make sure we get the necessary fields from MongoDB.
-        pseudo_fields = set()
-        pseudo_fields.add( 'allele_profile')
-        """TODO Note for a future improvement: instead of hardcoding the allele profile fields this way,
-        the RT job could have a field for which mongo field contains the allele profile. This would add more flexibility
-        so that different RT jobs could use different allele schemas stores in different Mongo fields.
-        However, this would imply that the API should be enhanced so we could specify fields directly as mongo fields instead of
-        'pseudo fields' (that need to go through MONGO_FIELD_MAPPING to get the real mongo fields).
-        """
-        for metadata_field in rt_job.metadata_fields:
-            pseudo_fields.add(metadata_field)
-        mongo_cursor, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields=pseudo_fields)
-        if len(unmatched) != 0:
-            messages.add_message(request, messages.ERROR, f'Some keys in the dataset are unmatched: {unmatched}. Please fix before running job.')
+    matrix_ok = True
+    for matrix_field in rt_job.frequency_matrix:
+        if not matrix_field in rt_job.metadata_fields:
+            messages.add_message(request, messages.ERROR, f'Matrix field {matrix_field} is not present in metadata fields.')
+            matrix_ok = False
+    for matrix_field in rt_job.count_matrix:
+        if not matrix_field in rt_job.metadata_fields:
+            messages.add_message(request, messages.ERROR, f'Matrix field {matrix_field} is not present in metadata fields.')
+            matrix_ok = False
+
+    if matrix_ok:
+        if len(dataset.mongo_keys) == 0:
+            messages.add_message(request, messages.ERROR, f'You tried to run ReporTree on an empty dataset.')
+        elif rt_job.status not in ['NEW', 'READY']:
+            messages.add_message(request, messages.ERROR, f'You tried to run a ReporTree job that has alreay been run.')
         else:
-            rt_job.prepare(mongo_cursor)
-            rt_job.run()
-            if rt_job.update_status() == 'SUCCESS':
-                parse_rt_output(rt_job)
+            # Make sure we get the necessary fields from MongoDB.
+            pseudo_fields = set()
+            pseudo_fields.add( 'allele_profile')
+            """TODO Note for a future improvement: instead of hardcoding the allele profile fields this way,
+            the RT job could have a field for which mongo field contains the allele profile. This would add more flexibility
+            so that different RT jobs could use different allele schemas stores in different Mongo fields.
+            However, this would imply that the API should be enhanced so we could specify fields directly as mongo fields instead of
+            'pseudo fields' (that need to go through MONGO_FIELD_MAPPING to get the real mongo fields).
+            """
+            for metadata_field in rt_job.metadata_fields:
+                pseudo_fields.add(metadata_field)
+            mongo_cursor, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields=pseudo_fields)
+            if len(unmatched) != 0:
+                messages.add_message(request, messages.ERROR, f'Some keys in the dataset are unmatched: {unmatched}. Please fix before running job.')
+            else:
+                rt_job.prepare(mongo_cursor)
+                rt_job.run()
+                if rt_job.update_status() == 'SUCCESS':
+                    parse_rt_output(rt_job)
 
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
 
