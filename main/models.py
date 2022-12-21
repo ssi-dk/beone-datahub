@@ -173,8 +173,8 @@ class RTJob(models.Model):
             # print(f"OK, metadata field {metadata_field} found in MongoDB result for {sample_id}")
             metadata_line.append(str(mongo_item[metadata_field]))
          else:
-            print(f"WARNING: metadata field {key} was not present in sample {sample_id}")
-            print("An empty field will be used")
+            print(f"WARNING: metadata field {metadata_field} was not present in sample {sample_id}. " \
+            + "An empty field will be used")
             #TODO The user should be warned about this
             metadata_line.append('')
       metadata_file.write('\t'.join(metadata_line))
