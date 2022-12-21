@@ -149,13 +149,13 @@ class RTJob(models.Model):
             self.save()
       return self.status
    
-   def add_sample_data_in_files(self, sample, allele_profile_file, metadata_file):
-      sample_id = f"{sample['org']}.{sample['name']}"
+   def add_sample_data_in_files(self, mongo_item, allele_profile_file, metadata_file):
+      sample_id = f"{mongo_item['org']}.{mongo_item['name']}"
       # Allele profiles
-      if 'allele_profile' not in sample:
+      if 'allele_profile' not in mongo_item:
          print(f"WARNING: no allele profile found in sample {sample_id}.")
          return
-      allele_profile = sample['allele_profile']
+      allele_profile = mongo_item['allele_profile']
       allele_line = [ sample_id ]
       for allele in allele_profile:
          allele_value = allele['allele_crc32']  # Maybe choose key name with a setting
@@ -168,19 +168,24 @@ class RTJob(models.Model):
 
       # Metadata
       metadata_line = [ sample_id ]
-      print(sample['metadata'])
-      for key in self.metadata_fields:
-         if key in sample['metadata']:
-            metadata_line.append(str(sample['metadata'][key]))
+      for metadata_field in self.metadata_fields:
+         if metadata_field in mongo_item:
+            # TODO: The following is a workaround for getting only the termName in case the field is a 'term'.
+            # Instead the API should be modified in a way so that it only returns the termName for
+            # such a field.
+            if metadata_field.endswith('_term'):
+               metadata_line.append(str(mongo_item[metadata_field]['termName']))
+            else:
+               metadata_line.append(str(mongo_item[metadata_field]))
          else:
-            # print(f"WARNING: metadata field {key} was not present in sample {sample_id}")
-            # print("An empty field will be used")
-            #TODO The user should be warned about this
+            print(f"WARNING: metadata field {metadata_field} was not present in sample {sample_id}. " \
+            + "An empty field will be used")
+            # TODO: Ideally the user should be warned about this.
             metadata_line.append('')
       metadata_file.write('\t'.join(metadata_line))
       metadata_file.write('\n')
    
-   def prepare(self, samples):
+   def prepare(self, mongo_cursor):
       start_time = timezone.now()
       print(f"prepare started at {self.start_time}")
       # Create a folder for the run
@@ -197,14 +202,14 @@ class RTJob(models.Model):
       
          # Get allele profile for first sample so we can define allele file header line
          allele_header_line = [ 'ID' ]
-         first_sample = next(samples)
-         if not 'allele_profile' in first_sample:
+         first_mongo_item = next(mongo_cursor)
+         if not 'allele_profile' in first_mongo_item:
             print("ERROR: no allele profile!")
             self.set_status('SAMPLE_ERROR')
             self.save()
             return
          
-         for allele in first_sample['allele_profile']:
+         for allele in first_mongo_item['allele_profile']:
                locus = allele['locus']
                if locus.endswith('.fasta'):
                   locus = locus[:-6]
@@ -219,11 +224,12 @@ class RTJob(models.Model):
          metadata_file.write('\n')
    
          # Write data for first sample to files
-         self.add_sample_data_in_files(first_sample, allele_profile_file, metadata_file)
+         self.add_sample_data_in_files(first_mongo_item, allele_profile_file, metadata_file)
 
          # Write data for subsequent samples to files
-         for sample in samples:
-            self.add_sample_data_in_files(sample, allele_profile_file, metadata_file)
+         for mongo_item in mongo_cursor:
+            # print(mongo_item)
+            self.add_sample_data_in_files(mongo_item, allele_profile_file, metadata_file)
       
          # Set new status on job
          self.set_status('READY')

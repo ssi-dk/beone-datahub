@@ -142,50 +142,49 @@ MONGO_CONNECTION = 'mongodb://mongo:27017/beone'
     "species": "categories.sample_info.summary.provided_species",
 }"""
 
+# Mapping of field shortcuts to actual MongoDB fields
 MONGO_FIELD_MAPPING = {
     'org': 'org',
     'name': 'name',
     'species': 'sample.metadata.Microorganism',
     'sequence_type': 'sample.summary.sequence_type',
-    #'sequence_type': 'sample.metadata.sequence_type',
     'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
     'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
-    'country_complex': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
-    'source_type_complex': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
+    'country_term': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
+    'source_type_term': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
     'sampling_date': 'sample.metadata.Date_Sampling',
-    'country_code': 'sample.metadata.country_code',
-    'source_type': 'sample.metadata.source_type',
     'allele_profile': 'pipelines.chewiesnake.allele_profile',
 }
 
+"""Fields that will be fetched from MongoDB when viewing a dataset (currently not all of them
+will necessarily be shown on the web page, but maybe this should be changed).
+The first element in each tuple must refer to an entry in MONGO_FIELD_MAPPING.
+The second element will be used as column header."""
 SAMPLE_VIEW_COLUMNS = [
     ('org', 'Organization'),
     ('name', 'Name'),
     ('species', 'Species'),
-    ('country_code', 'Country Code'),
-    ('source_type', 'Source Type'),
     ('sampling_date', 'Sampling Date'),
     ('sequence_type', 'Sequence Type'),
-    # ('sampling_year', 'Sampling Year'),
-    ('country_complex', 'Country'),
-    ('source_type_complex', 'Source Type'),
+    ('sampling_year', 'Sampling Year'),
+    ('country_term', 'Country'),
+    ('source_type_term', 'Source Type'),
     ('sampling_date', 'Sampling Date'),
 ]
 
 # This will be the default for most field-related options to ReporTree
 DEFAULT_RT_METADATA_FIELDS = [
-      'country_code',
-      'source_type',
-      'sampling_date',
-      'sequence_type',
-      'country_complex',
-      'source_type_complex',
+    'sampling_date',
+    'sequence_type',
+    'country_term',
+    'source_type_term',
 ]
 
-# This will be the default for the --frequency-matrix and --count-matrix arguments to ReporTree.
-# There must always be two entries in this list; no more, no less.
+"""These are the default fields for the --frequency-matrix and --count-matrix arguments to ReporTree.
+There must always be exactly two entries in this list, and both entries must also exist in
+DEFAULT_RT_METADATA_FIELDS."""
 DEFAULT_RT_MATRIX_FIELDS = [
-      'country_code',
+      'sequence_type',
       'sampling_date',
 ]
 
