@@ -170,16 +170,17 @@ class RTJob(models.Model):
       metadata_line = [ sample_id ]
       for metadata_field in self.metadata_fields:
          if metadata_field in mongo_item:
-            # print(f"OK, metadata field {metadata_field} found in MongoDB result for {sample_id}")
+            # TODO: The following is a workaround for getting only the termName in case the field is a 'term'.
+            # Instead the API should be modified in a way so that it only returns the termName for
+            # such a field.
             if metadata_field.endswith('_term'):
-               print(f"{metadata_field} is a complex field")
                metadata_line.append(str(mongo_item[metadata_field]['termName']))
             else:
                metadata_line.append(str(mongo_item[metadata_field]))
          else:
             print(f"WARNING: metadata field {metadata_field} was not present in sample {sample_id}. " \
             + "An empty field will be used")
-            #TODO The user should be warned about this
+            # TODO: Ideally the user should be warned about this.
             metadata_line.append('')
       metadata_file.write('\t'.join(metadata_line))
       metadata_file.write('\n')
