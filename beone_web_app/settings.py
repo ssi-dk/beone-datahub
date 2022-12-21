@@ -142,31 +142,31 @@ MONGO_CONNECTION = 'mongodb://mongo:27017/beone'
     "species": "categories.sample_info.summary.provided_species",
 }"""
 
+# Mapping of field shortcuts to actual MongoDB fields
 MONGO_FIELD_MAPPING = {
     'org': 'org',
     'name': 'name',
     'species': 'sample.metadata.Microorganism',
     'sequence_type': 'sample.summary.sequence_type',
-    #'sequence_type': 'sample.metadata.sequence_type',
     'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
     'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
     'country_complex': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
     'source_type_complex': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
     'sampling_date': 'sample.metadata.Date_Sampling',
-    'country_code': 'sample.metadata.country_code',
-    'source_type': 'sample.metadata.source_type',
     'allele_profile': 'pipelines.chewiesnake.allele_profile',
 }
 
+"""Fields that will be fetched from MongoDB when viewing a dataset (currently not all of them
+will necessarily be shown on the web page, but maybe this should be changed).
+The first element in each tuple must refer to an entry in MONGO_FIELD_MAPPING.
+The second element will be used as column header."""
 SAMPLE_VIEW_COLUMNS = [
     ('org', 'Organization'),
     ('name', 'Name'),
     ('species', 'Species'),
-    ('country_code', 'Country Code'),
-    ('source_type', 'Source Type'),
     ('sampling_date', 'Sampling Date'),
     ('sequence_type', 'Sequence Type'),
-    # ('sampling_year', 'Sampling Year'),
+    ('sampling_year', 'Sampling Year'),
     ('country_complex', 'Country'),
     ('source_type_complex', 'Source Type'),
     ('sampling_date', 'Sampling Date'),
