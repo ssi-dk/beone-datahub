@@ -171,7 +171,7 @@ class RTJob(models.Model):
       for metadata_field in self.metadata_fields:
          if metadata_field in mongo_item:
             # print(f"OK, metadata field {metadata_field} found in MongoDB result for {sample_id}")
-            if metadata_field.endswith('_complex'):
+            if metadata_field.endswith('_term'):
                print(f"{metadata_field} is a complex field")
                metadata_line.append(str(mongo_item[metadata_field]['termName']))
             else:

@@ -150,8 +150,8 @@ MONGO_FIELD_MAPPING = {
     'sequence_type': 'sample.summary.sequence_type',
     'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
     'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
-    'country_complex': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
-    'source_type_complex': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
+    'country_term': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
+    'source_type_term': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
     'sampling_date': 'sample.metadata.Date_Sampling',
     'allele_profile': 'pipelines.chewiesnake.allele_profile',
 }
@@ -167,8 +167,8 @@ SAMPLE_VIEW_COLUMNS = [
     ('sampling_date', 'Sampling Date'),
     ('sequence_type', 'Sequence Type'),
     ('sampling_year', 'Sampling Year'),
-    ('country_complex', 'Country'),
-    ('source_type_complex', 'Source Type'),
+    ('country_term', 'Country'),
+    ('source_type_term', 'Source Type'),
     ('sampling_date', 'Sampling Date'),
 ]
 
@@ -176,8 +176,8 @@ SAMPLE_VIEW_COLUMNS = [
 DEFAULT_RT_METADATA_FIELDS = [
     'sampling_date',
     'sequence_type',
-    'country_complex',
-    'source_type_complex',
+    'country_term',
+    'source_type_term',
 ]
 
 """These are the default fields for the --frequency-matrix and --count-matrix arguments to ReporTree.
