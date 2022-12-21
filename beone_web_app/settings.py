@@ -174,9 +174,6 @@ SAMPLE_VIEW_COLUMNS = [
 
 # This will be the default for most field-related options to ReporTree
 DEFAULT_RT_METADATA_FIELDS = [
-    # TODO find a way to deal with complex fields.
-    'country_code',
-    'source_type',
     'sampling_date',
     'sequence_type',
     'country_complex',
@@ -186,7 +183,7 @@ DEFAULT_RT_METADATA_FIELDS = [
 # This will be the default for the --frequency-matrix and --count-matrix arguments to ReporTree.
 # There must always be two entries in this list; no more, no less.
 DEFAULT_RT_MATRIX_FIELDS = [
-      'country_code',
+      'sequence_type',
       'sampling_date',
 ]
 
