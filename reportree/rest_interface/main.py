@@ -48,9 +48,6 @@ async def start_job(job: Job):
         '-m', f'/mnt/rt_runs/{job.job_number}/metadata.tsv',
         '-a', f'/mnt/rt_runs/{job.job_number}/allele_profiles.tsv',
         '--columns_summary_report', ','.join(job.columns_summary_report),
-        '--metadata2report', ','.join(job.metadata2report),
-        '--frequency-matrix', ','.join(job.frequency_matrix),
-        '--count-matrix', ','.join(job.count_matrix),
         '-out', f'/mnt/rt_runs/{job.job_number}/ReporTree',
         '--analysis', job.analysis,
     ]
@@ -58,10 +55,19 @@ async def start_job(job: Job):
     if len(job.threshold) > 0:
         command.extend(['--threshold', ','.join(job.threshold)])
 
-    if job.matrix_4_grapetree:
+    if len(job.metadata2report) > 0:
+         command.extend(['--metadata2report', ','.join(job.metadata2report)])
+    
+    if len(job.frequency_matrix) > 0:
+         command.extend(['--frequency-matrix', ','.join(job.frequency_matrix)])
+    
+    if len(job.count_matrix) > 0:
+        command.extend(['--count-matrix', ','.join(job.count_matrix)])
+    
+    if job.matrix_4_grapetree is True:
         command.append('--matrix-4-grapetree')
     
-    if job.mx_transpose:
+    if job.mx_transpose is True:
         command.append('--mx-transpose')
     
     print("ReporTree command:")
