@@ -58,10 +58,10 @@ async def start_job(job: Job):
     if len(job.threshold) > 0:
         command.extend(['--threshold', ','.join(job.threshold)])
 
-    if job.matrix_4_grapetree:
+    if job.matrix_4_grapetree is True:
         command.append('--matrix-4-grapetree')
     
-    if job.mx_transpose:
+    if job.mx_transpose is True:
         command.append('--mx-transpose')
     
     print("ReporTree command:")
