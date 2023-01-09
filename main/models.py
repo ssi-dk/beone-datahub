@@ -84,7 +84,7 @@ class RTJob(models.Model):
       validators= [validate_two_elements])
    matrix_4_grapetree = models.BooleanField(default=False)
    mx_transpose = models.BooleanField(default=False)
-   analysis = models.CharField(max_length=25, default='grapetree')
+   analysis = models.CharField(max_length=25, default='HC')
    threshold = ArrayField(models.IntegerField(), default=get_default_thresholds)
 
    # The following fields are loaded from ReporTree output files
@@ -107,7 +107,7 @@ class RTJob(models.Model):
       return Path(self.get_path(), 'ReporTree.log')
    
    def get_newick_path(self):
-      return Path(self.get_path(), 'ReporTree.nwk')
+      return Path(self.get_path(), 'ReporTree_single_HC.nwk')
    
    def get_partitions_summary_path(self):
       return Path(self.get_path(), 'ReporTree_partitions_summary.tsv')
