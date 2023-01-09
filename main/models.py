@@ -34,7 +34,8 @@ def get_default_matrix_fields():
    return settings.DEFAULT_RT_MATRIX_FIELDS
 
 def get_default_thresholds():
-   return([4, 7])
+   # These default are ONLY valid for the HC analysis!
+   return(['single-4', 'single-7', 'single-10'])
 
 def validate_two_elements(value):
     if len(value) != 2:
@@ -85,7 +86,7 @@ class RTJob(models.Model):
    matrix_4_grapetree = models.BooleanField(default=False)
    mx_transpose = models.BooleanField(default=False)
    analysis = models.CharField(max_length=25, default='HC')
-   threshold = ArrayField(models.IntegerField(), default=get_default_thresholds)
+   threshold = ArrayField(models.CharField(max_length=20), default=get_default_thresholds)
 
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
@@ -254,7 +255,7 @@ class RTJob(models.Model):
                'matrix_4_grapetree': self.matrix_4_grapetree,
                'mx_transpose': self.mx_transpose,
                'analysis': self.analysis,
-               'threshold': [ str(thr) for thr in self.threshold ]
+               'threshold': self.threshold
                }
          )
          json_response = (raw_response.json())
