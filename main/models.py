@@ -35,7 +35,8 @@ def get_default_matrix_fields():
 
 def get_default_thresholds():
    # These default are ONLY valid for the HC analysis!
-   return(['single-4', 'single-7', 'single-10'])
+   # See ReporTree documentation for setting thresholds for other analyses.
+   return(['single-10', 'complete-10', 'average-10' ,'weighted-10', 'centroid-10', 'median-10', 'ward-10'])
 
 def validate_two_elements(value):
     if len(value) != 2:
