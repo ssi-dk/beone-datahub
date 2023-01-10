@@ -74,15 +74,23 @@ class RTJob(models.Model):
 
    # Command line options
    columns_summary_report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
-   metadata2report = ArrayField(models.CharField(max_length=25), default=list)
-   frequency_matrix = ArrayField(models.CharField(
-      max_length=25),
+   metadata2report = ArrayField(
+      models.CharField(max_length=25),
       default=list,
-      validators= [validate_two_elements])
-   count_matrix = ArrayField(models.CharField(
-      max_length=25),
+      blank=True
+      )
+   frequency_matrix = ArrayField(
+      models.CharField(max_length=25),
       default=list,
-      validators= [validate_two_elements])
+      validators=[validate_two_elements],
+      blank=True
+      )
+   count_matrix = ArrayField(
+      models.CharField(max_length=25),
+      default=list,
+      validators= [validate_two_elements],
+      blank=True
+      )
    matrix_4_grapetree = models.BooleanField(default=False)
    mx_transpose = models.BooleanField(default=False)
    analysis = models.CharField(max_length=25, default='HC')
