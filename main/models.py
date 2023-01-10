@@ -34,7 +34,9 @@ def get_default_matrix_fields():
    return settings.DEFAULT_RT_MATRIX_FIELDS
 
 def get_default_thresholds():
-   return([4, 7])
+   # These default are ONLY valid for the HC analysis!
+   # See ReporTree documentation for setting thresholds for other analyses.
+   return(['single-10', 'complete-10', 'average-10' ,'weighted-10', 'centroid-10', 'median-10', 'ward-10'])
 
 def validate_two_elements(value):
     if len(value) != 2:
@@ -73,19 +75,27 @@ class RTJob(models.Model):
 
    # Command line options
    columns_summary_report = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
-   metadata2report = ArrayField(models.CharField(max_length=25), default=list)
-   frequency_matrix = ArrayField(models.CharField(
-      max_length=25),
+   metadata2report = ArrayField(
+      models.CharField(max_length=25),
       default=list,
-      validators= [validate_two_elements])
-   count_matrix = ArrayField(models.CharField(
-      max_length=25),
+      blank=True
+      )
+   frequency_matrix = ArrayField(
+      models.CharField(max_length=25),
       default=list,
-      validators= [validate_two_elements])
+      validators=[validate_two_elements],
+      blank=True
+      )
+   count_matrix = ArrayField(
+      models.CharField(max_length=25),
+      default=list,
+      validators= [validate_two_elements],
+      blank=True
+      )
    matrix_4_grapetree = models.BooleanField(default=False)
    mx_transpose = models.BooleanField(default=False)
-   analysis = models.CharField(max_length=25, default='grapetree')
-   threshold = ArrayField(models.IntegerField(), default=get_default_thresholds)
+   analysis = models.CharField(max_length=25, default='HC')
+   threshold = ArrayField(models.CharField(max_length=20), default=get_default_thresholds)
 
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
@@ -107,7 +117,7 @@ class RTJob(models.Model):
       return Path(self.get_path(), 'ReporTree.log')
    
    def get_newick_path(self):
-      return Path(self.get_path(), 'ReporTree.nwk')
+      return Path(self.get_path(), 'ReporTree_single_HC.nwk')
    
    def get_partitions_summary_path(self):
       return Path(self.get_path(), 'ReporTree_partitions_summary.tsv')
@@ -254,7 +264,7 @@ class RTJob(models.Model):
                'matrix_4_grapetree': self.matrix_4_grapetree,
                'mx_transpose': self.mx_transpose,
                'analysis': self.analysis,
-               'threshold': [ str(thr) for thr in self.threshold ]
+               'threshold': self.threshold
                }
          )
          json_response = (raw_response.json())
