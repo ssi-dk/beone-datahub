@@ -95,7 +95,10 @@ class RTJob(models.Model):
    matrix_4_grapetree = models.BooleanField(default=False)
    mx_transpose = models.BooleanField(default=False)
    analysis = models.CharField(max_length=25, default='HC')
-   threshold = ArrayField(models.CharField(max_length=20), default=get_default_thresholds)
+   threshold = ArrayField(
+      models.CharField(max_length=20),
+      default=get_default_thresholds,
+      blank=True)
 
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
