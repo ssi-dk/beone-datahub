@@ -120,8 +120,9 @@ class RTJob(models.Model):
       return Path(self.get_path(), 'ReporTree.log')
    
    def get_newick_path(self):
-      return Path(self.get_path(), 'ReporTree_single_HC.nwk')
-   
+      newick_files = self.get_path().glob('ReporTree*.nwk')
+      return next(newick_files)
+      
    def get_partitions_summary_path(self):
       return Path(self.get_path(), 'ReporTree_partitions_summary.tsv')
    
