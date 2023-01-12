@@ -9,7 +9,7 @@ WORKDIR /app
 RUN conda install -c etetoolkit -c anaconda -c bioconda python=3.8 biopython=1.77 pandas=1.1.3 numpy=1.19.2 grapetree=2.1 treecluster=1.0.3 ete3 scikit-learn cgmlst-dists git --yes
 RUN git clone  --depth 1 --branch v1.1.2 https://github.com/insapathogenomics/ReporTree
 RUN chmod 755 ReporTree/reportree.py
-RUN cd ReporTree/scripts/
+WORKDIR /app/ReporTree/scripts/
 RUN git clone https://github.com/insapathogenomics/GrapeTree
 RUN git clone https://github.com/insapathogenomics/ComparingPartitions
 RUN git clone https://github.com/vmixao/vcf2mst.git
