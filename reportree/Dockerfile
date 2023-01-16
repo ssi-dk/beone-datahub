@@ -13,6 +13,7 @@ WORKDIR /app/ReporTree/scripts/
 RUN git clone https://github.com/insapathogenomics/GrapeTree
 RUN git clone https://github.com/insapathogenomics/ComparingPartitions
 RUN git clone https://github.com/vmixao/vcf2mst.git
+WORKDIR /app/ReporTree/
 ENV PATH="/app/ReporTree:${PATH}"
 
 # Install FastAPI
