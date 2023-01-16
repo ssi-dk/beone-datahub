@@ -57,8 +57,6 @@ async def start_job(job: Job):
             command.extend(['--threshold', ','.join(job.threshold)])
         elif job.analysis == 'HC':
             command.extend(['--HC-threshold', ','.join(job.threshold)])
-        elif job.analysis == 'treecluster':
-            command.extend(['--method-threshold', ','.join(job.threshold)])
 
     if len(job.metadata2report) > 0:
          command.extend(['--metadata2report', ','.join(job.metadata2report)])

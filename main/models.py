@@ -102,8 +102,8 @@ class RTJob(models.Model):
       models.CharField(max_length=20),
       default=get_default_thresholds,
       blank=True,
-      help_text="See https://github.com/insapathogenomics/ReporTree and look for --threshold, --HC-threshold, " +
-         "or --method-threshold (depending on analysis argument)")
+      help_text="See https://github.com/insapathogenomics/ReporTree and look for --threshold or --HC-threshold, " +
+         "depending on analysis argument (treecluster analysis is not supported).")
 
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
