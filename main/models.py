@@ -94,11 +94,16 @@ class RTJob(models.Model):
       )
    matrix_4_grapetree = models.BooleanField(default=False)
    mx_transpose = models.BooleanField(default=False)
-   analysis = models.CharField(max_length=25, default='HC')
+   analysis = models.CharField(
+      max_length=25,
+      default='HC',
+      help_text="Must be 'HC', 'grapetree', or 'treecluster'.")
    threshold = ArrayField(
       models.CharField(max_length=20),
       default=get_default_thresholds,
-      blank=True)
+      blank=True,
+      help_text="See https://github.com/insapathogenomics/ReporTree and look for --threshold, --HC-threshold, " +
+         "or --method-threshold (depending on analysis argument)")
 
    # The following fields are loaded from ReporTree output files
    log = models.TextField(blank=True, null=True)
