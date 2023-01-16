@@ -55,9 +55,9 @@ async def start_job(job: Job):
     if len(job.threshold) > 0:
         if job.analysis == 'grapetree':
             command.extend(['--threshold', ','.join(job.threshold)])
-        elif job.method == 'HC':
+        elif job.analysis == 'HC':
             command.extend(['--HC-threshold', ','.join(job.threshold)])
-        elif job.method == 'treecluster':
+        elif job.analysis == 'treecluster':
             command.extend(['--method-threshold', ','.join(job.threshold)])
 
     if len(job.metadata2report) > 0:
