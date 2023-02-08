@@ -11,9 +11,11 @@ services:
       - POSTGRES_PASSWORD=postgres
   
   mongo:
-    image: mongo
+    image: mongo:4.4.17  # Computerome runs 4.2.8
     ports:
       - "27107:27017"
+    volumes:
+      - ./dumps:/mnt/dumps
   
   reportree:
     build: ./reportree
