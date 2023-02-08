@@ -1,4 +1,5 @@
 data/
+dumps/
 rt_runs/
 .venv
 __pycache__
