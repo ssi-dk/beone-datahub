@@ -9,20 +9,8 @@ from partitioning_HC import HC
 
 app = FastAPI()
 
-MONGO_FIELD_MAPPING = {
-    'org': 'org',
-    'name': 'name',
-    'species': 'sample.metadata.Microorganism',
-    'sequence_type': 'sample.summary.sequence_type',
-    'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
-    'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
-    'country_term': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
-    'source_type_term': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
-    'sampling_date': 'sample.metadata.Date_Sampling',
-    'allele_profile': 'pipelines.chewiesnake.allele_profile',
-}
+sapi = samples_api.API(getenv('MONGO_CONNECTION'), samples_api.FIELD_MAPPING)
 
-samples = samples_api.API(getenv('MONGO_CONNECTION'), MONGO_FIELD_MAPPING)
 
 class HCRequest(BaseModel):
     ids: list
@@ -36,6 +24,11 @@ async def root():
 
 @app.post("/reportree/start_job/")
 async def start_job(job: HCRequest):
+
+    mongo_cursor, unmatched = sapi.get_samples_from_keys(job.ids)
+
+    for s in mongo_cursor:
+        print(s)
     
     return {
         "OK": "Thanks."

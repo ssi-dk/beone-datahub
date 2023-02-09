@@ -19,6 +19,9 @@ RUN conda install -c conda-forge fastapi
 # Install Uvicorn
 RUN conda install uvicorn
 
+# Install PyMongo
+RUN conda install -c anaconda pymongo
+
 # Install code for REST interface
 WORKDIR /app
 COPY * /app/
