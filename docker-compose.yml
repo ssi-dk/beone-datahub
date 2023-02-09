@@ -1,6 +1,12 @@
 version: "3.9"
    
 services:
+  postgres-init:
+    image: postgres
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    entrypoint: ["sh", "-c", "chown -R 1000:1000 /var/lib/postgresql/data"]
+  
   postgres:
     image: postgres
     volumes:
@@ -9,7 +15,11 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-  
+    user: "1000"
+    depends_on:
+      postgres-init:
+        condition: service_completed_successfully
+
   mongo:
     image: mongo # Computerome runs 4.2.8
     ports:
