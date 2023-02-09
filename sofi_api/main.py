@@ -1,14 +1,28 @@
 import subprocess
+from os import getenv
 
 from pydantic import BaseModel
 from fastapi import FastAPI
 
+import samples_api
 from partitioning_HC import HC
 
 app = FastAPI()
 
-DM_PATH_SALMONELLA = '/data/dm/dm_salmonella.tsv'
-# DM_SALMONELLA = open(DM_PATH_SALMONELLA, 'r')
+MONGO_FIELD_MAPPING = {
+    'org': 'org',
+    'name': 'name',
+    'species': 'sample.metadata.Microorganism',
+    'sequence_type': 'sample.summary.sequence_type',
+    'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
+    'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
+    'country_term': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
+    'source_type_term': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
+    'sampling_date': 'sample.metadata.Date_Sampling',
+    'allele_profile': 'pipelines.chewiesnake.allele_profile',
+}
+
+samples = samples_api.API(getenv('MONGO_CONNECTION'), MONGO_FIELD_MAPPING)
 
 class HCRequest(BaseModel):
     ids: list
