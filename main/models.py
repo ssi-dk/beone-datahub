@@ -265,8 +265,9 @@ class RTJob(models.Model):
          self.set_status('STARTING')
          self.save()
          print(f"run started at {self.start_time}")
-         raw_response = requests.post(f'http://reportree:7000/reportree/start_job/',
-            json={
+         raw_response = requests.post(f'http://sofi_api:7000/reportree/start_job/',
+               json={'ids': ['sample1', 'sample2', 'sample3']})
+         """   json={
                'job_number': self.pk,
                'timeout': settings.REPORTREE_TIMEOUT,
                'columns_summary_report': self.columns_summary_report,
@@ -278,13 +279,13 @@ class RTJob(models.Model):
                'analysis': self.analysis,
                'threshold': self.threshold
                }
-         )
+         )"""
          json_response = (raw_response.json())
          print("JSON response:")
          print(json_response)
-         self.pid = json_response['pid']
-         self.error = json_response['error']
-         self.set_status(json_response['status'])
+         # self.pid = json_response['pid']
+         # self.error = json_response['error']
+         # self.set_status(json_response['status'])
          end_time = timezone.now()
          elapsed_time = end_time - self.start_time
          print(f"Run took {elapsed_time}")
