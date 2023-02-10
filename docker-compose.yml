@@ -32,7 +32,7 @@ services:
     tty: true
     volumes:
       - ./rt_runs:/mnt/rt_runs
-      - ./sofi_api:/sofi_api
+      - .:/sofi_api
     ports:
       - "7000:7000"
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7000", "--reload"]
@@ -55,25 +55,25 @@ services:
       - mongo
       - sofi_api
 
-  nginx:
-    build: ./nginx
-    container_name: nginx
-    ports:
-      - 8080:80
-    # volumes:
-    #   - static:/app/static
-    depends_on:
-      - django
+  # nginx:
+  #   build: ./nginx
+  #   container_name: nginx
+  #   ports:
+  #     - 8080:80
+  #   # volumes:
+  #   #   - static:/app/static
+  #   depends_on:
+  #     - django
   
-  react:
-    build: ./dashboard
-    command: npm start
-    ports:
-      - 3000:3000
-    # env_file:
-    #   - ./.env.dev
-    tty: true
-    # environment:
-    #   - SOME_ENVVAR=true
-    volumes:
-       - ./dashboard/src:/app/src:ro  # Must be inside Dockerfile WORKDIR
+  # react:
+  #   build: ./dashboard
+  #   command: npm start
+  #   ports:
+  #     - 3000:3000
+  #   # env_file:
+  #   #   - ./.env.dev
+  #   tty: true
+  #   # environment:
+  #   #   - SOME_ENVVAR=true
+  #   volumes:
+  #      - ./dashboard/src:/app/src:ro  # Must be inside Dockerfile WORKDIR
