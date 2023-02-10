@@ -74,10 +74,6 @@ class API:
         if len(key_list) == 0:
             return [list(), list()]
 
-        # Ensure we always have these two fields in the set
-        fields.add('org')
-        fields.add('name')
-
         pipeline = list()
 
         # Match
