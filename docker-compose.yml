@@ -11,6 +11,7 @@ services:
     image: postgres
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
+      - ./dumps/postgres:/mnt/dumps
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -25,7 +26,8 @@ services:
     ports:
       - "27107:27017"
     volumes:
-      - ./dumps:/mnt/dumps
+      - ./data/mongo:/data/db
+      - ./dumps/mongo:/mnt/dumps
   
   sofi_api:
     build: ./sofi_api
