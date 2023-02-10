@@ -25,7 +25,7 @@ async def root():
 @app.post("/reportree/start_job/")
 async def start_job(job: HCRequest):
 
-    mongo_cursor, unmatched = sapi.get_samples_from_keys(job.ids)
+    mongo_cursor, unmatched = sapi.get_samples_from_keys(job.ids, fields={'name', 'allele_profile'})
 
     for s in mongo_cursor:
         print(s)
