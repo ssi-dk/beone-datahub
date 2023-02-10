@@ -4,7 +4,7 @@ from os import getenv
 from pydantic import BaseModel
 from fastapi import FastAPI
 
-import samples_api
+from mongo import samples_api
 from partitioning_HC import HC
 
 app = FastAPI()
