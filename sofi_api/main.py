@@ -26,9 +26,10 @@ async def root():
 async def start_job(job: HCRequest):
     print(job.ids)
     mongo_cursor, unmatched = sapi.get_samples_from_keys(job.ids, fields={'name', 'allele_profile'})
-
-    print(len(list(mongo_cursor)))
     
+    for s in mongo_cursor:
+        print(s['name'])
+
     return {
         "OK": "Thanks."
         }
