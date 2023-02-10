@@ -77,9 +77,9 @@ class API:
         pipeline = list()
 
         # Match
-        """pipeline.append(
-                {'$match': {'$or': key_list}}  # pymongo.errors.OperationFailure: $and/$or/$nor must be a nonempty array
-        ) """
+        pipeline.append(
+                {'$match': { 'name': { '$in': key_list } }}  # pymongo.errors.OperationFailure: $and/$or/$nor must be a nonempty array
+        )
 
         # Projection - map only the desired fields
         projection = dict()

@@ -265,8 +265,12 @@ class RTJob(models.Model):
          self.set_status('STARTING')
          self.save()
          print(f"run started at {self.start_time}")
+         names = [ o['name'] for o in self.dataset.mongo_keys ]
+         print("Names:")
+         print(names)
          raw_response = requests.post(f'http://sofi_api:7000/reportree/start_job/',
-               json={'ids': ['Lm_1071', 'Lm_0715', 'Lm_0733 ']})
+               #json={'ids': ['Lm_1071', 'Lm_0715', 'Lm_0733 ']})
+               json={'ids': names})
          """   json={
                'job_number': self.pk,
                'timeout': settings.REPORTREE_TIMEOUT,
