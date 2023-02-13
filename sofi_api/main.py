@@ -29,6 +29,7 @@ async def start_job(job: HCRequest):
     
     for s in mongo_cursor:
         print(s['name'])
+        print(s['allele_profile'][:10])
 
     return {
         "OK": "Thanks."
