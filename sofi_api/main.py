@@ -1,5 +1,7 @@
 import subprocess
 from os import getenv
+import uuid
+from typing import Union
 
 from pydantic import BaseModel
 from fastapi import FastAPI
@@ -14,6 +16,7 @@ sapi = samples_api.API(getenv('MONGO_CONNECTION'), samples_api.FIELD_MAPPING)
 
 
 class HCRequest(BaseModel):
+    id: Union[None, uuid.UUID]
     ids: list
     timeout: int = 2
 
@@ -38,6 +41,7 @@ async def root():
 
 @app.post("/reportree/start_job/")
 async def start_job(job: HCRequest):
+    job.id = uuid.uuid4()
     print(job.ids)
     mongo_cursor, unmatched = sapi.get_samples_from_keys(job.ids, fields={'name', 'allele_profile'})
     
@@ -49,5 +53,5 @@ async def start_job(job: HCRequest):
     print(allele_profiles)
 
     return {
-        "OK": "Thanks."
+        "job_id": job.id
         }
