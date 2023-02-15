@@ -1,3 +1,6 @@
 [submodule "beone-dashboard"]
 	path = dashboard
 	url = git@github.com:ssi-dk/beone-dashboard.git
+[submodule "sofi_api/ReporTree"]
+	path = sofi_api/ReporTree
+	url = git@github.com:ssi-dk/ReporTree.git
