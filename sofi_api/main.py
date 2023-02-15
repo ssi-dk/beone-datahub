@@ -6,7 +6,7 @@ from fastapi import FastAPI
 import pandas
 
 from mongo import samples_api
-from partitioning_HC import HC
+from ReporTree.scripts.partitioning_HC import HC
 
 app = FastAPI()
 
