@@ -15,8 +15,21 @@ sapi = samples_api.API(getenv('MONGO_CONNECTION'), samples_api.FIELD_MAPPING)
 
 class HCRequest(BaseModel):
     ids: list
-    method_threshold:str = 'single'
     timeout: int = 2
+
+    # These attributes have identical counterparts on the HC class.
+    # Some are out-commented as we may not need or want them in the REST API.
+    out:str = None
+    # distance_matrix:str = ''  -- Presumably not needed in the API
+    # allele_profile:str = ''  -- Presumably not needed in the API
+    # allele_mx:DataFrame = None  -- Unwanted as Pandas does not integrate easily with Pydantic
+    method_threshold:str = 'single'
+    pct_HCmethod_threshold: str = 'none'  # TODO should be changed to None (also in ReporTree)
+    samples_called:float = 0.0
+    loci_called:float = ''
+    # metadata:str = ''  -- Unwanted as we don't deal with metadata this way in SOFI
+    # filter_column:str = ''   -- Unwanted as we don't deal with metadata this way in SOFI
+    dist:float = 1.0
 
 
 @app.get("/")
