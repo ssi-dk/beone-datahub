@@ -48,7 +48,7 @@ async def start_job(job: HCRequest):
     print("Allele profiles:")
     print(allele_profiles)
     hc = HC(
-        out=job.id,
+        out=job.id.hex,
         allele_mx=allele_profiles,
         method_threshold=job.method_threshold,
         pct_HCmethod_threshold=job.pct_HCmethod_threshold,
@@ -56,6 +56,7 @@ async def start_job(job: HCRequest):
         loci_called=job.loci_called,
         dist=job.dist
     )
+    hc.run()
     return {
         "job_id": job.id
         }
