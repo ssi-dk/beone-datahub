@@ -17,7 +17,7 @@ sapi = samples_api.API(getenv('MONGO_CONNECTION'), samples_api.FIELD_MAPPING)
 
 class HCRequest(BaseModel):
     id: Union[None, uuid.UUID]
-    ids: list
+    sample_ids: list
     timeout: int = 2
 
     # These attributes have identical counterparts on the HC class.
@@ -42,8 +42,8 @@ async def root():
 @app.post("/reportree/start_job/")
 async def start_job(job: HCRequest):
     job.id = uuid.uuid4()
-    print(job.ids)
-    mongo_cursor, unmatched = sapi.get_samples_from_keys(job.ids, fields={'name', 'allele_profile'})
+    print(job.sample_ids)
+    mongo_cursor, unmatched = sapi.get_samples_from_keys(job.sample_ids, fields={'name', 'allele_profile'})
     
     # for s in mongo_cursor:
     #     print(s['name'])

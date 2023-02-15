@@ -269,21 +269,7 @@ class RTJob(models.Model):
          print("Names:")
          print(names)
          raw_response = requests.post(f'http://sofi_api:7000/reportree/start_job/',
-               #json={'ids': ['Lm_1071', 'Lm_0715', 'Lm_0733 ']})
-               json={'ids': names})
-         """   json={
-               'job_number': self.pk,
-               'timeout': settings.REPORTREE_TIMEOUT,
-               'columns_summary_report': self.columns_summary_report,
-               'metadata2report': self.metadata2report,
-               'frequency_matrix': self.frequency_matrix,
-               'count_matrix': self.count_matrix,
-               'matrix_4_grapetree': self.matrix_4_grapetree,
-               'mx_transpose': self.mx_transpose,
-               'analysis': self.analysis,
-               'threshold': self.threshold
-               }
-         )"""
+               json={'sample_ids': names})
          json_response = (raw_response.json())
          print("JSON response:")
          print(json_response)
