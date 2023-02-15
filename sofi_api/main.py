@@ -44,14 +44,18 @@ async def start_job(job: HCRequest):
     job.id = uuid.uuid4()
     print(job.sample_ids)
     mongo_cursor, unmatched = sapi.get_samples_from_keys(job.sample_ids, fields={'name', 'allele_profile'})
-    
-    # for s in mongo_cursor:
-    #     print(s['name'])
-    #     print(s['allele_profile'][:10])
-
     allele_profiles = pandas.DataFrame(mongo_cursor)
+    print("Allele profiles:")
     print(allele_profiles)
-
+    hc = HC(
+        out=job.id,
+        allele_mx=allele_profiles,
+        method_threshold=job.method_threshold,
+        pct_HCmethod_threshold=job.pct_HCmethod_threshold,
+        samples_called=job.samples_called,
+        loci_called=job.loci_called,
+        dist=job.dist
+    )
     return {
         "job_id": job.id
         }
