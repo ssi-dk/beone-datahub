@@ -57,8 +57,8 @@ async def start_job(job: HCRequest):
     print(job.sample_ids)
     mongo_cursor, unmatched = sapi.get_samples_from_keys(job.sample_ids, fields={'name', 'allele_profile'})
     allele_profiles: pandas.DataFrame = get_allele_df_from_beone_mongo(mongo_cursor)
-    # TODO remove next line
-    allele_profiles.to_csv('/tmp/checking.tsv', sep="\t")
+    #TODO Check if the following line actually works.
+    allele_profiles.fillna(0)
     print("Allele profiles:")
     print(allele_profiles)
     hc = HC(job.id.hex[:8],
