@@ -33,7 +33,7 @@ services:
     build: ./sofi_api
     tty: true
     volumes:
-      - ./rt_runs:/mnt/rt_runs
+      - ./tmp:/tmp
       - ./sofi_api:/app
     ports:
       - "7000:7000"

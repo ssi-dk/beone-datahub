@@ -9,3 +9,4 @@ beone_web_app/settings_local.py/
 sofi_api/*.log
 sofi_api/*.tsv
 sofi_api/*.nwk
+tmp/
