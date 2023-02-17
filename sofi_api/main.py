@@ -47,8 +47,8 @@ async def start_job(job: HCRequest):
     allele_profiles = pandas.DataFrame(mongo_cursor)
     print("Allele profiles:")
     print(allele_profiles)
-    hc = HC(
-        out=job.id.hex,
+    hc = HC(job.id.hex[:8],
+        out=job.id.hex[:8],
         allele_mx=allele_profiles,
         method_threshold=job.method_threshold,
         pct_HCmethod_threshold=job.pct_HCmethod_threshold,
