@@ -35,12 +35,16 @@ class HCRequest(BaseModel):
     dist: float = 1.0
 
 
-def get_alleles_from_beone_mongo(mongo_cursor):
-    for document in mongo_cursor:
-        output = [ document['name'] ]
-        for locus in document['allele_profile']:
-            output.append(locus['allele_crc32'])
-        yield output
+def get_allele_df_from_beone_mongo(mongo_cursor):
+    full_dict = dict()
+    for mongo_item in mongo_cursor:
+        row_dict = dict()
+        for beone_dict in mongo_item['allele_profile']:
+            key = beone_dict['locus']
+            value = beone_dict['allele_crc32']
+            row_dict[key] = value
+        full_dict[mongo_item['name']] = row_dict
+    return pandas.DataFrame.from_dict(full_dict, 'index')
 
 
 @app.get("/")
@@ -52,8 +56,9 @@ async def start_job(job: HCRequest):
     job.id = uuid.uuid4()
     print(job.sample_ids)
     mongo_cursor, unmatched = sapi.get_samples_from_keys(job.sample_ids, fields={'name', 'allele_profile'})
-    allele_profiles = pandas.DataFrame(mongo_cursor)
-    # allele_profiles = pandas.DataFrame(get_alleles_from_beone_mongo(mongo_cursor))
+    allele_profiles: pandas.DataFrame = get_allele_df_from_beone_mongo(mongo_cursor)
+    # TODO remove next line
+    allele_profiles.to_csv('/tmp/checking.tsv', sep="\t")
     print("Allele profiles:")
     print(allele_profiles)
     hc = HC(job.id.hex[:8],
