@@ -35,6 +35,14 @@ class HCRequest(BaseModel):
     dist: float = 1.0
 
 
+def get_alleles_from_beone_mongo(mongo_cursor):
+    for document in mongo_cursor:
+        output = [ document['name'] ]
+        for locus in document['allele_profile']:
+            output.append(locus['allele_crc32'])
+        yield output
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -45,6 +53,7 @@ async def start_job(job: HCRequest):
     print(job.sample_ids)
     mongo_cursor, unmatched = sapi.get_samples_from_keys(job.sample_ids, fields={'name', 'allele_profile'})
     allele_profiles = pandas.DataFrame(mongo_cursor)
+    # allele_profiles = pandas.DataFrame(get_alleles_from_beone_mongo(mongo_cursor))
     print("Allele profiles:")
     print(allele_profiles)
     hc = HC(job.id.hex[:8],
