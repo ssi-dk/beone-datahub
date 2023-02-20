@@ -35,7 +35,7 @@ class HCRequest(BaseModel):
     dist: float = 1.0
 
 
-def get_allele_df_from_beone_mongo(mongo_cursor):
+def allele_df_from_beone_mongo(mongo_cursor):
     full_dict = dict()
     for mongo_item in mongo_cursor:
         row_dict = dict()
@@ -56,7 +56,7 @@ async def start_job(job: HCRequest):
     job.id = uuid.uuid4()
     print(job.sample_ids)
     mongo_cursor, unmatched = sapi.get_samples_from_keys(job.sample_ids, fields={'name', 'allele_profile'})
-    allele_profiles: pandas.DataFrame = get_allele_df_from_beone_mongo(mongo_cursor)
+    allele_profiles: pandas.DataFrame = allele_df_from_beone_mongo(mongo_cursor)
     #TODO Check if the following line actually works.
     allele_profiles.fillna(0)
     print("Allele profiles:")
