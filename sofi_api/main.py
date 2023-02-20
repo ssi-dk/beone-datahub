@@ -35,7 +35,7 @@ class HCRequest(BaseModel):
     dist: float = 1.0
 
 
-def allele_df_from_beone_mongo(mongo_cursor):
+def allele_mx_from_beone_mongo(mongo_cursor):
     full_dict = dict()
     for mongo_item in mongo_cursor:
         row_dict = dict()
@@ -56,14 +56,14 @@ async def start_job(job: HCRequest):
     job.id = uuid.uuid4()
     print(job.sample_ids)
     mongo_cursor, unmatched = sapi.get_samples_from_keys(job.sample_ids, fields={'name', 'allele_profile'})
-    allele_profiles: pandas.DataFrame = allele_df_from_beone_mongo(mongo_cursor)
-    #TODO Check if the following line actually works.
-    allele_profiles.fillna(0)
+    allele_mx: pandas.DataFrame = allele_mx_from_beone_mongo(mongo_cursor)
+    # TODO This does not prevent cgmlst-dists from failing...
+    # allele_mx.fillna(0)
     print("Allele profiles:")
-    print(allele_profiles)
+    print(allele_mx)
     hc = HC(job.id.hex[:8],
         out=job.id.hex[:8],
-        allele_mx=allele_profiles,
+        allele_mx=allele_mx,
         method_threshold=job.method_threshold,
         pct_HCmethod_threshold=job.pct_HCmethod_threshold,
         samples_called=job.samples_called,
