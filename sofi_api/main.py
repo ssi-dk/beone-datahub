@@ -45,10 +45,10 @@ def translate_beone_row(mongo_item):
 
 def allele_mx_from_beone_mongo(mongo_cursor):
     full_dict = dict()
-    # first_row_dict = next(mongo_cursor)
-    # full_dict
     for mongo_item in mongo_cursor:
-        full_dict[mongo_item['name']] = translate_beone_row(mongo_item)
+        row = translate_beone_row(mongo_item)
+        print(f"Length: {len(row.keys())}")
+        full_dict[mongo_item['name']] = row
     return pandas.DataFrame.from_dict(full_dict, 'index')
 
 
