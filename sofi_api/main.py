@@ -55,6 +55,7 @@ async def root():
 async def start_job(job: HCRequest):
     job.id = uuid.uuid4()
     print(job.sample_ids)
+    # TODO Handle unmatched.
     mongo_cursor, unmatched = sapi.get_samples_from_keys(job.sample_ids, fields={'name', 'allele_profile'})
     allele_mx: pandas.DataFrame = allele_mx_from_beone_mongo(mongo_cursor)
     # TODO This does not prevent cgmlst-dists from failing...
