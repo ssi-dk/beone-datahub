@@ -56,7 +56,7 @@ def allele_mx_from_beone_mongo(mongo_cursor):
         row_allele_names = set(row.keys())
         assert row_allele_names == allele_names
         full_dict[mongo_item['name']] = row
-    return pandas.DataFrame.from_dict(full_dict, 'index')
+    return pandas.DataFrame.from_dict(full_dict, 'index', dtype=str)
 
 
 @app.get("/")
