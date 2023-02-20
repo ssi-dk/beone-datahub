@@ -35,21 +35,20 @@ class HCRequest(BaseModel):
     dist: float = 1.0
 
 
-def translate_beone_dict(beone_dict):
-    key = beone_dict['locus']
-    value = beone_dict['allele_crc32']
-    return key, value
+def translate_beone_row(mongo_item):
+    result_row = dict()
+    for beone_dict in mongo_item['allele_profile']:
+        key = beone_dict['locus']
+        value = beone_dict['allele_crc32']
+        result_row[key] = value
+    return result_row
 
 def allele_mx_from_beone_mongo(mongo_cursor):
     full_dict = dict()
     # first_row_dict = next(mongo_cursor)
     # full_dict
     for mongo_item in mongo_cursor:
-        row_dict = dict()
-        for beone_dict in mongo_item['allele_profile']:
-            key, value = translate_beone_dict(beone_dict)
-            row_dict[key] = value
-        full_dict[mongo_item['name']] = row_dict
+        full_dict[mongo_item['name']] = translate_beone_row(mongo_item)
     return pandas.DataFrame.from_dict(full_dict, 'index')
 
 
