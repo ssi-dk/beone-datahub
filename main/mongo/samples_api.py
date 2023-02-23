@@ -64,7 +64,8 @@ class API:
         if len(key_list) == 0:
             return [list(), list()]
 
-        # Ensure we always have name fields in the set
+        # Ensure we always have these two fields in the set
+        fields.add('org')
         fields.add('name')
 
         pipeline = list()
@@ -94,7 +95,7 @@ class API:
         for key_pair in key_list:
             match = False
             for mongo_doc in command_cursor:
-                if mongo_doc['name'] == key_pair['name']:
+                if mongo_doc['org'] == key_pair['org'] and mongo_doc['name'] == key_pair['name']:
                     match = True
                     break
             if match == False:
