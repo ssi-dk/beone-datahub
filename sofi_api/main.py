@@ -35,6 +35,30 @@ class HCRequest(BaseModel):
     dist: float = 1.0
 
 
+def translate_beone_row(mongo_item):
+    result_row = dict()
+    for beone_dict in mongo_item['allele_profile']:
+        key = beone_dict['locus']
+        value = beone_dict['allele_crc32']
+        result_row[key] = value
+    return result_row
+
+def allele_mx_from_beone_mongo(mongo_cursor):
+    full_dict = dict()
+    first_mongo_item = next(mongo_cursor)
+    first_row = translate_beone_row(first_mongo_item)
+    full_dict[first_mongo_item['name']] = first_row
+    allele_names = set(first_row.keys())
+    allele_count = len(allele_names)
+    print(f"Number of alleles in first row: {allele_count}")
+    for mongo_item in mongo_cursor:
+        row = translate_beone_row(mongo_item)
+        row_allele_names = set(row.keys())
+        assert row_allele_names == allele_names
+        full_dict[mongo_item['name']] = row
+    return pandas.DataFrame.from_dict(full_dict, 'index', dtype=str)
+
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
@@ -43,13 +67,16 @@ async def root():
 async def start_job(job: HCRequest):
     job.id = uuid.uuid4()
     print(job.sample_ids)
+    # TODO Handle unmatched.
     mongo_cursor, unmatched = sapi.get_samples_from_keys(job.sample_ids, fields={'name', 'allele_profile'})
-    allele_profiles = pandas.DataFrame(mongo_cursor)
+    allele_mx: pandas.DataFrame = allele_mx_from_beone_mongo(mongo_cursor)
+    # TODO This does not prevent cgmlst-dists from failing...
+    # allele_mx.fillna(0)
     print("Allele profiles:")
-    print(allele_profiles)
+    print(allele_mx)
     hc = HC(job.id.hex[:8],
         out=job.id.hex[:8],
-        allele_mx=allele_profiles,
+        allele_mx=allele_mx,
         method_threshold=job.method_threshold,
         pct_HCmethod_threshold=job.pct_HCmethod_threshold,
         samples_called=job.samples_called,

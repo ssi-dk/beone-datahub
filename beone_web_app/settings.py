@@ -134,27 +134,31 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Own additions below
 
-MONGO_CONNECTION = 'mongodb://mongo:27017/beone'
+# MONGO_CONNECTION = 'mongodb://mongo:27017/beone'
+MONGO_CONNECTION = 'mongodb://mongo:27017/sofi_dev'
 
 # Mapping for Bifrost 2.1 (SOFI)
-"""MONGO_FIELD_MAPPING = {
-    "name": "categories.sample_info.summary.sample_name",
-    "species": "categories.sample_info.summary.provided_species",
-}"""
+MONGO_FIELD_MAPPING = {
+    'org': 'categories.sample_info.summary.institution',
+    'name': 'name',
+    'species': 'categories.species_detection.summary.detected_species',
+    'allele_profile': 'categories.cgmlst.report.chewbbaca.data.alleles',
+    'sequence_type': 'categories.cgmlst.summary.sequence_type'
+}
 
 # Mapping of field shortcuts to actual MongoDB fields
-MONGO_FIELD_MAPPING = {
-    'org': 'org',
-    'name': 'name',
-    'species': 'sample.metadata.Microorganism',
-    'sequence_type': 'sample.summary.sequence_type',
-    'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
-    'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
-    'country_term': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
-    'source_type_term': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
-    'sampling_date': 'sample.metadata.Date_Sampling',
-    'allele_profile': 'pipelines.chewiesnake.allele_profile',
-}
+# MONGO_FIELD_MAPPING = {
+#     'org': 'org',
+#     'name': 'name',
+#     'species': 'sample.metadata.Microorganism',
+#     'sequence_type': 'sample.summary.sequence_type',
+#     'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
+#     'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
+#     'country_term': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
+#     'source_type_term': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
+#     'sampling_date': 'sample.metadata.Date_Sampling',
+#     'allele_profile': 'pipelines.chewiesnake.allele_profile',
+# }
 
 """Fields that will be fetched from MongoDB when viewing a dataset (currently not all of them
 will necessarily be shown on the web page, but maybe this should be changed).
@@ -164,12 +168,12 @@ SAMPLE_VIEW_COLUMNS = [
     ('org', 'Organization'),
     ('name', 'Name'),
     ('species', 'Species'),
-    ('sampling_date', 'Sampling Date'),
+    # ('sampling_date', 'Sampling Date'),
     ('sequence_type', 'Sequence Type'),
-    ('sampling_year', 'Sampling Year'),
-    ('country_term', 'Country'),
-    ('source_type_term', 'Source Type'),
-    ('sampling_date', 'Sampling Date'),
+    # ('sampling_year', 'Sampling Year'),
+    # ('country_term', 'Country'),
+    # ('source_type_term', 'Source Type'),
+    # ('sampling_date', 'Sampling Date'),
 ]
 
 # This will be the default for most field-related options to ReporTree

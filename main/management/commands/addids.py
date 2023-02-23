@@ -21,7 +21,7 @@ class Command(BaseCommand):
 
         db.samples.update_many({}, [
                 { '$set': { 'org': options['org'] } },
-                {'$set': {'name': '$sample.summary.sample'}}
+                {'$set': {'name': '$name'}}
             ], False)
         
         db.samples.create_index([('org', 1), ('name', 1)], unique=True)
