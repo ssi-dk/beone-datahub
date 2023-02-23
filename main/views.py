@@ -232,8 +232,8 @@ def run_rt_job(request, rt_job_key:str):
             However, this would imply that the API should be enhanced so we could specify fields directly as mongo fields instead of
             'pseudo fields' (that need to go through MONGO_FIELD_MAPPING to get the real mongo fields).
             """
-            for metadata_field in rt_job.metadata_fields:
-                pseudo_fields.add(metadata_field)
+            # for metadata_field in rt_job.metadata_fields:
+            #     pseudo_fields.add(metadata_field)
             mongo_cursor, unmatched = api.get_samples_from_keys(dataset.mongo_keys, fields=pseudo_fields)
             if len(unmatched) != 0:
                 messages.add_message(request, messages.ERROR, f'Some keys in the dataset are unmatched: {unmatched}. Please fix before running job.')
