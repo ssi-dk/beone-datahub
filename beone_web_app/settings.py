@@ -139,7 +139,7 @@ MONGO_CONNECTION = 'mongodb://mongo:27017/sofi_dev'
 
 # Mapping for Bifrost 2.1 (SOFI)
 MONGO_FIELD_MAPPING = {
-    'org': 'categories.sample_info.summary.institution',
+    'org': 'org',
     'name': 'name',
     'species': 'categories.species_detection.summary.detected_species',
     'allele_profile': 'categories.cgmlst.report.chewbbaca.data.alleles',
