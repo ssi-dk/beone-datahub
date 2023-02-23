@@ -23,7 +23,7 @@ document.getElementById('sample_list').addEventListener('click', addOrRemove);
 function addOrRemove(event) {
     if (event.target.type === 'checkbox') {
         let strParts = event.target.id.split('.')
-        let mongoId = {'org': strParts[0], 'name': strParts[1]}
+        let mongoId = {'name': strParts[1]}
         console.log(mongoId)
         let dataToSend = {
             "username": document.getElementById('username').innerText,
