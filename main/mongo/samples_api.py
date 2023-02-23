@@ -20,8 +20,7 @@ class API:
         fields: set = set(settings.MONGO_FIELD_MAPPING.keys())
     ):
 
-        # Ensure we always have these two fields in the set
-        fields.add('org')
+        # Ensure we always have the sample name in the return data
         fields.add('name')
 
         pipeline = list()
