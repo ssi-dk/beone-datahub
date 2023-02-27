@@ -119,10 +119,16 @@ class Command(BaseCommand):
                 self.stdout.write(f"Importing sample {a_name}...")
 
                 # Create the basic structure that will be inserted in MongoDB
+                categories = {
+                    'species_detection': all_species[options['sp']],
+                    'cgmlst': None
+                    }
+
                 sample_dict = {
                         'org': options['org'],
                         'name': a_name,
-                        'sample': {'metadata': {'Microorganism': all_species[options['sp']]}}
+                        'categories': categories
+                        # 'sample': {'metadata': {'Microorganism': all_species[options['sp']]}}
                     }
                 
                 # Add metadata fields to sample_dict
@@ -135,14 +141,14 @@ class Command(BaseCommand):
                 
                 # Read allele profile fields from a_list
                 allele_profile = list()
-                for locus in a_header_list:
-                    allele = {'locus': locus}
-                    allele_str = a_list.pop(0)
-                    if allele_str.isdigit:
-                        allele['allele_crc32'] = int(allele_str)
-                    else:
-                        allele['allele_crc32'] = None
-                    allele_profile.append(allele)
+                # for locus in a_header_list:
+                #     allele = {'locus': locus}
+                #     allele_str = a_list.pop(0)
+                #     if allele_str.isdigit:
+                #         allele['allele_crc32'] = int(allele_str)
+                #     else:
+                #         allele['allele_crc32'] = None
+                #     allele_profile.append(allele)
 
                 # Add allele profile to sample_dict
                 # For now, assume the pipeline is chewieSnake
