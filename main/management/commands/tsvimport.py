@@ -152,7 +152,7 @@ class Command(BaseCommand):
 
                 # Add allele profile to sample_dict
                 # For now, assume the pipeline is chewieSnake
-                sample_dict['pipelines'] = {'chewiesnake': {'allele_profile': allele_profile}}
+                # sample_dict['pipelines'] = {'chewiesnake': {'allele_profile': allele_profile}}
 
                  # Create document in MongoDB
                 result = db.samples.insert_one(sample_dict)
