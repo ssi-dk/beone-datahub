@@ -180,9 +180,9 @@ class RTJob(models.Model):
       allele_profile = mongo_item['allele_profile']
       allele_line = [ sample_id ]
       for allele in allele_profile:
-         allele_value = allele['allele_crc32']  # Maybe choose key name with a setting
+         allele_value = allele
          if allele_value is None:
-            allele_line.append('-')
+            allele_line.append(0)
          else:
             allele_line.append(str(allele_value))
       allele_profile_file.write('\t'.join(allele_line))
@@ -231,10 +231,8 @@ class RTJob(models.Model):
             self.save()
             return
          
-         for allele in first_mongo_item['allele_profile']:
-               locus = allele['locus']
-               if locus.endswith('.fasta'):
-                  locus = locus[:-6]
+         for locus in first_mongo_item['allele_profile'][0]['alleles']:
+               print(locus)
                allele_header_line.append(locus)
          allele_profile_file.write('\t'.join(allele_header_line))
          allele_profile_file.write('\n')
