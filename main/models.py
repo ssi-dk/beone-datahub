@@ -232,7 +232,6 @@ class RTJob(models.Model):
             return
          
          for locus in first_mongo_item['allele_profile'][0]['alleles']:
-               print(locus)
                allele_header_line.append(locus)
          allele_profile_file.write('\t'.join(allele_header_line))
          allele_profile_file.write('\n')
