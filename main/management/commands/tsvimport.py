@@ -118,17 +118,10 @@ class Command(BaseCommand):
                 assert a_name == m_name
                 self.stdout.write(f"Importing sample {a_name}...")
 
-                # Create the basic structure that will be inserted in MongoDB
-                categories = {
-                    'species_detection': all_species[options['sp']],
-                    'cgmlst': None
-                    }
-
+                # Create the root structure of the document that will be inserted in MongoDB
                 sample_dict = {
                         'org': options['org'],
                         'name': a_name,
-                        'categories': categories
-                        # 'sample': {'metadata': {'Microorganism': all_species[options['sp']]}}
                     }
                 
                 # Add metadata fields to sample_dict
@@ -140,19 +133,15 @@ class Command(BaseCommand):
                         sample_dict = merge_dictionaries(sample_dict, dicts_to_add)
                 
                 # Read allele profile fields from a_list
-                allele_profile = list()
-                # for locus in a_header_list:
-                #     allele = {'locus': locus}
-                #     allele_str = a_list.pop(0)
-                #     if allele_str.isdigit:
-                #         allele['allele_crc32'] = int(allele_str)
-                #     else:
-                #         allele['allele_crc32'] = None
-                #     allele_profile.append(allele)
+                allele_profile = dict()
+                for locus in a_header_list:
+                    allele_profile[locus] = a_list.pop(0)
 
-                # Add allele profile to sample_dict
-                # For now, assume the pipeline is chewieSnake
-                # sample_dict['pipelines'] = {'chewiesnake': {'allele_profile': allele_profile}}
+                # Add data to sample_dict
+                sample_dict['categories'] = {
+                    'species_detection': {'summary': {'detected_species': all_species[options['sp']]}},
+                    'cgmlst': {'report': {'data': [{'alleles': allele_profile}]}}
+                    }
 
                  # Create document in MongoDB
                 result = db.samples.insert_one(sample_dict)
