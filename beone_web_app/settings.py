@@ -141,7 +141,7 @@ MONGO_CONNECTION = 'mongodb://mongo:27017/sofi_dev'
 MONGO_FIELD_MAPPING = {
     'org': 'org',
     'name': 'name',
-    'species': 'categories.species_detection',
+    'species': 'categories.species_detection.summary.detected_species',
     'allele_profile': 'categories.cgmlst.report.chewbbaca.data.alleles',
     'sequence_type': 'categories.cgmlst.summary.sequence_type'
 }
