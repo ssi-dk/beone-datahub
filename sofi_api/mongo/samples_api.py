@@ -7,13 +7,7 @@ FIELD_MAPPING: dict = {
     'org': 'org',
     'name': 'name',
     'species': 'sample.metadata.Microorganism',
-    'sequence_type': 'sample.summary.sequence_type',
-    'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
-    'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
-    'country_term': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
-    'source_type_term': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
-    'sampling_date': 'sample.metadata.Date_Sampling',
-    'allele_profile': 'pipelines.chewiesnake.allele_profile',
+    'allele_profile': 'categories.cgmlst.report.data.alleles'
 }
 
 class API:
