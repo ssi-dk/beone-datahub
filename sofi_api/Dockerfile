@@ -3,7 +3,7 @@
 FROM continuumio/miniconda3:4.12.0
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-ENV MONGO_CONNECTION='mongodb://mongo:27017/beone'
+ENV MONGO_CONNECTION='mongodb://mongo:27017/sofi_dev'
 
 WORKDIR /app
 
