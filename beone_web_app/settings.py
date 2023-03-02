@@ -142,8 +142,8 @@ MONGO_FIELD_MAPPING = {
     'org': 'org',
     'name': 'name',
     'species': 'categories.species_detection.summary.detected_species',
-    'allele_profile': 'categories.cgmlst.report.data',  #TODO not very useful for now since 'data' is a list.
-    'sequence_type': 'categories.cgmlst.summary.sequence_type'
+    'allele_profile': 'categories.mlst.report.data.alleles',
+    'sequence_type': 'categories.mlst.report.data.sequence_type'
 }
 
 # Mapping of field shortcuts to actual MongoDB fields

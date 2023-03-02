@@ -207,54 +207,10 @@ class RTJob(models.Model):
       metadata_file.write('\t'.join(metadata_line))
       metadata_file.write('\n')
    
-   def prepare(self, mongo_cursor):
-      start_time = timezone.now()
-      print(f"prepare started at {self.start_time}")
-      # Create a folder for the run
-      job_folder = self.get_path()
-      if job_folder.exists():
-         print(f"WARNING: Job folder {job_folder} already exists! Reusing it.")
-      else:
-            job_folder.mkdir()
-            print(f"Created job folder {job_folder}.")
-      
-      with \
-      open(Path(job_folder, 'allele_profiles.tsv'), 'w') as allele_profile_file, \
-      open(Path(job_folder, 'metadata.tsv'), 'w') as metadata_file:
-      
-         # Get allele profile for first sample so we can define allele file header line
-         allele_header_line = [ 'ID' ]
-         first_mongo_item = next(mongo_cursor)
-         if not 'allele_profile' in first_mongo_item:
-            print("ERROR: no allele profile!")
-            self.set_status('SAMPLE_ERROR')
-            self.save()
-            return
-         
-         for locus in first_mongo_item['allele_profile'][0]['alleles']:
-               allele_header_line.append(locus)
-         allele_profile_file.write('\t'.join(allele_header_line))
-         allele_profile_file.write('\n')
-
-         # Add header line to metadata file
-         metadata_header_line = [ 'ID' ]
-         metadata_header_line.extend(self.metadata_fields)
-         metadata_file.write('\t'.join(metadata_header_line))
-         metadata_file.write('\n')
-   
-         # Write data for first sample to files
-         self.add_sample_data_in_files(first_mongo_item, allele_profile_file, metadata_file)
-
-         # Write data for subsequent samples to files
-         for mongo_item in mongo_cursor:
-            # print(mongo_item)
-            self.add_sample_data_in_files(mongo_item, allele_profile_file, metadata_file)
-      
+   def prepare(self, mongo_cursor):      
          # Set new status on job
          self.set_status('READY')
          self.save()
-         elapsed_time = timezone.now() - start_time
-         print(f"prepare took {elapsed_time}")
 
    def run(self):
       if self.status == 'READY':
