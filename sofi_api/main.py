@@ -59,11 +59,7 @@ def allele_mx_from_beone_mongo(mongo_cursor):
     return pandas.DataFrame.from_dict(full_dict, 'index', dtype=str)
 
 def translate_bifrost_row(mongo_item):
-    print(mongo_item)
-    result_row = dict()
-    for bifrost_dict in mongo_item:
-        print(bifrost_dict)
-    return result_row
+    return mongo_item['allele_profile'][0]
 
 def allele_mx_from_bifrost_mongo(mongo_cursor):
     # Generate an allele matrix with all the allele profiles from the mongo cursor.
