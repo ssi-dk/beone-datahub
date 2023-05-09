@@ -1,6 +1,3 @@
-[submodule "beone-dashboard"]
-	path = dashboard
-	url = git@github.com:ssi-dk/beone-dashboard.git
 [submodule "bio_api/ReporTree"]
 	path = bio_api/ReporTree
 	url = git@github.com:ssi-dk/ReporTree.git
