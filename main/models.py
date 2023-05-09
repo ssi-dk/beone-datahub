@@ -221,7 +221,7 @@ class RTJob(models.Model):
          names = [ o['name'] for o in self.dataset.mongo_keys ]
          print("Names:")
          print(names)
-         raw_response = requests.post(f'http://sofi_api:7000/reportree/start_job/',
+         raw_response = requests.post(f'http://bio_api:7000/reportree/start_job/',
                json={'sample_ids': names})
          json_response = (raw_response.json())
          print("JSON response:")

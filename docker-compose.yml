@@ -29,12 +29,12 @@ services:
       - ./data/mongo:/data/db
       - ./dumps/mongo:/mnt/dumps
   
-  sofi_api:
-    build: ./sofi_api
+  bio_api:
+    build: ./bio_api
     tty: true
     volumes:
       - ./tmp:/tmp
-      - ./sofi_api:/app
+      - ./bio_api:/app
     ports:
       - "7000:7000"
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7000", "--reload"]
@@ -55,7 +55,7 @@ services:
     depends_on:
       - postgres
       - mongo
-      - sofi_api
+      - bio_api
 
   # nginx:
   #   build: ./nginx
