@@ -1,5 +1,5 @@
 """
-ASGI config for beone_web_app project.
+ASGI config for comparison_backend project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'beone_web_app.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'comparison_backend.settings')
 
 application = get_asgi_application()

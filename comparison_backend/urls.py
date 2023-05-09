@@ -1,4 +1,4 @@
-"""beone_web_app URL Configuration
+"""comparison_backend URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.0/topics/http/urls/

@@ -5,7 +5,7 @@ rt_runs/
 __pycache__
 test_data/beone_exercise/
 test_data/campy/
-beone_web_app/settings_local.py/
+comparison_backend/settings_local.py/
 sofi_api/*.log
 sofi_api/*.tsv
 sofi_api/*.nwk
