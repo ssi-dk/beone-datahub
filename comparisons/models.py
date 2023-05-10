@@ -22,13 +22,13 @@ class SequenceSet(models.Model):
       return self.sequences
 
 
-class AnalysisTool(models.Model):
+class BaseTool(models.Model):
     ANALYSIS_TYPES = [
         ('cgmlst', 'cgMLST'),
         ('snp', 'SNP'),
     ]
 
-    type = models.CharField(max_length=8, choices=ANALYSIS_TYPES)
+    type = models.CharField(max_length=8, choices=ANALYSIS_TYPES, default='cgmlst')
     name = models.CharField(max_length=20)
     version = models.CharField(max_length=8)
 
@@ -47,6 +47,13 @@ class Comparison(models.Model):
        ('ERROR', 'Error'),
    ]
 
+    LINKAGE_METHODS = [
+       ('SINGLE', 'Single'),
+       ('COMPLETE', 'Complete'),
+       ('UPGMA', 'UPGMA'),
+       ('NJ', 'Neighbor Joining'),
+   ]
+
     class Meta:
         ordering = ['-pk']
 
@@ -62,9 +69,9 @@ class Comparison(models.Model):
     error_msg = models.CharField(max_length=80, blank=True, null=True)
     folder_path = models.FilePathField(blank=True, null=True)
     newick = models.TextField(blank=True, null=True)
-    tool = models.ForeignKey(AnalysisTool, on_delete=models.PROTECT, null=True)
-    analysis_subtype = models.CharField(max_length=10, blank=True, null=True)
-    analysis_params = models.JSONField(blank=True, default=dict)
+    base_tool = models.ForeignKey(BaseTool, on_delete=models.PROTECT, null=True)
+    linkage_method = models.CharField(max_length=10, choices=LINKAGE_METHODS, default='SINGLE')
+    params = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
 
 
