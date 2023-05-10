@@ -22,6 +22,21 @@ class SequenceSet(models.Model):
       return self.sequences
 
 
+class AnalysisTool(models.Model):
+    ANALYSIS_TYPES = [
+        ('cgmlst', 'cgMLST'),
+        ('snp', 'SNP'),
+    ]
+
+    type = models.CharField(max_length=8, choices=ANALYSIS_TYPES)
+    name = models.CharField(max_length=20)
+    version = models.CharField(max_length=8)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'version'], name="tool_name_version_unique"),
+        ]
+
 class Comparison(models.Model):
 
     STATUSES = [
@@ -30,11 +45,6 @@ class Comparison(models.Model):
        ('RUNNING', 'Running'),
        ('SUCCESS', 'Successfully finished'),
        ('ERROR', 'Error'),
-   ]
-
-    ANALYSIS_TYPES = [
-       ('cgmlst', 'cgMLST'),
-       ('SNP', 'SNP'),
    ]
 
     class Meta:
@@ -52,7 +62,7 @@ class Comparison(models.Model):
     error_msg = models.CharField(max_length=80, blank=True, null=True)
     folder_path = models.FilePathField(blank=True, null=True)
     newick = models.TextField(blank=True, null=True)
-    analysis_type = models.CharField(max_length=6, choices=ANALYSIS_TYPES)
+    tool = models.ForeignKey(AnalysisTool, on_delete=models.PROTECT, null=True)
     analysis_subtype = models.CharField(max_length=10, blank=True, null=True)
     analysis_params = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
