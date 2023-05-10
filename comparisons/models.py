@@ -56,3 +56,22 @@ class Comparison(models.Model):
     analysis_subtype = models.CharField(max_length=10, blank=True, null=True)
     analysis_params = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
+
+
+class Cluster(models.Model):
+    created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    sequence_set = models.OneToOneField(SequenceSet, on_delete=models.PROTECT)
+    st = models.PositiveIntegerField()
+    cluster_number = models.PositiveIntegerField()
+    subcluster = models.IntegerField(default=0)
+    merged_into = models.IntegerField(default=0)
+
+
+class PotentialOutbreak(models.Model):
+    created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    cluster = models.ForeignKey(Cluster, models.PROTECT)
+    suspected_source = models.CharField(max_length=30)
