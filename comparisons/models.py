@@ -40,7 +40,7 @@ class BaseTool(models.Model):
             models.UniqueConstraint(fields=['name', 'version'], name="tool_name_version_unique"),
         ]
 
-class Comparison(models.Model):
+"""class Comparison(models.Model):
 
     STATUSES = [
        ('NEW', 'New'),
@@ -75,7 +75,7 @@ class Comparison(models.Model):
     base_tool = models.ForeignKey(BaseTool, on_delete=models.PROTECT, null=True)
     linkage_method = models.CharField(max_length=10, choices=LINKAGE_METHODS, default='SINGLE')
     params = models.JSONField(blank=True, default=dict)
-    microreact_project = models.CharField(max_length=20, blank=True, null=True)
+    microreact_project = models.CharField(max_length=20, blank=True, null=True)"""
 
 
 class Cluster(models.Model):

@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from comparisons.models import Species, SequenceSet, BaseTool, Comparison, Cluster, PotentialOutbreak
+from comparisons.models import Species, SequenceSet, BaseTool, Cluster, PotentialOutbreak
+# from comparisons.models import Comparison
 
 class SpeciesAdmin(admin.ModelAdmin):
     list_display = ('name', 'code')
@@ -20,10 +21,10 @@ class BaseToolAdmin(admin.ModelAdmin):
 admin.site.register(BaseTool, BaseToolAdmin)
 
 
-class ComparisonAdmin(admin.ModelAdmin):
+""" class ComparisonAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Comparison, ComparisonAdmin)
+admin.site.register(Comparison, ComparisonAdmin) """
 
 class ClusterAdmin(admin.ModelAdmin):
     pass
