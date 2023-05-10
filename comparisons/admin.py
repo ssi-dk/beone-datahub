@@ -27,12 +27,12 @@ admin.site.register(BaseTool, BaseToolAdmin)
 admin.site.register(Comparison, ComparisonAdmin) """
 
 class ClusterAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('pk', 'sequence_set', 'st', 'cluster_number', 'subcluster', 'merged_into')
 
 admin.site.register(Cluster, ClusterAdmin)
 
 
 class PotentialOutbreakAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('pk', 'created_by', 'created_at', 'cluster', 'suspected_source')
 
 admin.site.register(PotentialOutbreak, PotentialOutbreakAdmin)
