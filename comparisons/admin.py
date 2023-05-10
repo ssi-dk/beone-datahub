@@ -3,19 +3,19 @@ from django.contrib import admin
 from comparisons.models import Species, SequenceSet, BaseTool, Comparison, Cluster, PotentialOutbreak
 
 class SpeciesAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'code')
 
 admin.site.register(Species, SpeciesAdmin)
 
 
 class SequenceSetAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('pk', 'species', 'created_by', 'created_at', 'modified_at')
 
 admin.site.register(SequenceSet, SequenceSetAdmin)
 
 
 class BaseToolAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('pk', 'type', 'name', 'version')
 
 admin.site.register(BaseTool, BaseToolAdmin)
 

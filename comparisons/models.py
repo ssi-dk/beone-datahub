@@ -7,6 +7,12 @@ class Species(models.Model):
     name = models.CharField(max_length=40, unique=True)
     code = models.CharField(max_length=2, unique=True)
 
+    class Meta:
+        verbose_name_plural = "species"
+    
+    def __str__(self):
+        return self.name
+
 
 class SequenceSet(models.Model):
    species = models.ForeignKey(Species, models.PROTECT)
@@ -17,9 +23,6 @@ class SequenceSet(models.Model):
    
    class Meta:
       ordering = ['-modified_at']
-
-   def __str__(self):
-      return self.sequences
 
 
 class BaseTool(models.Model):
