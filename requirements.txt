@@ -1,4 +1,4 @@
-Django == 4.2.1
+Django == 4.1.2
 psycopg2-binary == 2.9.6
 pymongo == 4.3.3
 requests == 2.30
