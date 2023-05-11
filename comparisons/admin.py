@@ -27,7 +27,7 @@ class ComparisonAdmin(admin.ModelAdmin):
 admin.site.register(Comparison, ComparisonAdmin)
 
 class ClusterAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'st', 'cluster_number', 'subcluster', 'merged_into')
+    list_display = ('pk', 'st', 'cluster_number')
 
 admin.site.register(Cluster, ClusterAdmin)
 

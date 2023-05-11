@@ -89,7 +89,6 @@ class Cluster(models.Model):
     st = models.PositiveIntegerField()
     cluster_number = models.PositiveIntegerField()
     subcluster = models.IntegerField(default=0)
-    merged_into = models.IntegerField(default=0)
     comparison = models.ManyToManyField(Comparison)
 
 
