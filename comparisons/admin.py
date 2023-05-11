@@ -27,7 +27,7 @@ admin.site.register(BaseTool, BaseToolAdmin)
 admin.site.register(Comparison, ComparisonAdmin) """
 
 class ClusterAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'sequence_set', 'st', 'cluster_number', 'subcluster', 'merged_into')
+    list_display = ('pk', 'st', 'cluster_number', 'subcluster', 'merged_into')
 
 admin.site.register(Cluster, ClusterAdmin)
 
