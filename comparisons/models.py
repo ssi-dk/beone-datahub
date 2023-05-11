@@ -88,7 +88,6 @@ class Cluster(models.Model):
     sequence_set = models.OneToOneField(SequenceSet, on_delete=models.PROTECT)
     st = models.PositiveIntegerField()
     cluster_number = models.PositiveIntegerField()
-    subcluster = models.IntegerField(default=0)
     comparison = models.ManyToManyField(Comparison)
 
 
