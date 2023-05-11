@@ -90,6 +90,7 @@ class Cluster(models.Model):
     cluster_number = models.PositiveIntegerField()
     subcluster = models.IntegerField(default=0)
     merged_into = models.IntegerField(default=0)
+    comparison = models.ManyToManyField(Comparison)
 
 
 class PotentialOutbreak(models.Model):
