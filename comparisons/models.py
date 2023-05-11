@@ -99,3 +99,4 @@ class PotentialOutbreak(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     cluster = models.ForeignKey(Cluster, models.PROTECT)
     suspected_source = models.CharField(max_length=30)
+    comparison = models.ManyToManyField(Comparison)
