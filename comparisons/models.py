@@ -40,7 +40,7 @@ class BaseTool(models.Model):
             models.UniqueConstraint(fields=['name', 'version'], name="tool_name_version_unique"),
         ]
 
-"""class Comparison(models.Model):
+class Comparison(models.Model):
 
     STATUSES = [
        ('NEW', 'New'),
@@ -62,7 +62,7 @@ class BaseTool(models.Model):
 
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    sequence_set = models.ForeignKey(SequenceSet, models.PROTECT)
+    """sequence_set = models.ForeignKey(SequenceSet, models.PROTECT)
     data_fields = ArrayField(models.CharField(max_length=25), blank=True, null=True)   # default=get_default_data_fields
     field_data = models.JSONField(blank=True, default=dict)
     status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
