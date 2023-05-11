@@ -15,14 +15,17 @@ class Species(models.Model):
 
 
 class SequenceSet(models.Model):
-   species = models.ForeignKey(Species, models.PROTECT)
-   created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
-   created_at = models.DateTimeField(auto_now_add=True)
-   modified_at = models.DateTimeField(auto_now=True)
-   sequences = models.JSONField(blank=True, default=list)
+    species = models.ForeignKey(Species, models.PROTECT)
+    created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    sequences = models.JSONField(blank=True, default=list)
    
-   class Meta:
-      ordering = ['-modified_at']
+    class Meta:
+        ordering = ['-modified_at']
+
+    def __str__(self):
+        return f"{self.species} {self.created_by} {self.created_at}"
 
 
 class BaseTool(models.Model):
@@ -62,8 +65,8 @@ class Comparison(models.Model):
 
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    """sequence_set = models.ForeignKey(SequenceSet, models.PROTECT)
-    data_fields = ArrayField(models.CharField(max_length=25), blank=True, null=True)   # default=get_default_data_fields
+    sequence_set = models.ForeignKey(SequenceSet, models.PROTECT)
+    """data_fields = ArrayField(models.CharField(max_length=25), blank=True, null=True)   # default=get_default_data_fields
     field_data = models.JSONField(blank=True, default=dict)
     status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
     started_at = models.DateTimeField(blank=True, null=True)
