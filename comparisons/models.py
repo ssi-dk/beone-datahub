@@ -73,7 +73,7 @@ class Comparison(models.Model):
     ended_at = models.DateTimeField(blank=True, null=True)
     elapsed_time = models.DateTimeField(blank=True, null=True)
     error_msg = models.CharField(max_length=80, blank=True, null=True)
-    # folder_path = models.FilePathField(blank=True, null=True)
+    folder_path = models.CharField(max_length=100, blank=True, null=True)
     newick = models.TextField(blank=True, null=True)
     base_tool = models.ForeignKey(BaseTool, on_delete=models.PROTECT, null=True)
     linkage_method = models.CharField(max_length=10, choices=LINKAGE_METHODS, default='SINGLE')
