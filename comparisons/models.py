@@ -67,8 +67,8 @@ class Comparison(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     sequence_set = models.ForeignKey(SequenceSet, models.PROTECT)
     # data_fields = ArrayField(models.CharField(max_length=25))   # default=get_default_data_fields
-    """field_data = models.JSONField(blank=True, default=dict)
-    status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
+    field_data = models.JSONField(blank=True, default=dict)
+    """status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
     started_at = models.DateTimeField(blank=True, null=True)
     ended_at = models.DateTimeField(blank=True, null=True)
     elapsed_time = models.DateTimeField(blank=True, null=True)
