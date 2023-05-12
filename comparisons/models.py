@@ -87,7 +87,6 @@ class Cluster(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
     st = models.PositiveIntegerField()
     cluster_number = models.PositiveIntegerField()
-    comparison = models.ManyToManyField(Comparison)
 
 
 class PotentialOutbreak(models.Model):
