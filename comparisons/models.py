@@ -18,8 +18,12 @@ class Cluster(models.Model):
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
+    # species = models.ForeignKey(Species, models.PROTECT)
     st = models.PositiveIntegerField()
     cluster_number = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"ST{self.st}#{self.cluster_number}"
 
 
 class SequenceGroup(models.Model):
