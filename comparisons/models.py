@@ -51,6 +51,9 @@ class BaseTool(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['name', 'version'], name="tool_name_version_unique"),
         ]
+    
+    def __str__(self):
+        return f"{self.name} v.{self.version} ({self.type})"
 
 class Comparison(models.Model):
 
