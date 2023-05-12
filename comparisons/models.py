@@ -14,12 +14,21 @@ class Species(models.Model):
         return self.name
 
 
+class Cluster(models.Model):
+    created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+    st = models.PositiveIntegerField()
+    cluster_number = models.PositiveIntegerField()
+
+
 class SequenceGroup(models.Model):
     species = models.ForeignKey(Species, models.PROTECT)
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     sequences = models.JSONField(blank=True, default=list)
+    cluster = models.ForeignKey(Cluster, models.PROTECT, blank=True, null=True)
    
     class Meta:
         ordering = ['-modified_at']
@@ -79,14 +88,7 @@ class Comparison(models.Model):
     linkage_method = models.CharField(max_length=10, choices=LINKAGE_METHODS, default='SINGLE')
     params = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
-
-
-class Cluster(models.Model):
-    created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
-    st = models.PositiveIntegerField()
-    cluster_number = models.PositiveIntegerField()
+    sequence_group = models.ForeignKey(SequenceGroup, models.PROTECT)
 
 
 class PotentialOutbreak(models.Model):
