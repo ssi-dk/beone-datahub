@@ -85,7 +85,6 @@ class Cluster(models.Model):
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    sequence_group = models.OneToOneField(SequenceGroup, on_delete=models.PROTECT)
     st = models.PositiveIntegerField()
     cluster_number = models.PositiveIntegerField()
     comparison = models.ManyToManyField(Comparison)
