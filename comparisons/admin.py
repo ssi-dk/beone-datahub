@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from comparisons.models import Species, SequenceSet, BaseTool, Cluster, PotentialOutbreak
+from comparisons.models import Species, SequenceGroup, BaseTool, Cluster, PotentialOutbreak
 from comparisons.models import Comparison
 
 class SpeciesAdmin(admin.ModelAdmin):
@@ -9,10 +9,10 @@ class SpeciesAdmin(admin.ModelAdmin):
 admin.site.register(Species, SpeciesAdmin)
 
 
-class SequenceSetAdmin(admin.ModelAdmin):
+class SequenceGroupAdmin(admin.ModelAdmin):
     list_display = ('pk', 'species', 'created_by', 'created_at', 'modified_at')
 
-admin.site.register(SequenceSet, SequenceSetAdmin)
+admin.site.register(SequenceGroup, SequenceGroupAdmin)
 
 
 class BaseToolAdmin(admin.ModelAdmin):

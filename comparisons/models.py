@@ -14,7 +14,7 @@ class Species(models.Model):
         return self.name
 
 
-class SequenceSet(models.Model):
+class SequenceGroup(models.Model):
     species = models.ForeignKey(Species, models.PROTECT)
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -65,7 +65,7 @@ class Comparison(models.Model):
 
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    sequence_set = models.ForeignKey(SequenceSet, models.PROTECT)
+    sequence_set = models.ForeignKey(SequenceGroup, models.PROTECT)
     data_fields = ArrayField(models.CharField(max_length=25), default=list)   # default=get_default_data_fields
     field_data = models.JSONField(blank=True, default=dict)
     status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
@@ -85,7 +85,7 @@ class Cluster(models.Model):
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    sequence_set = models.OneToOneField(SequenceSet, on_delete=models.PROTECT)
+    sequence_set = models.OneToOneField(SequenceGroup, on_delete=models.PROTECT)
     st = models.PositiveIntegerField()
     cluster_number = models.PositiveIntegerField()
     comparison = models.ManyToManyField(Comparison)
