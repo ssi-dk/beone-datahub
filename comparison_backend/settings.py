@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'main',
     'comparisons',
+    'django_dbml',
 ]
 
 MIDDLEWARE = [
