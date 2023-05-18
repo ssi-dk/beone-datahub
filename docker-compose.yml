@@ -36,8 +36,8 @@ services:
       - ./tmp:/tmp
       - ./bio_api:/app
     ports:
-      - "7000:7000"
-    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7000", "--reload"]
+      - "8001:8001"
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]
 
   django:
     build: .
