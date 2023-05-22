@@ -3,4 +3,4 @@
 
 config.set('inspectDepth', Infinity);
 db = connect( 'mongodb://localhost/bifrost_test' );
-printjson(db.samples.find({}));
+printjson(db.samples.find({},{'categories.sample_info.summary.sample_name': 1}));
