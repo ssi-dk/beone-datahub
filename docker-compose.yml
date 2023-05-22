@@ -11,7 +11,6 @@ services:
     image: postgres
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
-      - ./dumps/postgres:/mnt/dumps
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -27,7 +26,8 @@ services:
       - "27107:27017"
     volumes:
       - ./data/mongo:/data/db
-      - ./dumps/mongo:/mnt/dumps
+      - ./dumps/mongo:/dumps
+      - ./scripts/mongo:/scripts
   
   bio_api:
     build: ./bio_api
