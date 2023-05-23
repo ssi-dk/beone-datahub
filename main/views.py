@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 
-from main.mongo.samples_api import API
+from mongoreader.samples import API
 from main.models import DataSet, RTJob, Partition,  Cluster, parse_rt_output
 from main.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
 
