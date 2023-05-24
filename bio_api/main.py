@@ -7,12 +7,12 @@ from pydantic import BaseModel
 from fastapi import FastAPI
 import pandas
 
-from mongo import samples_api
+from mongo import samples
 from ReporTree.scripts.partitioning_HC import HC
 
 app = FastAPI()
 
-sapi = samples_api.API(getenv('MONGO_CONNECTION'), samples_api.FIELD_MAPPING)
+sapi = samples.API(getenv('MONGO_CONNECTION'), samples.FIELD_MAPPING)
 
 
 class HCRequest(BaseModel):
