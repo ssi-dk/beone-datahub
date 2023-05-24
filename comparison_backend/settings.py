@@ -137,7 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Own additions below
 
 # MONGO_CONNECTION = 'mongodb://mongo:27017/beone'
-MONGO_CONNECTION = 'mongodb://mongo:27017/sofi_dev'
+MONGO_CONNECTION = 'mongodb://mongo:27017/bifrost_test'
 
 # Mapping for Bifrost 2.1 (SOFI)
 MONGO_FIELD_MAPPING = {
