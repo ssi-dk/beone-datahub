@@ -92,10 +92,10 @@ class API:
         for key_pair in key_list:
             pipeline.append(
                 {'$match':
-                    {'$and':
+                    {'$or':
                         [
-                            {'org': 'SSI'},
-                            {'categories.sample_info.summary.sample_name': '2001W3286'}
+                            {'org': key_pair['org']},
+                            {'categories.sample_info.summary.sample_name': key_pair['name']}
                         ]
                     }
                 }
