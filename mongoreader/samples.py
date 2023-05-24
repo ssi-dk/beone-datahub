@@ -70,10 +70,36 @@ class API:
 
         pipeline = list()
 
+        print()
+        print("*************")
+        print("key_list:")
+        print(key_list)
+        print()
+
         # Match
-        pipeline.append(
-                {'$match': {'$or': key_list}}
-        )
+        org_field = FIELD_MAPPING['org']
+        print(org_field)
+        name_field = FIELD_MAPPING['name']
+        print(name_field)
+        # for key_pair in key_list:
+        #     pipeline.append(
+        #         {'$match': {'$and': [
+        #             { 'org': key_pair['org'] },
+        #             { 'categories.sample_info.summary.sample_name': key_pair['name'] },
+        #         ]}}
+        #     )
+
+        for key_pair in key_list:
+            pipeline.append(
+                {'$match':
+                    {'$and':
+                        [
+                            {'org': 'SSI'},
+                            {'categories.sample_info.summary.sample_name': '2001W3286'}
+                        ]
+                    }
+                }
+            )
 
         # Projection - map only the desired fields
         projection = dict()
