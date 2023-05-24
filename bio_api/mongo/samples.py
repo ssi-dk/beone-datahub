@@ -5,7 +5,7 @@ from bson.objectid import ObjectId
 
 FIELD_MAPPING: dict = {
     'org': 'org',
-    'name': 'name',
+    'name': 'categories.sample_info.summary.sample_name',
     'species': 'categories.species_detection.summary.detected_species',
     'allele_profile': 'categories.mlst.report.data.alleles',
     'sequence_type': 'categories.mlst.report.data.sequence_type'
