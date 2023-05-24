@@ -11,8 +11,9 @@ from mongo import samples
 from ReporTree.scripts.partitioning_HC import HC
 
 app = FastAPI()
-
-sapi = samples.API(getenv('MONGO_CONNECTION'), samples.FIELD_MAPPING)
+mongo_connection = getenv('MONGO_CONNECTION')
+print(f"Mongo connection: {mongo_connection}")
+sapi = samples.API(mongo_connection, samples.FIELD_MAPPING)
 
 
 class HCRequest(BaseModel):
