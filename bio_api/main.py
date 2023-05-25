@@ -89,8 +89,12 @@ async def root():
 async def start_job(job: HCRequest):
     job.id = uuid.uuid4()
     print(job.sample_ids)
-    # TODO Handle unmatched.
-    mongo_cursor, unmatched = sapi.get_samples_from_keys(job.sample_ids)
+    #TODO Handle unmatched.
+
+    #TODO This is a dirty fix for mocking the 'org' identifiers which we are missing here.
+    mongo_keys = [ {'org': 'SSI', 'name': name} for name in job.sample_ids]
+    mongo_cursor, unmatched = sapi.get_samples_from_keys(mongo_keys)
+    
     # allele_mx: pandas.DataFrame = allele_mx_from_beone_mongo(mongo_cursor)
     allele_mx: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
     # TODO This does not prevent cgmlst-dists from failing...
