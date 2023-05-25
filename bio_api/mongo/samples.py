@@ -69,13 +69,26 @@ class API:
         if len(key_list) == 0:
             return [list(), list()]
 
+        # Ensure we always have these two fields in the set
+        fields.add('org')
+        fields.add('name')
+
         pipeline = list()
 
         # Match
+        org_field = FIELD_MAPPING['org']
+        name_field = FIELD_MAPPING['name']
         pipeline.append(
-                {'$match': { 'name': { '$in': key_list } }}  # pymongo.errors.OperationFailure: $and/$or/$nor must be a nonempty array
+            {'$match':
+                {'$or':
+                    [
+                        {org_field: key_pair['org'], name_field: key_pair['name']}
+                        for key_pair in key_list
+                    ]
+                }
+            }
         )
-
+        
         # Projection - map only the desired fields
         projection = dict()
         for field in fields:
@@ -92,7 +105,7 @@ class API:
         command_cursor = self.db.samples.aggregate(pipeline)
 
         # Check if there are samples in key_list that was not found in MongoDB.
-        """unmatched = list()
+        unmatched = list()
         for key_pair in key_list:
             match = False
             for mongo_doc in command_cursor:
@@ -100,7 +113,7 @@ class API:
                     match = True
                     break
             if match == False:
-                unmatched.append(key_pair) """
+                unmatched.append(key_pair)
 
         # MongoDB CommandCursor cannot rewind, so we make a new one
-        return (self.db.samples.aggregate(pipeline), list())
+        return (self.db.samples.aggregate(pipeline), unmatched)
