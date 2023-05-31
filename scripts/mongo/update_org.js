@@ -3,9 +3,7 @@
 
 config.set('inspectDepth', Infinity);
 db = connect( 'mongodb://localhost/bifrost_test' );
-db.samples.updateOne(
-    {_id: ObjectId("6380c4dd72ea90601dbf01cb")},
-    {
-        $set: {'org': 'FVST'}
-    }
+db.samples.updateMany(
+    {'categories.sample_info.summary.institution': {$exists: false}},
+    {$set: {'categories.sample_info.summary.institution': 'FVST'}}
 );

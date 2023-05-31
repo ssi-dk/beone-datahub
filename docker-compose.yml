@@ -27,7 +27,7 @@ services:
     volumes:
       - ./data/mongo:/data/db
       - ./dumps/mongo:/dumps
-      - ./scripts/mongosh:/scripts
+      - ./scripts/mongo:/scripts
   
   bio_api:
     build: ./bio_api
