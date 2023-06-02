@@ -47,10 +47,16 @@ class Command(BaseCommand):
         sample_name = rndstr(10)
         self.stdout.write(f"Short sample name: {sample_name}")
         sample['name'] = sample_name
-        sample['categories']['sample_info']['summary']['sample_name'] = run_name + '_' + sample_name
+        long_name = run_name + '_' + sample_name
+        sample['categories']['sample_info']['summary']['sample_name'] = long_name
         sample['categories']['cgmlst']['summary']['call_percent'] = rndpct()
         for (locus, value) in allele_generator():
             sample['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
+        result = db.samples.insert_one(sample)
+        if result.acknowledged:
+            self.stdout.write(self.style.SUCCESS(f"Sample {long_name} added to MongoDB."))
+        else:
+            self.stdout.write(self.style.ERROR(f"Could not add sample {long_name} in MongoDB!"))
         
 
         # folder = Path(options['folder'])
