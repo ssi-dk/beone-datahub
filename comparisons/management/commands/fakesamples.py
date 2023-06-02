@@ -41,11 +41,10 @@ class Command(BaseCommand):
         self.stdout.write(f"Fake run name: {run_name}")
         self.stdout.write(f"Will create {options['count']} fake sample(s).")
         template_file = Path(getcwd(), 'comparisons', 'management', 'commands', 'fakesample_template.json')
-        template = open(template_file, 'r')
-        sample = json.load(template)
-
 
         for n in range(0, options['count']):
+            with open(template_file, 'r') as template:
+                sample = json.load(template)
             sample_name = rndstr(10)
             self.stdout.write(f"Short sample name: {sample_name}")
             sample['name'] = sample_name
