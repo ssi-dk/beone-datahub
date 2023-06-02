@@ -36,8 +36,7 @@ class Command(BaseCommand):
 
         connection = pymongo.MongoClient(settings.MONGO_CONNECTION)
         db = connection.get_database()
-        number = db.samples.count_documents({})
-        self.stdout.write(f'Currently MongoDB contains {str(number)} samples.')
+        self.stdout.write(f'Currently MongoDB contains {str(db.samples.count_documents({}))} samples.')
         run_name = rndstr(10)
         self.stdout.write(f"Fake run name: {run_name}")
         template_file = Path(getcwd(), 'comparisons', 'management', 'commands', 'fakesample_template.json')
@@ -58,6 +57,7 @@ class Command(BaseCommand):
         else:
             self.stdout.write(self.style.ERROR(f"Could not add sample {long_name} in MongoDB!"))
         
+        self.stdout.write(f'MongoDB now contains {str(db.samples.count_documents({}))} samples.')
 
         # folder = Path(options['folder'])
         # if not folder.exists():
