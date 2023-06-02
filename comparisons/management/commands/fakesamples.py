@@ -39,57 +39,25 @@ class Command(BaseCommand):
         self.stdout.write(f'Currently MongoDB contains {str(db.samples.count_documents({}))} samples.')
         run_name = rndstr(10)
         self.stdout.write(f"Fake run name: {run_name}")
+        self.stdout.write(f"Will create {options['count']} fake sample(s).")
         template_file = Path(getcwd(), 'comparisons', 'management', 'commands', 'fakesample_template.json')
         template = open(template_file, 'r')
         sample = json.load(template)
 
-        sample_name = rndstr(10)
-        self.stdout.write(f"Short sample name: {sample_name}")
-        sample['name'] = sample_name
-        long_name = run_name + '_' + sample_name
-        sample['categories']['sample_info']['summary']['sample_name'] = long_name
-        sample['categories']['cgmlst']['summary']['call_percent'] = rndpct()
-        for (locus, value) in allele_generator():
-            sample['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
-        result = db.samples.insert_one(sample)
-        if result.acknowledged:
-            self.stdout.write(self.style.SUCCESS(f"Sample {long_name} added to MongoDB."))
-        else:
-            self.stdout.write(self.style.ERROR(f"Could not add sample {long_name} in MongoDB!"))
+
+        for n in range(0, options['count']):
+            sample_name = rndstr(10)
+            self.stdout.write(f"Short sample name: {sample_name}")
+            sample['name'] = sample_name
+            long_name = run_name + '_' + sample_name
+            sample['categories']['sample_info']['summary']['sample_name'] = long_name
+            sample['categories']['cgmlst']['summary']['call_percent'] = rndpct()
+            for (locus, value) in allele_generator():
+                sample['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
+            result = db.samples.insert_one(sample)
+            if result.acknowledged:
+                self.stdout.write(self.style.SUCCESS(f"Sample {long_name} added to MongoDB."))
+            else:
+                self.stdout.write(self.style.ERROR(f"Could not add sample {long_name} in MongoDB!"))
         
         self.stdout.write(f'MongoDB now contains {str(db.samples.count_documents({}))} samples.')
-
-        # folder = Path(options['folder'])
-        # if not folder.exists():
-        #     self.stderr.write(self.style.ERROR(f"Folder {folder} does not exist!"))
-        #     exit()
-        
-        # p = folder.glob('*.json')
-        # files = [x for x in p if x.is_file()]
-        # mongo_keys = list()  # org, name key pairs to add to dataset
-
-        # for file in files:
-        #     self.stdout.write(f"Importing file {file.name}...")
-        #     with open(file, 'r') as f:
-        #         content = json.loads(f.read())
-        #         content['org'] = options['org']
-        #         content['name'] = content['sample']['summary']['sample']
-        #         result = db.samples.insert_one(content)
-        #         if result.acknowledged:
-        #             self.stdout.write(self.style.SUCCESS(f"Org {content['org']} name {content['name']} added to MongoDB."))
-        #             mongo_keys.append({'org': content['org'], 'name': content['name']})
-        #         else:
-        #             self.stdout.write(self.style.ERROR(f"Could not update sample in MongoDB: org: {content['org']}, name {content['name']}"))
-                
-
-        # number = db.samples.count_documents({})
-        # self.stdout.write(f'After import MongoDB contains {str(number)} samples.')
-        # self.stdout.write(f"Creating dataset {options['dataset']}.")
-        # dataset = DataSet(
-        #     species=options['sp'],
-        #     name=options['dataset'],
-        #     description="Imported with jsonmport",
-        #     mongo_keys=mongo_keys
-        #     )
-        # dataset.save()
-        # self.stdout.write(self.style.SUCCESS('Success!'))
