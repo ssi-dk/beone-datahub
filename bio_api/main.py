@@ -108,7 +108,7 @@ async def start_job(job: HCRequest):
         loci_called=job.loci_called,
         dist=job.dist
     )
-    # hc.run()
+    hc.run()
     return {
         "job_id": job.id
         }
