@@ -97,8 +97,8 @@ async def start_job(job: HCRequest):
     allele_mx: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
     # TODO This does not prevent cgmlst-dists from failing...
     # allele_mx.fillna(0)
-    print("Allele profiles:")
-    print(allele_mx)
+    print("df.info():")
+    print(allele_mx.info())
     hc = HC(job.id.hex[:8],
         out=job.id.hex[:8],
         allele_mx=allele_mx,
