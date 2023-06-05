@@ -7,8 +7,8 @@ FIELD_MAPPING: dict = {
     'org': 'categories.sample_info.summary.institution',
     'name': 'categories.sample_info.summary.sample_name',
     'species': 'categories.species_detection.summary.detected_species',
-    'allele_profile': 'categories.mlst.report.data.alleles',
-    'sequence_type': 'categories.mlst.report.data.sequence_type'
+    'allele_profile': 'categories.cgmlst.report.data.alleles',
+    'sequence_type': 'categories.cgmlst.report.data.sequence_type'
 }
 
 class API:
