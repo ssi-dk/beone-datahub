@@ -66,8 +66,6 @@ def allele_mx_from_bifrost_mongo(mongo_cursor):
     # Generate an allele matrix with all the allele profiles from the mongo cursor.
     full_dict = dict()
     first_mongo_item = next(mongo_cursor)
-    print("************************First mongo item:")
-    print(first_mongo_item)
     first_row = translate_bifrost_row(first_mongo_item)
     full_dict[first_mongo_item['name']] = first_row
     allele_names = set(first_row.keys())
@@ -110,7 +108,7 @@ async def start_job(job: HCRequest):
         loci_called=job.loci_called,
         dist=job.dist
     )
-    hc.run()
+    # hc.run()
     return {
         "job_id": job.id
         }
