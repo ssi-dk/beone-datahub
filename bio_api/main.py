@@ -94,23 +94,27 @@ async def start_job(job: HCRequest):
     #TODO This is a dirty fix for mocking the 'org' identifiers which we are missing here.
     mongo_keys = [ {'org': 'SSI', 'name': name} for name in job.sample_ids]
     mongo_cursor, unmatched = sapi.get_samples_from_keys(mongo_keys)
+    print("Matched:")
+    print(list(mongo_cursor))  # Returnerer en tom liste
+    print("Unatched:")
+    print(list(unmatched)) 
     
     # allele_mx: pandas.DataFrame = allele_mx_from_beone_mongo(mongo_cursor)
-    allele_mx: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
+    # allele_mx: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
     # TODO This does not prevent cgmlst-dists from failing...
     # allele_mx.fillna(0)
-    print("Allele profiles:")
-    print(allele_mx)
-    hc = HC(job.id.hex[:8],
-        out=job.id.hex[:8],
-        allele_mx=allele_mx,
-        method_threshold=job.method_threshold,
-        pct_HCmethod_threshold=job.pct_HCmethod_threshold,
-        samples_called=job.samples_called,
-        loci_called=job.loci_called,
-        dist=job.dist
-    )
-    hc.run()
+    # print("Allele profiles:")
+    # print(allele_mx)
+    # hc = HC(job.id.hex[:8],
+    #     out=job.id.hex[:8],
+    #     allele_mx=allele_mx,
+    #     method_threshold=job.method_threshold,
+    #     pct_HCmethod_threshold=job.pct_HCmethod_threshold,
+    #     samples_called=job.samples_called,
+    #     loci_called=job.loci_called,
+    #     dist=job.dist
+    # )
+    # hc.run()
     return {
         "job_id": job.id
         }
