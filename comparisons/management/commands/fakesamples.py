@@ -23,7 +23,7 @@ def rndpct():
 def allele_generator():
     locus = 31717
     while locus <= 40274:
-        yield "INNUENDO_cgMLST-000" + str(locus), str(999)
+        yield "INNUENDO_cgMLST-000" + str(locus)
         locus += 1
 
 class Command(BaseCommand):
@@ -51,7 +51,7 @@ class Command(BaseCommand):
             long_name = run_name + '_' + sample_name
             sample['categories']['sample_info']['summary']['sample_name'] = long_name
             sample['categories']['cgmlst']['summary']['call_percent'] = rndpct()
-            for (locus, value) in allele_generator():
+            for locus in allele_generator():
                 sample['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
             result = db.samples.insert_one(sample)
             if result.acknowledged:
