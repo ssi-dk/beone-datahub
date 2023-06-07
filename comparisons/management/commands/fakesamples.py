@@ -23,7 +23,7 @@ def rndpct():
 def allele_generator():
     locus = 31717
     while locus <= 40274:
-        yield "INNUENDO_cgMLST-000" + str(locus)
+        yield "INNU_" + str(locus)  # The locus name cannot be more than 10 chars!
         locus += 1
 
 class Command(BaseCommand):
