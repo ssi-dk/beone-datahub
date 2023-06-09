@@ -17,6 +17,8 @@ sapi = samples.API(mongo_connection, samples.FIELD_MAPPING)
 
 
 class HCTreeCalcRequest(BaseModel):
+    """Represents a REST request for a tree calculation based on hierarchical clustering.
+    """
     id: Union[None, uuid.UUID]
     sample_ids: list
     timeout: int = 2
