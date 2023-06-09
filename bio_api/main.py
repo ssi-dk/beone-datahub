@@ -16,7 +16,7 @@ print(f"Mongo connection: {mongo_connection}")
 sapi = samples.API(mongo_connection, samples.FIELD_MAPPING)
 
 
-class HCRequest(BaseModel):
+class TreeCalcRequest(BaseModel):
     id: Union[None, uuid.UUID]
     sample_ids: list
     timeout: int = 2
@@ -84,7 +84,7 @@ async def root():
     return {"message": "Hello World"}
 
 @app.post("/reportree/start_job/")
-async def start_job(job: HCRequest):
+async def start_job(job: TreeCalcRequest):
     job.id = uuid.uuid4()
     print(job.sample_ids)
     #TODO Handle unmatched.
