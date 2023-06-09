@@ -8,7 +8,7 @@ from fastapi import FastAPI
 import pandas
 
 from mongo import samples
-from ReporTree.scripts.partitioning_HC import HC
+from ReporTree.scripts.partitioning_HC import TreeCalc
 
 app = FastAPI()
 mongo_connection = getenv('MONGO_CONNECTION')
@@ -102,7 +102,7 @@ async def start_job(job: HCRequest):
 
     # allele_mx: pandas.DataFrame = allele_mx_from_beone_mongo(mongo_cursor)
     allele_mx: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
-    hc = HC(job.id.hex[:8],
+    hc = TreeCalc(job.id.hex[:8],
         out=job.id.hex[:8],
         allele_mx=allele_mx,
         method_threshold=job.method_threshold,
