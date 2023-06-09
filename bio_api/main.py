@@ -92,14 +92,14 @@ async def start_job(job: HCRequest):
     """TODO It should not be necessary with the 'org' key below since the 'name' key (which is the long name
     including runname) HAS to be a unique identifier in itself. This is because other systems that the code
     is going to cooperate with (f. ex. Micoreact) cannot handle multi-component identifiers.
-    
+
     However, if this code is at some point going to be used in a context where the 'name' cannot be
     guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
     dots as separators, like 'dk.ssi.samplelongname'.
     """
     mongo_keys = [ {'org': 'SSI', 'name': name} for name in job.sample_ids]
     mongo_cursor, unmatched = sapi.get_samples_from_keys(mongo_keys)
-    
+
     # allele_mx: pandas.DataFrame = allele_mx_from_beone_mongo(mongo_cursor)
     allele_mx: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
     hc = HC(job.id.hex[:8],
