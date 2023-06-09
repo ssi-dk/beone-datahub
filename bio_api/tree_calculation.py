@@ -88,26 +88,6 @@ class HCTreeCalc:
             self.logger.error(msg)
             raise ValueError(msg)
 
-        # Copy-pasted from main part
-        clustering, cluster_details = hierarchical_clustering(
-            self.df_dist, self.logger, self)
-
-        # output partitions
-
-        self.logger.info("Creating sample partitions file...")
-        df_clustering = pandas.DataFrame(data=clustering)
-        df_clustering.to_csv(Path(args.folder).joinpath(
-            args.out + "_partitions.tsv"), sep="\t", index=None)
-
-        # output cluster composition
-
-        self.logger.info("Creating cluster composition file...")
-        cluster_composition = get_cluster_composition(Path(args.folder).joinpath(
-            args.out + "_clusterComposition.tsv"), cluster_details)
-        # cluster_composition.to_csv(args.out + "_clusterComposition.tsv", index = False, header=True, sep ="\t")
-
-        self.logger.info("partitioning_HC.py is done!")
-
 
 def get_newick(node, parent_dist, leaf_names, newick='') -> str:
     """
@@ -161,7 +141,6 @@ def from_allele_profile(hc=None, logger=None, allele_mx: DataFrame = None):
         mx = pandas.read_table(args.metadata, dtype=str)
         sample_column = mx.columns[0]
         initial_samples = len(allele_mx[allele_mx.columns[0]].values.tolist())
-        allele_mx = filter_mx(allele_mx, mx, filters, "allele", logger)
         final_samples = len(allele_mx[allele_mx.columns[0]].values.tolist())
         logger.info("\tFrom the " + str(initial_samples) + " samples, " +
                     str(final_samples) + " were kept in the matrix...")
@@ -230,9 +209,6 @@ def from_allele_profile(hc=None, logger=None, allele_mx: DataFrame = None):
 
     logger.info("Getting the pairwise distance matrix with cgmlst-dists...")
 
-    # convert ATCG to integers
-    allele_mx = conv_nucl(allele_mx)
-
     # save allele matrix to a file that cgmlst-dists can use for input
     allele_mx_path = Path(TMPDIR, hc.out, hc.out + '_allele_mx.tsv')
     with open(allele_mx_path, 'w') as allele_mx_file_obj:
@@ -273,7 +249,6 @@ def from_distance_matrix(hc=None, logger=None):
         filters = args.filter_column
         mx = pandas.read_table(args.metadata, dtype=str)
         sample_column = mx.columns[0]
-        dist = filter_mx(dist, mx, filters, "dist", logger)
         dist.to_csv(args.folder + "_flt_dist.tsv", sep="\t", index=None)
 
     elif args.metadata and args.filter_column == "":
