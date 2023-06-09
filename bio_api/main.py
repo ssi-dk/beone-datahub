@@ -8,7 +8,7 @@ from fastapi import FastAPI
 import pandas
 
 from mongo import samples
-from ReporTree.scripts.partitioning_HC import TreeCalc
+from ReporTree.scripts.partitioning_HC import HCTreeCalc
 
 app = FastAPI()
 mongo_connection = getenv('MONGO_CONNECTION')
@@ -16,7 +16,7 @@ print(f"Mongo connection: {mongo_connection}")
 sapi = samples.API(mongo_connection, samples.FIELD_MAPPING)
 
 
-class TreeCalcRequest(BaseModel):
+class HCTreeCalcRequest(BaseModel):
     id: Union[None, uuid.UUID]
     sample_ids: list
     timeout: int = 2
@@ -84,7 +84,7 @@ async def root():
     return {"message": "Hello World"}
 
 @app.post("/reportree/start_job/")
-async def start_job(job: TreeCalcRequest):
+async def start_job(job: HCTreeCalcRequest):
     job.id = uuid.uuid4()
     print(job.sample_ids)
     #TODO Handle unmatched.
@@ -102,7 +102,7 @@ async def start_job(job: TreeCalcRequest):
 
     # allele_mx: pandas.DataFrame = allele_mx_from_beone_mongo(mongo_cursor)
     allele_mx: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
-    hc = TreeCalc(job.id.hex[:8],
+    hc = HCTreeCalc(job.id.hex[:8],
         out=job.id.hex[:8],
         allele_mx=allele_mx,
         method_threshold=job.method_threshold,
