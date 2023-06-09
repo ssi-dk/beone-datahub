@@ -2,7 +2,7 @@ import re
 import pymongo
 from bson.objectid import ObjectId
 
-
+#TODO Make this a configurable item somehow.
 FIELD_MAPPING: dict = {
     'org': 'categories.sample_info.summary.institution',
     'name': 'categories.sample_info.summary.sample_name',
@@ -12,7 +12,7 @@ FIELD_MAPPING: dict = {
 }
 
 class API:
-    def __init__(self, connection_string: str, field_mapping: dict):
+    def __init__(self, connection_string: str, field_mapping: dict=FIELD_MAPPING):
         self.connection = pymongo.MongoClient(connection_string)
         self.db = self.connection.get_database()
         self.field_mapping = field_mapping
@@ -24,8 +24,7 @@ class API:
         fields: set = set(FIELD_MAPPING.keys())
     ):
 
-        # Ensure we always have these two fields in the set
-        fields.add('org')
+        # Ensure we always have the name field in the set
         fields.add('name')
 
         pipeline = list()

@@ -11,11 +11,11 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 
-from mongoreader.samples import API
+from bio_api.mongo.samples import API
 from main.models import DataSet, RTJob, Partition,  Cluster, parse_rt_output
 from main.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
 
-api = API(settings.MONGO_CONNECTION, settings.MONGO_FIELD_MAPPING)
+api = API(settings.MONGO_CONNECTION)
 
 
 def get_species_name(species: str=None):

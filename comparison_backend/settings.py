@@ -139,29 +139,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # MONGO_CONNECTION = 'mongodb://mongo:27017/beone'
 MONGO_CONNECTION = 'mongodb://mongo:27017/bifrost_test'
 
-# Mapping for Bifrost 2.1 (SOFI)
-MONGO_FIELD_MAPPING = {
-    'org': 'categories.sample_info.summary.institution',
-    'name': 'categories.sample_info.summary.sample_name',
-    'species': 'categories.species_detection.summary.detected_species',
-    'allele_profile': 'categories.cgmlst.report.data.alleles',
-    'sequence_type': 'categories.cgmlst.report.data.sequence_type'
-}
-
-# Mapping of field shortcuts to actual MongoDB fields
-# MONGO_FIELD_MAPPING = {
-#     'org': 'org',
-#     'name': 'name',
-#     'species': 'sample.metadata.Microorganism',
-#     'sequence_type': 'sample.summary.sequence_type',
-#     'metadata': 'sample.metadata',  # Used to retrieve all metadata fields.
-#     'sampling_year': 'sample.metadata.Date_Sampling_YYYY',
-#     'country_term': {'$arrayElemAt': ['$sample.metadata.Country', 0]},
-#     'source_type_term': {'$arrayElemAt': ['$sample.metadata.Source_Type', 0]},
-#     'sampling_date': 'sample.metadata.Date_Sampling',
-#     'allele_profile': 'pipelines.chewiesnake.allele_profile',
-# }
-
 """Fields that will be fetched from MongoDB when viewing a dataset (currently not all of them
 will necessarily be shown on the web page, but maybe this should be changed).
 The first element in each tuple must refer to an entry in MONGO_FIELD_MAPPING.

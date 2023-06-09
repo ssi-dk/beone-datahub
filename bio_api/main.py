@@ -89,16 +89,19 @@ async def start_job(job: HCRequest):
     print(job.sample_ids)
     #TODO Handle unmatched.
 
-    #TODO This is a dirty fix for mocking the 'org' identifiers which we are missing here.
+    """TODO It should not be necessary with the 'org' key below since the 'name' key (which is the long name
+    including runname) HAS to be a unique identifier in itself. This is because other systems that the code
+    is going to cooperate with (f. ex. Micoreact) cannot handle multi-component identifiers.
+    
+    However, if this code is at some point going to be used in a context where the 'name' cannot be
+    guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
+    dots as separators, like 'dk.ssi.samplelongname'.
+    """
     mongo_keys = [ {'org': 'SSI', 'name': name} for name in job.sample_ids]
     mongo_cursor, unmatched = sapi.get_samples_from_keys(mongo_keys)
     
     # allele_mx: pandas.DataFrame = allele_mx_from_beone_mongo(mongo_cursor)
     allele_mx: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
-    # TODO This does not prevent cgmlst-dists from failing...
-    # allele_mx.fillna(0)
-    print("df.info():")
-    print(allele_mx.info())
     hc = HC(job.id.hex[:8],
         out=job.id.hex[:8],
         allele_mx=allele_mx,
