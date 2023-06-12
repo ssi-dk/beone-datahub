@@ -67,7 +67,7 @@ class RTJob(models.Model):
    dataset = models.ForeignKey(DataSet, models.PROTECT)
    metadata_fields = ArrayField(models.CharField(max_length=25), default=get_default_metadata_fields)
    status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
-   pid = models.IntegerField(blank=True, null=True)
+   pid = models.IntegerField(blank=True, null=True)  #TODO rename to job_id
    start_time = models.DateTimeField(blank=True, null=True)
    end_time = models.DateTimeField(blank=True, null=True)
    elapsed_time = models.IntegerField(blank=True, null=True)
@@ -226,15 +226,14 @@ class RTJob(models.Model):
          json_response = (raw_response.json())
          print("JSON response:")
          print(json_response)
-         # self.pid = json_response['pid']
-         # self.error = json_response['error']
-         # self.set_status(json_response['status'])
-         end_time = timezone.now()
-         elapsed_time = end_time - self.start_time
-         print(f"Run took {elapsed_time}")
-         if self.status == 'SUCCESS':
-            self.end_time = end_time
-            self.elapsed_time = elapsed_time.seconds
+         if 'job_id' in json_response and 'newicks' in json_response:
+            # self.job_id = json_response['job_id']
+            self.set_status("SUCCESS")
+            self.end_time = timezone.now()
+            self.elapsed_time = (self.end_time - self.start_time).seconds
+            print(f"Run took {self.elapsed_time}")
+         else:
+            self.set_status("ERROR")
          self.save()
          return json_response['newicks']
       else:

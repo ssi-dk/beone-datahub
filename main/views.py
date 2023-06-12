@@ -240,8 +240,8 @@ def run_rt_job(request, rt_job_key:str):
             else:
                 rt_job.prepare(mongo_cursor)
                 rt_job.run()
-                if rt_job.update_status() == 'SUCCESS':
-                    parse_rt_output(rt_job)
+                # if rt_job.update_status() == 'SUCCESS':
+                #     parse_rt_output(rt_job)
 
     return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
 
@@ -249,8 +249,8 @@ def run_rt_job(request, rt_job_key:str):
 @login_required
 def view_rt_job(request, rt_job_key:str):
     rt_job = RTJob.objects.get(pk=rt_job_key)
-    if rt_job.status == 'SUCCESS':
-        parse_rt_output(rt_job)
+    # if rt_job.status == 'SUCCESS':
+    #     parse_rt_output(rt_job)
     species_name = get_species_name(rt_job.dataset.species)
     form = DashboardLauncherForm()
     return render(request, 'main/rt_job.html',{
