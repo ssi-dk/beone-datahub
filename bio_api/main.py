@@ -113,7 +113,8 @@ async def start_job(job: HCTreeCalcRequest):
         loci_called=job.loci_called,
         dist=job.dist
     )
-    hc.run()
+    newicks = hc.run()
     return {
-        "job_id": job.id
+        "job_id": job.id,
+        "newicks": newicks
         }
