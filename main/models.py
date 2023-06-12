@@ -236,6 +236,7 @@ class RTJob(models.Model):
             self.end_time = end_time
             self.elapsed_time = elapsed_time.seconds
          self.save()
+         return json_response['newicks']
       else:
          print(f"ERROR: trying to run ReporTree job {self.pk} which has status {self.status}")
 
