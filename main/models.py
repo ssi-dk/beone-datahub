@@ -235,7 +235,7 @@ class RTJob(models.Model):
          else:
             self.set_status("ERROR")
          self.save()
-         return json_response['newicks']
+         return json_response['job_id']  #TODO use this for something in the view
       else:
          print(f"ERROR: trying to run ReporTree job {self.pk} which has status {self.status}")
 
