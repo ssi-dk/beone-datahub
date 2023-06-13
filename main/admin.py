@@ -16,8 +16,7 @@ class RTJobAdmin(admin.ModelAdmin):
         'end_time',
         'elapsed_time',
         'error',
-        'log',
-        'newick'
+        'newicks'
     )
     
     formfield_overrides = {

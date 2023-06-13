@@ -105,9 +105,7 @@ class RTJob(models.Model):
       help_text="See https://github.com/insapathogenomics/ReporTree and look for --threshold or --HC-threshold, " +
          "depending on analysis argument (treecluster analysis is not supported).")
 
-   # The following fields are loaded from ReporTree output files
-   log = models.TextField(blank=True, null=True)
-   newick = models.TextField(blank=True, null=True)
+   newicks = models.JSONField(default=dict)
 
    def __str__(self):
         return f"rt_job_{str(self.pk)}"
@@ -227,7 +225,9 @@ class RTJob(models.Model):
          print("JSON response:")
          print(json_response)
          if 'job_id' in json_response and 'newicks' in json_response:
+            # TODO change data type for job_id
             # self.job_id = json_response['job_id']
+            self.newicks = json_response['newicks']
             self.set_status("SUCCESS")
             self.end_time = timezone.now()
             self.elapsed_time = (self.end_time - self.start_time).seconds
