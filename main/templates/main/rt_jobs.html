@@ -11,7 +11,7 @@
   {% endif %}
 </div>
 <div class="pane">
-    <h2>ReporTree jobs{% if dataset %} for dataset {{dataset.name}}{%endif%}</h2>
+    <h2>Comparisons{% if dataset %} for sequence set {{dataset.name}}{%endif%}</h2>
   <div class="overview-row">
     <div class="overview-header overview-firstcol-border">
     <div class="overview-header-inner-bold">Job Number</div>
@@ -35,8 +35,11 @@
         <div class="overview-header-inner-bold">Start Time</div>
     </div>
     <div class="overview-header">
-        <div class="overview-header-inner-bold">Actions</div>
+        <div class="overview-header-inner-bold">Calculate trees</div>
     </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Show in Microreact</div>
+  </div>
   </div>
   <div>
   {% for job in rt_jobs %}
@@ -63,16 +66,13 @@
         {{ job.start_time }}
       </div>
       <div class="overview-datacolumn">
-        {% if job.status == 'NEW' or job.status == 'OBSOLETE' %}
-          <a href={% url 'delete_rt_job_for_dataset' job.pk %}>Delete</a>
-        {% else %}
-          <span class="inactive">Delete</span>
-        {% endif %}
         {% if job.status == 'NEW' or job.status == 'READY' %}
-          <a href={% url 'run_rt_job' job.pk %}>Run</a>
+          <a href={% url 'run_rt_job' job.pk %}>Calculate</a>
         {% else %}
-        <span class="inactive">Run</span>
+        <span class="inactive">Done</span>
         {% endif %}
+      </div>
+      <div class="overview-datacolumn">
         {% if job.status == 'SUCCESS' or job.status == 'ALL_DONE' %}
           <a href={% url 'view_rt_job' job.pk %}>View</a>
         {% endif %}
