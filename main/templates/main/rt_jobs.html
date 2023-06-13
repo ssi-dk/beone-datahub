@@ -74,7 +74,9 @@
       </div>
       <div class="overview-datacolumn">
         {% if job.status == 'SUCCESS' or job.status == 'ALL_DONE' %}
-          <a href={% url 'view_rt_job' job.pk %}>View</a>
+          {% for newick in job.newicks %}
+          <a href={% url 'view_rt_job' job.pk %}>{{newick}}</a>
+          {% endfor %}
         {% endif %}
       </div>
     </div>
