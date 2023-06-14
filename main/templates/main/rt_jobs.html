@@ -67,9 +67,9 @@
       </div>
       <div class="overview-datacolumn">
         {% if job.status == 'NEW' or job.status == 'READY' %}
-          <a href={% url 'run_rt_job' job.pk %}>Calculate</a>
+          <a href={% url 'run_rt_job' job.pk %}>single</a>
         {% else %}
-        <span class="inactive">Done</span>
+        <span class="inactive">single</span>
         {% endif %}
       </div>
       <div class="overview-datacolumn">
