@@ -14,6 +14,14 @@ class Species(models.Model):
         return self.name
 
 
+# class DistanceMatrix(models.Model):
+#     distances = models.TextField()
+
+
+class Tree(models.Model):
+    newick = models.TextField
+
+
 class SequenceSet(models.Model):
     # Abstract base class that defines the basics for both Comparison and Cluster
     species = models.ForeignKey(Species, models.PROTECT)
@@ -62,13 +70,6 @@ class BaseTool(models.Model):
     def __str__(self):
         return f"{self.name} v.{self.version} ({self.type})"
 
-
-class DistanceMatrix(models.Model):
-    distances = models.TextField()
-
-
-class Tree(models.Model):
-    newick = models.TextField
 
 class PotentialOutbreak(models.Model):
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
