@@ -26,7 +26,7 @@ class Cluster(models.Model):
         return f"ST{self.st}#{self.cluster_number}"
 
 
-class SequenceGroup(models.Model):
+class SequenceSet(models.Model):
     species = models.ForeignKey(Species, models.PROTECT)
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -81,7 +81,7 @@ class Comparison(models.Model):
 
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    sequence_group = models.ForeignKey(SequenceGroup, models.PROTECT)
+    sequence_group = models.ForeignKey(SequenceSet, models.PROTECT)
     data_fields = ArrayField(models.CharField(max_length=25), default=list)   # default=get_default_data_fields
     field_data = models.JSONField(blank=True, default=dict)
     status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
@@ -95,7 +95,7 @@ class Comparison(models.Model):
     linkage_method = models.CharField(max_length=10, choices=LINKAGE_METHODS, default='SINGLE')
     params = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
-    sequence_group = models.ForeignKey(SequenceGroup, models.PROTECT)
+    sequence_group = models.ForeignKey(SequenceSet, models.PROTECT)
 
 
 class PotentialOutbreak(models.Model):
