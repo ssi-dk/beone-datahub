@@ -14,31 +14,34 @@ class Species(models.Model):
         return self.name
 
 
-class Cluster(models.Model):
-    created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
-    species = models.ForeignKey(Species, models.PROTECT, blank=True, null=True)
-    st = models.PositiveIntegerField()
-    cluster_number = models.PositiveIntegerField()
-
-    def __str__(self):
-        return f"ST{self.st}#{self.cluster_number}"
-
-
 class SequenceSet(models.Model):
+    # Abstract base class that defines the basics for both Comparison and Cluster
     species = models.ForeignKey(Species, models.PROTECT)
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     sequences = ArrayField(models.CharField(max_length=30), blank=True, default=list)
-    cluster = models.ForeignKey(Cluster, models.PROTECT, blank=True, null=True)
    
     class Meta:
+        abstract = True
         ordering = ['-pk']
 
     def __str__(self):
         return f"{self.species} {self.created_by} {self.created_at}"
+
+
+class Comparison(SequenceSet):
+    data_fields = ArrayField(models.CharField(max_length=25), default=list)   # default=get_default_data_fields
+    field_data = models.JSONField(blank=True, default=dict)
+    microreact_project = models.CharField(max_length=20, blank=True, null=True)
+
+
+class Cluster(SequenceSet):
+    st = models.PositiveIntegerField()
+    cluster_number = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"ST{self.st}#{self.cluster_number}"
 
 
 class BaseTool(models.Model):
@@ -66,13 +69,6 @@ class DistanceMatrix(models.Model):
 
 class Tree(models.Model):
     newick = models.TextField
-
-
-class Comparison(models.Model):
-    data_fields = ArrayField(models.CharField(max_length=25), default=list)   # default=get_default_data_fields
-    field_data = models.JSONField(blank=True, default=dict)
-    microreact_project = models.CharField(max_length=20, blank=True, null=True)
-
 
 class PotentialOutbreak(models.Model):
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
