@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SOFI Comparisons</title>
+    <link rel="shortcut icon" type="image/png" href="{% static 'main/favicon.ico' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'main/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/App.css' %}">
+    {% block extra_header %}
+    {% endblock %}
+  </head>
+  <body>
+    <div class='baseline-row pane'>
+      <div class='column'>
+        <h1><a href="/">SOFI Comparisons</a></h1>
+      </div>
+      {% if request.user.is_authenticated %}
+        {% url 'sample_list' as sample_list_url %}
+        {% url 'datasets' as datasets_url %}
+        {% url 'rt_jobs' as rt_jobs_url %}
+        {% comment %}
+        <div class='column'>
+          <nav>
+            <span class="menu-item">
+              <a href="{% url 'sample_list' %}"
+              {% if request.path == sample_list_url %}class="current"{% endif %}
+              >Sample List</a>
+            </span>
+            <span class="menu-item">
+              <a href="{% url 'datasets' %}"
+              {% if request.path == datasets_url %}class="current"{% endif %}
+              >Datasets</a>
+            </span>
+            <span class="menu-item">
+              <a href="{% url 'rt_jobs' %}"
+              {% if request.path == rt_jobs_url %}class="current"{% endif %}
+              >ReporTree</a>
+            </span>
+          <nav>
+        </div>
+        {% endcomment %}
+        <div class='right-justify'>
+          <span>Hello </span><span id="username">{{request.user.username}}</span>
+          <span><a href=" {% url 'logout' %}">Logout</a></span>
+      {% else %}
+        <span>Please <a href=" {% url 'login' %}">login</a></span>
+      {% endif %}
+      </div>
+    </div>
+      <div class="pane" id="messages" {% if not messages %} style="display:none" {% endif %}>
+        <h2>Messages</h2>
+        <ul id="message-list" class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% block content %}
+    {% endblock %}
+  </body>
+  {% block footer %}
+  {% endblock %}
+</html>

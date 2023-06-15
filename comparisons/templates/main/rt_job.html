@@ -1,0 +1,38 @@
+{% extends "main/base.html" %}
+
+{% block extra_header %}
+  <script defer src="/static/js/bundle.js"></script>
+{% endblock %}
+
+{% block content%}
+<div class="pane">
+  <div class="baseline-row">
+    <div class="column">
+      <h2>ReporTree job {{ rt_job.pk }} for dataset {{ rt_job.dataset.name }}</h2>
+    </div>
+    <div class="column">Dataset Owner: {{ rt_job.dataset.owner.username }}</div>
+    <div class="column">Species: {{ species_name }}</div>
+  </div>
+</div>
+<div class='row'>
+  <div class='pane'>
+      <h2>ReporTree Output</h2>
+      <nav>
+        View files:
+        <a href="{% url 'view_rt_output' rt_job.pk 'log' %}" target="_blank" class="menu-item">Log</a>
+        <a href="{% url 'view_rt_output' rt_job.pk 'newick' %}" target="_blank" class="menu-item">Newick</a>
+        Download files:
+        <a href="{% url 'download_rt_file' rt_job.pk 'log' %}" target="_blank" class="menu-item">Log</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'newick' %}" target="_blank class="menu-item" class="menu-item">Newick</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'partitions_summary' %}" target="_blank" class="menu-item">Partitions Summary</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'metadata_w_partitions' %}" target="_blank" class="menu-item">Metadata w. Partitions</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'partitions' %}" target="_blank" class="menu-item">Partitions</a>
+        <a href="{% url 'download_rt_file' rt_job.pk 'distances' %}" target="_blank" class="menu-item">Distances</a>
+      </nav>
+  </div>
+</div>
+<div id="reportree_job_number" style="display:none;">
+  {{ rt_job.pk }}
+</div>
+<div id="dashboard"></div>
+{% endblock %}
