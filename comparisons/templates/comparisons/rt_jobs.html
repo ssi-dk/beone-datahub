@@ -1,4 +1,4 @@
-{% extends "main/base.html" %}
+{% extends "comparisons/base.html" %}
 
 {% block content%}
 <div class="pane">
@@ -6,7 +6,7 @@
   <form action="" method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Initialize new job">
+    <input type="submit" value="New comparison with these sequences">
   </form>
   {% endif %}
 </div>

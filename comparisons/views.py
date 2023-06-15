@@ -37,7 +37,7 @@ def redirect_root(request):
 def sample_list(request):
     fields_to_get = { entry[0] for entry in settings.SAMPLE_VIEW_COLUMNS }
     samples = api.get_samples(fields=fields_to_get)
-    return render(request, 'main/sample_list.html',{
+    return render(request, 'comparisons/sample_list.html',{
         'samples': samples,
         })
 
@@ -66,7 +66,7 @@ def dataset_list(request):
     else:
         form = NewDatasetForm()
 
-    return render(request, 'main/dataset_list.html',{
+    return render(request, 'comparisons/dataset_list.html',{
         'form': form,
         'datasets': datasets
         })
@@ -81,7 +81,7 @@ def view_dataset(request, dataset_key:int):
     if len(unmatched) != 0:
         messages.add_message(request, messages.WARNING, f'Some keys in the dataset are unmatched: {unmatched}')
 
-    return render(request, 'main/sample_list.html',{
+    return render(request, 'comparisons/sample_list.html',{
         'species_name': species_name,
         'samples': samples,
         'dataset': dataset,
@@ -116,7 +116,7 @@ def edit_dataset(request, dataset_key:int):
             if key_pair['org'] == sample['org'] and key_pair['name'] == sample['name']:
                 sample['in_dataset'] = True
 
-    return render(request, 'main/sample_list.html',{
+    return render(request, 'comparisons/sample_list.html',{
         'species_name': species_name,
         'delete_form': form,
         'samples': samples,
@@ -184,7 +184,7 @@ def rt_jobs(request, dataset_key:str=None):
     else:
         rt_jobs = RTJob.objects.all()
         dataset = None
-    return render(request, 'main/rt_jobs.html',{
+    return render(request, 'comparisons/rt_jobs.html',{
         'rt_jobs': rt_jobs,
         'dataset': dataset
         })
@@ -242,7 +242,7 @@ def view_rt_job(request, rt_job_key:str):
     #     parse_rt_output(rt_job)
     species_name = get_species_name(rt_job.dataset.species)
     form = DashboardLauncherForm()
-    return render(request, 'main/rt_job.html',{
+    return render(request, 'comparisons/rt_job.html',{
         'rt_job': rt_job,
         'species_name': species_name,
         'form': form.as_p
@@ -258,7 +258,7 @@ def view_rt_output(request, rt_job_key:str, item: str='log'):
 
     content_lines = content.split('\n')
 
-    return render(request, 'main/raw_file.html',{
+    return render(request, 'comparisons/raw_file.html',{
         'rt_job': rt_job,
         'item': item,
         'content_lines': content_lines
