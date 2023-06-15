@@ -59,6 +59,15 @@ class BaseTool(models.Model):
     def __str__(self):
         return f"{self.name} v.{self.version} ({self.type})"
 
+
+class DistanceMatrix(models.Model):
+    distances = models.TextField()
+
+
+class Tree(models.Model):
+    newick = models.TextField
+
+
 class Comparison(models.Model):
 
     STATUSES = [
