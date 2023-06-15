@@ -6,12 +6,10 @@ from pathlib import Path
 from os import getcwd
 
 import scipy
-import matplotlib
 import pandas as pd
 import numpy as np
 import scipy.spatial.distance as ssd
 from scipy.cluster.hierarchy import dendrogram, linkage
-from matplotlib import pyplot as plt
 
 parser = argparse.ArgumentParser()
 parser.add_argument('source_folder', type=Path)
