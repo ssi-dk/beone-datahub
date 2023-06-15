@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 
 from bio_api.mongo.samples import API
 from main.models import DataSet, RTJob, Partition,  Cluster, parse_rt_output
-from main.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
+from comparisons.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
 
 api = API(settings.MONGO_CONNECTION)
 
@@ -28,7 +28,7 @@ def get_species_name(species: str=None):
 
 def redirect_root(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/datasets/')
+        return HttpResponseRedirect('/sequence_sets/')
     else:
         return HttpResponseRedirect('/login/')
     
@@ -199,8 +199,8 @@ def delete_rt_job(request, rt_job_key:str, dataset_page:bool=False):
     else:
         rt_job.delete()
     if dataset_page:
-        return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
-    return HttpResponseRedirect('/rt_jobs/')
+        return HttpResponseRedirect(f'/comparisons/for_dataset/{dataset.pk}')
+    return HttpResponseRedirect('/comparisons/')
 
 
 @login_required
@@ -232,7 +232,7 @@ def run_rt_job(request, rt_job_key:str):
             # if rt_job.update_status() == 'SUCCESS':
             #     parse_rt_output(rt_job)
 
-    return HttpResponseRedirect(f'/rt_jobs/for_dataset/{dataset.pk}')
+    return HttpResponseRedirect(f'/comparisons/for_dataset/{dataset.pk}')
 
 
 @login_required
