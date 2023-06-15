@@ -35,7 +35,7 @@ class SequenceSet(models.Model):
     cluster = models.ForeignKey(Cluster, models.PROTECT, blank=True, null=True)
    
     class Meta:
-        ordering = ['-modified_at']
+        ordering = ['-pk']
 
     def __str__(self):
         return f"{self.species} {self.created_by} {self.created_at}"
@@ -69,24 +69,6 @@ class Tree(models.Model):
 
 
 class Comparison(models.Model):
-
-    STATUSES = [
-       ('NEW', 'New'),
-       ('READY', 'Ready'),
-       ('RUNNING', 'Running'),
-       ('SUCCESS', 'Successfully finished'),
-       ('ERROR', 'Error'),
-   ]
-
-    LINKAGE_METHODS = [
-       ('SINGLE', 'Single'),
-       ('COMPLETE', 'Complete'),
-       ('UPGMA', 'UPGMA'),
-       ('NJ', 'Neighbor Joining'),
-   ]
-
-    class Meta:
-        ordering = ['-pk']
     data_fields = ArrayField(models.CharField(max_length=25), default=list)   # default=get_default_data_fields
     field_data = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
