@@ -31,7 +31,7 @@ if destination_folder.exists():
 output_newick_file: Path = Path(destination_folder.joinpath('single_linkage_tree.nwk'))
 
 # Read distance matrix file
-input_matrix_file = args.source_folder.joinpath('chewBBACA_BN_dist.mat.tsv')
+input_matrix_file = args.source_folder.joinpath('dist.tsv')
 df = pd.read_csv(input_matrix_file, index_col=0, sep="\t")
 m = df.values
 M = np.array(m)
