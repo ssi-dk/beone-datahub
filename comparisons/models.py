@@ -31,7 +31,7 @@ class SequenceSet(models.Model):
     created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    sequences = models.JSONField(blank=True, default=list)
+    # sequences = models.JSONField(blank=True, default=list)
     cluster = models.ForeignKey(Cluster, models.PROTECT, blank=True, null=True)
    
     class Meta:
