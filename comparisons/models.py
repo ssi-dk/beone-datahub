@@ -21,6 +21,9 @@ class DistanceMatrix(models.Model):
         ),
     )
 
+    class Meta:
+        verbose_name_plural = "distance Matrices"
+
 
 class Tree(models.Model):
     newick = models.TextField
