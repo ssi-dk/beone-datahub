@@ -9,7 +9,7 @@ import scipy
 import pandas as pd
 import numpy as np
 import scipy.spatial.distance as ssd
-from scipy.cluster.hierarchy import dendrogram, linkage
+from scipy.cluster.hierarchy import linkage
 
 parser = argparse.ArgumentParser()
 parser.add_argument('source_folder', type=Path)
