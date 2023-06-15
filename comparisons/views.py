@@ -1,6 +1,6 @@
 import json
-from re import template
-from pathlib import Path
+
+from bio_api.mongo.samples import API
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -11,9 +11,11 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 
-from bio_api.mongo.samples import API
-from main.models import DataSet, RTJob, Partition,  Cluster, parse_rt_output
+from comparisons.models import Species, DistanceMatrix, Tree, SequenceSet, Comparison
 from comparisons.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
+
+# TODO Remove
+from main.models import DataSet, RTJob, Partition
 
 api = API(settings.MONGO_CONNECTION)
 
