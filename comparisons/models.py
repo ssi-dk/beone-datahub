@@ -14,8 +14,12 @@ class Species(models.Model):
         return self.name
 
 
-# class DistanceMatrix(models.Model):
-#     distances = models.TextField()
+class DistanceMatrix(models.Model):
+    distances = ArrayField(
+        ArrayField(
+            models.CharField(max_length=30),
+        ),
+    )
 
 
 class Tree(models.Model):
