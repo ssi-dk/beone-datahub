@@ -26,7 +26,7 @@ class DistanceMatrix(models.Model):
 
 
 class Tree(models.Model):
-    newick = models.TextField
+    newick = models.TextField(default='()')
 
 
 class SequenceSet(models.Model):

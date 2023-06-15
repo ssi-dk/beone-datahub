@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from comparisons.models import Species, DistanceMatrix, BaseTool, Cluster, PotentialOutbreak
+from comparisons.models import Species, DistanceMatrix, Tree, BaseTool, Cluster, PotentialOutbreak
 from comparisons.models import Comparison
 
 
@@ -20,6 +20,12 @@ class DistanceMatrixAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(DistanceMatrix, DistanceMatrixAdmin)
+
+
+class TreeAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Tree, TreeAdmin)
 
 
 class ComparisonAdmin(admin.ModelAdmin):
