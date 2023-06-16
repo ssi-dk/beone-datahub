@@ -25,7 +25,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='comparisons/login.html', next_page='/comparisons'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/login'), name='logout'),
     path('sample_list/', views.sample_list, name='sample_list'),
-    path('comparisons/', views.comparisons, name='datasets'),  #  Tag udgangspunkt i denne
+    path('comparisons/', views.list_comparisons, name='list_comparisons'),  #  Tag udgangspunkt i denne
     path('sequence_sets/<int:dataset_key>/', views.view_dataset, name='view_dataset'),
     path('sequence_sets/<int:dataset_key>/edit/', views.edit_dataset, name='edit_dataset'),
     path('datasets/add_remove_sample/', views.add_remove_sample),

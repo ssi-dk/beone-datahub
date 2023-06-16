@@ -45,7 +45,7 @@ def sample_list(request):
 
 
 @login_required
-def comparisons(request):
+def list_comparisons(request):
     comparisons = Comparison.objects.all()
 
     if request.method == 'POST':
@@ -63,7 +63,7 @@ def comparisons(request):
                 except IntegrityError:
                      messages.add_message(request, messages.ERROR, 
                      'Dataset was not created. Probably there was already a dataset with that name.')
-                return HttpResponseRedirect(reverse(comparisons))
+                return HttpResponseRedirect(reverse(list_comparisons))
             
     else:
         form = NewComparisonForm()
@@ -97,7 +97,7 @@ def edit_dataset(request, dataset_key:int):
     species_name = get_species_name(dataset.species)
     if not dataset.owner in [request.user, None]:
         messages.add_message(request, messages.ERROR, f'You tried to edit the dataset {dataset.name}, which you do not own.')
-        return redirect(comparisons)
+        return redirect(list_comparisons)
     
     if request.method == 'POST':
         form = DeleteDatasetForm(request.POST)
