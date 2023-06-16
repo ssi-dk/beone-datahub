@@ -12,7 +12,7 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User
 
 from comparisons.models import Species, DistanceMatrix, Tree, SequenceSet, Comparison
-from comparisons.forms import NewDatasetForm, DeleteDatasetForm, DashboardLauncherForm
+from comparisons.forms import NewComparisonForm, DeleteDatasetForm, DashboardLauncherForm
 
 # TODO Remove
 from main.models import DataSet, RTJob, Partition
@@ -49,7 +49,7 @@ def comparisons(request):
     datasets = DataSet.objects.all()
 
     if request.method == 'POST':
-            form = NewDatasetForm(request.POST)
+            form = NewComparisonForm(request.POST)
             if form.is_valid():
                 dataset = DataSet(
                     owner=request.user,
@@ -66,7 +66,7 @@ def comparisons(request):
                 return HttpResponseRedirect(reverse(comparisons))
             
     else:
-        form = NewDatasetForm()
+        form = NewComparisonForm()
 
     return render(request, 'comparisons/comparisons.html',{
         'form': form,
