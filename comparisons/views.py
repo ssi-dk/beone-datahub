@@ -54,6 +54,7 @@ def list_comparisons(request):
                 comparison = Comparison(
                     created_by=request.user,
                     species=form.cleaned_data['species'],
+                    sequences=form.cleaned_data['sequences'],
                 )
                 try:
                     comparison.save()

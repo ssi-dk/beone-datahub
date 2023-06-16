@@ -1,13 +1,13 @@
 from email.policy import default
+
 from django import forms
-from django.conf import settings
+from django.contrib.postgres.forms import SimpleArrayField
 
 from comparisons.models import Species
 
 class NewComparisonForm(forms.Form):
     species = forms.ModelChoiceField(Species.objects.all(), label='Select species:')
-    name = forms.CharField(max_length=40, label='Unique name')
-    description = forms.CharField(max_length=200, required=False, label='Optional description')
+    sequences = SimpleArrayField(forms.CharField(), delimiter=" ", label='Sequences')
 
 
 class DeleteDatasetForm(forms.Form):
