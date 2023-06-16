@@ -51,18 +51,16 @@ def list_comparisons(request):
     if request.method == 'POST':
             form = NewComparisonForm(request.POST)
             if form.is_valid():
-                dataset = DataSet(
-                    owner=request.user,
-                    species=form.cleaned_data['species'],
-                    name=form.cleaned_data['name'],
-                    description=form.cleaned_data['description'])
+                comparison = Comparison(
+                    created_by=request.user,
+                    #species=form.cleaned_data['species'],
+                )
                 try:
-                    dataset.save()
-                    messages.add_message(request, messages.ERROR,
-                    'A new empty dataset was created. Use the Edit function to add samples to it.')
-                except IntegrityError:
-                     messages.add_message(request, messages.ERROR, 
-                     'Dataset was not created. Probably there was already a dataset with that name.')
+                    comparison.save()
+                    messages.add_message(request, messages.SUCCESS,
+                    'New comparison created')
+                except Exception as e:
+                     messages.add_message(request, messages.ERROR, e)
                 return HttpResponseRedirect(reverse(list_comparisons))
             
     else:
