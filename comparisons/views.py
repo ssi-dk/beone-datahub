@@ -30,7 +30,7 @@ def get_species_name(species: str=None):
 
 def redirect_root(request):
     if request.user.is_authenticated:
-        return HttpResponseRedirect('/sequence_sets/')
+        return HttpResponseRedirect('/comparisons/')
     else:
         return HttpResponseRedirect('/login/')
     
