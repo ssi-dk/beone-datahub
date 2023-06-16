@@ -14,11 +14,7 @@ from django.contrib.auth.models import User
 from comparisons.models import Species, DistanceMatrix, Tree, SequenceSet, Comparison
 from comparisons.forms import NewComparisonForm, DeleteDatasetForm, DashboardLauncherForm
 
-# TODO Remove
-from main.models import DataSet, RTJob, Partition
-
 api = API(settings.MONGO_CONNECTION)
-
 
 def redirect_root(request):
     if request.user.is_authenticated:
@@ -26,7 +22,6 @@ def redirect_root(request):
     else:
         return HttpResponseRedirect('/login/')
     
-
 @login_required
 def sample_list(request):
     fields_to_get = { entry[0] for entry in settings.SAMPLE_VIEW_COLUMNS }
@@ -34,7 +29,6 @@ def sample_list(request):
     return render(request, 'comparisons/sample_list.html',{
         'samples': samples,
         })
-
 
 @login_required
 def comparison_list(request):
