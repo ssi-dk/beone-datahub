@@ -27,8 +27,11 @@
     <div class='overview-header'>
       <div class='overview-header-inner-bold'>Number of sequences</div>
     </div>
-    <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Actions</div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">HC single</div>
+    </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">HC complete</div>
     </div>
   </div>
   {% for comparison in comparisons %}
@@ -48,16 +51,19 @@
     <div class='overview-datacolumn'>
       {{ comparison.sequences|length }}
     </div>
-    <div class='overview-datacolumn'>
-      <span class="rspace"><a href="{% url 'view_dataset' comparison.pk %}">List</a></span>
-      <span class="rspace">
-        {% if comparison.owner.username == request.user.username or comparison.owner.username == None %}
-          <a href="{% url 'edit_dataset' comparison.pk %}">Edit</a>
-        {% else %}
-          <span class="inactive">Edit</span>
-        {% endif %}
-      </span>
-      <span class="rspace"><a href="{% url 'rt_jobs_for_dataset' comparison.pk%}">Comparisons</a></span>
+    <div class="overview-datacolumn">
+      {% if comparison.tree_single %}
+      New dashboard
+      {% else %}
+      Calculate
+      {% endif %}
+    </div>
+    <div class="overview-datacolumn">
+      {% if comparison.tree_single %}
+      New dashboard
+      {% else %}
+      Calculate
+      {% endif %}
     </div>
   </div>
 {% endfor %}
