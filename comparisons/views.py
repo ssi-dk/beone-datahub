@@ -59,7 +59,7 @@ def comparison_list(request):
     else:
         form = NewComparisonForm()
 
-    return render(request, 'comparisons/comparisons.html',{
+    return render(request, 'comparisons/comparison_list.html',{
         'form': form,
         'comparisons': comparisons
         })
