@@ -172,11 +172,11 @@ DEFAULT_RT_MATRIX_FIELDS = [
 ]
 
 ALL_SPECIES = (
-    ('campy', 'Campylobacter jejuni'),
-    ('coli', 'Escherichia coli'),
-    ('listeria', 'Listeria monocytogenes'),
     ('salmonella', 'Salmonella enterica'),
-    ('mixed', 'Mixed species'),
+    # ('listeria', 'Listeria monocytogenes'),
+    # ('campy', 'Campylobacter jejuni'),
+    # ('coli', 'Escherichia coli'),
+    # ('mixed', 'Mixed species'),
 )
 
 LOGIN_REDIRECT_URL = "/"
