@@ -68,7 +68,7 @@ def dataset_list(request):
     else:
         form = NewDatasetForm()
 
-    return render(request, 'comparisons/dataset_list.html',{
+    return render(request, 'comparisons/comparisons.html',{
         'form': form,
         'datasets': datasets
         })
