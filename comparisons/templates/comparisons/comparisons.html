@@ -13,28 +13,19 @@
   <h2>Comparisons</h2>
   <div class="overview-row">
     <div class='overview-header overview-firstcol-border'>
-      <div class='overview-header-inner-bold'>Key</div>
-    </div>
-    <div class='overview-header overview-firstcol-border'>
       <div class='overview-header-inner-bold'>Species</div>
     </div>
     <div class='overview-header overview-firstcol-border'>
-      <div class='overview-header-inner-bold'>Owner</div>
-    </div>
-    <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Name</div>
+      <div class='overview-header-inner-bold'>Created by</div>
     </div>
  <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Created</div>
+      <div class='overview-header-inner-bold'>Created at</div>
     </div>
     <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Last modified</div>
+      <div class='overview-header-inner-bold'>Modified at</div>
     </div>
     <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Description</div>
-    </div>
-    <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Number of samples</div>
+      <div class='overview-header-inner-bold'>Number of sequences</div>
     </div>
     <div class='overview-header'>
       <div class='overview-header-inner-bold'>Actions</div>
@@ -43,16 +34,10 @@
   {% for comparison in comparisons %}
   <div class="row">
     <div class='overview-datacolumn'>
-      {{ comparison.pk }}
+      {{ comparison.species }}
     </div>
     <div class='overview-datacolumn'>
-      {{ comparison.get_species_display }}
-    </div>
-    <div class='overview-datacolumn'>
-      {{ comparison.owner }}
-    </div>
-    <div class='overview-datacolumn'>
-      {{ comparison.name }}
+      {{ comparison.created_by }}
     </div>
     <div class='overview-datacolumn'>
       {{ comparison.created_at }}
@@ -61,10 +46,7 @@
       {{ comparison.modified_at }}
     </div>
     <div class='overview-datacolumn'>
-      {{ comparison.description }}
-    </div>
-    <div class='overview-datacolumn'>
-      {{ comparison.mongo_keys|length }}
+      {{ comparison.sequences|length }}
     </div>
     <div class='overview-datacolumn'>
       <span class="rspace"><a href="{% url 'view_dataset' comparison.pk %}">List</a></span>
