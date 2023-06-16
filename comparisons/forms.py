@@ -7,7 +7,7 @@ from comparisons.models import Species
 
 class NewComparisonForm(forms.Form):
     species = forms.ModelChoiceField(Species.objects.all(), label='Select species:')
-    sequences = SimpleArrayField(forms.CharField(), delimiter=" ", label='Sequences')
+    sequences = SimpleArrayField(forms.CharField(), delimiter=" ", label='Sequences (delimited by space)')
 
 
 class DeleteDatasetForm(forms.Form):
