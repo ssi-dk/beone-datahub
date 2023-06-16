@@ -57,3 +57,13 @@ def comparison_list(request):
         'form': form,
         'comparisons': comparisons
         })
+
+
+@login_required
+def make_tree(request, comparison_id, treetype):
+    comparison = Comparison.objects.get(pk=comparison_id)
+    if treetype not in ['single', 'complete']:
+        messages.add_message(request, messages.ERROR, f'Unknown treetype: {request.treetype}')    
+    if not comparison.distance_matrix:
+        print(f"Requesting distance matrix for comparison {comparison.pk}")
+    return HttpResponseRedirect(reverse(comparison_list))

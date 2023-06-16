@@ -55,14 +55,14 @@
       {% if comparison.tree_single %}
       New dashboard
       {% else %}
-      Calculate
+      <a href="{% url 'make_tree' comparison.pk 'single' %}">Calculate</a>
       {% endif %}
     </div>
     <div class="overview-datacolumn">
       {% if comparison.tree_single %}
       New dashboard
       {% else %}
-      Calculate
+      <a href="{% url 'make_tree' comparison.pk 'complete' %}">Calculate</a>
       {% endif %}
     </div>
   </div>
