@@ -37,7 +37,7 @@ def sample_list(request):
 
 
 @login_required
-def list_comparisons(request):
+def comparison_list(request):
     comparisons = Comparison.objects.all()
 
     if request.method == 'POST':
@@ -54,7 +54,7 @@ def list_comparisons(request):
                     'New comparison created')
                 except Exception as e:
                      messages.add_message(request, messages.ERROR, e)
-                return HttpResponseRedirect(reverse(list_comparisons))
+                return HttpResponseRedirect(reverse(comparison_list))
             
     else:
         form = NewComparisonForm()

@@ -24,6 +24,6 @@ urlpatterns = [
     path('', views.redirect_root),
     path('login/', auth_views.LoginView.as_view(template_name='comparisons/login.html', next_page='/comparisons'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/login'), name='logout'),
-    path('sample_list/', views.sample_list, name='sample_list'),
-    path('comparisons/', views.list_comparisons, name='list_comparisons'),
+    path('samples/', views.sample_list, name='sample_list'),
+    path('comparisons/', views.comparison_list, name='comparison_list'),
 ]
