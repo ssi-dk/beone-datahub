@@ -2,8 +2,10 @@ from email.policy import default
 from django import forms
 from django.conf import settings
 
+from comparisons.models import Species
+
 class NewComparisonForm(forms.Form):
-    species = forms.ChoiceField(label='Select species:', choices=settings.ALL_SPECIES)
+    species = forms.ModelChoiceField(Species.objects.all(), label='Select species:')
     name = forms.CharField(max_length=40, label='Unique name')
     description = forms.CharField(max_length=200, required=False, label='Optional description')
 

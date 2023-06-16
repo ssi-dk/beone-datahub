@@ -53,7 +53,7 @@ def list_comparisons(request):
             if form.is_valid():
                 comparison = Comparison(
                     created_by=request.user,
-                    #species=form.cleaned_data['species'],
+                    species=form.cleaned_data['species'],
                 )
                 try:
                     comparison.save()
