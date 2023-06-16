@@ -46,7 +46,7 @@ def sample_list(request):
 
 @login_required
 def comparisons(request):
-    datasets = DataSet.objects.all()
+    comparisons = Comparison.objects.all()
 
     if request.method == 'POST':
             form = NewComparisonForm(request.POST)
@@ -70,7 +70,7 @@ def comparisons(request):
 
     return render(request, 'comparisons/comparisons.html',{
         'form': form,
-        'datasets': datasets
+        'comparisons': comparisons
         })
 
 
