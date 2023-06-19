@@ -8,7 +8,7 @@ from fastapi import FastAPI
 import pandas
 
 from mongo import samples
-from ReporTree.scripts.partitioning_HC import HCTreeCalc
+from ReporTree.scripts.partitioning_HC import from_allele_profile
 
 app = FastAPI()
 mongo_connection = getenv('MONGO_CONNECTION')
@@ -36,6 +36,13 @@ class HCTreeCalcRequest(BaseModel):
     # metadata:str = ''  -- Unwanted as we don't deal with metadata this way in SOFI
     # filter_column:str = ''   -- Unwanted as we don't deal with metadata this way in SOFI
     dist: float = 1.0
+
+class DistMatFromIdsRequest(BaseModel):
+    """Represents a REST request for a distance matrix based on sequence id input.
+    """
+    id: Union[None, uuid.UUID]
+    sequence_ids: list[str]
+    timeout: int = 2
 
 
 def translate_beone_row(mongo_item):
@@ -117,4 +124,24 @@ async def start_job(job: HCTreeCalcRequest):
     return {
         "job_id": job.id,
         "newicks": newicks
+        }
+
+@app.post("/distance_matrix/from_ids")
+async def dist_mat_from_ids(job: DistMatFromIdsRequest):
+    job.id = uuid.uuid4()
+    print(job.sample_ids)
+    """If this code is at some point going to be used in a context where the 'name' cannot be
+    guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
+    dots as separators, like 'dk.ssi.samplelongname'.
+    """
+    mongo_keys = [ {'name': name} for name in job.sequence_ids]
+    
+    mongo_cursor, unmatched = sapi.get_samples_from_keys(mongo_keys)
+    #TODO handle unmatched
+    if len(unmatched == 0):
+        allele_mx_df: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
+        dist_mx_df: pandas.DataFrame = from_allele_profile(allele_mx_df)
+    return {
+        "job_id": job.id,
+        "distance_matrix": dist_mx_df.to_json()
         }

@@ -46,6 +46,15 @@ class SequenceSet(models.Model):
 
 
 class Comparison(SequenceSet):
+
+    STATUSES = [
+       ('NEW', 'New'),
+       ('DM_REQ', 'Distance matrix requested'),
+       ('DM_OK', 'Distance matrix OK'),
+       ('DM_ERR', 'Error receiving distance matrix'),
+   ]
+
+    status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
     data_fields = ArrayField(models.CharField(max_length=25), blank=True, default=list)   # default=get_default_data_fields
     field_data = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
