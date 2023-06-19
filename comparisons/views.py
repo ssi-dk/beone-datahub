@@ -82,6 +82,8 @@ def make_tree(request, comparison_id, treetype):
             print("JSON response:")
             print(json_response)
             if 'distance_matrix' in json_response:
+                print("Distance matrix received:")
+                print(json_response['distance_matrix'])
                 # TODO convert JSOn dist mat to something we can store in the ArrayField
                 # comparison.distance_matrix = json_response['distance_matrix']
                 comparison.status = "DM_OK"
