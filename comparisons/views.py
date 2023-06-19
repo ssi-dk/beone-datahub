@@ -74,9 +74,10 @@ def make_tree(request, comparison_id, treetype):
             comparison.status = 'DM_REQ'
             comparison.save()
             start_time = timezone.now()
-            # raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/distance_matrix/from_ids',
-            raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/reportree/start_job',
-                json={'sample_ids': comparison.sequences})
+            raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/distance_matrix/from_ids',
+                json={'sequence_ids': comparison.sequences})
+            print("Raw response:")
+            print(raw_response)
             json_response = (raw_response.json())
             print("JSON response:")
             print(json_response)
@@ -90,7 +91,7 @@ def make_tree(request, comparison_id, treetype):
                 print(msg)
                 messages.add_message(request, messages.INFO, msg)
             else:
-                comparison.set_status("DM_ERR")
+                comparison.status = "DM_ERR"
                 msg = f"Error getting distance matrix for comparison {comparison.id}: no distance matrix in response"
                 print(msg)
                 messages.add_message(request, messages.INFO, msg)

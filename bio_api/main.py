@@ -74,7 +74,10 @@ def translate_bifrost_row(mongo_item):
 def allele_mx_from_bifrost_mongo(mongo_cursor):
     # Generate an allele matrix with all the allele profiles from the mongo cursor.
     full_dict = dict()
-    first_mongo_item = next(mongo_cursor)
+    try:
+        first_mongo_item = next(mongo_cursor)
+    except StopIteration:
+        raise
     first_row = translate_bifrost_row(first_mongo_item)
     full_dict[first_mongo_item['name']] = first_row
     allele_names = set(first_row.keys())
@@ -92,56 +95,36 @@ def allele_mx_from_bifrost_mongo(mongo_cursor):
 async def root():
     return {"message": "Hello World"}
 
-@app.post("/reportree/start_job/")
-async def start_job(job: HCTreeCalcRequest):
-    job.id = uuid.uuid4()
-    print(job.sample_ids)
-    #TODO Handle unmatched.
-
-    """TODO It should not be necessary with the 'org' key below since the 'name' key (which is the long name
-    including runname) HAS to be a unique identifier in itself. This is because other systems that the code
-    is going to cooperate with (f. ex. Micoreact) cannot handle multi-component identifiers.
-
-    However, if this code is at some point going to be used in a context where the 'name' cannot be
-    guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
-    dots as separators, like 'dk.ssi.samplelongname'.
-    """
-    mongo_keys = [ {'org': 'SSI', 'name': name} for name in job.sample_ids]
-    mongo_cursor, unmatched = sapi.get_samples_from_keys(mongo_keys)
-
-    # allele_mx: pandas.DataFrame = allele_mx_from_beone_mongo(mongo_cursor)
-    allele_mx: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
-    hc = HCTreeCalc(job.id.hex[:8],
-        out=job.id.hex[:8],
-        allele_mx=allele_mx,
-        method_threshold=job.method_threshold,
-        pct_HCmethod_threshold=job.pct_HCmethod_threshold,
-        samples_called=job.samples_called,
-        loci_called=job.loci_called,
-        dist=job.dist
-    )
-    newicks = hc.run()
-    return {
-        "job_id": job.id,
-        "newicks": newicks
-        }
-
 @app.post("/distance_matrix/from_ids")
 async def dist_mat_from_ids(job: DistMatFromIdsRequest):
     job.id = uuid.uuid4()
-    print(job.sample_ids)
+    print(job.sequence_ids)
     """If this code is at some point going to be used in a context where the 'name' cannot be
     guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
     dots as separators, like 'dk.ssi.samplelongname'.
     """
     mongo_keys = [ {'name': name} for name in job.sequence_ids]
-    
     mongo_cursor, unmatched = sapi.get_samples_from_keys(mongo_keys)
-    #TODO handle unmatched
-    if len(unmatched == 0):
-        allele_mx_df: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
-        dist_mx_df: pandas.DataFrame = from_allele_profile(allele_mx_df)
-    return {
-        "job_id": job.id,
-        "distance_matrix": dist_mx_df.to_json()
+    print(mongo_cursor)
+    print(unmatched)
+    if len(unmatched) > 0:
+        return {
+            "job_id": job.id,
+            "error": "Some Mongo keys were unmatched",
+            "unmatched": unmatched
+            }
+    else:
+        try:
+            allele_mx_df: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
+            print(allele_mx_df)
+        except StopIteration as e:
+            return {
+            "job_id": job.id,
+            "unmatched": unmatched,
+            "error": e
         }
+        # dist_mx_df: pandas.DataFrame = from_allele_profile(allele_mx_df)
+        return {
+            "job_id": job.id,
+            # "distance_matrix": dist_mx_df.to_json()
+            }

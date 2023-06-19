@@ -81,7 +81,7 @@ class API:
             {'$match':
                 {'$or':
                     [
-                        {org_field: key_pair['org'], name_field: key_pair['name']}
+                        {name_field: key_pair['name']}
                         for key_pair in key_list
                     ]
                 }
