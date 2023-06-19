@@ -84,7 +84,7 @@ def make_tree(request, comparison_id, treetype):
             if 'distance_matrix' in json_response:
                 # TODO convert JSOn dist mat to something we can store in the ArrayField
                 # comparison.distance_matrix = json_response['distance_matrix']
-                comparison.set_status("DM_OK")
+                comparison.status = "DM_OK"
                 end_time = timezone.now()
                 elapsed_time = (end_time - start_time).seconds
                 msg = f"Distance matrix generation for comparison {comparison.id }took {elapsed_time} seconds"
