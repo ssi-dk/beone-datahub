@@ -41,7 +41,7 @@ class DistMatFromIdsRequest(BaseModel):
     """Represents a REST request for a distance matrix based on sequence id input.
     """
     id: Union[None, uuid.UUID]
-    sequence_ids: list[str]
+    sequence_ids: list
     timeout: int = 2
 
 
