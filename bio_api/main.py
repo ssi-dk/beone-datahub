@@ -2,19 +2,21 @@ import subprocess
 from os import getenv
 import uuid
 from typing import Union
+from io import StringIO
+from pathlib import Path
 
 from pydantic import BaseModel
 from fastapi import FastAPI
-import pandas
+from pandas import DataFrame, read_table
 
 from mongo import samples
-from partitioning_HC import HCTreeCalc, from_allele_profile
 
 app = FastAPI()
 mongo_connection = getenv('MONGO_CONNECTION')
 print(f"Mongo connection: {mongo_connection}")
 sapi = samples.API(mongo_connection, samples.FIELD_MAPPING)
 
+TMPDIR = getenv('TMPDIR', '/tmp')
 
 class HCTreeCalcRequest(BaseModel):
     """Represents a REST request for a tree calculation based on hierarchical clustering.
@@ -66,7 +68,7 @@ def allele_mx_from_beone_mongo(mongo_cursor):
         row_allele_names = set(row.keys())
         assert row_allele_names == allele_names
         full_dict[mongo_item['name']] = row
-    return pandas.DataFrame.from_dict(full_dict, 'index', dtype=str)
+    return DataFrame.from_dict(full_dict, 'index', dtype=str)
 
 def translate_bifrost_row(mongo_item):
     return mongo_item['allele_profile']  #[0]
@@ -88,8 +90,29 @@ def allele_mx_from_bifrost_mongo(mongo_cursor):
         row_allele_names = set(row.keys())
         assert row_allele_names == allele_names
         full_dict[mongo_item['name']] = row
-    return pandas.DataFrame.from_dict(full_dict, 'index', dtype=str)
+    return DataFrame.from_dict(full_dict, 'index', dtype=str)
 
+def dist_mat_from_allele_profile(allele_mx:DataFrame):
+		print("Hello from from_allele_profile")
+		print("This is the dataframe I got:")
+		print(allele_mx)
+		# save allele matrix to a file that cgmlst-dists can use for input
+		allele_mx_path = Path(TMPDIR, 'allele_mx.tsv')  #TODO we need to put the job id into the path
+		with open(allele_mx_path, 'w') as allele_mx_file_obj:
+			allele_mx_file_obj.write("ID")  # Without an initial string in first line cgmlst-dists will fail!
+			allele_mx.to_csv(allele_mx_file_obj, index = True, header=True, sep ="\t")
+
+		# run cgmlst-dists
+		cp1:subprocess.CompletedProcess = subprocess.run(
+			["cgmlst-dists", str(allele_mx_path)], capture_output=True, text=True)
+		if cp1.returncode != 0:
+			errmsg = (f"Could not run cgmlst-dists on {str(allele_mx_path)}!")
+			raise OSError(errmsg + "\n\n" + cp1.stderr)
+
+		temp_df = read_table(StringIO(cp1.stdout), dtype=str)
+		temp_df.rename(columns = {"cgmlst-dists": "ids"}, inplace = True)
+		# TODO here we are saving a file, then reading it. Why?
+		return temp_df
 
 @app.get("/")
 async def root():
@@ -115,7 +138,7 @@ async def dist_mat_from_ids(job: DistMatFromIdsRequest):
             }
     else:
         try:
-            allele_mx_df: pandas.DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
+            allele_mx_df: DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
             print(allele_mx_df)
         except StopIteration as e:
             return {
@@ -123,7 +146,7 @@ async def dist_mat_from_ids(job: DistMatFromIdsRequest):
             "unmatched": unmatched,
             "error": e
         }
-        dist_mx_df: pandas.DataFrame = from_allele_profile(allele_mx_df)
+        dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df)
         return {
             "job_id": job.id,
             "distance_matrix": dist_mx_df.to_json()
