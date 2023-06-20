@@ -58,7 +58,6 @@ def allele_mx_from_bifrost_mongo(mongo_cursor):
     first_row = translate_bifrost_row(first_mongo_item)
     full_dict[first_mongo_item['name']] = first_row
     allele_names = set(first_row.keys())
-    allele_count = len(allele_names)
     for mongo_item in mongo_cursor:
         row = translate_bifrost_row(mongo_item)
         row_allele_names = set(row.keys())
@@ -66,9 +65,9 @@ def allele_mx_from_bifrost_mongo(mongo_cursor):
         full_dict[mongo_item['name']] = row
     return DataFrame.from_dict(full_dict, 'index', dtype=str)
 
-def dist_mat_from_allele_profile(allele_mx:DataFrame):
+def dist_mat_from_allele_profile(allele_mx:DataFrame, job_id: uuid.UUID):
 		# save allele matrix to a file that cgmlst-dists can use for input
-		allele_mx_path = Path(TMPDIR, 'allele_mx.tsv')  #TODO we need to put the job id into the path
+		allele_mx_path = Path(TMPDIR, f'allele_matrix_{job_id.hex()}.tsv')
 		with open(allele_mx_path, 'w') as allele_mx_file_obj:
 			allele_mx_file_obj.write("ID")  # Without an initial string in first line cgmlst-dists will fail!
 			allele_mx.to_csv(allele_mx_file_obj, index = True, header=True, sep ="\t")
@@ -113,7 +112,7 @@ async def dist_mat_from_ids(job: DistMatFromIdsRequest):
             "unmatched": unmatched,
             "error": e
         }
-        dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df)
+        dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df, job.id)
         return {
             "job_id": job.id,
             "distance_matrix": dist_mx_df.to_dict()
