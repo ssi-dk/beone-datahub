@@ -79,18 +79,8 @@ def make_tree(request, comparison_id, treetype):
             start_time = timezone.now()
             raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/distance_matrix/from_ids',
                 json={'sequence_ids': comparison.sequences})
-            print("Raw response:")
-            print(raw_response)
             json_response = (raw_response.json())
-            print("JSON response:")
-            print(json_response)
-            print(type(json_response))
-            distances = json_response['distance_matrix']
-            print(type(distances))
             if 'distance_matrix' in json_response:
-                print("Distance matrix received:")
-                print(json_response['distance_matrix'])
-                # TODO convert JSOn dist mat to something we can store in the ArrayField
                 comparison.distances = json_response['distance_matrix']
                 comparison.status = "DM_OK"
                 end_time = timezone.now()
