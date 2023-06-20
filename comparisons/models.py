@@ -13,7 +13,7 @@ class Species(models.Model):
     def __str__(self):
         return self.name
 
-
+#TODO remove
 class DistanceMatrix(models.Model):
     distances = ArrayField(
         ArrayField(
@@ -54,11 +54,11 @@ class Comparison(SequenceSet):
        ('DM_ERR', 'Error receiving distance matrix'),
    ]
 
+    distances = models.JSONField(blank=True, default=dict)
     status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
     data_fields = ArrayField(models.CharField(max_length=25), blank=True, default=list)   # default=get_default_data_fields
     field_data = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
-    distance_matrix = models.OneToOneField(DistanceMatrix, on_delete=models.CASCADE, blank=True, null=True)
     tree_single = models.OneToOneField(Tree, related_name='comparison_single', on_delete=models.CASCADE, blank=True, null=True)
     tree_complete = models.OneToOneField(Tree, related_name='comparison_complete', on_delete=models.CASCADE, blank=True, null=True)
     tree_average = models.OneToOneField(Tree, related_name='comparison_average', on_delete=models.CASCADE, blank=True, null=True)
