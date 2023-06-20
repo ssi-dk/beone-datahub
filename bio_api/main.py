@@ -13,7 +13,6 @@ from mongo import samples
 
 app = FastAPI()
 mongo_connection = getenv('MONGO_CONNECTION')
-print(f"Mongo connection: {mongo_connection}")
 sapi = samples.API(mongo_connection, samples.FIELD_MAPPING)
 
 TMPDIR = getenv('TMPDIR', '/tmp')
@@ -46,30 +45,6 @@ class DistMatFromIdsRequest(BaseModel):
     sequence_ids: list
     timeout: int = 2
 
-
-def translate_beone_row(mongo_item):
-    result_row = dict()
-    for beone_dict in mongo_item['allele_profile']:
-        key = beone_dict['locus']
-        value = beone_dict['allele_crc32']
-        result_row[key] = value
-    return result_row
-
-def allele_mx_from_beone_mongo(mongo_cursor):
-    full_dict = dict()
-    first_mongo_item = next(mongo_cursor)
-    first_row = translate_beone_row(first_mongo_item)
-    full_dict[first_mongo_item['name']] = first_row
-    allele_names = set(first_row.keys())
-    allele_count = len(allele_names)
-    print(f"Number of alleles in first row: {allele_count}")
-    for mongo_item in mongo_cursor:
-        row = translate_beone_row(mongo_item)
-        row_allele_names = set(row.keys())
-        assert row_allele_names == allele_names
-        full_dict[mongo_item['name']] = row
-    return DataFrame.from_dict(full_dict, 'index', dtype=str)
-
 def translate_bifrost_row(mongo_item):
     return mongo_item['allele_profile']  #[0]
 
@@ -84,7 +59,6 @@ def allele_mx_from_bifrost_mongo(mongo_cursor):
     full_dict[first_mongo_item['name']] = first_row
     allele_names = set(first_row.keys())
     allele_count = len(allele_names)
-    print(f"Number of alleles in first row: {allele_count}")
     for mongo_item in mongo_cursor:
         row = translate_bifrost_row(mongo_item)
         row_allele_names = set(row.keys())
@@ -118,7 +92,6 @@ async def root():
 @app.post("/distance_matrix/from_ids")
 async def dist_mat_from_ids(job: DistMatFromIdsRequest):
     job.id = uuid.uuid4()
-    print(job.sequence_ids)
     """If this code is at some point going to be used in a context where the 'name' cannot be
     guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
     dots as separators, like 'dk.ssi.samplelongname'.
