@@ -149,5 +149,5 @@ async def dist_mat_from_ids(job: DistMatFromIdsRequest):
         dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df)
         return {
             "job_id": job.id,
-            "distance_matrix": dist_mx_df.to_json()
+            "distance_matrix": dist_mx_df.to_dict()
             }

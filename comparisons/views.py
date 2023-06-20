@@ -68,7 +68,8 @@ def make_tree(request, comparison_id, treetype):
         messages.add_message(request, messages.ERROR, f'Unknown treetype: {request.treetype}')
     else:
         # Do different things depending on distance matrix status
-        if comparison.status == 'DM_OK':
+        # if comparison.status == 'DM_OK':
+        if comparison.status == 'laskjdhlasudhyf':
             print(f"Reusing previous distance matrix for comparison {comparison.id}")
         else:
             # get distance matrix
@@ -83,11 +84,14 @@ def make_tree(request, comparison_id, treetype):
             json_response = (raw_response.json())
             print("JSON response:")
             print(json_response)
+            print(type(json_response))
+            distances = json_response['distance_matrix']
+            print(type(distances))
             if 'distance_matrix' in json_response:
                 print("Distance matrix received:")
                 print(json_response['distance_matrix'])
                 # TODO convert JSOn dist mat to something we can store in the ArrayField
-                # comparison.distance_matrix = json_response['distance_matrix']
+                comparison.distances = json_response['distance_matrix']
                 comparison.status = "DM_OK"
                 end_time = timezone.now()
                 elapsed_time = (end_time - start_time).seconds
