@@ -47,11 +47,13 @@ class SequenceSet(models.Model):
 
 class Comparison(SequenceSet):
 
+    #TODO The status field is probably only for the distance matrix
     STATUSES = [
        ('NEW', 'New'),
        ('DM_REQ', 'Distance matrix requested'),
        ('DM_OK', 'Distance matrix OK'),
        ('DM_ERR', 'Error receiving distance matrix'),
+       ('DM_OBS', 'Distance matrix is obsolete'),
    ]
 
     distances = models.JSONField(blank=True, default=dict)

@@ -68,7 +68,9 @@ def make_tree(request, comparison_id, treetype):
         messages.add_message(request, messages.ERROR, f'Unknown treetype: {request.treetype}')
     else:
         # Do different things depending on distance matrix status
-        if comparison.distance_matrix is None or comparison.status == 'DM_ERR':
+        if comparison.status == 'DM_OK':
+            print(f"Reusing previous distance matrix for comparison {comparison.id}")
+        else:
             # get distance matrix
             print(f"Requesting distance matrix for comparison {comparison.pk}")
             comparison.status = 'DM_REQ'
@@ -97,8 +99,7 @@ def make_tree(request, comparison_id, treetype):
                 msg = f"Error getting distance matrix for comparison {comparison.id}: no distance matrix in response"
                 print(msg)
                 messages.add_message(request, messages.INFO, msg)
-        else:
-            print(f"Reusing previous distance matrix for comparison {comparison.id}")
+
         # TODO Here comes the code for actually generating the tree
         comparison.save()
     return HttpResponseRedirect(reverse(comparison_list))
