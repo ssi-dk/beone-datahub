@@ -17,33 +17,18 @@ sapi = samples.API(mongo_connection, samples.FIELD_MAPPING)
 
 TMPDIR = getenv('TMPDIR', '/tmp')
 
-class HCTreeCalcRequest(BaseModel):
-    """Represents a REST request for a tree calculation based on hierarchical clustering.
-    """
-    id: Union[None, uuid.UUID]
-    sample_ids: list
-    timeout: int = 2
 
-    # These attributes have identical counterparts on the HC class.
-    # Some are out-commented as we may not need or want them in the REST API.
-    out: Union[None, str]
-    # distance_matrix:str = ''  -- Presumably not needed in the API
-    # allele_profile:str = ''  -- Presumably not needed in the API
-    # allele_mx:DataFrame = None  -- Unwanted as Pandas does not integrate easily with Pydantic
-    method_threshold: str = 'single'
-    pct_HCmethod_threshold: str = 'none'  # TODO should be changed to None (also in ReporTree)
-    samples_called: float = 0.0
-    loci_called: Union[str, float] = ''
-    # metadata:str = ''  -- Unwanted as we don't deal with metadata this way in SOFI
-    # filter_column:str = ''   -- Unwanted as we don't deal with metadata this way in SOFI
-    dist: float = 1.0
-
-class DistMatFromIdsRequest(BaseModel):
-    """Represents a REST request for a distance matrix based on sequence id input.
-    """
+class ProcessingRequest(BaseModel):
     id: Union[None, uuid.UUID]
     sequence_ids: list
     timeout: int = 2
+
+
+class HCTreeCalcRequest(ProcessingRequest):
+    """Represents a REST request for a tree calculation based on hierarchical clustering.
+    """
+    method: str = 'single'
+
 
 def translate_bifrost_row(mongo_item):
     return mongo_item['allele_profile']  #[0]
@@ -67,7 +52,7 @@ def allele_mx_from_bifrost_mongo(mongo_cursor):
 
 def dist_mat_from_allele_profile(allele_mx:DataFrame, job_id: uuid.UUID):
 		# save allele matrix to a file that cgmlst-dists can use for input
-		allele_mx_path = Path(TMPDIR, f'allele_matrix_{job_id.hex()}.tsv')
+		allele_mx_path = Path(TMPDIR, f'allele_matrix_{job_id.hex}.tsv')
 		with open(allele_mx_path, 'w') as allele_mx_file_obj:
 			allele_mx_file_obj.write("ID")  # Without an initial string in first line cgmlst-dists will fail!
 			allele_mx.to_csv(allele_mx_file_obj, index = True, header=True, sep ="\t")
@@ -89,17 +74,17 @@ async def root():
     return {"message": "Hello World"}
 
 @app.post("/distance_matrix/from_ids")
-async def dist_mat_from_ids(job: DistMatFromIdsRequest):
-    job.id = uuid.uuid4()
+async def dist_mat_from_ids(rq: ProcessingRequest):
+    rq.id = uuid.uuid4()
     """If this code is at some point going to be used in a context where the 'name' cannot be
     guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
     dots as separators, like 'dk.ssi.samplelongname'.
     """
-    mongo_keys = [ {'name': name} for name in job.sequence_ids]
+    mongo_keys = [ {'name': name} for name in rq.sequence_ids]
     mongo_cursor, unmatched = sapi.get_samples_from_keys(mongo_keys)
     if len(unmatched) > 0:
         return {
-            "job_id": job.id,
+            "job_id": rq.id,
             "error": "Some Mongo keys were unmatched",
             "unmatched": unmatched
             }
@@ -108,12 +93,12 @@ async def dist_mat_from_ids(job: DistMatFromIdsRequest):
             allele_mx_df: DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
         except StopIteration as e:
             return {
-            "job_id": job.id,
+            "job_id": rq.id,
             "unmatched": unmatched,
             "error": e
         }
-        dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df, job.id)
+        dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df, rq.id)
         return {
-            "job_id": job.id,
+            "job_id": rq.id,
             "distance_matrix": dist_mx_df.to_dict()
             }
