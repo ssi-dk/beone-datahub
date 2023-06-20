@@ -93,9 +93,6 @@ def allele_mx_from_bifrost_mongo(mongo_cursor):
     return DataFrame.from_dict(full_dict, 'index', dtype=str)
 
 def dist_mat_from_allele_profile(allele_mx:DataFrame):
-		print("Hello from from_allele_profile")
-		print("This is the dataframe I got:")
-		print(allele_mx)
 		# save allele matrix to a file that cgmlst-dists can use for input
 		allele_mx_path = Path(TMPDIR, 'allele_mx.tsv')  #TODO we need to put the job id into the path
 		with open(allele_mx_path, 'w') as allele_mx_file_obj:
@@ -128,8 +125,6 @@ async def dist_mat_from_ids(job: DistMatFromIdsRequest):
     """
     mongo_keys = [ {'name': name} for name in job.sequence_ids]
     mongo_cursor, unmatched = sapi.get_samples_from_keys(mongo_keys)
-    print(mongo_cursor)
-    print(unmatched)
     if len(unmatched) > 0:
         return {
             "job_id": job.id,
@@ -139,7 +134,6 @@ async def dist_mat_from_ids(job: DistMatFromIdsRequest):
     else:
         try:
             allele_mx_df: DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
-            print(allele_mx_df)
         except StopIteration as e:
             return {
             "job_id": job.id,
