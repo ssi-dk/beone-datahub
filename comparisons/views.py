@@ -89,7 +89,7 @@ def make_tree(request, comparison_id, treetype):
                 comparison.status = "DM_OK"
                 end_time = timezone.now()
                 elapsed_time = (end_time - start_time).seconds
-                msg = f"Distance matrix generation for comparison {comparison.id }took {elapsed_time} seconds"
+                msg = f"Distance matrix generation for comparison with id {comparison.id } took {elapsed_time} seconds"
                 print(msg)
                 messages.add_message(request, messages.INFO, msg)
             else:
