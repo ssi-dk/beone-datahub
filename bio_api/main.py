@@ -8,7 +8,7 @@ from fastapi import FastAPI
 import pandas
 
 from mongo import samples
-from ReporTree.scripts.partitioning_HC import HCTreeCalc, from_allele_profile
+from partitioning_HC import HCTreeCalc, from_allele_profile
 
 app = FastAPI()
 mongo_connection = getenv('MONGO_CONNECTION')
