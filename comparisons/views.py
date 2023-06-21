@@ -69,7 +69,7 @@ def make_tree(request, comparison_id, treetype):
     else:
         # Do different things depending on distance matrix status
         # if comparison.status == 'DM_OK':
-        if comparison.status == 'laskjdhlasudhyf':
+        if comparison.status == 'laskjdhlasudhyf':  #TODO: remove
             print(f"Reusing previous distance matrix for comparison {comparison.id}")
         else:
             # get distance matrix
