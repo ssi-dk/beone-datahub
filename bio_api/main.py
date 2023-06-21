@@ -22,6 +22,9 @@ class ProcessingRequest(BaseModel):
     id: Union[None, uuid.UUID]
     timeout: int = 2
 
+    def __init__(self, **kwargs):
+        super().__init__( **kwargs)
+        self.id = uuid.uuid4()
 
 class DistanceMatrixRequest(ProcessingRequest):
      sequence_ids: list
@@ -78,7 +81,6 @@ async def root():
 
 @app.post("/distance_matrix/from_ids")
 async def dist_mat_from_ids(rq: DistanceMatrixRequest):
-    rq.id = uuid.uuid4()
     """If this code is at some point going to be used in a context where the 'name' cannot be
     guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
     dots as separators, like 'dk.ssi.samplelongname'.
