@@ -68,8 +68,7 @@ def make_tree(request, comparison_id, treetype):
         messages.add_message(request, messages.ERROR, f'Unknown treetype: {request.treetype}')
     else:
         # Do different things depending on distance matrix status
-        # if comparison.status == 'DM_OK':
-        if comparison.status == 'laskjdhlasudhyf':  #TODO: remove
+        if comparison.status == 'DM_OK':
             print(f"Reusing previous distance matrix for comparison {comparison.id}")
         else:
             # get distance matrix
