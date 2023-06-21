@@ -33,7 +33,8 @@ class DistanceMatrixRequest(ProcessingRequest):
 class HCTreeCalcRequest(ProcessingRequest):
     """Represents a REST request for a tree calculation based on hierarchical clustering.
     """
-    method: str = 'single'
+    distances: dict
+    method: str
 
 
 def translate_bifrost_row(mongo_item):
@@ -81,9 +82,9 @@ async def root():
 
 @app.post("/distance_matrix/from_ids")
 async def dist_mat_from_ids(rq: DistanceMatrixRequest):
-    """If this code is at some point going to be used in a context where the 'name' cannot be
+    """If this code is at some point going to be used in a context where the sample 'name' cannot be
     guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
-    dots as separators, like 'dk.ssi.samplelongname'.
+    dots as separators, like <sample_name>.ssi.dk
     """
     mongo_keys = [ {'name': name} for name in rq.sequence_ids]
     mongo_cursor, unmatched = sapi.get_samples_from_keys(mongo_keys)
@@ -107,3 +108,12 @@ async def dist_mat_from_ids(rq: DistanceMatrixRequest):
             "job_id": rq.id,
             "distance_matrix": dist_mx_df.to_dict()
             }
+
+@app.post("/tree/hc/")
+async def hc_tree(rq: HCTreeCalcRequest):
+    dist_mx_df: DataFrame = DataFrame.from_dict(rq.distances)
+    print(dist_mx_df)
+    return {
+        "job_id": rq.id,
+        "tree": "()"
+        }

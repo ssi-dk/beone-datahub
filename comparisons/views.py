@@ -88,12 +88,18 @@ def make_tree(request, comparison_id, treetype):
                 msg = f"Distance matrix generation for comparison with id {comparison.id } took {elapsed_time} seconds"
                 print(msg)
                 messages.add_message(request, messages.INFO, msg)
+                comparison.save()  # Make sure we have the distance matrix in case we don't get the tree
             else:
                 comparison.status = "DM_ERR"
+                comparison.save()
                 msg = f"Error getting distance matrix for comparison {comparison.id}: no distance matrix in response"
                 print(msg)
                 messages.add_message(request, messages.INFO, msg)
 
-        # TODO Here comes the code for actually generating the tree
+        raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/tree/hc/',
+                json={
+                    'distances': comparison.distances,
+                    'method': treetype
+                    })
         comparison.save()
     return HttpResponseRedirect(reverse(comparison_list))
