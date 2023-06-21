@@ -6,5 +6,5 @@ __pycache__
 test_data/beone_exercise/
 test_data/campy/
 comparison_backend/settings_local.py/
-bio_api/*.nwk
+*.nwk
 tmp/
