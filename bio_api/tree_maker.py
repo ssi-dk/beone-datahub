@@ -49,10 +49,6 @@ def make_tree(df: pd.DataFrame):
     tree = scipy.cluster.hierarchy.to_tree(Z, False)
     nwk_tree = get_newick(tree, tree.dist, leaf_names)
 
-    # Create destination folder
-    destination_folder.mkdir()
-    print(f"Created folder {destination_folder}")
-
     # Save tree to output newick file
     with open(output_newick_file,"w") as outfile:
         print(nwk_tree, file=outfile)
@@ -60,22 +56,13 @@ def make_tree(df: pd.DataFrame):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('source_folder', type=Path)
-parser.add_argument('destination_root', type=Path)
 args = parser.parse_args()
 
 source_folder = Path(args.source_folder)
 if not source_folder.is_absolute():
     source_folder =  Path(getcwd(), args.source_folder)
 print("Source folder:", source_folder)
-destination_root = Path(args.destination_root)
-if not destination_root.is_absolute():
-    destination_root = Path(getcwd(), args.destination_root)
-print("Destination root:", destination_root)
-destination_folder: Path = destination_root.joinpath(source_folder.parts[-1])
-print("Destination folder:", destination_folder)
-if destination_folder.exists():
-    sys.exit(f"Error: Destination folder {destination_folder} already exists. Nothing was done")
-output_newick_file: Path = Path(destination_folder.joinpath('single_linkage_tree.nwk'))
+output_newick_file: Path = Path(source_folder.joinpath('single_linkage_tree.nwk'))
 
 # Read distance matrix file
 input_matrix_file = args.source_folder.joinpath('dist.tsv')
