@@ -101,5 +101,11 @@ def make_tree(request, comparison_id, treetype):
                     'distances': comparison.distances,
                     'method': treetype
                     })
+        json_response = (raw_response.json())
+        if 'tree' in json_response:
+            msg = f"Received tree with method {treetype} for comparison with id {comparison.id}"
+            print(msg)
+            messages.add_message(request, messages.INFO, msg)
+            print(json_response['tree'])
         comparison.save()
     return HttpResponseRedirect(reverse(comparison_list))
