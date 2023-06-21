@@ -48,11 +48,7 @@ def make_tree(df: pd.DataFrame):
     # Convert single linkage matrix to newick format
     tree = scipy.cluster.hierarchy.to_tree(Z, False)
     nwk_tree = get_newick(tree, tree.dist, leaf_names)
-
-    # Save tree to output newick file
-    with open(output_newick_file,"w") as outfile:
-        print(nwk_tree, file=outfile)
-    print(f"Output newick file was saved: {output_newick_file}")
+    return nwk_tree
 
 parser = argparse.ArgumentParser()
 parser.add_argument('source_folder', type=Path)
@@ -67,4 +63,9 @@ output_newick_file: Path = Path(source_folder.joinpath('single_linkage_tree.nwk'
 # Read distance matrix file
 input_matrix_file = args.source_folder.joinpath('dist.tsv')
 df = pd.read_csv(input_matrix_file, index_col=0, sep="\t")
-make_tree(df)
+nwk_tree = make_tree(df)
+
+# Save tree to output newick file
+with open(output_newick_file,"w") as outfile:
+    print(nwk_tree, file=outfile)
+print(f"Output newick file was saved: {output_newick_file}")
