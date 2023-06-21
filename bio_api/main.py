@@ -10,6 +10,7 @@ from fastapi import FastAPI
 from pandas import DataFrame, read_table
 
 from mongo import samples
+from tree_maker import make_tree
 
 app = FastAPI()
 mongo_connection = getenv('MONGO_CONNECTION')

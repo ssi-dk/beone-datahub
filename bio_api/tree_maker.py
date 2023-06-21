@@ -50,22 +50,23 @@ def make_tree(df: pd.DataFrame):
     nwk_tree = get_newick(tree, tree.dist, leaf_names)
     return nwk_tree
 
-parser = argparse.ArgumentParser()
-parser.add_argument('source_folder', type=Path)
-args = parser.parse_args()
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('source_folder', type=Path)
+    args = parser.parse_args()
 
-source_folder = Path(args.source_folder)
-if not source_folder.is_absolute():
-    source_folder =  Path(getcwd(), args.source_folder)
-print("Source folder:", source_folder)
-output_newick_file: Path = Path(source_folder.joinpath('single_linkage_tree.nwk'))
+    source_folder = Path(args.source_folder)
+    if not source_folder.is_absolute():
+        source_folder =  Path(getcwd(), args.source_folder)
+    print("Source folder:", source_folder)
+    output_newick_file: Path = Path(source_folder.joinpath('single_linkage_tree.nwk'))
 
-# Read distance matrix file
-input_matrix_file = args.source_folder.joinpath('dist.tsv')
-df = pd.read_csv(input_matrix_file, index_col=0, sep="\t")
-nwk_tree = make_tree(df)
+    # Read distance matrix file
+    input_matrix_file = args.source_folder.joinpath('dist.tsv')
+    df = pd.read_csv(input_matrix_file, index_col=0, sep="\t")
+    nwk_tree = make_tree(df)
 
-# Save tree to output newick file
-with open(output_newick_file,"w") as outfile:
-    print(nwk_tree, file=outfile)
-print(f"Output newick file was saved: {output_newick_file}")
+    # Save tree to output newick file
+    with open(output_newick_file,"w") as outfile:
+        print(nwk_tree, file=outfile)
+    print(f"Output newick file was saved: {output_newick_file}")
