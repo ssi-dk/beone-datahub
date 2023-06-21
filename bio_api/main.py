@@ -20,8 +20,11 @@ TMPDIR = getenv('TMPDIR', '/tmp')
 
 class ProcessingRequest(BaseModel):
     id: Union[None, uuid.UUID]
-    sequence_ids: list
     timeout: int = 2
+
+
+class DistanceMatrixRequest(ProcessingRequest):
+     sequence_ids: list
 
 
 class HCTreeCalcRequest(ProcessingRequest):
@@ -74,7 +77,7 @@ async def root():
     return {"message": "Hello World"}
 
 @app.post("/distance_matrix/from_ids")
-async def dist_mat_from_ids(rq: ProcessingRequest):
+async def dist_mat_from_ids(rq: DistanceMatrixRequest):
     rq.id = uuid.uuid4()
     """If this code is at some point going to be used in a context where the 'name' cannot be
     guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
