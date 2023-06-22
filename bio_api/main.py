@@ -77,11 +77,11 @@ def dist_mat_from_allele_profile(allele_mx:DataFrame, job_id: uuid.UUID):
 		return df
 
 @app.get("/")
-async def root():
+def root():
     return {"message": "Hello World"}
 
 @app.post("/distance_matrix/from_ids")
-async def dist_mat_from_ids(rq: DistanceMatrixRequest):
+def dist_mat_from_ids(rq: DistanceMatrixRequest):
     """If this code is at some point going to be used in a context where the sample 'name' cannot be
     guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
     dots as separators, like <sample_name>.ssi.dk
@@ -110,7 +110,7 @@ async def dist_mat_from_ids(rq: DistanceMatrixRequest):
             }
 
 @app.post("/tree/hc/")
-async def hc_tree(rq: HCTreeCalcRequest):
+def hc_tree(rq: HCTreeCalcRequest):
     df: DataFrame = DataFrame.from_dict(rq.distances, orient='index')
     # Get rid of the header line
     df = df.tail(-1)
