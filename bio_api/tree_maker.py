@@ -12,15 +12,15 @@ import scipy.spatial.distance as ssd
 from scipy.cluster.hierarchy import linkage
 
 def make_tree(df: pd.DataFrame):
-    m = df.values
-    M = np.array(m)
-    distArray = ssd.squareform(M)
+    # m = df.values
+    # M = np.array(m)
+    # distArray = ssd.squareform(M)
 
-    # Get the list of leaf_names in the order they are in the distance matrix
-    leaf_names = list(df.index)
+    # # Get the list of leaf_names in the order they are in the distance matrix
+    # leaf_names = list(df.index)
 
     # Perform single linkage
-    Z = linkage(distArray, 'single')
+    # Z = linkage(distArray, 'single')
 
     # Convert single linkage matrix to newick format
     def get_newick(node, parent_dist, leaf_names, newick='') -> str:
@@ -46,9 +46,9 @@ def make_tree(df: pd.DataFrame):
             return newick
 
     # Convert single linkage matrix to newick format
-    tree = scipy.cluster.hierarchy.to_tree(Z, False)
-    nwk_tree = get_newick(tree, tree.dist, leaf_names)
-    return nwk_tree
+    # tree = scipy.cluster.hierarchy.to_tree(Z, False)
+    # nwk_tree = get_newick(tree, tree.dist, leaf_names)
+    return "()"  #nwk_tree
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
