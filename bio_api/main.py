@@ -107,7 +107,7 @@ async def dist_mat_from_ids(rq: DistanceMatrixRequest):
         dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df, rq.id)
         return {
             "job_id": rq.id,
-            "distance_matrix": dist_mx_df.to_dict()
+            "distance_matrix": dist_mx_df.to_dict(orient='index')
             }
 
 @app.post("/tree/hc/")
