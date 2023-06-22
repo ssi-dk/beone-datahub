@@ -113,6 +113,7 @@ async def dist_mat_from_ids(rq: DistanceMatrixRequest):
 @app.post("/tree/hc/")
 async def hc_tree(rq: HCTreeCalcRequest):
     df: DataFrame = DataFrame.from_dict(rq.distances, orient='index')
+    df = df.tail(-1)
     # Make the first column the index
     df.set_index(list(df)[0])
     # Make the first row the index
