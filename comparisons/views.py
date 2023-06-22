@@ -82,7 +82,7 @@ def make_tree(request, comparison_id, treetype):
                     json={'sequence_ids': comparison.sequences},
                     timeout=5)
                 json_response = (raw_response.json())
-            except requests.ReadTimeout as e:
+            except Exception as e:
                 print(e)
                 messages.add_message(request, messages.ERROR, e)
                 return HttpResponseRedirect(reverse(comparison_list))
