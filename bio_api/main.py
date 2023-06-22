@@ -72,7 +72,7 @@ def dist_mat_from_allele_profile(allele_mx:DataFrame, job_id: uuid.UUID):
 			errmsg = (f"Could not run cgmlst-dists on {str(allele_mx_path)}!")
 			raise OSError(errmsg + "\n\n" + cp.stderr)
 
-		df = read_table(StringIO(cp.stdout), dtype=str)  #TODO everything except first line must be integers
+		df = read_table(StringIO(cp.stdout))
 		df.rename(columns = {"cgmlst-dists": "ids"}, inplace = True)
 		return df
 
