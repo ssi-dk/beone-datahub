@@ -11,6 +11,29 @@ import numpy as np
 import scipy.spatial.distance as ssd
 from scipy.cluster.hierarchy import linkage
 
+# Convert single linkage matrix to newick format
+def get_newick(node, parent_dist, leaf_names, newick='') -> str:
+    """
+    Convert sciply.cluster.hierarchy.to_tree()-output to Newick format.
+
+    :param node: output of sciply.cluster.hierarchy.to_tree()
+    :param parent_dist: output of sciply.cluster.hierarchy.to_tree().dist
+    :param leaf_names: list of leaf names
+    :param newick: leave empty, this variable is used in recursion.
+    :returns: tree in Newick format
+    """
+    if node.is_leaf():
+        return "%s:%.2f%s" % (leaf_names[node.id], parent_dist - node.dist, newick)
+    else:
+        if len(newick) > 0:
+            newick = "):%.2f%s" % (parent_dist - node.dist, newick)
+        else:
+            newick = ");"
+        newick = get_newick(node.get_left(), node.dist, leaf_names, newick=newick)
+        newick = get_newick(node.get_right(), node.dist, leaf_names, newick=",%s" % (newick))
+        newick = "(%s" % (newick)
+        return newick
+
 def make_tree(df: pd.DataFrame):
     m = df.values
     M = np.array(m)
@@ -21,29 +44,6 @@ def make_tree(df: pd.DataFrame):
 
     # Perform single linkage
     # Z = linkage(distArray, 'single')
-
-    # Convert single linkage matrix to newick format
-    def get_newick(node, parent_dist, leaf_names, newick='') -> str:
-        """
-        Convert sciply.cluster.hierarchy.to_tree()-output to Newick format.
-
-        :param node: output of sciply.cluster.hierarchy.to_tree()
-        :param parent_dist: output of sciply.cluster.hierarchy.to_tree().dist
-        :param leaf_names: list of leaf names
-        :param newick: leave empty, this variable is used in recursion.
-        :returns: tree in Newick format
-        """
-        if node.is_leaf():
-            return "%s:%.2f%s" % (leaf_names[node.id], parent_dist - node.dist, newick)
-        else:
-            if len(newick) > 0:
-                newick = "):%.2f%s" % (parent_dist - node.dist, newick)
-            else:
-                newick = ");"
-            newick = get_newick(node.get_left(), node.dist, leaf_names, newick=newick)
-            newick = get_newick(node.get_right(), node.dist, leaf_names, newick=",%s" % (newick))
-            newick = "(%s" % (newick)
-            return newick
 
     # Convert single linkage matrix to newick format
     # tree = scipy.cluster.hierarchy.to_tree(Z, False)
