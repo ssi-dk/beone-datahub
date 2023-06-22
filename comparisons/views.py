@@ -76,9 +76,16 @@ def make_tree(request, comparison_id, treetype):
             comparison.status = 'DM_REQ'
             comparison.save()
             start_time = timezone.now()
-            raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/distance_matrix/from_ids',
-                json={'sequence_ids': comparison.sequences})
-            json_response = (raw_response.json())
+            try:
+                raw_response = requests.post(
+                    f'http://bio_api:{str(settings.BIO_API_PORT)}/distance_matrix/from_ids',
+                    json={'sequence_ids': comparison.sequences},
+                    timeout=5)
+                json_response = (raw_response.json())
+            except requests.ReadTimeout as e:
+                print(e)
+                messages.add_message(request, messages.ERROR, e)
+                return HttpResponseRedirect(reverse(comparison_list))
             if 'distance_matrix' in json_response:
                 comparison.distances = json_response['distance_matrix']
                 comparison.status = "DM_OK"
