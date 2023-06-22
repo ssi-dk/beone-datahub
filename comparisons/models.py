@@ -42,7 +42,7 @@ class SequenceSet(models.Model):
         ordering = ['-pk']
 
     def __str__(self):
-        return f"{self.species} {self.created_by} {self.created_at}"
+        return f"{self.pk} {self.created_by} {self.created_at}"
 
 
 class Comparison(SequenceSet):
