@@ -112,9 +112,9 @@ async def dist_mat_from_ids(rq: DistanceMatrixRequest):
 
 @app.post("/tree/hc/")
 async def hc_tree(rq: HCTreeCalcRequest):
-    dist_mx_df: DataFrame = DataFrame.from_dict(rq.distances)
-    print(dist_mx_df)
+    dist_mx_df: DataFrame = DataFrame.from_dict(rq.distances, orient='index')
+    tree = make_tree(dist_mx_df)
     return {
         "job_id": rq.id,
-        "tree": "()"
+        "tree": tree
         }

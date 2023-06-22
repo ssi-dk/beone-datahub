@@ -12,8 +12,14 @@ import scipy.spatial.distance as ssd
 from scipy.cluster.hierarchy import linkage
 
 def make_tree(df: pd.DataFrame):
+    print("df:")
+    print(df)
     m = df.values
+    print("m:")
+    print(m)
     M = np.array(m)
+    print("M:")
+    print(M)
     distArray = ssd.squareform(M)
 
     # Get the list of leaf_names in the order they are in the distance matrix
