@@ -66,16 +66,15 @@ def dist_mat_from_allele_profile(allele_mx:DataFrame, job_id: uuid.UUID):
 			allele_mx.to_csv(allele_mx_file_obj, index = True, header=True, sep ="\t")
 
 		# run cgmlst-dists
-		cp1:subprocess.CompletedProcess = subprocess.run(
+		cp:subprocess.CompletedProcess = subprocess.run(
 			["cgmlst-dists", str(allele_mx_path)], capture_output=True, text=True)
-		if cp1.returncode != 0:
+		if cp.returncode != 0:
 			errmsg = (f"Could not run cgmlst-dists on {str(allele_mx_path)}!")
-			raise OSError(errmsg + "\n\n" + cp1.stderr)
+			raise OSError(errmsg + "\n\n" + cp.stderr)
 
-		temp_df = read_table(StringIO(cp1.stdout), dtype=str)
-		temp_df.rename(columns = {"cgmlst-dists": "ids"}, inplace = True)
-		# TODO here we are saving a file, then reading it. Why?
-		return temp_df
+		df = read_table(StringIO(cp.stdout), dtype=str)  #TODO everything except first line must be integers
+		df.rename(columns = {"cgmlst-dists": "ids"}, inplace = True)
+		return df
 
 @app.get("/")
 async def root():
