@@ -19,7 +19,7 @@ ENV PATH="/app/ReporTree:${PATH}"
 RUN conda install -c conda-forge fastapi
 
 # Install Uvicorn
-RUN conda install uvicorn
+RUN conda install "uvicorn[standard]"
 
 # Install PyMongo
 RUN conda install pymongo
