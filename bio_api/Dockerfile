@@ -8,7 +8,9 @@ ENV MONGO_CONNECTION='mongodb://mongo:27017/bifrost_test'
 WORKDIR /app
 
 # Install libraries for ReporTree - see https://github.com/insapathogenomics/ReporTree#installation-with-conda
-RUN conda install -c etetoolkit -c anaconda -c bioconda python=3.8 biopython=1.77 pandas=1.1.3 numpy=1.19.2 grapetree=2.1 treecluster=1.0.3 ete3 scikit-learn cgmlst-dists git --yes
+# RUN conda install -c etetoolkit -c anaconda -c bioconda python=3.8 biopython=1.77 pandas=1.1.3 numpy=1.19.2 grapetree=2.1 treecluster=1.0.3 ete3 scikit-learn cgmlst-dists git --yes
+RUN conda install pandas scipy git
+RUN conda install -c bioconda cgmlst-dists
 
 WORKDIR /app/ReporTree/
 ENV PATH="/app/ReporTree:${PATH}"
@@ -20,7 +22,7 @@ RUN conda install -c conda-forge fastapi
 RUN conda install uvicorn
 
 # Install PyMongo
-RUN conda install -c anaconda pymongo
+RUN conda install pymongo
 
 # Install code for REST interface
 WORKDIR /app
