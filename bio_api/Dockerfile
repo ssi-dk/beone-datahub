@@ -40,4 +40,4 @@ EXPOSE 7000
 #WORKDIR /app/rest_interface
 #CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7000" "--reload"]
 WORKDIR /app
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7000", "--workers", "4", "--reload"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7000", "--reload"]
