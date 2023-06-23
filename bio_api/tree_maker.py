@@ -11,6 +11,7 @@ import numpy as np
 import scipy.spatial.distance as ssd
 from scipy.cluster.hierarchy import linkage
 
+# Copied from scipy.spatial.distance
 def squareform(X, force="no", checks=True):
     """
     Convert a vector-form distance vector to a square-form distance
