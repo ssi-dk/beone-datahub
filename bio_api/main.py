@@ -107,14 +107,17 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
         dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df, rq.id)
         return {
             "job_id": rq.id,
-            "distance_matrix": dist_mx_df.to_dict()
+            "distance_matrix": dist_mx_df.to_dict(orient='tight')
             }
 
 @app.post("/tree/hc/")
 def hc_tree(rq: HCTreeCalcRequest):
     response = {"job_id": rq.id}
     try:
-        df: DataFrame = DataFrame.from_dict(rq.distances, orient='index')
+        df: DataFrame = DataFrame.from_dict(rq.distances, orient='tight')
+
+        #TODO: convert 'tight' dataframe to a distance matrix!
+
         # Get rid of the header line
         df = df.tail(-1)
         # Make the first column the index
