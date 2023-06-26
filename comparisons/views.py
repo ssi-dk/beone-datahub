@@ -92,7 +92,10 @@ def make_tree(request, comparison_id, treetype):
                 messages.add_message(request, messages.ERROR, e)
                 return HttpResponseRedirect(reverse(comparison_list))
             if 'distance_matrix' in json_response:
-                comparison.distances = json_response['distance_matrix']
+                dist_mx_records = json_response['distance_matrix']
+                print("Distance matrix received:")
+                print(dist_mx_records)
+                comparison.distances = dist_mx_records
                 comparison.dm_status = "VALID"
                 end_time = timezone.now()
                 elapsed_time = (end_time - start_time).seconds
@@ -114,13 +117,22 @@ def make_tree(request, comparison_id, treetype):
                     'method': treetype
                     })
         json_response = (raw_response.json())
+        print("JSON response:")
         print(json_response)
         if 'tree' in json_response:
             msg = f"Received tree with method {treetype} for comparison with id {comparison.id}"
+            print(msg)
+            messages.add_message(request, messages.INFO, msg)
             print(json_response['tree'])
-        else:
+        elif 'error' in json_response:
             msg = json_response['error']
-        print(msg)
-        messages.add_message(request, messages.INFO, msg)
+            print(msg)
+            messages.add_message(request, messages.ERROR, msg)
+        elif 'job_id' in json_response:
+            msg = f"job id {json_response['job_id']} neither returned a tree nor an error message."
+            print(msg)
+            messages.add_message(request, messages.ERROR, msg)
+        else:
+            raise ValueError("Error when calling Bio API")
         comparison.save()
     return HttpResponseRedirect(reverse(comparison_list))
