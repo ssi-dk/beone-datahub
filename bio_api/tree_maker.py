@@ -167,11 +167,11 @@ def make_tree(df: pd.DataFrame):
     M = np.array(m)
     distArray = squareform(M)
 
+    # Perform single linkage
+    Z = linkage(distArray, 'single')
+
     # Get the list of leaf_names in the order they are in the distance matrix
     leaf_names = list(df.index)
-
-    # Perform single linkage
-    Z = linkage(M, 'single')
 
     # Convert single linkage matrix to newick format
     tree = scipy.cluster.hierarchy.to_tree(Z, False)

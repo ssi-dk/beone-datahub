@@ -123,8 +123,8 @@ def hc_tree(rq: HCTreeCalcRequest):
             "tree": tree
             }
     except ValueError as e:
-        print(e)
-        return {
-            "job_id": rq.id,
-            "error": str(e)
-            }
+        raise e
+        # return {
+        #     "job_id": rq.id,
+        #     "error": str(e)
+        #     }
