@@ -11,7 +11,9 @@ import numpy as np
 import scipy.spatial.distance as ssd
 from scipy.cluster.hierarchy import linkage
 
-# Copied from scipy.spatial.distance
+"""The squareform function is copied from scipy.spatial.distance. For some reason
+it did not work when the code was in the library, but copying it locally
+fixed the problem!"""
 def squareform(X, force="no", checks=True):
     """
     Convert a vector-form distance vector to a square-form distance
