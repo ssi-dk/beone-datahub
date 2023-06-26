@@ -4,6 +4,7 @@ import uuid
 from typing import Union
 from io import StringIO
 from pathlib import Path
+import traceback
 
 from pydantic import BaseModel
 from fastapi import FastAPI
@@ -111,6 +112,7 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
 
 @app.post("/tree/hc/")
 def hc_tree(rq: HCTreeCalcRequest):
+    response = {"job_id": rq.id}
     try:
         df: DataFrame = DataFrame.from_dict(rq.distances, orient='index')
         # Get rid of the header line
@@ -118,13 +120,8 @@ def hc_tree(rq: HCTreeCalcRequest):
         # Make the first column the index
         df.set_index(list(df)[0])
         tree = make_tree(df)
-        return {
-            "job_id": rq.id,
-            "tree": tree
-            }
+        response['tree'] = tree
     except ValueError as e:
-        raise e
-        # return {
-        #     "job_id": rq.id,
-        #     "error": str(e)
-        #     }
+        response['error'] = str(e)
+        print(traceback.format_exc())
+    return response
