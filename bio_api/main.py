@@ -132,8 +132,8 @@ def hc_tree(rq: HCTreeCalcRequest):
         # dist_df = dist_df.tail(-1)
         # Make the first column the index
         # dist_df.set_index(list(dist_df)[0])
-        # tree = make_tree(dist_dict)
-        # response['tree'] = tree
+        tree = make_tree(dist_dict)
+        response['tree'] = tree
     except ValueError as e:
         response['error'] = str(e)
         print(traceback.format_exc())
