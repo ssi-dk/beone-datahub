@@ -111,13 +111,20 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
 
 @app.post("/tree/hc/")
 def hc_tree(rq: HCTreeCalcRequest):
-    df: DataFrame = DataFrame.from_dict(rq.distances, orient='index')
-    # Get rid of the header line
-    df = df.tail(-1)
-    # Make the first column the index
-    df.set_index(list(df)[0])
-    tree = make_tree(df)
-    return {
-        "job_id": rq.id,
-        "tree": tree
-        }
+    try:
+        df: DataFrame = DataFrame.from_dict(rq.distances, orient='index')
+        # Get rid of the header line
+        df = df.tail(-1)
+        # Make the first column the index
+        df.set_index(list(df)[0])
+        tree = make_tree(df)
+        return {
+            "job_id": rq.id,
+            "tree": tree
+            }
+    except ValueError as e:
+        print(e)
+        return {
+            "job_id": rq.id,
+            "error": str(e)
+            }

@@ -68,10 +68,15 @@ def make_tree(request, comparison_id, treetype):
         messages.add_message(request, messages.ERROR, f'Unknown treetype: {request.treetype}')
     else:
         # Do different things depending on distance matrix status
-        if comparison.dm_status == 'VALID':
+        if comparison.dm_status == 'REQUESTED':
+            msg = (f"There is already a pending distance matrix request for comparison {comparison.id}")
+            print(msg)
+            messages.add_message(request, messages.ERROR, msg)
+            return HttpResponseRedirect(reverse(comparison_list))
+        elif comparison.dm_status == 'VALID':
             print(f"Reusing previous distance matrix for comparison {comparison.id}")
         else:
-            # get distance matrix
+            # Get distance matrix
             print(f"Requesting distance matrix for comparison {comparison.pk}")
             comparison.dm_status = 'REQUESTED'
             comparison.save()
@@ -102,16 +107,20 @@ def make_tree(request, comparison_id, treetype):
                 print(msg)
                 messages.add_message(request, messages.INFO, msg)
 
+        # Get tree
         raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/tree/hc/',
                 json={
                     'distances': comparison.distances,
                     'method': treetype
                     })
         json_response = (raw_response.json())
+        print(json_response)
         if 'tree' in json_response:
             msg = f"Received tree with method {treetype} for comparison with id {comparison.id}"
-            print(msg)
-            messages.add_message(request, messages.INFO, msg)
             print(json_response['tree'])
+        else:
+            msg = json_response['error']
+        print(msg)
+        messages.add_message(request, messages.INFO, msg)
         comparison.save()
     return HttpResponseRedirect(reverse(comparison_list))
