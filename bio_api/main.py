@@ -35,7 +35,7 @@ class DistanceMatrixRequest(ProcessingRequest):
 class HCTreeCalcRequest(ProcessingRequest):
     """Represents a REST request for a tree calculation based on hierarchical clustering.
     """
-    distances: dict
+    distances: list
     method: str
 
 
@@ -113,17 +113,27 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
 @app.post("/tree/hc/")
 def hc_tree(rq: HCTreeCalcRequest):
     response = {"job_id": rq.id}
+    print("***rq.distances")
+    print(rq.distances)
     try:
-        df: DataFrame = DataFrame.from_dict(rq.distances, orient='tight')
+        dist_dict = dict()
+        for allele_list in rq.distances:
+            print("***allele_list")
+            print(allele_list)
+            id = allele_list.pop(0)
+            dist_dict[id] = allele_list
+        print("***dist_dict")
+        print(dist_dict)
 
-        #TODO: convert 'tight' dataframe to a distance matrix!
-
+        dist_df: DataFrame = DataFrame.from_dict(dist_dict)
+        print("***dist_df")
+        print(dist_df)
         # Get rid of the header line
-        df = df.tail(-1)
+        # dist_df = dist_df.tail(-1)
         # Make the first column the index
-        df.set_index(list(df)[0])
-        tree = make_tree(df)
-        response['tree'] = tree
+        # dist_df.set_index(list(dist_df)[0])
+        # tree = make_tree(dist_dict)
+        # response['tree'] = tree
     except ValueError as e:
         response['error'] = str(e)
         print(traceback.format_exc())
