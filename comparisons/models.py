@@ -2,6 +2,19 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 
+# Calculation statuses
+NODATA = "NODATA"
+REQUESTED = "REQUESTED"
+VALID = "VALID"
+ERROR = "ERROR"
+OBSOLETE = "OBSOLETE"
+CALC_STATUSES = [
+    (NODATA, 'No data'),
+    (REQUESTED, 'Requested'),
+    (VALID, 'Valid'),
+    (ERROR, 'Request was unsuccesful'),
+    (OBSOLETE, 'No longer valid'),
+]
 
 class Species(models.Model):
     name = models.CharField(max_length=40, unique=True)
@@ -26,6 +39,7 @@ class DistanceMatrix(models.Model):
 
 
 class Tree(models.Model):
+    treetype = models.TextChoices
     newick = models.TextField(default='()')
 
 
@@ -46,24 +60,11 @@ class SequenceSet(models.Model):
 
 
 class Comparison(SequenceSet):
-
-    #TODO The status field is probably only for the distance matrix
-    STATUSES = [
-       ('NEW', 'New'),
-       ('DM_REQ', 'Distance matrix requested'),
-       ('DM_OK', 'Distance matrix OK'),
-       ('DM_ERR', 'Error receiving distance matrix'),
-       ('DM_OBS', 'Distance matrix is obsolete'),
-   ]
-
     distances = models.JSONField(blank=True, default=dict)
-    status = models.CharField(max_length=15, choices=STATUSES, default='NEW')
+    dm_status = models.CharField(max_length=15, choices=CALC_STATUSES, default='NODATA')
     data_fields = ArrayField(models.CharField(max_length=25), blank=True, default=list)   # default=get_default_data_fields
     field_data = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
-    tree_single = models.OneToOneField(Tree, related_name='comparison_single', on_delete=models.CASCADE, blank=True, null=True)
-    tree_complete = models.OneToOneField(Tree, related_name='comparison_complete', on_delete=models.CASCADE, blank=True, null=True)
-    tree_average = models.OneToOneField(Tree, related_name='comparison_average', on_delete=models.CASCADE, blank=True, null=True)
 
 class Cluster(SequenceSet):
     st = models.PositiveIntegerField()

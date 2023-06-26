@@ -68,12 +68,12 @@ def make_tree(request, comparison_id, treetype):
         messages.add_message(request, messages.ERROR, f'Unknown treetype: {request.treetype}')
     else:
         # Do different things depending on distance matrix status
-        if comparison.status == 'sdføglk':
+        if comparison.dm_status == 'VALID':
             print(f"Reusing previous distance matrix for comparison {comparison.id}")
         else:
             # get distance matrix
             print(f"Requesting distance matrix for comparison {comparison.pk}")
-            comparison.status = 'DM_REQ'
+            comparison.dm_status = 'REQUESTED'
             comparison.save()
             start_time = timezone.now()
             try:
@@ -88,7 +88,7 @@ def make_tree(request, comparison_id, treetype):
                 return HttpResponseRedirect(reverse(comparison_list))
             if 'distance_matrix' in json_response:
                 comparison.distances = json_response['distance_matrix']
-                comparison.status = "DM_OK"
+                comparison.dm_status = "VALID"
                 end_time = timezone.now()
                 elapsed_time = (end_time - start_time).seconds
                 msg = f"Distance matrix generation for comparison with id {comparison.id } took {elapsed_time} seconds"
@@ -96,7 +96,7 @@ def make_tree(request, comparison_id, treetype):
                 messages.add_message(request, messages.INFO, msg)
                 comparison.save()  # Make sure we have the distance matrix in case we don't get the tree
             else:
-                comparison.status = "DM_ERR"
+                comparison.dm_status = "ERROR"
                 comparison.save()
                 msg = f"Error getting distance matrix for comparison {comparison.id}: no distance matrix in response"
                 print(msg)
