@@ -36,6 +36,7 @@ class HCTreeCalcRequest(ProcessingRequest):
     """Represents a REST request for a tree calculation based on hierarchical clustering.
     """
     distances: list
+    index: list
     method: str
 
 
