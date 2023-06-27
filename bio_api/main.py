@@ -60,22 +60,25 @@ def allele_mx_from_bifrost_mongo(mongo_cursor):
     return DataFrame.from_dict(full_dict, 'index', dtype=str)
 
 def dist_mat_from_allele_profile(allele_mx:DataFrame, job_id: uuid.UUID):
-		# save allele matrix to a file that cgmlst-dists can use for input
-		allele_mx_path = Path(TMPDIR, f'allele_matrix_{job_id.hex}.tsv')
-		with open(allele_mx_path, 'w') as allele_mx_file_obj:
-			allele_mx_file_obj.write("ID")  # Without an initial string in first line cgmlst-dists will fail!
-			allele_mx.to_csv(allele_mx_file_obj, index = True, header=True, sep ="\t")
+    # save allele matrix to a file that cgmlst-dists can use for input
+    allele_mx_path = Path(TMPDIR, f'allele_matrix_{job_id.hex}.tsv')
+    with open(allele_mx_path, 'w') as allele_mx_file_obj:
+        allele_mx_file_obj.write("ID")  # Without an initial string in first line cgmlst-dists will fail!
+        allele_mx.to_csv(allele_mx_file_obj, index = True, header=True, sep ="\t")
 
-		# run cgmlst-dists
-		cp:subprocess.CompletedProcess = subprocess.run(
-			["cgmlst-dists", str(allele_mx_path)], capture_output=True, text=True)
-		if cp.returncode != 0:
-			errmsg = (f"Could not run cgmlst-dists on {str(allele_mx_path)}!")
-			raise OSError(errmsg + "\n\n" + cp.stderr)
+    # run cgmlst-dists
+    cp:subprocess.CompletedProcess = subprocess.run(
+        ["cgmlst-dists", str(allele_mx_path)], capture_output=True, text=True)
+    if cp.returncode != 0:
+        errmsg = (f"Could not run cgmlst-dists on {str(allele_mx_path)}!")
+        raise OSError(errmsg + "\n\n" + cp.stderr)
 
-		df = read_table(StringIO(cp.stdout))
-		df.rename(columns = {"cgmlst-dists": "ids"}, inplace = True)
-		return df
+    df = read_table(StringIO(cp.stdout))
+    df.rename(columns = {"cgmlst-dists": "ids"}, inplace = True)
+    df = df.set_index('ids')
+    print("df from cgmlst-dists:")
+    print(df)
+    return df
 
 @app.get("/")
 def root():
