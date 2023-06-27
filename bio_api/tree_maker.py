@@ -163,6 +163,9 @@ def get_newick(node, parent_dist, leaf_names, newick='') -> str:
         return newick
 
 def make_tree(df: pd.DataFrame):
+    print("Input dataframe (distance matrix) for tree:")
+    print(df)
+
     m = df.values
     M = np.array(m)
     distArray = squareform(M)
