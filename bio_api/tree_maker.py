@@ -171,7 +171,7 @@ def make_tree(df: pd.DataFrame):
     distArray = squareform(M)
 
     # Perform single linkage
-    Z = linkage(distArray, 'single')
+    Z = linkage(M, 'single')
 
     # Get the list of leaf_names in the order they are in the distance matrix
     leaf_names = list(df.index)
