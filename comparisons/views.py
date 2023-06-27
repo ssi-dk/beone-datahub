@@ -68,14 +68,7 @@ def make_tree(request, comparison_id, treetype):
         messages.add_message(request, messages.ERROR, f'Unknown treetype: {request.treetype}')
     else:
         # Do different things depending on distance matrix status
-        if comparison.dm_status == 'REQUESTED':
-            msg = (f"There is already a pending distance matrix request for comparison {comparison.id}")
-            print(msg)
-            messages.add_message(request, messages.ERROR, msg)
-            return HttpResponseRedirect(reverse(comparison_list))
-        elif comparison.dm_status == 'VALID':
-            print(f"Reusing previous distance matrix for comparison {comparison.id}")
-        else:
+        if comparison.dm_status in ('NODATA', 'ERROR', 'OBSOLETE') or comparison.always_calculate_dm:
             # Get distance matrix
             print(f"Requesting distance matrix for comparison {comparison.pk}")
             comparison.dm_status = 'REQUESTED'
@@ -109,6 +102,14 @@ def make_tree(request, comparison_id, treetype):
                 msg = f"Error getting distance matrix for comparison {comparison.id}: no distance matrix in response"
                 print(msg)
                 messages.add_message(request, messages.INFO, msg)
+        elif comparison.dm_status == 'REQUESTED':
+            msg = (f"There is already a pending distance matrix request for comparison {comparison.id}")
+            print(msg)
+            messages.add_message(request, messages.ERROR, msg)
+            return HttpResponseRedirect(reverse(comparison_list))
+        else:
+            assert comparison.dm_status == 'VALID'  # We should only end up here in case dm_status is VALID
+            print(f"Reusing previous distance matrix for comparison {comparison.id}")
 
         # Get tree
         print("This is what distances loook like in db:")
