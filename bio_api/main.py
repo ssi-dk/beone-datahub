@@ -35,7 +35,7 @@ class DistanceMatrixRequest(ProcessingRequest):
 class HCTreeCalcRequest(ProcessingRequest):
     """Represents a REST request for a tree calculation based on hierarchical clustering.
     """
-    distances: list
+    data: list
     index: list
     method: str
 
@@ -118,10 +118,10 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
 def hc_tree(rq: HCTreeCalcRequest):
     response = {"job_id": rq.id}
     print("***rq.distances")
-    print(rq.distances)
+    print(rq.data)
     try:
         dist_dict = dict()
-        for allele_list in rq.distances:
+        for allele_list in rq.data:
             print("***allele_list")
             print(allele_list)
             id = allele_list.pop(0)
