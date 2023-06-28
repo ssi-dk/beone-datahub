@@ -64,10 +64,10 @@ def comparison_list(request):
 
 
 @login_required
-def make_tree(request, comparison_id, treetype):
+def make_tree(request, comparison_id, tree_type):
     comparison = Comparison.objects.get(pk=comparison_id)
-    if treetype not in TREE_TYPE_IDS:
-        messages.add_message(request, messages.ERROR, f'Unknown treetype: {treetype}')
+    if tree_type not in TREE_TYPE_IDS:
+        messages.add_message(request, messages.ERROR, f'Unknown tree type: {tree_type}')
     else:
         # Do different things depending on distance matrix status
         if comparison.dm_status in ('NODATA', 'ERROR', 'OBSOLETE') or comparison.always_calculate_dm:
@@ -130,16 +130,16 @@ def make_tree(request, comparison_id, treetype):
         raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/tree/hc/',
                 json={
                     'distances': dm,
-                    'method': treetype
+                    'method': tree_type
                     })
         json_response = (raw_response.json())
         print("JSON response:")
         print(json_response)
         if 'tree' in json_response:
-            msg = f"Received tree with method {treetype} for comparison with id {comparison.id}"
+            msg = f"Received tree with method {tree_type} for comparison with id {comparison.id}"
             print(msg)
             messages.add_message(request, messages.INFO, msg)
-            tree = Tree(tree_type=treetype, comparison=comparison, newick=json_response['tree'])
+            tree = Tree(tree_type=tree_type, comparison=comparison, newick=json_response['tree'])
             tree.save()
         elif 'error' in json_response:
             msg = json_response['error']

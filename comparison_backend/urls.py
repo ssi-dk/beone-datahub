@@ -26,5 +26,5 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='/login'), name='logout'),
     path('samples/', views.sample_list, name='sample_list'),
     path('comparisons/', views.comparison_list, name='comparison_list'),
-    path('comparisons/<int:comparison_id>/make_tree/<str:treetype>', views.make_tree, name='make_tree'),
+    path('comparisons/<int:comparison_id>/make_tree/<str:tree_type>', views.make_tree, name='make_tree'),
 ]
