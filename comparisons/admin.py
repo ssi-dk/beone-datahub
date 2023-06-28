@@ -29,7 +29,7 @@ admin.site.register(Tree, TreeAdmin)
 
 
 class ComparisonAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('species', 'created_by', 'sequences', 'distances')
 
 admin.site.register(Comparison, ComparisonAdmin)
 
