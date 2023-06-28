@@ -16,6 +16,16 @@ CALC_STATUSES = [
     (OBSOLETE, 'Obsolete'),
 ]
 
+# Tree types
+SINGLE = "single"
+COMPLETE = "complete"
+AVERAGE = "average"
+TREE_TYPES = [
+    (SINGLE, 'Single'),
+    (COMPLETE, 'Complete'),
+    (AVERAGE, 'Average'),
+]
+
 class Species(models.Model):
     name = models.CharField(max_length=40, unique=True)
     code = models.CharField(max_length=2, unique=True)
@@ -38,11 +48,6 @@ class DistanceMatrix(models.Model):
         verbose_name_plural = "distance matrices"
 
 
-class Tree(models.Model):
-    treetype = models.TextChoices
-    newick = models.TextField(default='()')
-
-
 class SequenceSet(models.Model):
     # Abstract base class that defines the basics for both Comparison and Cluster
     species = models.ForeignKey(Species, models.PROTECT)
@@ -62,10 +67,17 @@ class SequenceSet(models.Model):
 class Comparison(SequenceSet):
     distances = models.JSONField(blank=True, default=dict)
     always_calculate_dm = models.BooleanField(default=False)
-    dm_status = models.CharField(max_length=15, choices=CALC_STATUSES, default='NODATA')
+    dm_status = models.CharField(max_length=15, choices=CALC_STATUSES, default=NODATA)
     data_fields = ArrayField(models.CharField(max_length=25), blank=True, default=list)   # default=get_default_data_fields
     field_data = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
+
+
+class Tree(models.Model):
+    tree_type = models.CharField(max_length=10, choices=TREE_TYPES, default=SINGLE)
+    comparison = models.ForeignKey(Comparison, on_delete=models.CASCADE, null=True)
+    newick = models.TextField(default='()')
+
 
 class Cluster(SequenceSet):
     st = models.PositiveIntegerField()

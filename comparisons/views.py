@@ -13,8 +13,10 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 from bio_api.mongo.samples import API
-from comparisons.models import Species, DistanceMatrix, Tree, SequenceSet, Comparison
+from comparisons.models import Species, DistanceMatrix, Tree, SequenceSet, Comparison, TREE_TYPES
 from comparisons.forms import NewComparisonForm, DeleteDatasetForm, DashboardLauncherForm
+
+TREE_TYPE_IDS = [ t[0] for t in TREE_TYPES ]
 
 api = API(settings.MONGO_CONNECTION)
 
@@ -64,8 +66,8 @@ def comparison_list(request):
 @login_required
 def make_tree(request, comparison_id, treetype):
     comparison = Comparison.objects.get(pk=comparison_id)
-    if treetype not in ['single', 'complete']:
-        messages.add_message(request, messages.ERROR, f'Unknown treetype: {request.treetype}')
+    if treetype not in TREE_TYPE_IDS:
+        messages.add_message(request, messages.ERROR, f'Unknown treetype: {treetype}')
     else:
         # Do different things depending on distance matrix status
         if comparison.dm_status in ('NODATA', 'ERROR', 'OBSOLETE') or comparison.always_calculate_dm:
