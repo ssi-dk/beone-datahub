@@ -114,9 +114,20 @@ def make_tree(request, comparison_id, treetype):
         # Get tree
         print("This is what distances loook like in db:")
         print(comparison.distances)
+        index = comparison.distances['index']
+        columns = comparison.distances['columns']
+        data = comparison.distances['data']
+        assert index == columns
+        matrix_size = len(columns)
+        assert matrix_size == len(data)
+        dm = dict()
+        for i in range(matrix_size):
+            dm[columns[i]] = data[i]
+        print("This is the distance matrix I'll sned to Bio API:")
+        print(dm)
         raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/tree/hc/',
                 json={
-                    'data': comparison.distances['data'],  # TODO Maybe rename 'distances' to 'data' to make things a bit clearer,
+                    'data': dm,
                     'index': comparison.distances['index'],
                     'method': treetype
                     })
