@@ -35,7 +35,7 @@ class DistanceMatrix(models.Model):
     )
 
     class Meta:
-        verbose_name_plural = "distance Matrices"
+        verbose_name_plural = "distance matrices"
 
 
 class Tree(models.Model):
