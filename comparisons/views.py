@@ -139,7 +139,8 @@ def make_tree(request, comparison_id, treetype):
             msg = f"Received tree with method {treetype} for comparison with id {comparison.id}"
             print(msg)
             messages.add_message(request, messages.INFO, msg)
-            print(json_response['tree'])
+            tree = Tree(tree_type=treetype, comparison=comparison, newick=json_response['tree'])
+            tree.save()
         elif 'error' in json_response:
             msg = json_response['error']
             print(msg)
