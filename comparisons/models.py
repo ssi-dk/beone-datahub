@@ -75,7 +75,7 @@ class Comparison(SequenceSet):
 
 class Tree(models.Model):
     tree_type = models.CharField(max_length=10, choices=TREE_TYPES, default=SINGLE)
-    comparison = models.ForeignKey(Comparison, on_delete=models.CASCADE, null=True)
+    comparison = models.ForeignKey(Comparison, on_delete=models.SET_NULL, null=True)
     newick = models.TextField(default='()')
 
 
