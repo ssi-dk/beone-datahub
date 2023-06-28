@@ -123,7 +123,7 @@ def make_tree(request, comparison_id, treetype):
         dm = dict()
         for i in range(matrix_size):
             dm[columns[i]] = data[i]
-        print("This is the distance matrix I'll sned to Bio API:")
+        print("This is the distance matrix I'll send to Bio API:")
         print(dm)
         raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/tree/hc/',
                 json={
