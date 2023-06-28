@@ -35,8 +35,7 @@ class DistanceMatrixRequest(ProcessingRequest):
 class HCTreeCalcRequest(ProcessingRequest):
     """Represents a REST request for a tree calculation based on hierarchical clustering.
     """
-    data: list
-    index: list
+    distances: dict
     method: str
 
 
@@ -117,10 +116,10 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
 @app.post("/tree/hc/")
 def hc_tree(rq: HCTreeCalcRequest):
     response = {"job_id": rq.id}
-    print("***rq.data")
-    print(rq.data)
+    print("***rq.distances")
+    print(rq.distances)
     try:
-        dist_df: DataFrame = DataFrame.from_dict(rq.data)
+        dist_df: DataFrame = DataFrame.from_dict(rq.distances)
         tree = make_tree(dist_df)
         response['tree'] = tree
     except ValueError as e:

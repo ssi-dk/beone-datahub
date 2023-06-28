@@ -127,8 +127,7 @@ def make_tree(request, comparison_id, treetype):
         print(dm)
         raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/tree/hc/',
                 json={
-                    'data': dm,
-                    'index': comparison.distances['index'],
+                    'distances': dm,
                     'method': treetype
                     })
         json_response = (raw_response.json())
