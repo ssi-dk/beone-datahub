@@ -119,7 +119,7 @@ def hc_tree(rq: HCTreeCalcRequest):
     print("***rq.distances")
     print(rq.distances)
     try:
-        dist_df: DataFrame = DataFrame.from_dict(rq.distances)
+        dist_df: DataFrame = DataFrame.from_dict(rq.distances, orient='index')
         tree = make_tree(dist_df)
         response['tree'] = tree
     except ValueError as e:
