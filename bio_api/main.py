@@ -117,25 +117,10 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
 @app.post("/tree/hc/")
 def hc_tree(rq: HCTreeCalcRequest):
     response = {"job_id": rq.id}
-    print("***rq.distances")
+    print("***rq.data")
     print(rq.data)
     try:
-        dist_dict = dict()
-        for allele_list in rq.data:
-            print("***allele_list")
-            print(allele_list)
-            id = allele_list.pop(0)
-            dist_dict[id] = allele_list
-        print("***dist_dict")
-        print(dist_dict)
-
-        dist_df: DataFrame = DataFrame.from_dict(dist_dict)
-        print("***dist_df")
-        print(dist_df)
-        # Get rid of the header line
-        # dist_df = dist_df.tail(-1)
-        # Make the first column the index
-        # dist_df.set_index(list(dist_df)[0])
+        dist_df: DataFrame = DataFrame.from_dict(rq.data)
         tree = make_tree(dist_df)
         response['tree'] = tree
     except ValueError as e:
