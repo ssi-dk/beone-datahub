@@ -4,16 +4,16 @@ from django.contrib.postgres.fields import ArrayField
 
 # Calculation statuses
 NODATA = "NODATA"
-REQUESTED = "REQUESTED"
+PENDING = "PENDING"
 VALID = "VALID"
 ERROR = "ERROR"
 OBSOLETE = "OBSOLETE"
 CALC_STATUSES = [
     (NODATA, 'No data'),
-    (REQUESTED, 'Requested'),
+    (PENDING, 'Pending'),
     (VALID, 'Valid'),
     (ERROR, 'Request was unsuccesful'),
-    (OBSOLETE, 'No longer valid'),
+    (OBSOLETE, 'Obsolete'),
 ]
 
 class Species(models.Model):

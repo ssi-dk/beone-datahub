@@ -71,7 +71,7 @@ def make_tree(request, comparison_id, treetype):
         if comparison.dm_status in ('NODATA', 'ERROR', 'OBSOLETE') or comparison.always_calculate_dm:
             # Get distance matrix
             print(f"Requesting distance matrix for comparison {comparison.pk}")
-            comparison.dm_status = 'REQUESTED'
+            comparison.dm_status = 'PENDING'
             comparison.save()
             start_time = timezone.now()
             try:
@@ -102,7 +102,7 @@ def make_tree(request, comparison_id, treetype):
                 msg = f"Error getting distance matrix for comparison {comparison.id}: no distance matrix in response"
                 print(msg)
                 messages.add_message(request, messages.INFO, msg)
-        elif comparison.dm_status == 'REQUESTED':
+        elif comparison.dm_status == 'PENDING':
             msg = (f"There is already a pending distance matrix request for comparison {comparison.id}")
             print(msg)
             messages.add_message(request, messages.ERROR, msg)
