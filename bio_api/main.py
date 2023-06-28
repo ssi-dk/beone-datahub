@@ -115,12 +115,10 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
 
 @app.post("/tree/hc/")
 def hc_tree(rq: HCTreeCalcRequest):
-    response = {"job_id": rq.id}
-    print("***rq.distances")
-    print(rq.distances)
+    response = {"job_id": rq.id, "method": rq.method}
     try:
         dist_df: DataFrame = DataFrame.from_dict(rq.distances, orient='index')
-        tree = make_tree(dist_df)
+        tree = make_tree(dist_df, rq.method)
         response['tree'] = tree
     except ValueError as e:
         response['error'] = str(e)

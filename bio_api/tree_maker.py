@@ -34,7 +34,7 @@ def get_newick(node, parent_dist, leaf_names, newick='') -> str:
         newick = "(%s" % (newick)
         return newick
 
-def make_tree(df: pd.DataFrame):
+def make_tree(df: pd.DataFrame, method: str):
     print("Input dataframe (distance matrix) for tree:")
     print(df)
 
@@ -42,7 +42,7 @@ def make_tree(df: pd.DataFrame):
     M = np.array(m)
 
     # Perform single linkage
-    Z = linkage(M, 'single')
+    Z = linkage(M, method)
 
     # Get the list of leaf_names in the order they are in the distance matrix
     leaf_names = list(df.index)
