@@ -103,3 +103,4 @@ class PotentialOutbreak(models.Model):
     cluster = models.ForeignKey(Cluster, models.PROTECT)
     suspected_source = models.CharField(max_length=30)
     comparison = models.ManyToManyField(Comparison)
+    outbreak_id = models.IntegerField(null=True, blank=True)  # 'FUDnummer' (without prefix)
