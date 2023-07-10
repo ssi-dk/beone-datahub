@@ -39,11 +39,11 @@ class Comparison(SequenceSet):
     ERROR = "ERROR"
     OBSOLETE = "OBSOLETE"
     CALC_STATUSES = [
-        (NODATA, 'No data'),
-        (PENDING, 'Pending'),
-        (VALID, 'Valid'),
-        (ERROR, 'Request was unsuccesful'),
-        (OBSOLETE, 'Obsolete'),
+        (NODATA, "No data"),
+        (PENDING, "Pending"),
+        (VALID, "Valid"),
+        (ERROR, "Request was unsuccesful"),
+        (OBSOLETE, "Obsolete"),
     ]
 
     distances = models.JSONField(blank=True, default=dict)
@@ -60,9 +60,9 @@ class Tree(models.Model):
     COMPLETE = "complete"
     AVERAGE = "average"
     TREE_TYPES = [
-        (SINGLE, 'Single'),
-        (COMPLETE, 'Complete'),
-        (AVERAGE, 'Average'),
+        (SINGLE, "Single"),
+        (COMPLETE, "Complete"),
+        (AVERAGE, "Average"),
     ]
 
     tree_type = models.CharField(max_length=10, choices=TREE_TYPES, default=SINGLE)
@@ -83,8 +83,8 @@ class ComparisonTool(models.Model):
     CGMLST = "cgmlst"
     SNP = "snp"
     COMPARISON_TOOL_TYPES = [
-        (CGMLST, 'cgMLST'),
-        (SNP, 'SNP'),
+        (CGMLST, "cgMLST"),
+        (SNP, "SNP"),
     ]
 
     # Comparison tool statuses
@@ -92,15 +92,27 @@ class ComparisonTool(models.Model):
     ACCREDITED = "accredited"
     UNAVAILABLE = "unavailable"
     COMPARISON_TOOL_STATUSES = [
-        (TESTING, 'Testing'),
-        (ACCREDITED, 'Accredited'),
-        (UNAVAILABLE, 'Unavaliable'),
+        (TESTING, "Testing"),
+        (ACCREDITED, "Accredited"),
+        (UNAVAILABLE, "Unavailable"),
     ]
+
+    # Comparison execution models
+    DIRECT = "direct"
+    MONGODB_QUEUE = "mongodb_queue"
+    EXECUTION_MODELS = [
+        (DIRECT, "Direct"),
+        (MONGODB_QUEUE, "MongoDB Queue"),
+    ]
+
+    def default_exution_models(self):
+        return self.DIRECT
 
     type = models.CharField(max_length=8, choices=COMPARISON_TOOL_TYPES, default=CGMLST)
     name = models.CharField(max_length=20)
     version = models.CharField(max_length=8)
     status = models.CharField(max_length=11, choices=COMPARISON_TOOL_STATUSES, default=TESTING)
+    execution_model = ArrayField(models.CharField(max_length=13, choices=EXECUTION_MODELS), default=default_exution_models)
 
     class Meta:
         constraints = [
