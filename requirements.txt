@@ -23,3 +23,4 @@ starlette==0.25.0
 tomli==2.0.1
 typing_extensions==4.5.0
 urllib3==1.26.14
+django_dbml==0.6.0
