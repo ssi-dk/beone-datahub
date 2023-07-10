@@ -88,7 +88,7 @@ class Comparison(SequenceSet):
         (OBSOLETE, "Obsolete"),
     ]
 
-    #tool = models.ForeignKey(ComparisonTool, on_delete=models.PROTECT)
+    tool = models.ForeignKey(ComparisonTool, on_delete=models.PROTECT)
     distances = models.JSONField(blank=True, default=dict)
     always_calculate_dm = models.BooleanField(default=False)
     dm_status = models.CharField(max_length=15, choices=CALC_STATUSES, default=NODATA)
