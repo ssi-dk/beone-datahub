@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from comparisons.models import Species, DistanceMatrix, Tree, ComparisonTool, Cluster, PotentialOutbreak
+from comparisons.models import Species, Tree, ComparisonTool, Cluster, PotentialOutbreak
 from comparisons.models import Comparison
 
 
@@ -14,12 +14,6 @@ class BaseToolAdmin(admin.ModelAdmin):
     list_display = ('pk', 'type', 'name', 'version')
 
 admin.site.register(ComparisonTool, BaseToolAdmin)
-
-
-class DistanceMatrixAdmin(admin.ModelAdmin):
-    pass
-
-admin.site.register(DistanceMatrix, DistanceMatrixAdmin)
 
 
 class TreeAdmin(admin.ModelAdmin):

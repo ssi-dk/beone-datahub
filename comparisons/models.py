@@ -36,16 +36,6 @@ class Species(models.Model):
     def __str__(self):
         return self.name
 
-#TODO remove
-class DistanceMatrix(models.Model):
-    distances = ArrayField(
-        ArrayField(
-            models.CharField(max_length=30),
-        ),
-    )
-
-    class Meta:
-        verbose_name_plural = "distance matrices"
 
 
 class SequenceSet(models.Model):

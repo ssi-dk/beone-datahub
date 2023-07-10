@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 
 from bio_api.mongo.samples import API
-from comparisons.models import Species, DistanceMatrix, Tree, SequenceSet, Comparison, TREE_TYPES
+from comparisons.models import Species, Tree, SequenceSet, Comparison, TREE_TYPES
 from comparisons.forms import NewComparisonForm, DeleteDatasetForm, DashboardLauncherForm
 
 TREE_TYPE_IDS = [ t[0] for t in TREE_TYPES ]
