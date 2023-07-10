@@ -105,14 +105,14 @@ class ComparisonTool(models.Model):
         (MONGODB_QUEUE, "MongoDB Queue"),
     ]
 
-    def default_exution_models(self):
+    def default_execution_models(self):
         return self.DIRECT
 
     type = models.CharField(max_length=8, choices=COMPARISON_TOOL_TYPES, default=CGMLST)
     name = models.CharField(max_length=20)
     version = models.CharField(max_length=8)
     status = models.CharField(max_length=11, choices=COMPARISON_TOOL_STATUSES, default=TESTING)
-    execution_model = ArrayField(models.CharField(max_length=13, choices=EXECUTION_MODELS), default=default_exution_models)
+    execution_model = ArrayField(models.CharField(max_length=13, choices=EXECUTION_MODELS), default=default_execution_models)
 
     class Meta:
         constraints = [
