@@ -87,7 +87,7 @@ class Cluster(SequenceSet):
         return f"ST{self.st}#{self.cluster_number}"
 
 
-class BaseTool(models.Model):
+class ComparisonTool(models.Model):
     ANALYSIS_TYPES = [
         ('cgmlst', 'cgMLST'),
         ('snp', 'SNP'),
