@@ -2,29 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 
-# Calculation statuses
-NODATA = "NODATA"
-PENDING = "PENDING"
-VALID = "VALID"
-ERROR = "ERROR"
-OBSOLETE = "OBSOLETE"
-CALC_STATUSES = [
-    (NODATA, 'No data'),
-    (PENDING, 'Pending'),
-    (VALID, 'Valid'),
-    (ERROR, 'Request was unsuccesful'),
-    (OBSOLETE, 'Obsolete'),
-]
-
-# Tree types
-SINGLE = "single"
-COMPLETE = "complete"
-AVERAGE = "average"
-TREE_TYPES = [
-    (SINGLE, 'Single'),
-    (COMPLETE, 'Complete'),
-    (AVERAGE, 'Average'),
-]
 
 class Species(models.Model):
     name = models.CharField(max_length=40, unique=True)
@@ -55,6 +32,20 @@ class SequenceSet(models.Model):
 
 
 class Comparison(SequenceSet):
+    # Calculation statuses
+    NODATA = "NODATA"
+    PENDING = "PENDING"
+    VALID = "VALID"
+    ERROR = "ERROR"
+    OBSOLETE = "OBSOLETE"
+    CALC_STATUSES = [
+        (NODATA, 'No data'),
+        (PENDING, 'Pending'),
+        (VALID, 'Valid'),
+        (ERROR, 'Request was unsuccesful'),
+        (OBSOLETE, 'Obsolete'),
+    ]
+
     distances = models.JSONField(blank=True, default=dict)
     always_calculate_dm = models.BooleanField(default=False)
     dm_status = models.CharField(max_length=15, choices=CALC_STATUSES, default=NODATA)
@@ -64,6 +55,16 @@ class Comparison(SequenceSet):
 
 
 class Tree(models.Model):
+    # Tree types
+    SINGLE = "single"
+    COMPLETE = "complete"
+    AVERAGE = "average"
+    TREE_TYPES = [
+        (SINGLE, 'Single'),
+        (COMPLETE, 'Complete'),
+        (AVERAGE, 'Average'),
+    ]
+
     tree_type = models.CharField(max_length=10, choices=TREE_TYPES, default=SINGLE)
     comparison = models.ForeignKey(Comparison, on_delete=models.SET_NULL, null=True)
     newick = models.TextField(default='()')
