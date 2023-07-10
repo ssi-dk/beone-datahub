@@ -7,7 +7,6 @@ from os import getcwd
 
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
-from main.models import DataSet
 
 import pymongo
 
