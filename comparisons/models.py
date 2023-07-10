@@ -31,6 +31,48 @@ class SequenceSet(models.Model):
         return f"{self.pk} {self.created_by} {self.created_at}"
 
 
+class ComparisonTool(models.Model):
+    # Comparison tool types
+    CGMLST = "cgmlst"
+    SNP = "snp"
+    COMPARISON_TOOL_TYPES = [
+        (CGMLST, "cgMLST"),
+        (SNP, "SNP"),
+    ]
+
+    # Comparison tool statuses
+    TESTING = "testing"
+    ACCREDITED = "accredited"
+    UNAVAILABLE = "unavailable"
+    COMPARISON_TOOL_STATUSES = [
+        (TESTING, "Testing"),
+        (ACCREDITED, "Accredited"),
+        (UNAVAILABLE, "Unavailable"),
+    ]
+
+    # Comparison execution models
+    DIRECT = "direct"
+    MONGODB_QUEUE = "mongodb_queue"
+    EXECUTION_MODELS = [
+        (DIRECT, "Direct"),
+        (MONGODB_QUEUE, "MongoDB Queue"),
+    ]
+
+    type = models.CharField(max_length=8, choices=COMPARISON_TOOL_TYPES, default=CGMLST)
+    name = models.CharField(max_length=20)
+    version = models.CharField(max_length=8)
+    status = models.CharField(max_length=11, choices=COMPARISON_TOOL_STATUSES, default=TESTING)
+    execution_model = ArrayField(models.CharField(max_length=13, choices=EXECUTION_MODELS), default=list)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'version'], name="tool_name_version_unique"),
+        ]
+    
+    def __str__(self):
+        return f"{self.name} v.{self.version} ({self.type})"
+
+
 class Comparison(SequenceSet):
     # Calculation statuses
     NODATA = "NODATA"
@@ -46,6 +88,7 @@ class Comparison(SequenceSet):
         (OBSOLETE, "Obsolete"),
     ]
 
+    #tool = models.ForeignKey(ComparisonTool, on_delete=models.PROTECT)
     distances = models.JSONField(blank=True, default=dict)
     always_calculate_dm = models.BooleanField(default=False)
     dm_status = models.CharField(max_length=15, choices=CALC_STATUSES, default=NODATA)
@@ -76,51 +119,6 @@ class Cluster(SequenceSet):
 
     def __str__(self):
         return f"ST{self.st}#{self.cluster_number}"
-
-
-class ComparisonTool(models.Model):
-    # Comparison tool types
-    CGMLST = "cgmlst"
-    SNP = "snp"
-    COMPARISON_TOOL_TYPES = [
-        (CGMLST, "cgMLST"),
-        (SNP, "SNP"),
-    ]
-
-    # Comparison tool statuses
-    TESTING = "testing"
-    ACCREDITED = "accredited"
-    UNAVAILABLE = "unavailable"
-    COMPARISON_TOOL_STATUSES = [
-        (TESTING, "Testing"),
-        (ACCREDITED, "Accredited"),
-        (UNAVAILABLE, "Unavailable"),
-    ]
-
-    # Comparison execution models
-    DIRECT = "direct"
-    MONGODB_QUEUE = "mongodb_queue"
-    EXECUTION_MODELS = [
-        (DIRECT, "Direct"),
-        (MONGODB_QUEUE, "MongoDB Queue"),
-    ]
-
-    def default_execution_models(self):
-        return self.DIRECT
-
-    type = models.CharField(max_length=8, choices=COMPARISON_TOOL_TYPES, default=CGMLST)
-    name = models.CharField(max_length=20)
-    version = models.CharField(max_length=8)
-    status = models.CharField(max_length=11, choices=COMPARISON_TOOL_STATUSES, default=TESTING)
-    execution_model = ArrayField(models.CharField(max_length=13, choices=EXECUTION_MODELS), default=default_execution_models)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(fields=['name', 'version'], name="tool_name_version_unique"),
-        ]
-    
-    def __str__(self):
-        return f"{self.name} v.{self.version} ({self.type})"
 
 
 class PotentialOutbreak(models.Model):
