@@ -78,14 +78,28 @@ class Cluster(SequenceSet):
 
 
 class ComparisonTool(models.Model):
-    COMPARISON_TYPES = [
-        ('cgmlst', 'cgMLST'),
-        ('snp', 'SNP'),
+    # Comparison tool types
+    CGMLST = "cgmlst"
+    SNP = "snp"
+    COMPARISON_TOOL_TYPES = [
+        (CGMLST, 'cgMLST'),
+        (SNP, 'SNP'),
     ]
 
-    type = models.CharField(max_length=8, choices=COMPARISON_TYPES, default='cgmlst')
+    # Comparison tool statuses
+    TESTING = "testing"
+    ACCREDITED = "accredited"
+    UNAVAILABLE = "unavailable"
+    COMPARISON_TOOL_STATUSES = [
+        (TESTING, 'Testing'),
+        (ACCREDITED, 'Accredited'),
+        (UNAVAILABLE, 'Unavaliable'),
+    ]
+
+    type = models.CharField(max_length=8, choices=COMPARISON_TOOL_TYPES, default=CGMLST)
     name = models.CharField(max_length=20)
     version = models.CharField(max_length=8)
+    status = models.CharField(max_length=11, choices=COMPARISON_TOOL_STATUSES, default=TESTING)
 
     class Meta:
         constraints = [
