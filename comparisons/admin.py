@@ -17,7 +17,7 @@ admin.site.register(ComparisonTool, BaseToolAdmin)
 
 
 class TreeAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ['tree_type', 'comparison', 'newick']
 
 admin.site.register(Tree, TreeAdmin)
 
