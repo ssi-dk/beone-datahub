@@ -25,7 +25,7 @@
       <div class='overview-header-inner-bold'>Created at</div>
     </div>
     <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Modified at</div>
+      <div class='overview-header-inner-bold'>Edit</div>
     </div>
     <div class='overview-header'>
       <div class='overview-header-inner-bold'>Number of sequences</div>
@@ -52,7 +52,7 @@
       {{ comparison.created_at }}
     </div>
     <div class='overview-datacolumn'>
-      {{ comparison.modified_at }}
+      <a href="/admin/comparisons/comparison/{{ comparison.pk }}/change/" target="_blank">Edit with admin</a>
     </div>
     <div class='overview-datacolumn'>
       {{ comparison.sequences|length }}
