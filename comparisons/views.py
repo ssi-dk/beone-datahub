@@ -44,6 +44,7 @@ def comparison_list(request):
                 comparison = Comparison(
                     created_by=request.user,
                     species=form.cleaned_data['species'],
+                    tool=form.cleaned_data['tool'],
                     sequences=form.cleaned_data['sequences'],
                 )
                 try:

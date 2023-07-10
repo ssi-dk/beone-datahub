@@ -3,10 +3,11 @@ from email.policy import default
 from django import forms
 from django.contrib.postgres.forms import SimpleArrayField
 
-from comparisons.models import Species
+from comparisons.models import Species, ComparisonTool
 
 class NewComparisonForm(forms.Form):
     species = forms.ModelChoiceField(Species.objects.all(), label='Select species:')
+    tool = forms.ModelChoiceField(ComparisonTool.objects.all(), label='Select comparison tool:')
     sequences = SimpleArrayField(forms.CharField(), delimiter=" ", label='Sequences (delimited by space)')
 
 
