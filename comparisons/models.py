@@ -114,8 +114,14 @@ class Tree(models.Model):
 
 
 class Cluster(SequenceSet):
+    species = models.ForeignKey(Species, models.PROTECT)
     st = models.PositiveIntegerField()
     cluster_number = models.PositiveIntegerField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['species', 'st', 'cluster_number'], name="species_st_clusternumber_unique"),
+        ]
 
     def __str__(self):
         return f"ST{self.st}#{self.cluster_number}"
