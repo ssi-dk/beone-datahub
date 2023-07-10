@@ -78,12 +78,12 @@ class Cluster(SequenceSet):
 
 
 class ComparisonTool(models.Model):
-    ANALYSIS_TYPES = [
+    COMPARISON_TYPES = [
         ('cgmlst', 'cgMLST'),
         ('snp', 'SNP'),
     ]
 
-    type = models.CharField(max_length=8, choices=ANALYSIS_TYPES, default='cgmlst')
+    type = models.CharField(max_length=8, choices=COMPARISON_TYPES, default='cgmlst')
     name = models.CharField(max_length=20)
     version = models.CharField(max_length=8)
 
