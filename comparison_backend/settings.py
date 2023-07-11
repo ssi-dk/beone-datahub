@@ -144,8 +144,8 @@ The first element in each tuple must refer to an entry in MONGO_FIELD_MAPPING.
 The second element will be used as column header."""
 SAMPLE_VIEW_COLUMNS = [
     ('sequence_id', 'Sequence ID'),
-    ('org', 'Organization'),
-    ('name', 'Name'),
+    ('org', 'Institution'),
+    ('name', 'Sample ID'),
     ('species', 'Species'),
     # ('sampling_date', 'Sampling Date'),
     ('sequence_type', 'Sequence Type'),
