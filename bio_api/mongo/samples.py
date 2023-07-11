@@ -5,7 +5,8 @@ from bson.objectid import ObjectId
 #TODO Make this a configurable item somehow.
 FIELD_MAPPING: dict = {
     'org': 'categories.sample_info.summary.institution',
-    'name': 'categories.sample_info.summary.sample_name',
+    'sequence_id': 'categories.sample_info.summary.sample_name',
+    'name': 'name',
     'species': 'categories.species_detection.summary.detected_species',
     'allele_profile': 'categories.cgmlst.report.data.alleles',
     'sequence_type': 'categories.cgmlst.report.data.sequence_type'
@@ -58,6 +59,7 @@ class API:
         return self.db.samples.aggregate(pipeline)
 
 
+    # TODO: this method is obsolete, but maybe some of the code can be reused
     def get_samples_from_keys(
         self,
         key_list:list,
@@ -122,12 +124,13 @@ class API:
         sequence_ids:list
     ):
         print(sequence_ids)
+        sequence_id_field = FIELD_MAPPING['sequence_id']
         pipeline = list()
         pipeline.append(
             {'$match':
                 {'$or':
                     [
-                        {'categories.sample_info.summary.sample_name': sequence_id}
+                        {sequence_id_field: sequence_id}
                         for sequence_id in sequence_ids
                     ]
                 }
