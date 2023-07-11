@@ -145,7 +145,7 @@ The second element will be used as column header."""
 SAMPLE_VIEW_COLUMNS = [
     ('sequence_id', 'Sequence ID'),
     ('org', 'Institution'),
-    ('name', 'Sample ID'),
+    ('sample_id', 'Sample ID'),
     ('species', 'Species'),
     # ('sampling_date', 'Sampling Date'),
     ('sequence_type', 'Sequence Type'),

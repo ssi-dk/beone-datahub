@@ -4,9 +4,9 @@ from bson.objectid import ObjectId
 
 #TODO Make this a configurable item somehow.
 FIELD_MAPPING: dict = {
-    'org': 'categories.sample_info.summary.institution',
+    'institution': 'categories.sample_info.summary.institution',
     'sequence_id': 'categories.sample_info.summary.sample_name',
-    'name': 'name',
+    'sample_id': 'name',
     'species': 'categories.species_detection.summary.detected_species',
     'allele_profile': 'categories.cgmlst.report.data.alleles',
     'sequence_type': 'categories.cgmlst.report.data.sequence_type'
@@ -24,10 +24,6 @@ class API:
         species_name: str = None,
         fields: set = set(FIELD_MAPPING.keys())
     ):
-
-        # Ensure we always have the name field in the set
-        fields.add('name')
-
         pipeline = list()
 
         # Match
