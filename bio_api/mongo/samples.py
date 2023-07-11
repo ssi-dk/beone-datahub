@@ -119,17 +119,6 @@ class API:
         self,
         sequence_ids:list
     ):
-        print(sequence_ids)
         sequence_id_field = FIELD_MAPPING['sequence_id']
-        pipeline = list()
-        pipeline.append(
-            {'$match':
-                {'$or':
-                    [
-                        {sequence_id_field: sequence_id}
-                        for sequence_id in sequence_ids
-                    ]
-                }
-            }
-        )
-        return self.db.samples.aggregate(pipeline)
+        cursor = self.db.samples.find({sequence_id_field: {'$in': sequence_ids}})
+        return cursor

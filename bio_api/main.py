@@ -90,6 +90,8 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
     guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
     dots as separators, like <sample_name>.ssi.dk
     """
+    print("Requesting distance matrix with these ids:")
+    print(rq.sequence_ids)
     mongo_cursor = sapi.get_sequences_from_sequence_ids(rq.sequence_ids)
     try:
         allele_mx_df: DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
