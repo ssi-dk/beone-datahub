@@ -92,11 +92,20 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
     """
     print("Requesting distance matrix with these ids:")
     print(rq.sequence_ids)
-    mongo_cursor = sapi.get_sequences_from_sequence_ids(rq.sequence_ids)
+    try:
+        mongo_cursor = sapi.get_sequences_from_sequence_ids(rq.sequence_ids, assert_count=True)
+    except AssertionError as e:
+        return {
+        "job_id": rq.id,
+        "error": e
+        }
     try:
         allele_mx_df: DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
     except StopIteration as e:
-        print(e)
+        return {
+        "job_id": rq.id,
+        "error": e
+        }
     dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df, rq.id)
     return {
         "job_id": rq.id,

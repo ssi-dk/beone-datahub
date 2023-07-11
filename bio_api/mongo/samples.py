@@ -117,8 +117,13 @@ class API:
 
     def get_sequences_from_sequence_ids(
         self,
-        sequence_ids:list
+        sequence_ids:list,
+        assert_count: bool = False
     ):
         sequence_id_field = FIELD_MAPPING['sequence_id']
         cursor = self.db.samples.find({sequence_id_field: {'$in': sequence_ids}})
+        if assert_count:
+            number_found = len(list(cursor))
+            assert number_found == len(sequence_ids)
+            cursor.rewind()
         return cursor
