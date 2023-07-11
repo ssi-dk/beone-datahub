@@ -102,11 +102,7 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
         try:
             allele_mx_df: DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
         except StopIteration as e:
-            return {
-            "job_id": rq.id,
-            "unmatched": unmatched,
-            "error": e
-        }
+            print(e)
         dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df, rq.id)
         return {
             "job_id": rq.id,

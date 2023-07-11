@@ -87,7 +87,7 @@ def make_tree(request, comparison_id, tree_type):
                 print(e)
                 messages.add_message(request, messages.ERROR, e)
                 return HttpResponseRedirect(reverse(comparison_list))
-            if 'distance_matrix' in json_response:
+            if not 'error' in json_response:
                 dist_mx_records = json_response['distance_matrix']
                 print("Distance matrix received:")
                 print(dist_mx_records)
@@ -100,11 +100,17 @@ def make_tree(request, comparison_id, tree_type):
                 messages.add_message(request, messages.INFO, msg)
                 comparison.save()  # Make sure we have the distance matrix in case we don't get the tree
             else:
+                msg = f"Error getting distance matrix for comparison {comparison.id}"
+                messages.add_message(request, messages.ERROR, msg)
+                print(msg)
+                print(json_response['error'])
+                messages.add_message(request, messages.ERROR, json_response['error'])
+                if 'unmatched' in json_response:
+                    print("Unmatched:")
+                    print(json_response['unmatched'])
                 comparison.dm_status = "ERROR"
                 comparison.save()
-                msg = f"Error getting distance matrix for comparison {comparison.id}: no distance matrix in response"
-                print(msg)
-                messages.add_message(request, messages.INFO, msg)
+                return HttpResponseRedirect(reverse(comparison_list))
         elif comparison.dm_status == 'PENDING':
             msg = (f"There is already a pending distance matrix request for comparison {comparison.id}")
             print(msg)
