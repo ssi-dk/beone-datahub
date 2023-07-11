@@ -38,4 +38,7 @@ class Command(BaseCommand):
             {'$sample': { 'size': options['count'] }},
             {'$project' : { '_id' : 0, 'categories.sample_info.summary.sample_name': 1}}
             ])
-        print(list(random_sequences))
+        ids = list()
+        for s in random_sequences:
+            ids.append(s['categories']['sample_info']['summary']['sample_name'])
+        self.stdout.write(' '.join(ids))
