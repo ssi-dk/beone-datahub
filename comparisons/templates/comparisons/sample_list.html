@@ -30,13 +30,19 @@
     {% else  %}
     <div class="overview-header overview-firstcol-border">
     {% endif %}
-    <div class="overview-header-inner-bold">Organization</div>
+    <div class="overview-header-inner-bold">Sequence ID</div>
       <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
     </div>
     <div class="overview-header">
       <div class="overview-header-inner-bold">Name</div>
+      <div class="overview-header-inner">
+        <span>{filter}</span>
+      </div>
+    </div>
+    <div class="overview-header">
+      <div class="overview-header-inner-bold">Institution</div>
       <div class="overview-header-inner">
         <span>{filter}</span>
       </div>
@@ -81,10 +87,13 @@
       </div>
       {% endif %}
       <div class="overview-datacolumn">
-        {{ sample.org }}
+        {{ sample.sequence_id }}
       </div>
       <div class="overview-datacolumn">
         {{ sample.name }}
+      </div>
+      <div class="overview-datacolumn">
+        {{ sample.org }}
       </div>
       <div class="overview-datacolumn">
         {{ sample.species }}

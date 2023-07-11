@@ -143,6 +143,7 @@ will necessarily be shown on the web page, but maybe this should be changed).
 The first element in each tuple must refer to an entry in MONGO_FIELD_MAPPING.
 The second element will be used as column header."""
 SAMPLE_VIEW_COLUMNS = [
+    ('sequence_id', 'Sequence ID'),
     ('org', 'Organization'),
     ('name', 'Name'),
     ('species', 'Species'),
