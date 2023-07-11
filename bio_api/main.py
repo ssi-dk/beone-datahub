@@ -40,7 +40,7 @@ class HCTreeCalcRequest(ProcessingRequest):
 
 
 def translate_bifrost_row(mongo_item):
-    return mongo_item['allele_profile']  #[0]
+    return mongo_item['categories']['cgmlst']['report']['data']['alleles']  #[0]
 
 def allele_mx_from_bifrost_mongo(mongo_cursor):
     # Generate an allele matrix with all the allele profiles from the mongo cursor.
@@ -90,24 +90,16 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
     guaranteed to be unique, one way of getting around it would be to implement a namespace structure with
     dots as separators, like <sample_name>.ssi.dk
     """
-    mongo_keys = [ {'name': name} for name in rq.sequence_ids]
-    mongo_cursor, unmatched = sapi.get_samples_from_keys(mongo_keys)
-    if len(unmatched) > 0:
-        return {
-            "job_id": rq.id,
-            "error": "Some Mongo keys were unmatched",
-            "unmatched": unmatched
-            }
-    else:
-        try:
-            allele_mx_df: DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
-        except StopIteration as e:
-            print(e)
-        dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df, rq.id)
-        return {
-            "job_id": rq.id,
-            "distance_matrix": dist_mx_df.to_dict(orient='tight')
-            }
+    mongo_cursor = sapi.get_sequences_from_sequence_ids(rq.sequence_ids)
+    try:
+        allele_mx_df: DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)
+    except StopIteration as e:
+        print(e)
+    dist_mx_df: DataFrame = dist_mat_from_allele_profile(allele_mx_df, rq.id)
+    return {
+        "job_id": rq.id,
+        "distance_matrix": dist_mx_df.to_dict(orient='tight')
+        }
 
 @app.post("/tree/hc/")
 def hc_tree(rq: HCTreeCalcRequest):

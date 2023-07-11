@@ -116,3 +116,21 @@ class API:
 
         # MongoDB CommandCursor cannot rewind, so we make a new one
         return (self.db.samples.aggregate(pipeline), unmatched)
+
+    def get_sequences_from_sequence_ids(
+        self,
+        sequence_ids:list
+    ):
+        print(sequence_ids)
+        pipeline = list()
+        pipeline.append(
+            {'$match':
+                {'$or':
+                    [
+                        {'categories.sample_info.summary.sample_name': sequence_id}
+                        for sequence_id in sequence_ids
+                    ]
+                }
+            }
+        )
+        return self.db.samples.aggregate(pipeline)
