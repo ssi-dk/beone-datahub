@@ -26,36 +26,33 @@ def allele_generator():
         locus += 1
 
 class Command(BaseCommand):
-    help = "Generate fake samples with allele profiles in MongoDB."
+    help = "Get at list of random sequence ids separated by spaces."
 
     def add_arguments(self, parser):
-        parser.add_argument('--count', type=int, default=1, help="Number of fake samples to generate.")
+        parser.add_argument('--count', type=int, default=1, help="Number of sequence ids to get.")
 
     def handle(self, *args, **options):
-
         connection = pymongo.MongoClient(settings.MONGO_CONNECTION)
         db = connection.get_database()
-        self.stdout.write(f'Currently MongoDB contains {str(db.samples.count_documents({}))} samples.')
-        run_name = rndstr(10)
-        self.stdout.write(f"Fake run name: {run_name}")
-        self.stdout.write(f"Will create {options['count']} fake sample(s).")
-        template_file = Path(getcwd(), 'comparisons', 'management', 'commands', 'fakesample_template.json')
+        random_sequences = db.samples.aggregate([{ '$sample': { 'size': options['count'] }}])
+        for s in random_sequences:
+            self.stdout.write('hej')
 
-        for n in range(0, options['count']):
-            with open(template_file, 'r') as template:
-                sample = json.load(template)
-            sample_name = rndstr(10)
-            self.stdout.write(f"Short sample name: {sample_name}")
-            sample['name'] = sample_name
-            long_name = run_name + '_' + sample_name
-            sample['categories']['sample_info']['summary']['sample_name'] = long_name
-            sample['categories']['cgmlst']['summary']['call_percent'] = rndpct()
-            for locus in allele_generator():
-                sample['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
-            result = db.samples.insert_one(sample)
-            if result.acknowledged:
-                self.stdout.write(self.style.SUCCESS(f"Sample {long_name} added to MongoDB."))
-            else:
-                self.stdout.write(self.style.ERROR(f"Could not add sample {long_name} in MongoDB!"))
+        # for n in range(0, options['count']):
+        #     with open(template_file, 'r') as template:
+        #         sample = json.load(template)
+        #     sample_name = rndstr(10)
+        #     self.stdout.write(f"Short sample name: {sample_name}")
+        #     sample['name'] = sample_name
+        #     long_name = run_name + '_' + sample_name
+        #     sample['categories']['sample_info']['summary']['sample_name'] = long_name
+        #     sample['categories']['cgmlst']['summary']['call_percent'] = rndpct()
+        #     for locus in allele_generator():
+        #         sample['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
+        #     result = db.samples.insert_one(sample)
+        #     if result.acknowledged:
+        #         self.stdout.write(self.style.SUCCESS(f"Sample {long_name} added to MongoDB."))
+        #     else:
+        #         self.stdout.write(self.style.ERROR(f"Could not add sample {long_name} in MongoDB!"))
         
-        self.stdout.write(f'MongoDB now contains {str(db.samples.count_documents({}))} samples.')
+        # self.stdout.write(f'MongoDB now contains {str(db.samples.count_documents({}))} samples.')
