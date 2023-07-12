@@ -1,5 +1,5 @@
 {
-    "name": "SAMPLE_SHORTNAME HERE",
+    "name": "Sample ID here",
     "components": [
         {
             "name": "chewbbaca__v1.0.5__",
@@ -20,7 +20,7 @@
         "sample_info": {
             "summary": {
                 "institution": "SSI",
-                "sample_name":"INSERT_RUN_NAME_HERE_INSERT_SAMPLE_SHORTNAME HERE"
+                "sample_name":"Sequence ID here"
             }
         },
         "cgmlst": {
