@@ -41,6 +41,8 @@ class Command(BaseCommand):
         template_file = Path(getcwd(), 'comparisons', 'management', 'commands', 'fakesample_template.json')
 
         for n in range(0, options['count']):
+
+            # Create fake sequence document
             with open(template_file, 'r') as template:
                 sequence = json.load(template)
             sample_id = rndstr(10)
@@ -55,5 +57,7 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f"Sequence {sequence_id} added to MongoDB"))
             else:
                 self.stdout.write(self.style.ERROR(f"Could not add sequence {sequence_id} in MongoDB!"))
+
+            #TODO Create fake metadata documents
         
         self.stdout.write(f'MongoDB now contains {str(mongo_api.db.samples.count_documents({}))} sequences')
