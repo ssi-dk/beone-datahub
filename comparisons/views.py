@@ -18,7 +18,7 @@ from comparisons.forms import NewComparisonForm
 
 TREE_TYPE_IDS = [ t[0] for t in Tree.TREE_TYPES ]
 
-api = MongoAPI(settings.MONGO_CONNECTION)
+mongo_api = MongoAPI(settings.MONGO_CONNECTION)
 
 def redirect_root(request):
     if request.user.is_authenticated:
@@ -30,7 +30,7 @@ def redirect_root(request):
 def sample_list(request):
     # TODO use entry[1] for template header line
     fields_to_get = { entry[0] for entry in settings.SAMPLE_VIEW_COLUMNS }
-    samples = api.get_samples(fields=fields_to_get)
+    samples = mongo_api.get_samples(fields=fields_to_get)
     return render(request, 'comparisons/sample_list.html',{
         'samples': samples,
         })
