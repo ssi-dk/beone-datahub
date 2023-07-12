@@ -34,27 +34,26 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         mongo_api = mongo.MongoAPI(settings.MONGO_CONNECTION)
-        self.stdout.write(f'Currently MongoDB contains {str(mongo_api.db.samples.count_documents({}))} samples.')
+        self.stdout.write(f'Currently MongoDB contains {str(mongo_api.db.samples.count_documents({}))} sequences')
         run_name = rndstr(10)
         self.stdout.write(f"Fake run name: {run_name}")
-        self.stdout.write(f"Will create {options['count']} fake sample(s).")
+        self.stdout.write(f"Will now create {options['count']} fake sequence(s)")
         template_file = Path(getcwd(), 'comparisons', 'management', 'commands', 'fakesample_template.json')
 
         for n in range(0, options['count']):
             with open(template_file, 'r') as template:
-                sample = json.load(template)
-            sample_name = rndstr(10)
-            self.stdout.write(f"Short sample name: {sample_name}")
-            sample['name'] = sample_name
-            long_name = run_name + '_' + sample_name
-            sample['categories']['sample_info']['summary']['sample_name'] = long_name
-            sample['categories']['cgmlst']['summary']['call_percent'] = rndpct()
+                sequence = json.load(template)
+            sample_id = rndstr(10)
+            sequence['name'] = sample_id
+            sequence_id = run_name + '_' + sample_id
+            sequence['categories']['sample_info']['summary']['sample_name'] = sequence_id
+            sequence['categories']['cgmlst']['summary']['call_percent'] = rndpct()
             for locus in allele_generator():
-                sample['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
-            result = mongo_api.db.samples.insert_one(sample)
+                sequence['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
+            result = mongo_api.db.samples.insert_one(sequence)
             if result.acknowledged:
-                self.stdout.write(self.style.SUCCESS(f"Sample {long_name} added to MongoDB."))
+                self.stdout.write(self.style.SUCCESS(f"Sequence {sequence_id} added to MongoDB"))
             else:
-                self.stdout.write(self.style.ERROR(f"Could not add sample {long_name} in MongoDB!"))
+                self.stdout.write(self.style.ERROR(f"Could not add sequence {sequence_id} in MongoDB!"))
         
-        self.stdout.write(f'MongoDB now contains {str(mongo_api.db.samples.count_documents({}))} samples.')
+        self.stdout.write(f'MongoDB now contains {str(mongo_api.db.samples.count_documents({}))} sequences')
