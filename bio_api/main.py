@@ -10,12 +10,12 @@ from pydantic import BaseModel
 from fastapi import FastAPI
 from pandas import DataFrame, read_table
 
-from persistence import samples
+from persistence import mongo
 from tree_maker import make_tree
 
 app = FastAPI()
 mongo_connection = getenv('MONGO_CONNECTION')
-sapi = samples.MongoAPI(mongo_connection, samples.FIELD_MAPPING)
+mongo_api = mongo.MongoAPI(mongo_connection, mongo.FIELD_MAPPING)
 
 TMPDIR = getenv('TMPDIR', '/tmp')
 
@@ -93,8 +93,8 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
     print("Requesting distance matrix with these ids:")
     print(rq.sequence_ids)
     try:
-        mongo_cursor = sapi.get_sequences(rq.sequence_ids)
-    except samples.MongoAPIError as e:
+        mongo_cursor = mongo_api.get_sequences(rq.sequence_ids)
+    except mongo.MongoAPIError as e:
         return {
         "job_id": rq.id,
         "error": str(e)
