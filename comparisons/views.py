@@ -12,7 +12,7 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-from bio_api.mongo.samples import MongoAPI
+from bio_api.persistence.samples import MongoAPI
 from comparisons.models import Species, Tree, SequenceSet, Comparison
 from comparisons.forms import NewComparisonForm
 

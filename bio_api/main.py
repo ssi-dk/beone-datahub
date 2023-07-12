@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from fastapi import FastAPI
 from pandas import DataFrame, read_table
 
-from mongo import samples
+from persistence import samples
 from tree_maker import make_tree
 
 app = FastAPI()
