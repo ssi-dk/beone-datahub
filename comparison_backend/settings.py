@@ -138,6 +138,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # MONGO_CONNECTION = 'mongodb://mongo:27017/beone'
 MONGO_CONNECTION = 'mongodb://mongo:27017/bifrost_test'
 
+METADATA_SOURCES = [
+    {'name': 'lims', 'collection': 'test_lims_metadata'},
+    {'name': 'tbr', 'collection': 'test_tbr_metadata'},
+    {'name': 'manual', 'collection': 'test_manual_metadata'}
+]
+
 """Fields that will be fetched from MongoDB when viewing a dataset (currently not all of them
 will necessarily be shown on the web page, but maybe this should be changed).
 The first element in each tuple must refer to an entry in MONGO_FIELD_MAPPING.
