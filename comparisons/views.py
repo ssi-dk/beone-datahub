@@ -28,6 +28,7 @@ def redirect_root(request):
     
 @login_required
 def sample_list(request):
+    # TODO use entry[1] for template header line
     fields_to_get = { entry[0] for entry in settings.SAMPLE_VIEW_COLUMNS }
     samples = api.get_samples(fields=fields_to_get)
     return render(request, 'comparisons/sample_list.html',{
