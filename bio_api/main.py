@@ -94,10 +94,10 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
     print(rq.sequence_ids)
     try:
         mongo_cursor = sapi.get_sequences(rq.sequence_ids)
-    except AssertionError as e:
+    except samples.MongoAPIError as e:
         return {
         "job_id": rq.id,
-        "error": e
+        "error": str(e)
         }
     try:
         allele_mx_df: DataFrame = allele_mx_from_bifrost_mongo(mongo_cursor)

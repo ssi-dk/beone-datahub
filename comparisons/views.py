@@ -77,16 +77,11 @@ def make_tree(request, comparison_id, tree_type):
             comparison.dm_status = 'PENDING'
             comparison.save()
             start_time = timezone.now()
-            try:
-                raw_response = requests.post(
-                    f'http://bio_api:{str(settings.BIO_API_PORT)}/distance_matrix/from_ids',
-                    json={'sequence_ids': comparison.sequences},
-                    timeout=5)
-                json_response = (raw_response.json())
-            except Exception as e:
-                print(e)
-                messages.add_message(request, messages.ERROR, e)
-                return HttpResponseRedirect(reverse(comparison_list))
+            raw_response = requests.post(
+                f'http://bio_api:{str(settings.BIO_API_PORT)}/distance_matrix/from_ids',
+                json={'sequence_ids': comparison.sequences},
+                timeout=5)
+            json_response = (raw_response.json())
             if not 'error' in json_response:
                 dist_mx_records = json_response['distance_matrix']
                 print("Distance matrix received:")
@@ -103,7 +98,7 @@ def make_tree(request, comparison_id, tree_type):
                 msg = f"Error getting distance matrix for comparison {comparison.id}"
                 messages.add_message(request, messages.ERROR, msg)
                 print(msg)
-                print(json_response['error'])
+                print(json_response)
                 messages.add_message(request, messages.ERROR, json_response['error'])
                 if 'unmatched' in json_response:
                     print("Unmatched:")

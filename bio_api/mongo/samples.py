@@ -12,6 +12,11 @@ FIELD_MAPPING: dict = {
     'sequence_type': 'categories.cgmlst.report.data.sequence_type'
 }
 
+
+class MongoAPIError(Exception):
+    pass
+
+
 class MongoAPI:
     def __init__(self, connection_string: str, field_mapping: dict=FIELD_MAPPING):
         self.connection = pymongo.MongoClient(connection_string)
@@ -121,5 +126,5 @@ class MongoAPI:
         query = {sequence_id_field: {'$in': sequence_ids}}
         document_count = self.db.samples.count_documents(query)
         if list_length != document_count:
-            print(f"You asked for {list_length} documents, but the number of matching documents is {document_count}.")
+            raise MongoAPIError (f"You asked for {list_length} documents, but the number of matching documents is {document_count}.")
         return self.db.samples.find(query)
