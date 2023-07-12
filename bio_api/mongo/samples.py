@@ -4,7 +4,7 @@ from bson.objectid import ObjectId
 
 #TODO Make this a configurable item somehow.
 FIELD_MAPPING: dict = {
-    'institution': 'categories.sample_info.summary.institution',
+    'owner': 'categories.sample_info.summary.institution',
     'sequence_id': 'categories.sample_info.summary.sample_name',
     'sample_id': 'name',
     'species': 'categories.species_detection.summary.detected_species',
