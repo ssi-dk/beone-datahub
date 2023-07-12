@@ -121,7 +121,8 @@ class API:
         assert_count: bool = False
     ):
         sequence_id_field = FIELD_MAPPING['sequence_id']
-        cursor = self.db.samples.find({sequence_id_field: {'$in': sequence_ids}})
+        query = {sequence_id_field: {'$in': sequence_ids}}
+        cursor = self.db.samples.find(query)
         if assert_count:
             number_found = len(list(cursor))
             assert number_found == len(sequence_ids)
