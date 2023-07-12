@@ -115,16 +115,11 @@ class API:
         # MongoDB CommandCursor cannot rewind, so we make a new one
         return (self.db.samples.aggregate(pipeline), unmatched)
 
-    def get_sequences_from_sequence_ids(
-        self,
-        sequence_ids:list,
-        assert_count: bool = False
-    ):
+    def get_sequences(self, sequence_ids:list):
+        list_length = len(sequence_ids)
         sequence_id_field = FIELD_MAPPING['sequence_id']
         query = {sequence_id_field: {'$in': sequence_ids}}
-        cursor = self.db.samples.find(query)
-        if assert_count:
-            number_found = len(list(cursor))
-            assert number_found == len(sequence_ids)
-            cursor.rewind()
-        return cursor
+        document_count = self.db.samples.count_documents(query)
+        if list_length != document_count:
+            print(f"You asked for {list_length} documents, but the number of matching documents is {document_count}.")
+        return self.db.samples.find(query)

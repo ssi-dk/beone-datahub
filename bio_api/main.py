@@ -93,7 +93,7 @@ def dist_mat_from_ids(rq: DistanceMatrixRequest):
     print("Requesting distance matrix with these ids:")
     print(rq.sequence_ids)
     try:
-        mongo_cursor = sapi.get_sequences_from_sequence_ids(rq.sequence_ids, assert_count=True)
+        mongo_cursor = sapi.get_sequences(rq.sequence_ids)
     except AssertionError as e:
         return {
         "job_id": rq.id,
