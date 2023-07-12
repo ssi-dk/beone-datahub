@@ -15,7 +15,7 @@ from tree_maker import make_tree
 
 app = FastAPI()
 mongo_connection = getenv('MONGO_CONNECTION')
-sapi = samples.API(mongo_connection, samples.FIELD_MAPPING)
+sapi = samples.MongoAPI(mongo_connection, samples.FIELD_MAPPING)
 
 TMPDIR = getenv('TMPDIR', '/tmp')
 

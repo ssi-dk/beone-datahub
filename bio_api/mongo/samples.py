@@ -12,7 +12,7 @@ FIELD_MAPPING: dict = {
     'sequence_type': 'categories.cgmlst.report.data.sequence_type'
 }
 
-class API:
+class MongoAPI:
     def __init__(self, connection_string: str, field_mapping: dict=FIELD_MAPPING):
         self.connection = pymongo.MongoClient(connection_string)
         self.db = self.connection.get_database()

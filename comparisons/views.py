@@ -12,13 +12,13 @@ from django.db import IntegrityError
 from django.contrib.auth.models import User
 from django.utils import timezone
 
-from bio_api.mongo.samples import API
+from bio_api.mongo.samples import MongoAPI
 from comparisons.models import Species, Tree, SequenceSet, Comparison
 from comparisons.forms import NewComparisonForm
 
 TREE_TYPE_IDS = [ t[0] for t in Tree.TREE_TYPES ]
 
-api = API(settings.MONGO_CONNECTION)
+api = MongoAPI(settings.MONGO_CONNECTION)
 
 def redirect_root(request):
     if request.user.is_authenticated:
