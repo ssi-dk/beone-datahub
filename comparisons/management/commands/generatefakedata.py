@@ -8,7 +8,7 @@ from os import getcwd
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
-import pymongo
+from bio_api.persistence import mongo
 
 def rndstr(length):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
@@ -33,9 +33,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        connection = pymongo.MongoClient(settings.MONGO_CONNECTION)
-        db = connection.get_database()
-        self.stdout.write(f'Currently MongoDB contains {str(db.samples.count_documents({}))} samples.')
+        mongo_api = mongo.MongoAPI(settings.MONGO_CONNECTION)
+        self.stdout.write(f'Currently MongoDB contains {str(mongo_api.db.samples.count_documents({}))} samples.')
         run_name = rndstr(10)
         self.stdout.write(f"Fake run name: {run_name}")
         self.stdout.write(f"Will create {options['count']} fake sample(s).")
@@ -52,10 +51,10 @@ class Command(BaseCommand):
             sample['categories']['cgmlst']['summary']['call_percent'] = rndpct()
             for locus in allele_generator():
                 sample['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
-            result = db.samples.insert_one(sample)
+            result = mongo_api.db.samples.insert_one(sample)
             if result.acknowledged:
                 self.stdout.write(self.style.SUCCESS(f"Sample {long_name} added to MongoDB."))
             else:
                 self.stdout.write(self.style.ERROR(f"Could not add sample {long_name} in MongoDB!"))
         
-        self.stdout.write(f'MongoDB now contains {str(db.samples.count_documents({}))} samples.')
+        self.stdout.write(f'MongoDB now contains {str(mongo_api.db.samples.count_documents({}))} samples.')
