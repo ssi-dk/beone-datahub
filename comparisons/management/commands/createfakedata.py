@@ -7,6 +7,7 @@ from os import getcwd
 
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
+from copy import deepcopy
 
 from bio_api.persistence import mongo
 
@@ -39,12 +40,13 @@ class Command(BaseCommand):
         self.stdout.write(f"Fake run name: {run_name}")
         self.stdout.write(f"Will now create {options['count']} fake sequence(s)")
         template_file = Path(getcwd(), 'comparisons', 'management', 'commands', 'bifrost_sample_template.json')
+        with open(Path(getcwd(), 'comparisons', 'management', 'commands', 'bifrost_sample_template.json'), 'r') as template_file:
+            template = json.load(template_file)
 
         for n in range(0, options['count']):
 
             # Create fake sequence document
-            with open(template_file, 'r') as template:
-                sequence = json.load(template)
+            sequence = deepcopy(template)
             sample_id = rndstr(10)
             sequence['name'] = sample_id
             sequence_id = run_name + '_' + sample_id
