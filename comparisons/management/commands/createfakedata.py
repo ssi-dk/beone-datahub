@@ -38,7 +38,7 @@ class Command(BaseCommand):
         run_name = rndstr(10)
         self.stdout.write(f"Fake run name: {run_name}")
         self.stdout.write(f"Will now create {options['count']} fake sequence(s)")
-        template_file = Path(getcwd(), 'comparisons', 'management', 'commands', 'fakesample_template.json')
+        template_file = Path(getcwd(), 'comparisons', 'management', 'commands', 'bifrost_sample_template.json')
 
         for n in range(0, options['count']):
 
