@@ -12,6 +12,8 @@ SEQUENCE_FIELD_MAPPING: dict = {
     'sequence_type': 'categories.cgmlst.report.data.sequence_type'
 }
 
+def get_sequence_id(structure: dict):
+    return structure['categories']['sample_info']['summary']['sample_name']
 
 class MongoAPIError(Exception):
     pass

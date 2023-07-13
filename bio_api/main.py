@@ -40,7 +40,7 @@ class HCTreeCalcRequest(ProcessingRequest):
 
 
 def translate_bifrost_row(mongo_item):
-    return mongo_item['categories']['cgmlst']['report']['data']['alleles']  #[0]
+    return mongo_item['categories']['cgmlst']['report']['data']['alleles']  #TODO Flyt til mongo.py
 
 def allele_mx_from_bifrost_mongo(mongo_cursor):
     # Generate an allele matrix with all the allele profiles from the mongo cursor.
@@ -50,13 +50,13 @@ def allele_mx_from_bifrost_mongo(mongo_cursor):
     except StopIteration:
         raise
     first_row = translate_bifrost_row(first_mongo_item)
-    full_dict[first_mongo_item['name']] = first_row
+    full_dict[mongo.get_sequence_id(first_mongo_item)] = first_row
     allele_names = set(first_row.keys())
     for mongo_item in mongo_cursor:
         row = translate_bifrost_row(mongo_item)
         row_allele_names = set(row.keys())
         assert row_allele_names == allele_names
-        full_dict[mongo_item['name']] = row
+        full_dict[mongo.get_sequence_id(mongo_item)] = row
     return DataFrame.from_dict(full_dict, 'index', dtype=str)
 
 def dist_mat_from_allele_profile(allele_mx:DataFrame, job_id: uuid.UUID):
