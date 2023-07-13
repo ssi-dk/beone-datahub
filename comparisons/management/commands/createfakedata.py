@@ -5,12 +5,9 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from copy import deepcopy
 
-from bio_api import classes
 from bio_api.persistence import mongo
 from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
 
-ssi = classes.Organization(name='SSI')
-fvst = classes.Organization(name='FVST')
 
 def rndstr(length):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
