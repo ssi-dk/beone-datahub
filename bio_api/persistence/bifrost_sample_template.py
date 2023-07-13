@@ -1,5 +1,5 @@
 bifrost_sample_template = {
-    "name": "Sample ID here",
+    "name": "some_sample_id",
     "components": [
         {
             "name": "chewbbaca__v1.0.5__",
@@ -20,7 +20,7 @@ bifrost_sample_template = {
         "sample_info": {
             "summary": {
                 "institution": "SSI",
-                "sample_name":"Sequence ID here"
+                "sample_name":"some_sequence_id"
             }
         },
         "cgmlst": {
