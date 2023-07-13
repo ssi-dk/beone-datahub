@@ -26,11 +26,11 @@ class Sample:
 
 @dataclass
 class SSISample(Sample):
-    metadata: SSIMetadata
+    metadata: SSIMetadata or None
 
 @dataclass
 class FVSTSample(Sample):
-    metadata: FVSTMetadata
+    metadata: FVSTMetadata or None
 
 @dataclass
 class AnalysisResults:
@@ -49,15 +49,13 @@ class Sequence:
 
 
 if __name__ == "__main__":
-    metadata = SSIMetadata()
-    sample = SSISample(sample_id=bifrost_sample_template['name'], metadata=metadata)
+    sample = SSISample(sample_id='sample_id_1', metadata=None)
     analysis_results = AnalysisResults(categories=bifrost_sample_template['categories'])
-    assessments = Assessments()
     sequence = Sequence(
         sequence_id='sequence_id_1',
         sample=sample,
         analysis_results=analysis_results,
-        assessments=assessments
+        assessments=None
         )
     print(type(sequence))
     print(sequence)
