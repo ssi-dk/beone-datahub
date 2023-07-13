@@ -39,9 +39,6 @@ class HCTreeCalcRequest(ProcessingRequest):
     method: str
 
 
-def translate_bifrost_row(mongo_item):
-    return mongo_item['categories']['cgmlst']['report']['data']['alleles']  #TODO Flyt til mongo.py
-
 def allele_mx_from_bifrost_mongo(mongo_cursor):
     # Generate an allele matrix with all the allele profiles from the mongo cursor.
     full_dict = dict()
@@ -49,11 +46,11 @@ def allele_mx_from_bifrost_mongo(mongo_cursor):
         first_mongo_item = next(mongo_cursor)
     except StopIteration:
         raise
-    first_row = translate_bifrost_row(first_mongo_item)
+    first_row = mongo.get_alleles(first_mongo_item)
     full_dict[mongo.get_sequence_id(first_mongo_item)] = first_row
     allele_names = set(first_row.keys())
     for mongo_item in mongo_cursor:
-        row = translate_bifrost_row(mongo_item)
+        row = mongo.get_alleles(mongo_item)
         row_allele_names = set(row.keys())
         assert row_allele_names == allele_names
         full_dict[mongo.get_sequence_id(mongo_item)] = row

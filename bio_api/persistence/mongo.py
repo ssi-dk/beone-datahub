@@ -15,6 +15,11 @@ SEQUENCE_FIELD_MAPPING: dict = {
 def get_sequence_id(structure: dict):
     return structure['categories']['sample_info']['summary']['sample_name']
 
+
+def get_alleles(structure: dict):
+    return structure['categories']['cgmlst']['report']['data']['alleles'] 
+
+
 class MongoAPIError(Exception):
     pass
 
