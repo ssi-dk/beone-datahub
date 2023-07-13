@@ -1,4 +1,4 @@
-{
+bifrost_sample_template = {
     "name": "Sample ID here",
     "components": [
         {
@@ -29,7 +29,7 @@
                 "name": "chewbbaca__v1.0.5__"
             },
             "summary": {
-                "sequence_type": null,
+                "sequence_type": None,
                 "call_percent": 43.66
             },
             "report": {

@@ -11,6 +11,7 @@ from copy import deepcopy
 
 from bio_api import classes
 from bio_api.persistence import mongo
+from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
 
 ssi = classes.Organization(name='SSI')
 fvst = classes.Organization(name='FVST')
@@ -43,14 +44,11 @@ class Command(BaseCommand):
         run_name = rndstr(10)
         self.stdout.write(f"Fake run name: {run_name}")
         self.stdout.write(f"Will now create {options['count']} fake sequence(s)")
-        template_file = Path(getcwd(), 'comparisons', 'management', 'commands', 'bifrost_sample_template.json')
-        with open(Path(getcwd(), 'comparisons', 'management', 'commands', 'bifrost_sample_template.json'), 'r') as template_file:
-            template = json.load(template_file)
 
         for n in range(0, options['count']):
 
             # Create fake sequence document
-            sequence = deepcopy(template)
+            sequence = deepcopy(bifrost_sample_template)
             sample_id = rndstr(10)
             sequence['name'] = sample_id
             sequence_id = run_name + '_' + sample_id
