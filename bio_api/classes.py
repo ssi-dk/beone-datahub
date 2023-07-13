@@ -34,7 +34,7 @@ class FVSTSample(Sample):
 
 @dataclass
 class AnalysisResults:
-    pass  # se bifrost_sample_template.py
+    categories: dict
 
 @dataclass
 class Assessments:
@@ -50,8 +50,8 @@ class Sequence:
 
 if __name__ == "__main__":
     metadata = SSIMetadata()
-    sample = SSISample(sample_id='sample_id_1', metadata=metadata)
-    analysis_results = AnalysisResults()
+    sample = SSISample(sample_id=bifrost_sample_template['name'], metadata=metadata)
+    analysis_results = AnalysisResults(categories=bifrost_sample_template['categories'])
     assessments = Assessments()
     sequence = Sequence(
         sequence_id='sequence_id_1',
