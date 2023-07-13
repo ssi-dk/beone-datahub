@@ -5,10 +5,14 @@ import random
 import string
 from os import getcwd
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.conf import settings
 
+from bio_api import classes
 from bio_api.persistence import mongo
+
+ssi = classes.Organization(name='SSI')
+fvst = classes.Organization(name='FVST')
 
 def rndstr(length):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
