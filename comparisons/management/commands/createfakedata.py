@@ -7,6 +7,7 @@ from copy import deepcopy
 
 from bio_api.persistence import mongo
 from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
+from bio_api import classes
 
 
 def rndstr(length):
@@ -43,17 +44,26 @@ class Command(BaseCommand):
             # Create fake sequence document
             sequence = deepcopy(bifrost_sample_template)
             sample_id = rndstr(10)
-            sequence['name'] = sample_id
-            sequence_id = run_name + '_' + sample_id
-            sequence['categories']['sample_info']['summary']['sample_name'] = sequence_id
-            sequence['categories']['cgmlst']['summary']['call_percent'] = rndpct()
+
+            sample = classes.SSISample(sample_id=rndstr(10), metadata=None)
+            sequence = classes.Sequence(
+                sequence_id=run_name + '_' + sample_id,  # Maybe put in a constructor?
+                sample=sample,
+                categories=bifrost_sample_template['categories'],
+                assessments=None
+            )
+            sequence.categories['sample_info']['summary']['sample_name'] = sequence.sequence_id  # Maybe put in a constructor?
+            sequence.categories['cgmlst']['summary']['call_percent'] = rndpct()
             for locus in allele_generator():
-                sequence['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
-            result = mongo_api.db.samples.insert_one(sequence)
+                sequence.categories['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
+
+            # Insert data in Bifrost samples collection
+            bifrost_sample_doc = dict(name=sequence.sample.sample_id, categories=sequence.categories)
+            result = mongo_api.db.samples.insert_one(bifrost_sample_doc)
             if result.acknowledged:
-                self.stdout.write(self.style.SUCCESS(f"Sequence {sequence_id} added to MongoDB"))
+                self.stdout.write(self.style.SUCCESS(sequence.sequence_id))
             else:
-                self.stdout.write(self.style.ERROR(f"Could not add sequence {sequence_id} in MongoDB!"))
+                self.stdout.write(self.style.ERROR(f"Could not add sequence {sequence.sequence_id} in MongoDB!"))
 
             #TODO Create fake metadata documents
         

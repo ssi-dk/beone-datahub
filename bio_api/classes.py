@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from datetime import date
 
-from persistence.bifrost_sample_template import bifrost_sample_template
+from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
 
 """The purpose of these classes is to organize data in a logic and efficient way.
 They have automatically generated __init__() methods as documented here:
@@ -33,10 +33,6 @@ class FVSTSample(Sample):
     metadata: FVSTMetadata or None
 
 @dataclass
-class AnalysisResults:
-    categories: dict
-
-@dataclass
 class Assessments:
     pass  # se sap_manual_metadata
 
@@ -44,17 +40,16 @@ class Assessments:
 class Sequence:
     sequence_id: str
     sample: SSISample or FVSTSample
-    analysis_results: dict or None
+    categories: dict or None
     assessments: dict or None
 
 
 if __name__ == "__main__":
     sample = SSISample(sample_id='sample_id_1', metadata=None)
-    analysis_results = AnalysisResults(categories=bifrost_sample_template['categories'])
     sequence = Sequence(
         sequence_id='sequence_id_1',
         sample=sample,
-        analysis_results=analysis_results,
+        categories=bifrost_sample_template['categories'],
         assessments=None
         )
     print(type(sequence))
