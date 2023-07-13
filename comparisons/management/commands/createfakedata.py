@@ -1,9 +1,5 @@
-from pathlib import Path
-from sys import exit
-import json
 import random
 import string
-from os import getcwd
 
 from django.core.management.base import BaseCommand
 from django.conf import settings
