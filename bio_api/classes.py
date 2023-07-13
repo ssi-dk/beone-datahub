@@ -52,7 +52,7 @@ if __name__ == "__main__":
     sequence = Sequence(
         sequence_id='sequence_id_1',
         sample=sample,
-        categories=bifrost_sample_template['categories'],
+        categories=bifrost_sample_template['categories'],  #TODO fix sequence_id in categories.sample_info.summary
         assessments=None
         )
     print(sequence.__dict__)
