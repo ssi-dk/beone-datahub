@@ -1,7 +1,10 @@
 from dataclasses import dataclass
 from datetime import date
 
-from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
+try:
+    from persistence.bifrost_sample_template import bifrost_sample_template
+except ImportError:
+    from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
 
 """The purpose of these classes is to organize data in a logic and efficient way.
 They have automatically generated __init__() methods as documented here:
@@ -52,5 +55,4 @@ if __name__ == "__main__":
         categories=bifrost_sample_template['categories'],
         assessments=None
         )
-    print(type(sequence))
-    print(sequence)
+    print(sequence.__dict__)
