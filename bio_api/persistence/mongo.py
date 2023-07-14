@@ -16,6 +16,7 @@ SEQUENCE_FIELD_MAPPING: dict = {
 # Handy shortcuts when importing JSON data into Python code
 true = True
 false = False
+null = None
 
 def BinData(integer, string):
     """"Dummy function - can be used when importing a MongoDB document as a hardcoded Python dict"""
