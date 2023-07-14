@@ -1,6 +1,7 @@
 import re
 import pymongo
 from bson.objectid import ObjectId
+from datetime import date
 
 #TODO Make this a configurable item somehow.
 SEQUENCE_FIELD_MAPPING: dict = {
@@ -11,6 +12,20 @@ SEQUENCE_FIELD_MAPPING: dict = {
     'allele_profile': 'categories.cgmlst.report.data.alleles',
     'sequence_type': 'categories.cgmlst.report.data.sequence_type'
 }
+
+# Handy shortcuts when importing JSON data into Python code
+true = True
+false = False
+
+def BinData(integer, string):
+    """"Dummy function - can be used when importing a MongoDB document as a hardcoded Python dict"""
+    return string
+
+def ISODate(date_str: str):
+    """"Can be used when importing a MongoDB document as a hardcoded dict in Python.
+    Input format: 2020-01-04T13:03:00Z"""
+    return date(date_str)
+
 
 def get_sequence_id(structure: dict):
     return structure['categories']['sample_info']['summary']['sample_name']
