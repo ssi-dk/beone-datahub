@@ -42,24 +42,15 @@ class Command(BaseCommand):
         for n in range(0, options['count']):
 
             # Create fake sequence document
-            sequence = deepcopy(bifrost_sample_template)
-            sample_id = rndstr(10)
-
-            sample = classes.SSISample(sample_id=rndstr(10), metadata=None)
-            sequence = classes.Sequence(
-                sequence_id=run_name + '_' + sample_id,  # Maybe put in a constructor?
-                sample=sample,
-                categories=bifrost_sample_template['categories'],
-                assessments=None
-            )
-            sequence.categories['sample_info']['summary']['sample_name'] = sequence.sequence_id  # Maybe put in a constructor?
-            sequence.categories['cgmlst']['summary']['call_percent'] = rndpct()
+            sequence = classes.Sequence(deepcopy(bifrost_sample_template))
+            sequence.isolate_id = rndstr(10)
+            sequence.sequence_id = run_name + '_' + sequence.isolate_id
+            sequence.mongo_doc['categories']['cgmlst']['summary']['call_percent'] = rndpct()
             for locus in allele_generator():
-                sequence.categories['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
+                sequence.mongo_doc['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
 
             # Insert data in Bifrost samples collection
-            bifrost_sample_doc = dict(name=sequence.sample.sample_id, categories=sequence.categories)
-            result = mongo_api.db.samples.insert_one(bifrost_sample_doc)
+            result = mongo_api.db.samples.insert_one(sequence.mongo_doc)
             if result.acknowledged:
                 self.stdout.write(self.style.SUCCESS(sequence.sequence_id))
             else:

@@ -14,18 +14,18 @@ class MongoDocument:
 
 class Sequence(MongoDocument):
     def __init__(self, bifrost_sample_doc, imported_metadata:dict=None, manual_metadata:dict=None):
-        super(Sequence).__init__(bifrost_sample_doc)
-        try:
-            assert 'sample_name' in self.mongo_doc['categories']['sample_info']
-        except AssertionError, KeyError:
-            raise ValueError("sample_name not found")
+        super(Sequence, self).__init__(bifrost_sample_doc)
         try:
             assert 'name' in self.mongo_doc
         except AssertionError:
             raise ValueError("name not found")
         try:
-            assert 'institution' in self.mongo_doc['sample_info']['summary']
-        except AssertionError, KeyError:
+            assert 'sample_name' in self.mongo_doc['categories']['sample_info']['summary']
+        except (AssertionError, KeyError):
+            raise ValueError("sample_name not found")
+        try:
+            assert 'institution' in self.mongo_doc['categories']['sample_info']['summary']
+        except (AssertionError, KeyError):
             raise ValueError("institution not found")
 
         if imported_metadata:
@@ -35,12 +35,24 @@ class Sequence(MongoDocument):
 
     @property
     def sequence_id(self):
-        return self.mongo_doc['categories']['sample_info']['sample_name']
+        return self.mongo_doc['categories']['sample_info']['summary']['sample_name']
+    
+    @sequence_id.setter
+    def sequence_id(self, sequence_id):
+        self.mongo_doc['categories']['sample_info']['summary']['sample_name'] = sequence_id
     
     @property
     def isolate_id(self):
         return self.mongo_doc['name']
     
+    @isolate_id.setter
+    def isolate_id(self, isolate_id):
+        self.mongo_doc['name'] = isolate_id
+    
     @property
     def owner(self):
         return self.mongo_doc['sample_info']['summary']['institution']
+    
+    @owner.setter
+    def owner(self, owner):
+        self.mongo_doc['sample_info']['summary']['institution'] = owner
