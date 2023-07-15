@@ -6,48 +6,41 @@ try:
 except ImportError:
     from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
 
-@dataclass
-class CommonMetadata:
-    pass # add common metadata fields here. See both sap_lims_metadata and sap_tbr_metadata; remember there are both mandadory and optional fields
 
-@dataclass
-class SSIMetadata(CommonMetadata):
-    pass # add SSI-specific metadata fields here See sap_tbr_metadata; remember there are both mandadory and optional fields
-
-@dataclass
-class FVSTMetadata(CommonMetadata):
-    pass # add FVST-specific metadata fields here See sap_lims_metadata; remember there are both mandadory and optional fields
-
-@dataclass
-class Sample:
-    sample_id: str
-
-@dataclass
-class SSISample(Sample):
-    metadata: SSIMetadata or None
-
-@dataclass
-class FVSTSample(Sample):
-    metadata: FVSTMetadata or None
-
-@dataclass
-class Assessments:
-    pass  # se sap_manual_metadata
-
-@dataclass
-class Sequence:
-    sequence_id: str
-    sample: SSISample or FVSTSample
-    categories: dict or None
-    assessments: dict or None
+class MongoDocument:
+    def __init__(self, mongo_doc: dict):
+        self.mongo_doc = mongo_doc
 
 
-if __name__ == "__main__":
-    sample = SSISample(sample_id='sample_id_1', metadata=None)
-    sequence = Sequence(
-        sequence_id='sequence_id_1',
-        sample=sample,
-        categories=bifrost_sample_template['categories'],  #TODO fix sequence_id in categories.sample_info.summary
-        assessments=None
-        )
-    print(sequence.__dict__)
+class Sequence(MongoDocument):
+    def __init__(self, bifrost_sample_doc, imported_metadata:dict=None, manual_metadata:dict=None):
+        super(Sequence).__init__(bifrost_sample_doc)
+        try:
+            assert 'sample_name' in self.mongo_doc['categories']['sample_info']
+        except AssertionError, KeyError:
+            raise ValueError("sample_name not found")
+        try:
+            assert 'name' in self.mongo_doc
+        except AssertionError:
+            raise ValueError("name not found")
+        try:
+            assert 'institution' in self.mongo_doc['sample_info']['summary']
+        except AssertionError, KeyError:
+            raise ValueError("institution not found")
+
+        if imported_metadata:
+            self.imported_metadata = imported_metadata
+        if manual_metadata:
+            self.manual_metadata = manual_metadata
+
+    @property
+    def sequence_id(self):
+        return self.mongo_doc['categories']['sample_info']['sample_name']
+    
+    @property
+    def isolate_id(self):
+        return self.mongo_doc['name']
+    
+    @property
+    def owner(self):
+        return self.mongo_doc['sample_info']['summary']['institution']
