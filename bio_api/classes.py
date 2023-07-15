@@ -6,11 +6,6 @@ try:
 except ImportError:
     from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
 
-"""The purpose of these classes is to organize data in a logic and efficient way.
-They have automatically generated __init__() methods as documented here:
-https://docs.python.org/3/library/dataclasses.html#module-dataclasses
-"""
-
 @dataclass
 class CommonMetadata:
     pass # add common metadata fields here. See both sap_lims_metadata and sap_tbr_metadata; remember there are both mandadory and optional fields
