@@ -31,7 +31,7 @@ class Sequence():
         return self.sample_doc
 
     @classmethod
-    def from_sample_doc(cls, sample_doc:dict):
+    def from_bifrost_sample(cls, sample_doc:dict):
         if sample_doc:
             try:
                 assert 'name' in sample_doc
