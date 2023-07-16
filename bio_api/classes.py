@@ -14,7 +14,9 @@ class Sequence():
                 "name": "cgmlst",
                 "component": dict(),
                 "summary": dict(),
-                "report": dict(),
+                "report": {
+                    "data": dict()
+                    },
                 "metadata": dict(),
                 "version": dict()
             }
@@ -42,7 +44,10 @@ class Sequence():
 
     @property
     def sequence_id(self):
-        return self.sample_doc['categories']['sample_info']['summary']['sample_name']
+        try:
+            return self.sample_doc['categories']['sample_info']['summary']['sample_name']
+        except KeyError:
+            return None
     
     @sequence_id.setter
     def sequence_id(self, sequence_id: str):
@@ -50,7 +55,10 @@ class Sequence():
     
     @property
     def isolate_id(self):
-        return self.sample_doc['name']
+        try:
+            return self.sample_doc['name']
+        except KeyError:
+            return None
     
     @isolate_id.setter
     def isolate_id(self, isolate_id: str):
@@ -58,24 +66,25 @@ class Sequence():
     
     @property
     def owner(self):
-        return self.sample_doc['sample_info']['summary']['institution']
+        try:
+            return self.sample_doc['categories']['sample_info']['summary']['institution']
+        except KeyError:
+            return None
     
     @owner.setter
     def owner(self, owner: str):
-        self.sample_doc['sample_info']['summary']['institution'] = owner
+        self.sample_doc['categories']['sample_info']['summary']['institution'] = owner
     
-    # The properties below are not guaranteed to be set; i. e., they might return None
-
     @property
     def species(self):
         try:
-            return self.sample_doc['categories']['species']['detection']['summary']['detected_species']
+            return self.sample_doc['categories']['species_detection']['summary']['detected_species']
         except KeyError:
             return None
 
     @species.setter
     def species(self, species: str):
-        self.sample_doc['categories']['species']['detection']['summary']['detected_species'] = species
+        self.sample_doc['categories']['species_detection']['summary']['detected_species'] = species
     
     @property
     def allele_profile(self):
@@ -103,6 +112,16 @@ class Sequence():
 if __name__ == '__main__':
     sequence = Sequence()
     print(sequence.__dict__())
+    sequence.sequence_id = 'test_sequence_id'
+    print(sequence.sequence_id)
+    sequence.isolate_id = 'test_isolate_id'
+    print(sequence.isolate_id)
+    sequence.owner = 'test_sequence_owner'
+    print(sequence.owner)
+    sequence.species = 'test_sequence_species'
     print(sequence.species)
+    sequence.allele_profile = {'test': 'allele_profile'}
     print(sequence.allele_profile)
+    sequence.sequence_type = 11
     print(sequence.sequence_type)
+    print(sequence.__dict__())
