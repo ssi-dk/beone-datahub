@@ -23,6 +23,20 @@ class Sequence():
         }
     }
 
+    def get_field_location(self, field_name: str):
+        field_mapping = {
+        'owner': self.sample_doc['categories']['sample_info']['summary']['institution'],
+        'sequence_id': self.categories['sample_info']['summary']['sample_name'],
+        'sample_id': self.categories['name'],
+        'species': self.categories['species_detection']['summary']['detected_species'],
+        'allele_profile': self.categories['cgmlst']['report']['data']['alleles'],
+        'sequence_type': self.categories['cgmlst']['report']['data']['sequence_type'],
+        }
+        try:
+            return field_mapping[field_name]
+        except KeyError:
+            return None
+
     def as_dict(self):
         return self.sample_doc
 
