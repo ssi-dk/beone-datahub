@@ -14,8 +14,6 @@ class Sequence():
                 "report": {
                     "data": dict()
                     },
-                "metadata": dict(),
-                "version": dict()
             }
         }
     }
@@ -32,7 +30,8 @@ class Sequence():
     def as_dict(self):
         return self.sample_doc
 
-    def __init__(self, sample_doc:dict=None):
+    @classmethod
+    def from_sample_doc(cls, sample_doc:dict):
         if sample_doc:
             try:
                 assert 'name' in sample_doc
@@ -118,18 +117,24 @@ class Sequence():
 if __name__ == '__main__':
     print("The next line show the field_mapping attribute of the Sequence class:")
     print(Sequence.field_mapping)
+    print("Now we instantiate a Sequence without any arguments to the constructor.")
     sequence = Sequence()
+    print("The newly created Sequence instance currently looks like:")
     print(sequence.as_dict())
+    print("Now we set the sequence_id and print it.")
     sequence.sequence_id = 'test_sequence_id'
     print(sequence.sequence_id)
+    print("Now we set isolate_id and print it.")
     sequence.isolate_id = 'test_isolate_id'
     print(sequence.isolate_id)
+    print("Now we set owner and print it.")
     sequence.owner = 'test_sequence_owner'
     print(sequence.owner)
+    print("Now we set species and print it.")
     sequence.species = 'test_sequence_species'
     print(sequence.species)
-    sequence.allele_profile = {'test': 'allele_profile'}
-    print(sequence.allele_profile)
+    print("Now we set sequence_type and print it.")
     sequence.sequence_type = 11
     print(sequence.sequence_type)
+    print("Now we print the whole Sequence again as a dict")
     print(sequence.as_dict())
