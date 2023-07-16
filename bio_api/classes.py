@@ -38,7 +38,7 @@ class Sequence(MongoDocument):
         return self.mongo_doc['categories']['sample_info']['summary']['sample_name']
     
     @sequence_id.setter
-    def sequence_id(self, sequence_id):
+    def sequence_id(self, sequence_id: str):
         self.mongo_doc['categories']['sample_info']['summary']['sample_name'] = sequence_id
     
     @property
@@ -46,7 +46,7 @@ class Sequence(MongoDocument):
         return self.mongo_doc['name']
     
     @isolate_id.setter
-    def isolate_id(self, isolate_id):
+    def isolate_id(self, isolate_id: str):
         self.mongo_doc['name'] = isolate_id
     
     @property
@@ -54,5 +54,31 @@ class Sequence(MongoDocument):
         return self.mongo_doc['sample_info']['summary']['institution']
     
     @owner.setter
-    def owner(self, owner):
+    def owner(self, owner: str):
         self.mongo_doc['sample_info']['summary']['institution'] = owner
+    
+    # The properties below are (at least for now) not guaranteed to exist
+
+    @property
+    def species(self):
+        return self.mongo_doc['categories']['species']['detection']['summary']['detected_species']
+    
+    @species.setter
+    def species(self, species: str):
+        self.mongo_doc['categories']['species']['detection']['summary']['detected_species'] = species
+    
+    @property
+    def allele_profile(self):
+        return self.mongo_doc['categories']['cgmlst']['report']['data']['alleles']
+    
+    @allele_profile.setter
+    def allele_profile(self, allele_profile: dict):
+        self.mongo_doc['categories']['cgmlst']['report']['data']['alleles'] = allele_profile
+    
+    @property
+    def sequence_type(self):
+        return self.mongo_doc['categories']['cgmlst']['report']['data']['sequence_type']
+    
+    @sequence_type.setter
+    def sequence_type(self, sequence_type: int):
+        self.mongo_doc['categories']['cgmlst']['report']['data']['sequence_type'] = sequence_type
