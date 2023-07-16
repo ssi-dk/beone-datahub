@@ -21,6 +21,9 @@ class Sequence():
         }
     }
 
+    def __dict__(self):
+        return self.sample_doc
+
     def __init__(self, sample_doc:dict=None, imported_metadata:dict=None, manual_metadata:dict=None):
         if sample_doc:
             try:
@@ -91,3 +94,8 @@ class Sequence():
     @sequence_type.setter
     def sequence_type(self, sequence_type: int):
         self.sample_doc['categories']['cgmlst']['report']['data']['sequence_type'] = sequence_type
+
+
+if __name__ == '__main__':
+    sequence = Sequence()
+    print(sequence.__dict__())
