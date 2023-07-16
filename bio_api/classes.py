@@ -1,3 +1,5 @@
+from persistence.bifrost_sample_template import bifrost_sample_template
+
 class Sequence():
     sample_doc: dict = {
         "categories": {
@@ -32,20 +34,21 @@ class Sequence():
 
     @classmethod
     def from_bifrost_sample(cls, sample_doc:dict):
-        if sample_doc:
-            try:
-                assert 'name' in sample_doc
-            except AssertionError:
-                raise ValueError("name not found")
-            try:
-                assert 'sample_name' in sample_doc['categories']['sample_info']['summary']
-            except (AssertionError, KeyError):
-                raise ValueError("sample_name not found")
-            try:
-                assert 'institution' in sample_doc['categories']['sample_info']['summary']
-            except (AssertionError, KeyError):
-                raise ValueError("institution not found")
-            self.sample_doc = sample_doc
+        try:
+            assert 'name' in sample_doc
+        except AssertionError:
+            raise ValueError("name not found")
+        try:
+            assert 'sample_name' in sample_doc['categories']['sample_info']['summary']
+        except (AssertionError, KeyError):
+            raise ValueError("sample_name not found")
+        try:
+            assert 'institution' in sample_doc['categories']['sample_info']['summary']
+        except (AssertionError, KeyError):
+            raise ValueError("institution not found")
+        instance = cls()
+        instance.sample_doc = sample_doc
+        return instance
 
     @property
     def sequence_id(self):
@@ -137,4 +140,8 @@ if __name__ == '__main__':
     sequence.sequence_type = 11
     print(sequence.sequence_type)
     print("Now we print the whole Sequence again as a dict")
+    print(sequence.as_dict())
+    print()
+    print("Next, we'll create a Sequence from a sample dict.")
+    sequence = Sequence.from_bifrost_sample(sample_doc=bifrost_sample_template)
     print(sequence.as_dict())
