@@ -23,7 +23,7 @@ class Sequence():
         }
     }
 
-    def __dict__(self):
+    def as_dict(self):
         return self.sample_doc
 
     def __init__(self, sample_doc:dict=None):
@@ -111,7 +111,7 @@ class Sequence():
 
 if __name__ == '__main__':
     sequence = Sequence()
-    print(sequence.__dict__())
+    print(sequence.as_dict())
     sequence.sequence_id = 'test_sequence_id'
     print(sequence.sequence_id)
     sequence.isolate_id = 'test_isolate_id'
@@ -124,4 +124,4 @@ if __name__ == '__main__':
     print(sequence.allele_profile)
     sequence.sequence_type = 11
     print(sequence.sequence_type)
-    print(sequence.__dict__())
+    print(sequence.as_dict())
