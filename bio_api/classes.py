@@ -7,26 +7,44 @@ except ImportError:
     from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
 
 
-class MongoDocument:
-    def __init__(self, mongo_doc: dict):
-        self.mongo_doc = mongo_doc
+class Sequence():
+    sample_doc: dict = {
+        "categories": {
+            "contigs": {
+                "summary": dict()
+            },
+            "species_detection": {
+                "summary": dict()
+            },
+            "sample_info": {
+                "summary": dict()
+            },
+            "cgmlst": {
+                "name": "cgmlst",
+                "component": dict(),
+                "summary": dict(),
+                "report": dict(),
+                "metadata": dict(),
+                "version": dict()
+            }
+        }
+    }
 
-
-class Sequence(MongoDocument):
-    def __init__(self, bifrost_sample_doc, imported_metadata:dict=None, manual_metadata:dict=None):
-        super(Sequence, self).__init__(bifrost_sample_doc)
-        try:
-            assert 'name' in self.mongo_doc
-        except AssertionError:
-            raise ValueError("name not found")
-        try:
-            assert 'sample_name' in self.mongo_doc['categories']['sample_info']['summary']
-        except (AssertionError, KeyError):
-            raise ValueError("sample_name not found")
-        try:
-            assert 'institution' in self.mongo_doc['categories']['sample_info']['summary']
-        except (AssertionError, KeyError):
-            raise ValueError("institution not found")
+    def __init__(self, sample_doc:dict=None, imported_metadata:dict=None, manual_metadata:dict=None):
+        if sample_doc:
+            try:
+                assert 'name' in sample_doc
+            except AssertionError:
+                raise ValueError("name not found")
+            try:
+                assert 'sample_name' in sample_doc['categories']['sample_info']['summary']
+            except (AssertionError, KeyError):
+                raise ValueError("sample_name not found")
+            try:
+                assert 'institution' in sample_doc['categories']['sample_info']['summary']
+            except (AssertionError, KeyError):
+                raise ValueError("institution not found")
+            self.sample_doc = sample_doc
 
         if imported_metadata:
             self.imported_metadata = imported_metadata
@@ -35,50 +53,50 @@ class Sequence(MongoDocument):
 
     @property
     def sequence_id(self):
-        return self.mongo_doc['categories']['sample_info']['summary']['sample_name']
+        return self.sample_doc['categories']['sample_info']['summary']['sample_name']
     
     @sequence_id.setter
     def sequence_id(self, sequence_id: str):
-        self.mongo_doc['categories']['sample_info']['summary']['sample_name'] = sequence_id
+        self.sample_doc['categories']['sample_info']['summary']['sample_name'] = sequence_id
     
     @property
     def isolate_id(self):
-        return self.mongo_doc['name']
+        return self.sample_doc['name']
     
     @isolate_id.setter
     def isolate_id(self, isolate_id: str):
-        self.mongo_doc['name'] = isolate_id
+        self.sample_doc['name'] = isolate_id
     
     @property
     def owner(self):
-        return self.mongo_doc['sample_info']['summary']['institution']
+        return self.sample_doc['sample_info']['summary']['institution']
     
     @owner.setter
     def owner(self, owner: str):
-        self.mongo_doc['sample_info']['summary']['institution'] = owner
+        self.sample_doc['sample_info']['summary']['institution'] = owner
     
     # The properties below are (at least for now) not guaranteed to exist
 
     @property
     def species(self):
-        return self.mongo_doc['categories']['species']['detection']['summary']['detected_species']
+        return self.sample_doc['categories']['species']['detection']['summary']['detected_species']
     
     @species.setter
     def species(self, species: str):
-        self.mongo_doc['categories']['species']['detection']['summary']['detected_species'] = species
+        self.sample_doc['categories']['species']['detection']['summary']['detected_species'] = species
     
     @property
     def allele_profile(self):
-        return self.mongo_doc['categories']['cgmlst']['report']['data']['alleles']
+        return self.sample_doc['categories']['cgmlst']['report']['data']['alleles']
     
     @allele_profile.setter
     def allele_profile(self, allele_profile: dict):
-        self.mongo_doc['categories']['cgmlst']['report']['data']['alleles'] = allele_profile
+        self.sample_doc['categories']['cgmlst']['report']['data']['alleles'] = allele_profile
     
     @property
     def sequence_type(self):
-        return self.mongo_doc['categories']['cgmlst']['report']['data']['sequence_type']
+        return self.sample_doc['categories']['cgmlst']['report']['data']['sequence_type']
     
     @sequence_type.setter
     def sequence_type(self, sequence_type: int):
-        self.mongo_doc['categories']['cgmlst']['report']['data']['sequence_type'] = sequence_type
+        self.sample_doc['categories']['cgmlst']['report']['data']['sequence_type'] = sequence_type

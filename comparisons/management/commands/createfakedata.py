@@ -45,12 +45,12 @@ class Command(BaseCommand):
             sequence = classes.Sequence(deepcopy(bifrost_sample_template))
             sequence.isolate_id = rndstr(10)
             sequence.sequence_id = run_name + '_' + sequence.isolate_id
-            sequence.mongo_doc['categories']['cgmlst']['summary']['call_percent'] = rndpct()
+            sequence.sample_doc['categories']['cgmlst']['summary']['call_percent'] = rndpct()
             for locus in allele_generator():
-                sequence.mongo_doc['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
+                sequence.sample_doc['categories']['cgmlst']['report']['data']['alleles'][locus] = str(random.randint(1, 1000))
 
             # Insert data in Bifrost samples collection
-            result = mongo_api.db.samples.insert_one(sequence.mongo_doc)
+            result = mongo_api.db.samples.insert_one(sequence.sample_doc)
             if result.acknowledged:
                 self.stdout.write(self.style.SUCCESS(sequence.sequence_id))
             else:
