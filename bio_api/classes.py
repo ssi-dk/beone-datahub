@@ -1,12 +1,3 @@
-from dataclasses import dataclass
-from datetime import date
-
-try:
-    from persistence.bifrost_sample_template import bifrost_sample_template
-except ImportError:
-    from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
-
-
 class Sequence():
     sample_doc: dict = {
         "categories": {
