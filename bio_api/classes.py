@@ -116,6 +116,8 @@ class Sequence():
 
 
 if __name__ == '__main__':
+    print("The next line show the field_mapping attribute of the Sequence class:")
+    print(Sequence.field_mapping)
     sequence = Sequence()
     print(sequence.as_dict())
     sequence.sequence_id = 'test_sequence_id'
