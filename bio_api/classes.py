@@ -24,7 +24,7 @@ class Sequence():
     def __dict__(self):
         return self.sample_doc
 
-    def __init__(self, sample_doc:dict):
+    def __init__(self, sample_doc:dict=None):
         if sample_doc:
             try:
                 assert 'name' in sample_doc
@@ -64,27 +64,36 @@ class Sequence():
     def owner(self, owner: str):
         self.sample_doc['sample_info']['summary']['institution'] = owner
     
-    # The properties below are (at least for now) not guaranteed to exist
+    # The properties below are not guaranteed to be set; i. e., they might return None
 
     @property
     def species(self):
-        return self.sample_doc['categories']['species']['detection']['summary']['detected_species']
-    
+        try:
+            return self.sample_doc['categories']['species']['detection']['summary']['detected_species']
+        except KeyError:
+            return None
+
     @species.setter
     def species(self, species: str):
         self.sample_doc['categories']['species']['detection']['summary']['detected_species'] = species
     
     @property
     def allele_profile(self):
-        return self.sample_doc['categories']['cgmlst']['report']['data']['alleles']
-    
+        try:
+            return self.sample_doc['categories']['cgmlst']['report']['data']['alleles']
+        except KeyError:
+            return None
+
     @allele_profile.setter
     def allele_profile(self, allele_profile: dict):
         self.sample_doc['categories']['cgmlst']['report']['data']['alleles'] = allele_profile
     
     @property
     def sequence_type(self):
-        return self.sample_doc['categories']['cgmlst']['report']['data']['sequence_type']
+        try:
+            return self.sample_doc['categories']['cgmlst']['report']['data']['sequence_type']
+        except KeyError:
+            return None
     
     @sequence_type.setter
     def sequence_type(self, sequence_type: int):
@@ -94,3 +103,6 @@ class Sequence():
 if __name__ == '__main__':
     sequence = Sequence()
     print(sequence.__dict__())
+    print(sequence.species)
+    print(sequence.allele_profile)
+    print(sequence.sequence_type)
