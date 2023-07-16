@@ -24,7 +24,7 @@ class Sequence():
     def __dict__(self):
         return self.sample_doc
 
-    def __init__(self, sample_doc:dict=None, imported_metadata:dict=None, manual_metadata:dict=None):
+    def __init__(self, sample_doc:dict):
         if sample_doc:
             try:
                 assert 'name' in sample_doc
@@ -39,11 +39,6 @@ class Sequence():
             except (AssertionError, KeyError):
                 raise ValueError("institution not found")
             self.sample_doc = sample_doc
-
-        if imported_metadata:
-            self.imported_metadata = imported_metadata
-        if manual_metadata:
-            self.manual_metadata = manual_metadata
 
     @property
     def sequence_id(self):
