@@ -1,31 +1,32 @@
+from abc import ABC
+
 try:
     from persistence.bifrost_sample_template import bifrost_sample_template
 except ImportError:
     from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
 
 
-class TBRMeta:
-    def __init__(self, tbr_doc: dict):
-        self.isolate_id = tbr_doc.get('isolate_id')
-        self.age = tbr_doc.get('age')
-        self.gender = tbr_doc.get('gender')
-        self.kma = tbr_doc.get('kma')
-        self.region = tbr_doc.get('region')
-        self.travel = tbr_doc.get('travel')
-        self.travel_country = tbr_doc.get('travel_country')
-        self.primary_isolate = tbr_doc.get('primary_isolate')
+class Metadata(ABC):
+    isolate_id: str or None
+    metadata_fields = tuple()  # Set in subclasses
+
+    def __init__(self, metadata: dict):
+        for field in self.metadata_fields:
+            setattr(self, field, metadata[field])
+        self.isolate_id = metadata.get('isolate_id')
 
 
-class LIMSMeta:
-    def __init__(self, lims_doc: dict):
-        self.isolate_id = lims_doc.get('isolate_id')
-        self.product_type = lims_doc.get('product_type')
-        self.product = lims_doc.get('product')
-        self.origin_country = lims_doc.get('origin_country')
-        self.cvr_number = lims_doc.get('cvr_number')
-        self.chr_number = lims_doc.get('chr_number')
-        self.aut_number = lims_doc.get('aut_number')
-        self.animal_species = lims_doc.get('animal_species')
+class TBRMetadata(Metadata):
+    metadata_fields = (
+        'age', 'gender', 'kma', 'region', 'travel', 'travel_country', 'primary_isolate'
+    )
+
+
+class LIMSMetadata(Metadata):
+    metadata_fields = (
+        'product_type', 'product', 'origin_country', 'cvr_number', 'chr_number', 'aut_number', 'animal_species'
+    )
+
 
 
 class Sequence():
@@ -57,7 +58,7 @@ class Sequence():
         'sequence_type': ['cgmlst', 'report', 'data', 'sequence_type'],
         }
     
-    metadata: TBRMeta or LIMSMeta or None
+    metadata: TBRMetadata or LIMSMetadata or None
 
     def as_dict(self):
         return self.sample_doc
