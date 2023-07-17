@@ -57,6 +57,7 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.ERROR(f"Could not add sequence {sequence.sequence_id} in MongoDB!"))
 
             # Create fake metadata document
+            self.stdout.write("Creating fake metadata")
             travel = random.sample(['J', 'N'], 1)[0]
             print (f"Travel: {travel}")
             if travel == 'J':
@@ -65,6 +66,7 @@ class Command(BaseCommand):
                 travel_country = None
             print(travel_country)
             tbr_doc = {
+                'isolate_id': sequence.isolate_id,
                 'age': random.randint(0, 100),
                 'gender': random.sample(['K', 'M'], 1)[0],
                 'kma': random.sample(['Rigshospitalet', 'OUH', 'Herlev', 'Hvidovre', 'Aalborg', 'Skejby'], 1)[0],
@@ -74,6 +76,12 @@ class Command(BaseCommand):
                 'primary_isolate': True,
             }
             print(tbr_doc)
-            tbr_meta = classes.TBRMeta(tbr_doc)
+
+            # Insert data in TBR metadata collection
+            result = mongo_api.db.sap_tbr_metadata.insert_one(tbr_doc)
+            if result.acknowledged:
+                self.stdout.write(self.style.SUCCESS(tbr_doc['isolate_id']))
+            else:
+                self.stdout.write(self.style.ERROR(f"Could not add TBR metadata for isolate {tbr_doc['isolate_id']} in MongoDB!"))
         
         self.stdout.write(f'MongoDB now contains {str(mongo_api.db.samples.count_documents({}))} sequences')
