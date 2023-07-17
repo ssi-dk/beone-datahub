@@ -42,7 +42,7 @@ class Command(BaseCommand):
         for n in range(0, options['count']):
 
             # Create fake sequence document
-            sequence = classes.Sequence(deepcopy(bifrost_sample_template))
+            sequence = classes.Sequence.from_bifrost_sample(deepcopy(bifrost_sample_template))
             sequence.isolate_id = rndstr(10)
             sequence.sequence_id = run_name + '_' + sequence.isolate_id
             sequence.sample_doc['categories']['cgmlst']['summary']['call_percent'] = rndpct()
@@ -56,6 +56,24 @@ class Command(BaseCommand):
             else:
                 self.stdout.write(self.style.ERROR(f"Could not add sequence {sequence.sequence_id} in MongoDB!"))
 
-            #TODO Create fake metadata documents
+            # Create fake metadata document
+            travel = random.sample(['J', 'N'], 1)[0]
+            print (f"Travel: {travel}")
+            if travel == 'J':
+                travel_country = random.sample(['SPANIEN', 'UNITED_KINGDOM', 'GRÆKENLAND', 'BULGARIEN', 'TYRKIET'], 1)[0]
+            else:
+                travel_country = None
+            print(travel_country)
+            tbr_doc = {
+                'age': random.randint(0, 100),
+                'gender': random.sample(['K', 'M'], 1)[0],
+                'kma': random.sample(['Rigshospitalet', 'OUH', 'Herlev', 'Hvidovre', 'Aalborg', 'Skejby'], 1)[0],
+                'region': random.sample(['SYDDANMARK', 'MIDTJYLLAND', 'SJÆLLAND', 'HOVEDSTADEN', 'NORDJYLLAND'], 1)[0],
+                'travel': travel,
+                'travel_country': travel_country,
+                'primary_isolate': True,
+            }
+            print(tbr_doc)
+            tbr_meta = classes.TBRMeta(tbr_doc)
         
         self.stdout.write(f'MongoDB now contains {str(mongo_api.db.samples.count_documents({}))} sequences')
