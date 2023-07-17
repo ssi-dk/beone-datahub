@@ -14,6 +14,10 @@ class Metadata(ABC):
         for field in self.metadata_fields:
             setattr(self, field, metadata[field])
         self.isolate_id = metadata.get('isolate_id')
+    
+    @classmethod
+    def get_field_list(cls):
+        return cls.metadata_fields
 
 
 class TBRMetadata(Metadata):

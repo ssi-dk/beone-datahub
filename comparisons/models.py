@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
 
+from bio_api import classes
+
 
 class Species(models.Model):
     name = models.CharField(max_length=40, unique=True)
@@ -92,7 +94,8 @@ class Comparison(SequenceSet):
     distances = models.JSONField(blank=True, default=dict)
     always_calculate_dm = models.BooleanField(default=False)
     dm_status = models.CharField(max_length=15, choices=CALC_STATUSES, default=NODATA)
-    data_fields = ArrayField(models.CharField(max_length=25), blank=True, default=list)   # default=get_default_data_fields
+    data_fields = ArrayField(models.CharField(max_length=25), blank=True,
+        default=classes.TBRMetadata.get_field_list)
     field_data = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
 
