@@ -1,4 +1,7 @@
-from persistence.bifrost_sample_template import bifrost_sample_template
+try:
+    from persistence.bifrost_sample_template import bifrost_sample_template
+except ImportError:
+    from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
 
 class Sequence():
     sample_doc: dict = {
