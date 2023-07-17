@@ -96,10 +96,8 @@ class Comparison(SequenceSet):
     dm_status = models.CharField(max_length=15, choices=CALC_STATUSES, default=NODATA)
     tbr_data_fields = ArrayField(models.CharField(max_length=25), blank=True,
         default=classes.TBRMetadata.get_field_list)
-    tbr_field_data = models.JSONField(blank=True, default=dict)
     lims_data_fields = ArrayField(models.CharField(max_length=25), blank=True,
         default=classes.LIMSMetadata.get_field_list)
-    lims_field_data = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
 
 
