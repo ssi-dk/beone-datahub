@@ -6,6 +6,7 @@ except ImportError:
 
 class TBRMeta:
     def __init__(self, tbr_doc: dict):
+        self.isolate_id = tbr_doc.get('isolate_id')
         self.age = tbr_doc.get('age')
         self.gender = tbr_doc.get('gender')
         self.kma = tbr_doc.get('kma')
@@ -17,6 +18,7 @@ class TBRMeta:
 
 class LIMSMeta:
     def __init__(self, lims_doc: dict):
+        self.isolate_id = lims_doc.get('isolate_id')
         self.product_type = lims_doc.get('product_type')
         self.product = lims_doc.get('product')
         self.origin_country = lims_doc.get('origin_country')
@@ -54,6 +56,8 @@ class Sequence():
         'allele_profile': ['cgmlst', 'report', 'data', 'alleles'],
         'sequence_type': ['cgmlst', 'report', 'data', 'sequence_type'],
         }
+    
+    metadata: TBRMeta or LIMSMeta or None
 
     def as_dict(self):
         return self.sample_doc
