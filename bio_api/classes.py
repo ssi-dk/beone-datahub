@@ -3,6 +3,29 @@ try:
 except ImportError:
     from bio_api.persistence.bifrost_sample_template import bifrost_sample_template
 
+
+class TBRMeta:
+    def __init__(self, tbr_doc: dict):
+        self.age = tbr_doc.get('age')
+        self.gender = tbr_doc.get('gender')
+        self.kma = tbr_doc.get('kma')
+        self.region = tbr_doc.get('region')
+        self.travel = tbr_doc.get('travel')
+        self.travel_country = tbr_doc.get('travel_country')
+        self.primary_isolate = tbr_doc.get('primary_isolate')
+
+
+class LIMSMeta:
+    def __init__(self, lims_doc: dict):
+        self.product_type = lims_doc.get('product_type')
+        self.product = lims_doc.get('product')
+        self.origin_country = lims_doc.get('origin_country')
+        self.cvr_number = lims_doc.get('cvr_number')
+        self.chr_number = lims_doc.get('chr_number')
+        self.aut_number = lims_doc.get('aut_number')
+        self.animal_species = lims_doc.get('animal_species')
+
+
 class Sequence():
     sample_doc: dict = {
         "categories": {
@@ -118,28 +141,6 @@ class Sequence():
     @sequence_type.setter
     def sequence_type(self, sequence_type: int):
         self.sample_doc['categories']['cgmlst']['report']['data']['sequence_type'] = sequence_type
-
-
-class TBRMeta:
-    def __init__(self, tbr_doc: dict):
-        self.age = tbr_doc.get('age')
-        self.gender = tbr_doc.get('gender')
-        self.kma = tbr_doc.get('kma')
-        self.region = tbr_doc.get('region')
-        self.travel = tbr_doc.get('travel')
-        self.travel_country = tbr_doc.get('travel_country')
-        self.primary_isolate = tbr_doc.get('primary_isolate')
-
-
-class LIMSMeta:
-    def __init__(self, lims_doc: dict):
-        self.product_type = lims_doc.get('product_type')
-        self.product = lims_doc.get('product')
-        self.origin_country = lims_doc.get('origin_country')
-        self.cvr_number = lims_doc.get('cvr_number')
-        self.chr_number = lims_doc.get('chr_number')
-        self.aut_number = lims_doc.get('aut_number')
-        self.animal_species = lims_doc.get('animal_species')
 
 
 if __name__ == '__main__':
