@@ -24,7 +24,7 @@ admin.site.register(Tree, TreeAdmin)
 
 class ComparisonAdmin(admin.ModelAdmin):
     list_display = ('pk', 'species')
-    readonly_fields = ('distances',)
+    readonly_fields = ('species', 'created_by', 'tool', 'sequences', 'dm_status', 'distances',)
 
 admin.site.register(Comparison, ComparisonAdmin)
 
