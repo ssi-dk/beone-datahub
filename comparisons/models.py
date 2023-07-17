@@ -94,9 +94,9 @@ class Comparison(SequenceSet):
     distances = models.JSONField(blank=True, default=dict)
     always_calculate_dm = models.BooleanField(default=False)
     dm_status = models.CharField(max_length=15, choices=CALC_STATUSES, default=NODATA)
-    data_fields = ArrayField(models.CharField(max_length=25), blank=True,
+    tbr_data_fields = ArrayField(models.CharField(max_length=25), blank=True,
         default=classes.TBRMetadata.get_field_list)
-    field_data = models.JSONField(blank=True, default=dict)
+    tbr_field_data = models.JSONField(blank=True, default=dict)
     microreact_project = models.CharField(max_length=20, blank=True, null=True)
 
 
