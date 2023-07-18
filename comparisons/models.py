@@ -87,7 +87,6 @@ class Comparison(SequenceSet):
         (PENDING, "Pending"),
         (VALID, "Valid"),
         (ERROR, "Request was unsuccesful"),
-        (OBSOLETE, "Obsolete"),
     ]
 
     tool = models.ForeignKey(ComparisonTool, on_delete=models.PROTECT)
