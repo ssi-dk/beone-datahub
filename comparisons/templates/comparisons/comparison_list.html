@@ -21,14 +21,17 @@
     <div class='overview-header'>
       <div class='overview-header-inner-bold'>Created by</div>
     </div>
- <div class='overview-header'>
+    <div class='overview-header'>
       <div class='overview-header-inner-bold'>Created at</div>
+    </div>
+    <div class='overview-header'>
+      <div class='overview-header-inner-bold'>DM status</div>
     </div>
     <div class='overview-header'>
       <div class='overview-header-inner-bold'>Edit</div>
     </div>
     <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Number of sequences</div>
+      <div class='overview-header-inner-bold'>Sequence count</div>
     </div>
     <div class="overview-header">
       <div class="overview-header-inner-bold">HC single</div>
@@ -50,6 +53,9 @@
     </div>
     <div class='overview-datacolumn'>
       {{ comparison.created_at }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ comparison.dm_status }}
     </div>
     <div class='overview-datacolumn'>
       <a href="/admin/comparisons/comparison/{{ comparison.pk }}/change/" target="_blank">Edit with admin</a>
