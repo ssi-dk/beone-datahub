@@ -111,9 +111,13 @@ def make_tree(request, comparison_id, tree_type):
             return HttpResponseRedirect(reverse(comparison_list))
         else:
             assert comparison.dm_status == 'VALID'  # We should only end up here in case dm_status is VALID
-            print(f"Reusing previous distance matrix for comparison {comparison.id}")
 
-        # Get tree
+        # Check if we already have a Tree with the desired method for the desired Comparison
+        existing = comparison.tree_set.filter(comparison=comparison.pk, tree_type=tree_type)
+        print(f"There is/are already {existing.count()} tree(s) with tree_type {tree_type} for this comparison")
+
+        # Generate tree
+        print(f"Reusing previous distance matrix for comparison {comparison.id}")
         print("This is what distances loook like in db:")
         print(comparison.distances)
         index = comparison.distances['index']
