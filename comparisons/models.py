@@ -98,7 +98,6 @@ class Comparison(SequenceSet):
         default=classes.TBRMetadata.get_field_list)
     lims_data_fields = ArrayField(models.CharField(max_length=25), blank=True,
         default=classes.LIMSMetadata.get_field_list)
-    microreact_project = models.CharField(max_length=20, blank=True, null=True)
 
 
 class Tree(models.Model):
