@@ -99,6 +99,9 @@ class Comparison(SequenceSet):
         default=classes.TBRMetadata.get_field_list)
     lims_data_fields = ArrayField(models.CharField(max_length=25), blank=True,
         default=classes.LIMSMetadata.get_field_list)
+    
+    def show_trees(self):
+        return self.tree_set.all()
 
 
 class Tree(models.Model):

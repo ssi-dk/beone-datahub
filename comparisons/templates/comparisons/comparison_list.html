@@ -13,7 +13,7 @@
   <h2>Comparison List</h2>
   <div class="overview-row">
     <div class='overview-header overview-firstcol-border'>
-      <div class='overview-header-inner-bold'>Id</div>
+      <div class='overview-header-inner-bold'>ID</div>
     </div>
     <div class='overview-header'>
       <div class='overview-header-inner-bold'>Species</div>
@@ -32,6 +32,9 @@
     </div>
     <div class='overview-header'>
       <div class='overview-header-inner-bold'>Sequence count</div>
+    </div>
+    <div class='overview-header'>
+      <div class='overview-header-inner-bold'>Trees</div>
     </div>
     <div class="overview-header">
       <div class="overview-header-inner-bold">HC single</div>
@@ -62,6 +65,9 @@
     </div>
     <div class='overview-datacolumn'>
       {{ comparison.sequences|length }}
+    </div>
+    <div class='overview-datacolumn'>
+      {{ comparison.show_trees|length }}
     </div>
     <div class="overview-datacolumn">
       {% if comparison.tree_single %}
