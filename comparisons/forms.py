@@ -6,7 +6,7 @@ from comparisons.models import Species, ComparisonTool
 
 class NewComparisonForm(forms.Form):
     species = forms.ModelChoiceField(Species.objects.all(), label='Select species:')
-    tool = forms.ModelChoiceField(ComparisonTool.objects.all(), label='Select comparison tool:')
+    tool = forms.ModelChoiceField(ComparisonTool.objects.all(), label='Select cgMLST tool and version:')
     sequences = SimpleArrayField(forms.CharField(), delimiter=" ", label='Sequences (ids delimited by space)')
 
     def clean_sequences(self):
