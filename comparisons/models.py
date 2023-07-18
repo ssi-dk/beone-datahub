@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import ArrayField
@@ -109,10 +111,12 @@ class Tree(models.Model):
         (COMPLETE, "Complete"),
         (AVERAGE, "Average"),
     ]
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     tree_type = models.CharField(max_length=10, choices=TREE_TYPES, default=SINGLE)
     comparison = models.ForeignKey(Comparison, on_delete=models.SET_NULL, null=True)
     newick = models.TextField(default='()')
+    dashboard_created = models.BooleanField(default=False)
 
 
 class Cluster(SequenceSet):
