@@ -33,10 +33,7 @@
     <div class='overview-header'>
       <div class='overview-header-inner-bold'>Sequence count</div>
     </div>
-    <div class='overview-header'>
-      <div class='overview-header-inner-bold'>Tree count</div>
-    </div>
-    <div class="overview-header">
+      <div class="overview-header">
       <div class="overview-header-inner-bold">Single linkage</div>
     </div>
     <div class="overview-header">
@@ -66,21 +63,18 @@
     <div class='overview-datacolumn'>
       {{ comparison.sequences|length }}
     </div>
-    <div class='overview-datacolumn'>
-      {{ comparison.show_trees|length }}
-    </div>
     <div class="overview-datacolumn">
       {% if comparison.tree_single %}
       New dashboard
       {% else %}
-      <a href="{% url 'make_tree' comparison.pk 'single' %}">Calculate / show</a>
+      <a href="{% url 'make_tree' comparison.pk 'single' %}">Generate / show</a>
       {% endif %}
     </div>
     <div class="overview-datacolumn">
       {% if comparison.tree_single %}
       New dashboard
       {% else %}
-      <a href="{% url 'make_tree' comparison.pk 'complete' %}">Calculate / show</a>
+      <a href="{% url 'make_tree' comparison.pk 'complete' %}">Generate / show</a>
       {% endif %}
     </div>
   </div>
