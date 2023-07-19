@@ -10,7 +10,7 @@
     </div>
 </div>
 <div class="pane">
-    <h2>Current Tree and Comparison</h2>
+    <h2>Current tree and comparison</h2>
     <div>Tree type: {{tree.tree_type}}</div>
     <div>Comparison tool: {{tree.comparison.tool}}</div>
     <div>Sequence count: {{sequence_count}}</div>
@@ -20,7 +20,7 @@
   <h2>New dashboard from this tree</h2>
   <form action="" method="post">
     {% csrf_token %}
-    {# form.as_p #}
+    {{ form.as_p }}
     <input type="submit" value="Create dashboard">
   </form>
 </div>
