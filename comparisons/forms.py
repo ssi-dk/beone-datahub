@@ -23,6 +23,7 @@ class DeleteDatasetForm(forms.Form):
     confirm_name = forms.CharField(max_length=40, label='To delete dataset, confirm dataset name')
 
 
-class NewDashboardForm(
-    forms.modelform_factory(Dashboard, fields=['tbr_data_fields', 'lims_data_fields'])):
-    pass
+class NewDashboardForm(forms.ModelForm):
+    class Meta:
+        model = Dashboard
+        fields = ['tbr_data_fields', 'lims_data_fields']

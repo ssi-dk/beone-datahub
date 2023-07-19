@@ -1,21 +1,16 @@
-import json
-
 import requests
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, JsonResponse, StreamingHttpResponse
+from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse
-from django.db import IntegrityError
-from django.contrib.auth.models import User
 from django.utils import timezone
 from django.shortcuts import redirect
-from django import forms
 
 from bio_api.persistence.mongo import MongoAPI
-from comparisons.models import Species, Tree, SequenceSet, Comparison
+from comparisons.models import Tree, Comparison, Dashboard
 from comparisons.forms import NewComparisonForm, NewDashboardForm
 
 TREE_TYPE_IDS = [ t[0] for t in Tree.TREE_TYPES ]
@@ -166,7 +161,22 @@ def make_tree(request, comparison_id, tree_type):
 @login_required
 def launchpad(request, tree_id):
     tree = Tree.objects.get(uuid=tree_id)
-    form = NewDashboardForm
+
+    if request.method == 'POST':
+        form = NewDashboardForm(request.POST)
+        if form.is_valid():
+            dashboard = Dashboard(
+                tree=tree,
+                tbr_data_fields=form.cleaned_data['tbr_data_fields'],
+                lims_data_fields=form.cleaned_data['lims_data_fields'],
+            )
+            dashboard.save()
+            msg = "A SOFI reference to the new dashboard is now created, but it is not yet " + \
+            "created in Microreact."
+            messages.add_message(request, messages.INFO, msg)
+    else:
+        form = NewDashboardForm()
+
     return render(request, 'comparisons/launchpad.html',{
     'form': form,
     'tree': tree,
