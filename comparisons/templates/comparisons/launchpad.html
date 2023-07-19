@@ -26,5 +26,8 @@
 </div>
 <div class="pane">
     <h2>Existing dashboards with this tree</h2>
+    {% for dashboard in dashboards %}
+        {{ dashboard }}
+    {% endfor %}
 </div>
 {% endblock %}

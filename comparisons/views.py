@@ -161,6 +161,7 @@ def make_tree(request, comparison_id, tree_type):
 @login_required
 def launchpad(request, tree_id):
     tree = Tree.objects.get(uuid=tree_id)
+    dashboards = Dashboard.objects.filter(tree=tree.pk)
 
     if request.method == 'POST':
         form = NewDashboardForm(request.POST)
@@ -180,5 +181,6 @@ def launchpad(request, tree_id):
     return render(request, 'comparisons/launchpad.html',{
     'form': form,
     'tree': tree,
-    'sequence_count': len(tree.comparison.sequences)
+    'sequence_count': len(tree.comparison.sequences),
+    'dashboards': dashboards
     })
