@@ -95,10 +95,6 @@ class Comparison(SequenceSet):
     distances = models.JSONField(blank=True, default=dict)
     always_calculate_dm = models.BooleanField(default=False)
     dm_status = models.CharField(max_length=15, choices=CALC_STATUSES, default=NODATA, verbose_name="DM status")
-    tbr_data_fields = ArrayField(models.CharField(max_length=25), blank=True,
-        default=classes.TBRMetadata.get_field_list)
-    lims_data_fields = ArrayField(models.CharField(max_length=25), blank=True,
-        default=classes.LIMSMetadata.get_field_list)
 
 
 class Tree(models.Model):
