@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.shortcuts import redirect
 
 from bio_api.persistence.mongo import MongoAPI
 from comparisons.models import Species, Tree, SequenceSet, Comparison
@@ -114,47 +115,57 @@ def make_tree(request, comparison_id, tree_type):
 
         # Check if we already have a Tree with the desired method for the desired Comparison
         existing = comparison.tree_set.filter(comparison=comparison.pk, tree_type=tree_type)
-        print(f"There is/are already {existing.count()} tree(s) with tree_type {tree_type} for this comparison")
-
-        # Generate tree
-        print(f"Reusing previous distance matrix for comparison {comparison.id}")
-        print("This is what distances loook like in db:")
-        print(comparison.distances)
-        index = comparison.distances['index']
-        columns = comparison.distances['columns']
-        data = comparison.distances['data']
-        assert index == columns
-        matrix_size = len(columns)
-        assert matrix_size == len(data)
-        dm = dict()
-        for i in range(matrix_size):
-            dm[columns[i]] = data[i]
-        print("This is the distance matrix I'll send to Bio API:")
-        print(dm)
-        print(f"Requesting tree for comparison {comparison.pk}, tree type {tree_type}")
-        raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/tree/hc/',
-                json={
-                    'distances': dm,
-                    'method': tree_type
-                    })
-        json_response = (raw_response.json())
-        print("JSON response:")
-        print(json_response)
-        if 'tree' in json_response:
-            msg = f"Received tree with method {tree_type} for comparison with id {comparison.id}"
-            print(msg)
-            messages.add_message(request, messages.INFO, msg)
-            tree = Tree(tree_type=tree_type, comparison=comparison, newick=json_response['tree'])
-            tree.save()
-        elif 'error' in json_response:
-            msg = json_response['error']
-            print(msg)
-            messages.add_message(request, messages.ERROR, msg)
-        elif 'job_id' in json_response:
-            msg = f"job id {json_response['job_id']} neither returned a tree nor an error message."
-            print(msg)
-            messages.add_message(request, messages.ERROR, msg)
+        if existing:
+            return redirect("launchpad", tree_id=existing.first().pk)  # TODO: What if there are more than one?
         else:
-            raise ValueError("Error when calling Bio API")
-        comparison.save()
+            # Generate tree
+            print(f"Reusing previous distance matrix for comparison {comparison.id}")
+            print("This is what distances loook like in db:")
+            print(comparison.distances)
+            index = comparison.distances['index']
+            columns = comparison.distances['columns']
+            data = comparison.distances['data']
+            assert index == columns
+            matrix_size = len(columns)
+            assert matrix_size == len(data)
+            dm = dict()
+            for i in range(matrix_size):
+                dm[columns[i]] = data[i]
+            print("This is the distance matrix I'll send to Bio API:")
+            print(dm)
+            print(f"Requesting tree for comparison {comparison.pk}, tree type {tree_type}")
+            raw_response = requests.post(f'http://bio_api:{str(settings.BIO_API_PORT)}/tree/hc/',
+                    json={
+                        'distances': dm,
+                        'method': tree_type
+                        })
+            json_response = (raw_response.json())
+            print("JSON response:")
+            print(json_response)
+            if 'tree' in json_response:
+                msg = f"Successfully created a tree with method {tree_type} for comparison with id {comparison.id}. \n" + \
+                "You can view in Launchpad by clicking it again in the list below."
+                print(msg)
+                messages.add_message(request, messages.INFO, msg)
+                tree = Tree(tree_type=tree_type, comparison=comparison, newick=json_response['tree'])
+                tree.save()
+            elif 'error' in json_response:
+                msg = json_response['error']
+                print(msg)
+                messages.add_message(request, messages.ERROR, msg)
+            elif 'job_id' in json_response:
+                msg = f"job id {json_response['job_id']} neither returned a tree nor an error message."
+                print(msg)
+                messages.add_message(request, messages.ERROR, msg)
+            else:
+                raise ValueError("Error when calling Bio API")
+            comparison.save()
     return HttpResponseRedirect(reverse(comparison_list))
+
+@login_required
+def launchpad(request, tree_id):
+    tree = Tree.objects.get(uuid=tree_id)
+    return render(request, 'comparisons/launchpad.html',{
+    # 'form': form,
+    'tree': tree
+    })

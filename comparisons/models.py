@@ -119,6 +119,23 @@ class Tree(models.Model):
     dashboard_created = models.BooleanField(default=False)
 
 
+class Dashboard(models.Model):
+    """The Dashboard model represents a Microreact project. A Dashboard entity will only be
+    created after a successful creation of a project in Microreact.
+    Currently, the plan is that the Microreact project title will be identical with the
+    Dashboard uuid. To achieve this, we'll first create the Dasboard entity to get the uuid,
+    and then try to create the Microreact project with that uuid as project title."""
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, models.SET_NULL, blank=True, null=True)
+    tree = models.ForeignKey(Tree, on_delete=models.PROTECT)
+    tbr_data_fields = ArrayField(models.CharField(max_length=25), blank=True,
+        default=classes.TBRMetadata.get_field_list)
+    lims_data_fields = ArrayField(models.CharField(max_length=25), blank=True,
+        default=classes.LIMSMetadata.get_field_list)
+    dashboard_created = models.BooleanField(default=False)
+
+
 class Cluster(SequenceSet):
     species = models.ForeignKey(Species, models.PROTECT)
     st = models.PositiveIntegerField()

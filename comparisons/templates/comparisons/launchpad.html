@@ -1,0 +1,23 @@
+{% extends 'comparisons/base.html' %}
+
+{% block content%}
+<div class="pane">
+    <h2>Welcome to the Launchpad</h2>
+    <div>
+        <p>This is where you create and start a new dashboard.</p>
+        <p>To do this, all you need is a tree (you have one already), and optionally at set of metadata to show in the dashboard.</p>
+        <p>You can select metadata fields in the form below.</p>
+    </div>
+</div>
+<div class="pane">
+  <h2>New dashboard with this tree</h2>
+  <form method="post">
+    {% csrf_token %}
+    {# form.as_p #}
+    <button type="submit">Create dashboard</button>
+  </form>
+</div>
+<div class="pane">
+    <h2>Existing dashboard with this tree</h2>
+</div>
+{% endblock %}
