@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from comparisons.models import Species, Tree, ComparisonTool, Cluster, PotentialOutbreak
-from comparisons.models import Comparison
+from comparisons.models import Comparison, Dashboard
 
 
 class SpeciesAdmin(admin.ModelAdmin):
@@ -27,6 +27,12 @@ class ComparisonAdmin(admin.ModelAdmin):
     readonly_fields = ('species', 'created_by', 'tool', 'sequences', 'dm_status', 'distances',)
 
 admin.site.register(Comparison, ComparisonAdmin)
+
+
+class DashboardAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Dashboard, DashboardAdmin)
 
 
 class ClusterAdmin(admin.ModelAdmin):
