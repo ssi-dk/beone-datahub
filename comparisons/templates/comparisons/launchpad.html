@@ -49,7 +49,7 @@
     {% for dashboard in dashboards %}
     <div class="row">
         <div class='overview-datacolumn'>
-        {{ dashboard.pk }}
+        <a href="{{microreact_url}}" target="_blank">{{ dashboard.pk }}</a>
       </div>
       <div class='overview-datacolumn'>
         {{ dashboard.created_by }}
