@@ -29,7 +29,7 @@ class SequenceSet(models.Model):
    
     class Meta:
         abstract = True
-        ordering = ['-pk']
+        ordering = ['-created_at']
 
     def __str__(self):
         return f"{self.pk} {self.created_by} {self.created_at}"
@@ -114,6 +114,10 @@ class Tree(models.Model):
     newick = models.TextField(default='()')
     dashboard_created = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ["-created_at"]
+
+
 
 class Dashboard(models.Model):
     """The Dashboard model represents a Microreact project. A Dashboard entity will only be
@@ -130,6 +134,9 @@ class Dashboard(models.Model):
     lims_data_fields = ArrayField(models.CharField(max_length=25), blank=True,
         default=classes.LIMSMetadata.get_field_list)
     dashboard_created = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-created_at"]
 
 
 class Cluster(SequenceSet):
@@ -154,3 +161,6 @@ class PotentialOutbreak(models.Model):
     suspected_source = models.CharField(max_length=30)
     comparison = models.ManyToManyField(Comparison)
     outbreak_id = models.IntegerField(null=True, blank=True)  # 'FUDnummer' (without prefix)
+
+    class Meta:
+        ordering = ["-created_at"]
