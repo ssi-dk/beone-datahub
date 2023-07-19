@@ -167,6 +167,7 @@ def launchpad(request, tree_id):
         form = NewDashboardForm(request.POST)
         if form.is_valid():
             dashboard = Dashboard(
+                created_by=request.user,
                 tree=tree,
                 tbr_data_fields=form.cleaned_data['tbr_data_fields'],
                 lims_data_fields=form.cleaned_data['lims_data_fields'],

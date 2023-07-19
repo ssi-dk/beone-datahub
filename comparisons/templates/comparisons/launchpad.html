@@ -26,8 +26,47 @@
 </div>
 <div class="pane">
     <h2>Existing dashboards with this tree</h2>
+    <div class="overview-row">
+        <div class='overview-header overview-firstcol-border'>
+          <div class='overview-header-inner-bold'>ID</div>
+        </div>
+        <div class='overview-header'>
+          <div class='overview-header-inner-bold'>Created by</div>
+        </div>
+        <div class='overview-header'>
+          <div class='overview-header-inner-bold'>Created at</div>
+        </div>
+        <div class='overview-header'>
+          <div class='overview-header-inner-bold'>TBR data fields</div>
+        </div>
+        <div class='overview-header'>
+          <div class='overview-header-inner-bold'>LIMS data fields</div>
+        </div>
+        <div class='overview-header'>
+          <div class='overview-header-inner-bold'>Created in Microreact</div>
+        </div>
+    </div>
     {% for dashboard in dashboards %}
-        {{ dashboard }}
+    <div class="row">
+        <div class='overview-datacolumn'>
+        {{ dashboard.pk }}
+      </div>
+      <div class='overview-datacolumn'>
+        {{ dashboard.created_by }}
+      </div>
+      <div class='overview-datacolumn'>
+        {{ dashboard.created_at }}
+      </div>
+      <div class='overview-datacolumn'>
+        {{ dashboard.tbr_data_fields }}
+      </div>
+      <div class='overview-datacolumn'>
+        {{ dashboard.lims_data_fields }}
+      </div>
+      <div class='overview-datacolumn'>
+        {{ dashboard.dashboard_created }}
+      </div>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}
