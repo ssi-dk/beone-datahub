@@ -140,7 +140,7 @@ def make_tree(request, comparison_id, tree_type):
             print(json_response)
             if 'tree' in json_response:
                 msg = f"Successfully created a tree with method {tree_type} for comparison with id {comparison.id}. \n" + \
-                "You can view in Launchpad by clicking it again in the list below."
+                "You can view it in Launchpad by clicking it again in the list below."
                 print(msg)
                 messages.add_message(request, messages.INFO, msg)
                 tree = Tree(tree_type=tree_type, comparison=comparison, newick=json_response['tree'])
