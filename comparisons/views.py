@@ -167,5 +167,6 @@ def launchpad(request, tree_id):
     tree = Tree.objects.get(uuid=tree_id)
     return render(request, 'comparisons/launchpad.html',{
     # 'form': form,
-    'tree': tree
+    'tree': tree,
+    'sequence_count': len(tree.comparison.sequences)
     })
