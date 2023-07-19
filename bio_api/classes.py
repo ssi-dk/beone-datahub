@@ -8,7 +8,7 @@ except ImportError:
 
 class Metadata(ABC):
     isolate_id: str or None
-    metadata_fields = tuple()  # Set in subclasses
+    metadata_fields = list()  # Set in subclasses
 
     def __init__(self, metadata: dict):
         for field in self.metadata_fields:
@@ -21,15 +21,15 @@ class Metadata(ABC):
 
 
 class TBRMetadata(Metadata):
-    metadata_fields = (
+    metadata_fields = [
         'age', 'gender', 'kma', 'region', 'travel', 'travel_country', 'primary_isolate'
-    )
+    ]
 
 
 class LIMSMetadata(Metadata):
-    metadata_fields = (
+    metadata_fields = [
         'product_type', 'product', 'origin_country', 'cvr_number', 'chr_number', 'aut_number', 'animal_species'
-    )
+    ]
 
 
 
