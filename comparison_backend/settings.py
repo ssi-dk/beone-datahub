@@ -197,4 +197,5 @@ REPORTREE_TIMEOUT = 5  # The number of seconds to wait for at REST response befo
 
 BIO_API_PORT = 8001
 
-MICROREACT_BASE_URL = 'host.docker.internal:3000'
+# NOTE: this URL is from the browser's perspective, not from the application's perspective!
+MICROREACT_BASE_URL = 'http://localhost:3000'
