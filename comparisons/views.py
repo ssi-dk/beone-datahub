@@ -1,4 +1,5 @@
 import requests
+from base64 import b64encode
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -174,8 +175,12 @@ def launchpad(request, tree_id):
             )
             msg = "Microreact is not yet integrated."
             messages.add_message(request, messages.INFO, msg)
+            print(tree.newick)
             # TODO
-            # Get lims, tbr & manual metadata from MongoDB
+            # Base64-encode tree
+            # For collection in lims, tbr, manual:
+            # - Get encrypted data fromn the relevant SOFI collection
+            # - Base64-encode the data
             # Create project in Microreact, get project id & url from response
             # dashboard.save()
     else:
