@@ -172,10 +172,9 @@ def launchpad(request, tree_id):
                 tbr_data_fields=form.cleaned_data['tbr_data_fields'],
                 lims_data_fields=form.cleaned_data['lims_data_fields'],
             )
-            dashboard.save()
-            msg = "A SOFI reference to the new dashboard is now created, but it is not yet " + \
-                "created in Microreact.\n"
+            msg = "Microreact is not yet integrated."
             messages.add_message(request, messages.INFO, msg)
+            # dashboard.save()
     else:
         form = NewDashboardForm()
 
