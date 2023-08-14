@@ -174,6 +174,9 @@ def launchpad(request, tree_id):
             )
             msg = "Microreact is not yet integrated."
             messages.add_message(request, messages.INFO, msg)
+            # TODO
+            # Get lims, tbr & manual metadata from MongoDB
+            # Create project in Microreact, get project id & url from response
             # dashboard.save()
     else:
         form = NewDashboardForm()
