@@ -174,8 +174,7 @@ def launchpad(request, tree_id):
             )
             dashboard.save()
             msg = "A SOFI reference to the new dashboard is now created, but it is not yet " + \
-                "created in Microreact.\n" + \
-                "If you click in the 'ID' field in the list below, we'll try to create the dashboard in Microreact."
+                "created in Microreact.\n"
             messages.add_message(request, messages.INFO, msg)
     else:
         form = NewDashboardForm()
