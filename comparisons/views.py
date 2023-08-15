@@ -175,14 +175,15 @@ def launchpad(request, tree_id):
             )
             msg = "Microreact is not yet integrated."
             messages.add_message(request, messages.INFO, msg)
-            # TODO
-            # Base64-encode tree
             tree_encoded = b64encode(tree.newick.encode('utf-8'))
-            # For collection in lims, tbr, manual:
-            # - Get encrypted data fromn the relevant SOFI collection
-            # - Base64-encode the data
-            # Create project in Microreact, get project id & url from response
-            # dashboard.save()
+            tbr_metadata_collection = settings.METADATA_COLLECTIONS['tbr']
+            # TODO add the function below in mongo_api
+            # tbr_metadata = mongo_api.get_metadata('tbr', fields=dashboard.tbr_data_fields)
+            # TODO Base64-encode metadata
+            # TODO Repeat The code section above for lims metadata and manual metadata
+            # TODO Create project in Microreact, get project id & url from response
+            # TODO dashboard.save()
+            # TODO open dashboard url in new browser tab
     else:
         form = NewDashboardForm()
 
