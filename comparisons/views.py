@@ -175,11 +175,9 @@ def launchpad(request, tree_id):
             )
             msg = "Microreact is not yet integrated."
             messages.add_message(request, messages.INFO, msg)
-            print(tree.newick)
             # TODO
             # Base64-encode tree
             tree_encoded = b64encode(tree.newick.encode('utf-8'))
-            print(tree_encoded)
             # For collection in lims, tbr, manual:
             # - Get encrypted data fromn the relevant SOFI collection
             # - Base64-encode the data
