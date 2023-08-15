@@ -163,6 +163,7 @@ def make_tree(request, comparison_id, tree_type):
 def launchpad(request, tree_id):
     tree = Tree.objects.get(uuid=tree_id)
     dashboards = Dashboard.objects.filter(tree=tree.pk)
+    sequences = tree.comparison.sequences
 
     if request.method == 'POST':
         form = NewDashboardForm(request.POST)
@@ -177,8 +178,11 @@ def launchpad(request, tree_id):
             messages.add_message(request, messages.INFO, msg)
             tree_encoded = b64encode(tree.newick.encode('utf-8'))
             tbr_metadata_collection = settings.METADATA_COLLECTIONS['tbr']
-            # TODO add the function below in mongo_api
-            # tbr_metadata = mongo_api.get_metadata('tbr', fields=dashboard.tbr_data_fields)
+            document_count, tbr_metadata = mongo_api.get_metadata('tbr', sequences, dashboard.tbr_data_fields)
+            if document_count < len(sequences):
+                msg = f"You asked for {len(sequences)} documents, but we only found {document_count}."
+                messages.add_message(request, messages.WARNING, msg)
+            print(list(tbr_metadata))
             # TODO Base64-encode metadata
             # TODO Repeat The code section above for lims metadata and manual metadata
             # TODO Create project in Microreact, get project id & url from response

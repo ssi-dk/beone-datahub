@@ -46,6 +46,7 @@ class MongoAPI:
         self.db = self.connection.get_database()
         self.field_mapping = field_mapping
 
+    # Get samples from MongoDB object ids
     def get_samples(
         self,
         mongo_ids = None,
@@ -144,6 +145,7 @@ class MongoAPI:
         return (self.db.samples.aggregate(pipeline), unmatched)
 
     def get_sequences(self, sequence_ids:list):
+        # Get sequences from sequence ids
         list_length = len(sequence_ids)
         sequence_id_field = SEQUENCE_FIELD_MAPPING['sequence_id']
         query = {sequence_id_field: {'$in': sequence_ids}}
@@ -151,3 +153,20 @@ class MongoAPI:
         if list_length != document_count:
             raise MongoAPIError (f"You asked for {list_length} documents, but the number of matching documents is {document_count}.")
         return self.db.samples.find(query)
+    
+    def get_metadata(
+        self,
+        collection: str,
+        isolate_ids: list,
+        fields
+    ):
+        # Get metadata from isolate ids
+        # Note: 'isolate' is the appropriate term here as metadata relate to isolates, not sequences
+        list_length = len(isolate_ids)
+        query = {'isolate_id': {'$in': isolate_ids}}
+        document_count = self.db['collection'].count_documents(query)
+        print(f"List length: {list_length}")
+        print(f"Document count: {document_count}")
+        if document_count > len(isolate_ids):  # document_count < list length is OK since not all isolates might have metadata!
+            raise MongoAPIError (f"Too many documents: You asked for {list_length} documents, but the number of matching documents is {document_count}.")
+        return document_count, self.db.samples.find(query)
