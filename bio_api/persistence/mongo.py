@@ -164,7 +164,7 @@ class MongoAPI:
         # Note: 'isolate' is the appropriate term here as metadata relate to isolates, not sequences
         list_length = len(isolate_ids)
         query = {'isolate_id': {'$in': isolate_ids}}
-        document_count = self.db['collection'].count_documents(query)
+        document_count = self.db[collection].count_documents(query)
         print(f"List length: {list_length}")
         print(f"Document count: {document_count}")
         if document_count > len(isolate_ids):  # document_count < list length is OK since not all isolates might have metadata!
