@@ -139,9 +139,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MONGO_CONNECTION = 'mongodb://mongo:27017/bifrost_test'
 
 METADATA_COLLECTIONS = {
-    'lims': 'test_lims_metadata',
-    'tbr': 'test_tbr_metadata',
-    'manual': 'test_manual_metadata'
+     'tbr': 'sap_tbr_metadata',
+    # 'lims': 'sap_lims_metadata',
+    # 'manual': 'sap_manual_metadata'
 }
 
 """Fields that will be fetched from MongoDB when viewing a dataset (currently not all of them
