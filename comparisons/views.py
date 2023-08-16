@@ -193,8 +193,7 @@ def launchpad(request, tree_id):
             tbr_metadata_list = list()
             first_record = next(tbr_metadata)
             tbr_metadata_list.append(stringify(first_record.keys()))
-            value_list = stringify(list(first_record.values()))
-            tbr_metadata_list.append(value_list)
+            tbr_metadata_list.append(stringify(list(first_record.values())))
             while True:
                 try:
                     tbr_metadata_list.append(stringify(list(next(tbr_metadata).values())))
