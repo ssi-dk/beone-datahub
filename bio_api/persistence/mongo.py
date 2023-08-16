@@ -138,7 +138,6 @@ class MongoAPI:
         list_length = len(isolate_ids)
         print(isolate_ids)
         query = {'isolate_id': {'$in': isolate_ids}}
-        query = {}
         document_count = self.db[collection].count_documents(query)
         mongo_cursor = self.db[collection].find(query)
         print(list(mongo_cursor))
