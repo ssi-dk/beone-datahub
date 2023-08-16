@@ -178,6 +178,10 @@ def launchpad(request, tree_id):
             messages.add_message(request, messages.INFO, msg)
             tree_encoded = b64encode(tree.newick.encode('utf-8'))
             tbr_metadata_collection = settings.METADATA_COLLECTIONS['tbr']
+            # Convert sequnce ids to isolate ids
+            sample_ids = mongo_api.get_samples_from_sequence_ids(sequences, ['sample_id'])
+            print("Sample ids:")
+            print(list(sample_ids))
             document_count, tbr_metadata = mongo_api.get_metadata(tbr_metadata_collection, sequences, dashboard.tbr_data_fields)
             if document_count < len(sequences):
                 msg = f"You asked for {len(sequences)} documents, but we only found {document_count}."

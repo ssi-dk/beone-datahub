@@ -84,33 +84,20 @@ class MongoAPI:
         return self.db.samples.aggregate(pipeline)
 
 
-    # TODO: this method is obsolete, but maybe some of the code can be reused
-    def get_samples_from_keys(
+    def get_samples_from_sequence_ids(
         self,
-        key_list:list,
+        sid_list:list,
         fields: set = set(SEQUENCE_FIELD_MAPPING.keys())
     ):
 
-        # We cannot search on an empty key_list.
-        if len(key_list) == 0:
-            return [list(), list()]
-
-        # Ensure we always have these two fields in the set
-        fields.add('org')
-        fields.add('name')
-
         pipeline = list()
-
+        sid_field = SEQUENCE_FIELD_MAPPING['sequence_id']
+        
         # Match
-        org_field = SEQUENCE_FIELD_MAPPING['org']
-        name_field = SEQUENCE_FIELD_MAPPING['name']
         pipeline.append(
             {'$match':
-                {'$or':
-                    [
-                        {name_field: key_pair['name']}
-                        for key_pair in key_list
-                    ]
+                {
+                    sid_field: {'$in': sid_list}
                 }
             }
         )
@@ -128,21 +115,7 @@ class MongoAPI:
             }
         )
 
-        command_cursor = self.db.samples.aggregate(pipeline)
-
-        # Check if there are samples in key_list that was not found in MongoDB.
-        unmatched = list()
-        for key_pair in key_list:
-            match = False
-            for mongo_doc in command_cursor:
-                if mongo_doc['name'] == key_pair['name']:
-                    match = True
-                    break
-            if match == False:
-                unmatched.append(key_pair)
-
-        # MongoDB CommandCursor cannot rewind, so we make a new one
-        return (self.db.samples.aggregate(pipeline), unmatched)
+        return self.db.samples.aggregate(pipeline)
 
     def get_sequences(self, sequence_ids:list):
         # Get sequences from sequence ids
