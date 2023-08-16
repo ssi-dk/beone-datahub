@@ -57,6 +57,24 @@ services:
       - mongo
       - bio_api
 
+  dashboard:
+      # image: registry.gitlab.com/cgps/microreact/server:v218
+      image: dashboard_server  # build from https://github.com/ssi-dk/dashboard_server
+      volumes:
+        - ./microreact-config.json:/microreact/config.json
+        - ./files/:/microreact/files/
+      environment:
+        - NEXT_HOST=localhost
+        - NEXTAUTH_URL=http://localhost:3000/
+        - NEXTAUTH_URL_INTERNAL=http://localhost:3000/
+      ports:
+        - 3000:3000
+
+  ldapmock:
+      image: thoteam/slapd-server-mock
+      environment:
+        - LDAP_BINDDN="cn=admin,dc=ldapmock,dc=local"  
+
   # nginx:
   #   build: ./nginx
   #   container_name: nginx

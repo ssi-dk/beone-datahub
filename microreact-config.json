@@ -1,0 +1,18 @@
+{
+    "auth": {
+      "email": null,
+      "facebook": null,
+      "google": null,
+      "secret": "ifRnRdW6haCwNEjqBVfV8Qkou6vx4Lit83WywoBftpYYjxFbV5x6XcjjsGhuW3hK",
+      "twitter": null,
+      "ldap": {
+        "searchBase": "ou=people,dc=ldapmock,dc=local",
+        "url": "ldap://ldapmock:389",
+        "bindDn": "cn=admin,dc=ldapmock,dc=local",
+        "bindCredentials": "adminpass"
+      }
+    },
+    "baseUrl": "http://localhost:3000/",
+    "mongodb": { "url": "mongodb://mongo:27017/test_bifrost" },
+    "mapboxApiAccessToken": "pk.eyJ1IjoiZmlnbCIsImEiOiJjbDNsYnJicGwwMHg2M2pwdWE2ZXl2ZG1mIn0.PZbO58gOLIkVMOLMBV4mXQ"
+  }
