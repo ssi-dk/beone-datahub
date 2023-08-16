@@ -92,7 +92,7 @@ class MongoAPI:
 
         pipeline = list()
         sid_field = SEQUENCE_FIELD_MAPPING['sequence_id']
-        
+
         # Match
         pipeline.append(
             {'$match':
