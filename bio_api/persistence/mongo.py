@@ -138,7 +138,8 @@ class MongoAPI:
         list_length = len(isolate_ids)
         query = {'isolate_id': {'$in': isolate_ids}}
         document_count = self.db[collection].count_documents(query)
-        mongo_cursor = self.db[collection].find(query)
+        fields_match = { field: 1 for field in fields }
+        mongo_cursor = self.db[collection].find(query, fields_match)
         if document_count > len(isolate_ids):  # document_count < list length is OK since not all isolates might have metadata!
             raise MongoAPIError (f"Too many documents: You asked for {list_length} documents, but the number of matching documents is {document_count}.")
         return document_count, mongo_cursor
