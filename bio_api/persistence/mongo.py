@@ -136,11 +136,9 @@ class MongoAPI:
         # Get metadata from isolate ids
         # Note: 'isolate' is the appropriate term here as metadata relate to isolates, not sequences
         list_length = len(isolate_ids)
-        print(isolate_ids)
         query = {'isolate_id': {'$in': isolate_ids}}
         document_count = self.db[collection].count_documents(query)
         mongo_cursor = self.db[collection].find(query)
-        print(list(mongo_cursor))
         if document_count > len(isolate_ids):  # document_count < list length is OK since not all isolates might have metadata!
             raise MongoAPIError (f"Too many documents: You asked for {list_length} documents, but the number of matching documents is {document_count}.")
         return document_count, mongo_cursor

@@ -187,6 +187,7 @@ def launchpad(request, tree_id):
             if document_count < len(sequences):
                 msg = f"You asked for {len(sequences)} documents, but we only found {document_count}."
                 messages.add_message(request, messages.WARNING, msg)
+            print("View got these metadata:")
             print(list(tbr_metadata))
             # TODO Base64-encode metadata
             # TODO Repeat The code section above for lims metadata and manual metadata
