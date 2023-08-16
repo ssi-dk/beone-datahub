@@ -206,6 +206,8 @@ def launchpad(request, tree_id):
             tbr_metadata_encoded = b64encode(tbr_metadata_str.encode('utf-8'))
             print("tbr metadata encoded:")
             print(tbr_metadata_encoded)
+            print("tree encoded:")
+            print(tree_encoded)
             # TODO Repeat The code section above for lims metadata and manual metadata
             # TODO Create project in Microreact, get project id & url from response
             # TODO dashboard.save()
