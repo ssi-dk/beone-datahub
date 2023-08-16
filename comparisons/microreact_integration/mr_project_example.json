@@ -1,0 +1,109 @@
+{
+    "meta": {
+      "name": "Blob9",
+      "timestamp": "2023-06-08T11:58:58.203Z",
+      "description": "Remove file size"
+    },
+    "datasets": {
+      "dataset-1": {
+        "id": "dataset-1",
+        "file": "441l",
+        "idFieldName": "Key"
+      }
+    },
+    "files": {
+      "441l": {
+        "blob": "data:application/vnd.ms-excel;base64,S2V5LENs...",
+        "format": "text/csv",
+        "id": "441l",
+        "name": "EVL2.csv",
+        "type": "data"
+      },
+      "je2h": {
+        "blob": "data:application/octet-stream;base64,KCgoKCgo...",
+        "format": "text/x-nh",
+        "id": "je2h",
+        "name": "EVL.nwk",
+        "type": "tree"
+      }
+    },
+    "tables": {
+      "table-1": {
+        "title": "Metadata",
+        "columns": [
+          {
+            "field": "Key",
+            "fixed": false
+          },
+          {
+            "field": "ClusterID",
+            "fixed": false
+          },
+          {
+            "field": "PatientTravel",
+            "fixed": false
+          },
+          {
+            "field": "SourceCountry",
+            "fixed": false
+          },
+          {
+            "field": "InSilico_Serotype",
+            "fixed": false
+          },
+          {
+            "field": "FUDnr",
+            "fixed": false
+          },
+          {
+            "field": "Year",
+            "fixed": false
+          },
+          {
+            "field": "SampleDate",
+            "fixed": false
+          },
+          {
+            "field": "PatientSex",
+            "fixed": false
+          },
+          {
+            "field": "PatientAge",
+            "fixed": false
+          },
+          {
+            "field": "SourceRegion",
+            "fixed": false
+          }
+        ],
+        "file": "441l"
+      }
+    },
+    "timelines": {
+      "timeline-1": {
+        "bounds": null,
+        "controls": false,
+        "nodeSize": 14,
+        "playing": false,
+        "speed": 1,
+        "laneField": null,
+        "style": "bar",
+        "unit": null,
+        "viewport": null,
+        "title": "Timeline",
+        "dataType": "year-month-day",
+        "yearField": "Year"
+      }
+    },
+    "trees": {
+      "tree-1": {
+        "type": "rc",
+        "title": "Tree",
+        "labelField": "Key",
+        "file": "je2h",
+        "highlightedId": null
+      }
+    },
+    "views": [],
+    "schema": "https://microreact.org/schema/v1.json"
+    }
