@@ -165,6 +165,9 @@ def launchpad(request, tree_id):
     dashboards = Dashboard.objects.filter(tree=tree.pk)
     sequences = tree.comparison.sequences
 
+    def stringify(value_list):
+        return ";".join([str(value) for value in value_list])
+
     if request.method == 'POST':
         form = NewDashboardForm(request.POST)
         if form.is_valid():
@@ -187,8 +190,14 @@ def launchpad(request, tree_id):
             if document_count < len(sequences):
                 msg = f"You asked for {len(sequences)} documents, but we only found {document_count}."
                 messages.add_message(request, messages.WARNING, msg)
-            print("View got these metadata:")
-            print(list(tbr_metadata))
+            tbr_metadata_list = list()
+            first_record = next(tbr_metadata)
+            tbr_metadata_list.append(stringify(first_record.keys()))
+            value_list = stringify(list(first_record.values()))
+            tbr_metadata_list.append(value_list)
+            tbr_metadata_str = "\n".join(tbr_metadata_list)
+            print("tbr_metadata_str:")
+            print(tbr_metadata_str)
             # TODO Base64-encode metadata
             # TODO Repeat The code section above for lims metadata and manual metadata
             # TODO Create project in Microreact, get project id & url from response
