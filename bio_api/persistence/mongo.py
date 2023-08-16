@@ -164,7 +164,6 @@ class MongoAPI:
         # Note: 'isolate' is the appropriate term here as metadata relate to isolates, not sequences
         list_length = len(isolate_ids)
         print(isolate_ids)
-        # Problemet lige nu er, at jeg skal finde metadata ud fra isolate_id, men det, jeg sender, er faktisk sequence_id (kombi af run_id + _ + isolate_id)!
         query = {'isolate_id': {'$in': isolate_ids}}
         query = {}
         document_count = self.db[collection].count_documents(query)
