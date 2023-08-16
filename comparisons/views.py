@@ -195,6 +195,15 @@ def launchpad(request, tree_id):
             tbr_metadata_list.append(stringify(first_record.keys()))
             value_list = stringify(list(first_record.values()))
             tbr_metadata_list.append(value_list)
+            while True:
+                try:
+                    print("Trying...")
+                    tbr_metadata_list.append(stringify(list(next(tbr_metadata).values())))
+                    print(next(tbr_metadata))
+                    print("It worked")
+                except StopIteration:
+                    break
+
             tbr_metadata_str = "\n".join(tbr_metadata_list)
             print("tbr_metadata_str:")
             print(tbr_metadata_str)
