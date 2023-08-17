@@ -1,6 +1,7 @@
-import requests
 from base64 import b64encode
 from json import dumps
+
+import requests
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -214,6 +215,17 @@ def launchpad(request, tree_id):
             project_name = request.user.username + '_' + str(timezone.now())
             project = assemble_project(project_name, tbr_metadata, tree)
             print(dumps(project.to_dict()))
+            #TODO Access-Token must be saved per user
+            access_token = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..Vp_gSlyKm1u_etaW.SIqLk7V3bNqYBPf0H2ooU8tKGHaDBbt5NyBx1zlQqSJg-fkGXKq0WNrLUoVT-WKc1zUYMV1I2jvpPn9Tn0mf1Q4e46qjDeWM0DpSXr9ZrHEXsoSKGmxghYl6scLoivUTL3m2Uk1283kFsiF7F2-tGQ.VOFf1lma_17HxqX8e5brwg'
+            response = requests.post(
+                f'{settings.MICROREACT_BASE_URL}/api/projects/create/',
+                headers= {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Access-Token': access_token
+                    },
+                json=dumps(project.to_dict()),
+                timeout=5)
+            print(response)
             # TODO Create project in Microreact, get project id & url from response
             # TODO dashboard.save()
             # TODO open dashboard url in new browser tab

@@ -197,4 +197,4 @@ REPORTREE_TIMEOUT = 5  # The number of seconds to wait for at REST response befo
 
 BIO_API_PORT = 8001
 
-MICROREACT_BASE_URL = 'dashboard:3000'
+MICROREACT_BASE_URL = 'http://dashboard:3000'
