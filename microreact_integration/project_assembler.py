@@ -1,4 +1,4 @@
-import classes
+from microreact_integration import classes
 
 def assemble_project(project_name: str, metadata: str, tree: str):
     # TODO
@@ -10,17 +10,13 @@ def assemble_project(project_name: str, metadata: str, tree: str):
     metadata_file = classes.File(project_name=project_name, type='data', body=metadata)
     newick_file = classes.File(project_name=project_name, type='tree', body=tree)
     dataset = classes.Dataset(id='dataset-1', file=metadata_file.name, idFieldName=idFieldName)
-    trees = {
-      "tree-1": {
-        classes.Tree(
+    tree =  classes.Tree(
             type='rc',
             title='Tree',
             labelField=idFieldName,
             file=newick_file,
             highlightedId=None
         )
-      }
-    },
     tables = dict()  # TODO
     timelines = dict()  # TODO
 
@@ -30,7 +26,7 @@ def assemble_project(project_name: str, metadata: str, tree: str):
         files=[metadata_file, newick_file],
         tables=tables,
         timelines=timelines,
-        trees=trees,
+        trees = {"tree-1": tree},
         schema="https://microreact.org/schema/v1.json"
     )
 

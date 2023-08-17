@@ -37,7 +37,7 @@ class File:
         self.type = type
         self.body = body
     
-    def __repr__(self):
+    def __to_dict__(self):
         blob = b64encode(self.body.encode('utf-8'))
         return {
             "id": self.id,

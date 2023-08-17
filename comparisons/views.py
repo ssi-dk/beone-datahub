@@ -13,6 +13,7 @@ from django.shortcuts import redirect
 from bio_api.persistence.mongo import MongoAPI
 from comparisons.models import Tree, Comparison, Dashboard
 from comparisons.forms import NewComparisonForm, NewDashboardForm
+from microreact_integration.project_assembler import assemble_project
 
 TREE_TYPE_IDS = [ t[0] for t in Tree.TREE_TYPES ]
 
@@ -209,6 +210,9 @@ def launchpad(request, tree_id):
             print("tree encoded:")
             print(tree_encoded)
             # TODO Repeat The code section above for lims metadata and manual metadata
+            project_name = request.user.username + '_' + str(timezone.now())
+            project = assemble_project(project_name, tbr_metadata, tree)
+            print(project)
             # TODO Create project in Microreact, get project id & url from response
             # TODO dashboard.save()
             # TODO open dashboard url in new browser tab
