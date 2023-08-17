@@ -233,7 +233,7 @@ def launchpad(request, tree_id):
                     },
                 #json=dumps(project.to_dict()),
                 json=dumps(dummy),
-                timeout=5)
+            )
             print(response)
             # TODO Create project in Microreact, get project id & url from response
             # TODO dashboard.save()
