@@ -1,5 +1,6 @@
 import requests
 from base64 import b64encode
+from json import dumps
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -212,7 +213,7 @@ def launchpad(request, tree_id):
             # TODO Repeat The code section above for lims metadata and manual metadata
             project_name = request.user.username + '_' + str(timezone.now())
             project = assemble_project(project_name, tbr_metadata, tree)
-            print(project)
+            print(dumps(project.to_dict()))
             # TODO Create project in Microreact, get project id & url from response
             # TODO dashboard.save()
             # TODO open dashboard url in new browser tab

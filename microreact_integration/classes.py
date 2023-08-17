@@ -7,6 +7,9 @@ class Meta:
     name: str
     # description: str
 
+    def to_dict(self):
+        return {'name': self.name}
+
 @dataclass
 class Dataset:
     id: str
@@ -91,3 +94,8 @@ class Project:
     timelines: list
     trees: list
     schema: str
+
+    def to_dict(self):
+        return {
+            'meta': self.meta.to_dict()
+        }
