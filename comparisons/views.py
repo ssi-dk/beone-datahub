@@ -218,7 +218,7 @@ def launchpad(request, tree_id):
 
             dummy = {
                 "meta": {
-                    "name": "Very minimal project"
+                    "name": "This is a project"
                 }
             }
 
@@ -231,8 +231,8 @@ def launchpad(request, tree_id):
                     'Content-Type': 'application/json; charset=utf-8',
                     'Access-Token': access_token
                     },
-                #json=dumps(project.to_dict()),
-                json=dumps(dummy),
+                #data=dumps(project.to_dict()),
+                data=dumps(dummy),
             )
             print(response)
             # TODO Create project in Microreact, get project id & url from response
