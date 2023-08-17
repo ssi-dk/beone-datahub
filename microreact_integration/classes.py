@@ -1,3 +1,5 @@
+from base64 import b64encode
+
 from dataclasses import dataclass
 
 @dataclass
@@ -12,17 +14,38 @@ class Dataset:
     idFieldName: str
 
 class File:
-    blob: str
-    format: str
     id: str
-    name: str
     type: str
+    name: str
+    format: str
+    mimetype: str
+    body: str
 
-    def __init__(self, type, body):
-        pass
-
-    def to_blob(self):
-        pass
+    def __init__(self, project_name, type, body):
+        if type == 'data':
+            self.id = project_name + '_metadata'
+            self.name = project_name + '_metadata.csv'
+            self.format = 'text/csv'
+            self.mimetype = 'data:application/vnd.ms-excel;base64'
+        elif type == 'tree':
+            self.id = project_name + '_tree'
+            self.name = project_name + '_tree.nwk'
+            self.format = 'text/x-nh'
+            self.mimetype = 'data:application/octet-stream;base64'
+        else:
+            raise ValueError("Invalid file type: " + type)
+        self.type = type
+        self.body = body
+    
+    def __repr__(self):
+        blob = b64encode(self.body.encode('utf-8'))
+        return {
+            "id": self.id,
+            "type": self.type,
+            "name": self.name,
+            "format": self.format,
+            "blob": self.mimetype + ',' + blob
+        }
 
 @dataclass
 class Column:
