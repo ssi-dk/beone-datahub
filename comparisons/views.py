@@ -214,15 +214,6 @@ def launchpad(request, tree_id):
             # TODO Repeat The code section above for lims metadata and manual metadata
             project_name = request.user.username + '_' + str(timezone.now())
             project = assemble_project(project_name, tbr_metadata, tree)
-            # print(dumps(project.to_dict()))
-
-            dummy = {
-                "meta": {
-                    "name": "This is a project"
-                }
-            }
-
-            print(dumps(dummy))
             #TODO Access-Token must be saved per user
             access_token = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..aoxg7jxHXGKS5gsU.9lcYdFeogzy9mEth0aAy3FmFucmDCAd0HVwnz5ssm3dKvY_jVkRc_UviOs0K8mimGzZBE4btSPpmh-B9rN7ba6x6Bt2aIjEuY526hxSUjzTrot6V4F0auVJOfHmtU4U106jAS2pD5kte4H51GfCRVw.35f_9LCrIg0lWpkO_Geekw'
             response = requests.post(
@@ -231,8 +222,7 @@ def launchpad(request, tree_id):
                     'Content-Type': 'application/json; charset=utf-8',
                     'Access-Token': access_token
                     },
-                #data=dumps(project.to_dict()),
-                data=dumps(dummy),
+                data=dumps(project.to_dict()),
             )
             print(response)
             # TODO Create project in Microreact, get project id & url from response
