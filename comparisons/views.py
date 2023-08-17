@@ -214,7 +214,73 @@ def launchpad(request, tree_id):
             # TODO Repeat The code section above for lims metadata and manual metadata
             project_name = request.user.username + '_' + str(timezone.now())
             project = assemble_project(project_name, tbr_metadata, tree)
-            print(dumps(project.to_dict()))
+            # print(dumps(project.to_dict()))
+
+            dummy = {
+                "meta": {
+                    "name": "Project No. 11",
+                    "timestamp": "2023-06-08T11:58:58.203Z",
+                    "description": "Yet another project"
+                },
+                "tables": {
+                    "table-1": {
+                        "displayMode": "cosy",
+                        "hideUnselected": False,
+                        "title": "Metadata",
+                        "paneId": "table-1",
+                        "columns": [
+                            {
+                                "field": "Key",
+                                "fixed": False
+                            },
+                            {
+                                "field": "ClusterID",
+                                "fixed": False
+                            },
+                            {
+                                "field": "PatientTravel",
+                                "fixed": False
+                            },
+                            {
+                                "field": "SourceCountry",
+                                "fixed": False
+                            },
+                            {
+                                "field": "InSilico_Serotype",
+                                "fixed": False
+                            },
+                            {
+                                "field": "FUDnr",
+                                "fixed": False
+                            },
+                            {
+                                "field": "Year",
+                                "fixed": False
+                            },
+                            {
+                                "field": "SampleDate",
+                                "fixed": False
+                            },
+                            {
+                                "field": "PatientSex",
+                                "fixed": False
+                            },
+                            {
+                                "field": "PatientAge",
+                                "fixed": False
+                            },
+                            {
+                                "field": "SourceRegion",
+                                "fixed": False
+                            }
+                        ],
+                        "file": "441l"
+                    }
+                },
+                "views": [],
+                "schema": "https://microreact.org/schema/v1.json"
+            }
+            print(dumps(dummy))
             #TODO Access-Token must be saved per user
             access_token = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..aoxg7jxHXGKS5gsU.9lcYdFeogzy9mEth0aAy3FmFucmDCAd0HVwnz5ssm3dKvY_jVkRc_UviOs0K8mimGzZBE4btSPpmh-B9rN7ba6x6Bt2aIjEuY526hxSUjzTrot6V4F0auVJOfHmtU4U106jAS2pD5kte4H51GfCRVw.35f_9LCrIg0lWpkO_Geekw'
             response = requests.post(
@@ -223,7 +289,8 @@ def launchpad(request, tree_id):
                     'Content-Type': 'application/json; charset=utf-8',
                     'Access-Token': access_token
                     },
-                json=dumps(project.to_dict()),
+                #json=dumps(project.to_dict()),
+                json=dumps(dummy),
                 timeout=5)
             print(response)
             # TODO Create project in Microreact, get project id & url from response
