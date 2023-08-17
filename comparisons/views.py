@@ -182,7 +182,6 @@ def launchpad(request, tree_id):
             )
             msg = "Microreact is not yet integrated."
             messages.add_message(request, messages.INFO, msg)
-            tree_encoded = b64encode(tree.newick.encode('utf-8'))
             tbr_metadata_collection = settings.METADATA_COLLECTIONS['tbr']
             # Convert sequnce ids to isolate ids
             sample_ids_raw = mongo_api.get_samples_from_sequence_ids(sequences, ['sample_id'])
@@ -202,15 +201,15 @@ def launchpad(request, tree_id):
                     tbr_metadata_list.append(stringify(list(next(tbr_metadata).values())))
                 except StopIteration:
                     break
-
-            tbr_metadata_str = "\n".join(tbr_metadata_list)
-            print("tbr_metadata_str:")
-            print(tbr_metadata_str)
-            tbr_metadata_encoded = b64encode(tbr_metadata_str.encode('utf-8'))
-            print("tbr metadata encoded:")
-            print(tbr_metadata_encoded)
-            print("tree encoded:")
-            print(tree_encoded)
+            # tree_encoded = b64encode(tree.newick.encode('utf-8'))
+            # tbr_metadata_str = "\n".join(tbr_metadata_list)
+            # print("tbr_metadata_str:")
+            # print(tbr_metadata_str)
+            # tbr_metadata_encoded = b64encode(tbr_metadata_str.encode('utf-8'))
+            # print("tbr metadata encoded:")
+            # print(tbr_metadata_encoded)
+            # print("tree encoded:")
+            # print(tree_encoded)
             # TODO Repeat The code section above for lims metadata and manual metadata
             project_name = request.user.username + '_' + str(timezone.now())
             project = assemble_project(project_name, tbr_metadata, tree)
