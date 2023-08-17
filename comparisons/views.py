@@ -216,7 +216,7 @@ def launchpad(request, tree_id):
             project = assemble_project(project_name, tbr_metadata, tree)
             print(dumps(project.to_dict()))
             #TODO Access-Token must be saved per user
-            access_token = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..Vp_gSlyKm1u_etaW.SIqLk7V3bNqYBPf0H2ooU8tKGHaDBbt5NyBx1zlQqSJg-fkGXKq0WNrLUoVT-WKc1zUYMV1I2jvpPn9Tn0mf1Q4e46qjDeWM0DpSXr9ZrHEXsoSKGmxghYl6scLoivUTL3m2Uk1283kFsiF7F2-tGQ.VOFf1lma_17HxqX8e5brwg'
+            access_token = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..aoxg7jxHXGKS5gsU.9lcYdFeogzy9mEth0aAy3FmFucmDCAd0HVwnz5ssm3dKvY_jVkRc_UviOs0K8mimGzZBE4btSPpmh-B9rN7ba6x6Bt2aIjEuY526hxSUjzTrot6V4F0auVJOfHmtU4U106jAS2pD5kte4H51GfCRVw.35f_9LCrIg0lWpkO_Geekw'
             response = requests.post(
                 f'{settings.MICROREACT_BASE_URL}/api/projects/create/',
                 headers= {
