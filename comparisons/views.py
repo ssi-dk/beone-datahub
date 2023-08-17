@@ -224,6 +224,7 @@ def launchpad(request, tree_id):
                 data=dumps(project.to_dict()),
             )
             print(response)
+            print(response.json())
             # TODO Create project in Microreact, get project id & url from response
             # TODO dashboard.save()
             # TODO open dashboard url in new browser tab
