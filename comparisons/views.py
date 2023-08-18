@@ -190,21 +190,14 @@ def launchpad(request, tree_id):
                 ['sequence_id', 'sample_id'],
                 dashboard.tbr_data_fields
                 )
-            print("TESTING NEW FUNCTION")
-            print(list(metadata))
-
-            sample_ids = [ sub['sample_id'] for sub in ids ]
-            document_count, tbr_metadata = mongo_api.get_metadata_from_isolate_ids(tbr_collection, sample_ids, dashboard.tbr_data_fields)
-            if document_count < len(sequences):
-                msg = f"You asked for {len(sequences)} documents, but we only found {document_count}."
-                messages.add_message(request, messages.WARNING, msg)
+            # print(list(metadata))
             metadata_values = list()
-            first_record = next(tbr_metadata)
+            first_record = next(metadata)
             metadata_keys = list(first_record.keys())
             metadata_values.append(list(first_record.values()))
             while True:
                 try:
-                    metadata_values.append(list(next(tbr_metadata).values()))
+                    metadata_values.append(list(next(metadata).values()))
                 except StopIteration:
                     break
             print("Matadata keys:")

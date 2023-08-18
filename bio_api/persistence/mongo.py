@@ -151,7 +151,7 @@ class MongoAPI:
             tbr_collection: str,
             sequence_ids: list,
             fields,
-            metadata_fields
+            tbr_fields
         ):
         
         pipeline = list()
@@ -179,6 +179,8 @@ class MongoAPI:
             }
         )
 
+        pipeline.append({'$unwind': '$tbr'})
+
         # Projection - map only the desired fields
         projection = dict()
         for field in fields:
@@ -187,7 +189,11 @@ class MongoAPI:
             else:
                 projection[field] = SEQUENCE_FIELD_MAPPING[field]
         
-        projection['tbr'] = '$tbr'
+        # projection['tbr'] = '$tbr'
+        projection['_id'] = 0
+
+        for tbr_field in tbr_fields:
+            projection[tbr_field] = f'$tbr.{tbr_field}'
 
         print("Projection:")
         print(projection)
