@@ -175,10 +175,10 @@ class MongoAPI:
                     'localField': 'name',
                     'foreignField': 'isolate_id',
                     'as': 'tbr'
-                }
+                },
             }
         )
-
+        pipeline.append({'$unwind': '$tbr'})
 
         # Projection - map only the desired fields
         projection = dict()
