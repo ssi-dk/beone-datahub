@@ -167,7 +167,7 @@ def launchpad(request, tree_id):
     tree = Tree.objects.get(uuid=tree_id)
     dashboards = Dashboard.objects.filter(tree=tree.pk)
     sequences = tree.comparison.sequences
-    
+
     if request.method == 'POST':
         form = NewDashboardForm(request.POST)
         if form.is_valid():
@@ -214,18 +214,22 @@ def launchpad(request, tree_id):
             # TODO Repeat The code section above for lims metadata and manual metadata
             project_name = request.user.username + '_' + str(timezone.now())
             project = assemble_project(project_name, metadata_keys, metadata_values, tree)
+            print(project.files[0].body)
+            print(project.to_dict())
             #TODO Access-Token must be saved per user
             access_token = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..aoxg7jxHXGKS5gsU.9lcYdFeogzy9mEth0aAy3FmFucmDCAd0HVwnz5ssm3dKvY_jVkRc_UviOs0K8mimGzZBE4btSPpmh-B9rN7ba6x6Bt2aIjEuY526hxSUjzTrot6V4F0auVJOfHmtU4U106jAS2pD5kte4H51GfCRVw.35f_9LCrIg0lWpkO_Geekw'
-            response = requests.post(
-                f'{settings.MICROREACT_BASE_URL}/api/projects/create/',
-                headers= {
-                    'Content-Type': 'application/json; charset=utf-8',
-                    'Access-Token': access_token
-                    },
-                data=dumps(project.to_dict()),
-            )
-            print(response)
-            print(response.json())
+            
+            # response = requests.post(
+            #     f'{settings.MICROREACT_BASE_URL}/api/projects/create/',
+            #     headers= {
+            #         'Content-Type': 'application/json; charset=utf-8',
+            #         'Access-Token': access_token
+            #         },
+            #     data=dumps(project.to_dict()),
+            # )
+            # print(response)
+            # print(response.json())
+
             # TODO Create project in Microreact, get project id & url from response
             # TODO dashboard.save()
             # TODO open dashboard url in new browser tab
