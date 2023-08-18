@@ -179,13 +179,13 @@ def launchpad(request, tree_id):
             )
             msg = "Microreact is not yet integrated."
             messages.add_message(request, messages.INFO, msg)
-            tbr_metadata_collection = settings.METADATA_COLLECTIONS['tbr']
+            tbr_collection = settings.METADATA_COLLECTIONS['tbr']
             # Convert sequnce ids to isolate ids
             ids = mongo_api.get_samples_from_sequence_ids(sequences, ['sequence_id', 'sample_id'])
 
             # Testing...
             metadata = mongo_api.get_metadata_from_sequence_ids(
-                tbr_metadata_collection,
+                tbr_collection,
                 sequences,
                 ['sequence_id', 'sample_id'],
                 dashboard.tbr_data_fields
@@ -194,7 +194,7 @@ def launchpad(request, tree_id):
             print(list(metadata))
 
             sample_ids = [ sub['sample_id'] for sub in ids ]
-            document_count, tbr_metadata = mongo_api.get_metadata_from_isolate_ids(tbr_metadata_collection, sample_ids, dashboard.tbr_data_fields)
+            document_count, tbr_metadata = mongo_api.get_metadata_from_isolate_ids(tbr_collection, sample_ids, dashboard.tbr_data_fields)
             if document_count < len(sequences):
                 msg = f"You asked for {len(sequences)} documents, but we only found {document_count}."
                 messages.add_message(request, messages.WARNING, msg)

@@ -148,7 +148,7 @@ class MongoAPI:
     
     def get_metadata_from_sequence_ids(
             self,
-            metadata_collection: str,
+            tbr_collection: str,
             sequence_ids: list,
             fields,
             metadata_fields
@@ -171,7 +171,7 @@ class MongoAPI:
         pipeline.append(
             {
                 '$lookup': {
-                    'from': metadata_collection,
+                    'from': tbr_collection,
                     'localField': 'name',
                     'foreignField': 'isolate_id',
                     'as': 'tbr'
