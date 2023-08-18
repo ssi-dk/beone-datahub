@@ -167,10 +167,7 @@ def launchpad(request, tree_id):
     tree = Tree.objects.get(uuid=tree_id)
     dashboards = Dashboard.objects.filter(tree=tree.pk)
     sequences = tree.comparison.sequences
-
-    def stringify(value_list):
-        return ";".join([str(value) for value in value_list])
-
+    
     if request.method == 'POST':
         form = NewDashboardForm(request.POST)
         if form.is_valid():
@@ -192,15 +189,19 @@ def launchpad(request, tree_id):
             if document_count < len(sequences):
                 msg = f"You asked for {len(sequences)} documents, but we only found {document_count}."
                 messages.add_message(request, messages.WARNING, msg)
-            tbr_metadata_list = list()
+            metadata_values = list()
             first_record = next(tbr_metadata)
-            tbr_metadata_list.append(stringify(first_record.keys()))
-            tbr_metadata_list.append(stringify(list(first_record.values())))
+            metadata_keys = list(first_record.keys())
+            metadata_values.append(list(first_record.values()))
             while True:
                 try:
-                    tbr_metadata_list.append(stringify(list(next(tbr_metadata).values())))
+                    metadata_values.append(list(next(tbr_metadata).values()))
                 except StopIteration:
                     break
+            print("Matadata keys:")
+            print(metadata_keys)
+            print("Metadata values:")
+            print(metadata_values)
             # tree_encoded = b64encode(tree.newick.encode('utf-8'))
             # tbr_metadata_str = "\n".join(tbr_metadata_list)
             # print("tbr_metadata_str:")
@@ -212,7 +213,7 @@ def launchpad(request, tree_id):
             # print(tree_encoded)
             # TODO Repeat The code section above for lims metadata and manual metadata
             project_name = request.user.username + '_' + str(timezone.now())
-            project = assemble_project(project_name, tbr_metadata, tree)
+            project = assemble_project(project_name, metadata_keys, metadata_values, tree)
             #TODO Access-Token must be saved per user
             access_token = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..aoxg7jxHXGKS5gsU.9lcYdFeogzy9mEth0aAy3FmFucmDCAd0HVwnz5ssm3dKvY_jVkRc_UviOs0K8mimGzZBE4btSPpmh-B9rN7ba6x6Bt2aIjEuY526hxSUjzTrot6V4F0auVJOfHmtU4U106jAS2pD5kte4H51GfCRVw.35f_9LCrIg0lWpkO_Geekw'
             response = requests.post(
