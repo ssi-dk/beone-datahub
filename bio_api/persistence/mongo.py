@@ -127,7 +127,7 @@ class MongoAPI:
             raise MongoAPIError (f"You asked for {list_length} documents, but the number of matching documents is {document_count}.")
         return self.db.samples.find(query)
     
-    def get_metadata(
+    def get_metadata_from_isolate_ids(
         self,
         collection: str,
         isolate_ids: list,

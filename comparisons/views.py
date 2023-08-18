@@ -183,7 +183,7 @@ def launchpad(request, tree_id):
             # Convert sequnce ids to isolate ids
             sample_ids_raw = mongo_api.get_samples_from_sequence_ids(sequences, ['sequence_id', 'sample_id'])
             sample_ids = [ sub['sample_id'] for sub in sample_ids_raw ]
-            document_count, tbr_metadata = mongo_api.get_metadata(tbr_metadata_collection, sample_ids, dashboard.tbr_data_fields)
+            document_count, tbr_metadata = mongo_api.get_metadata_from_isolate_ids(tbr_metadata_collection, sample_ids, dashboard.tbr_data_fields)
             if document_count < len(sequences):
                 msg = f"You asked for {len(sequences)} documents, but we only found {document_count}."
                 messages.add_message(request, messages.WARNING, msg)
