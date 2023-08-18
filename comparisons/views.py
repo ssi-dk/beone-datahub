@@ -182,6 +182,12 @@ def launchpad(request, tree_id):
             tbr_metadata_collection = settings.METADATA_COLLECTIONS['tbr']
             # Convert sequnce ids to isolate ids
             ids = mongo_api.get_samples_from_sequence_ids(sequences, ['sequence_id', 'sample_id'])
+
+            # Testing...
+            metadata = mongo_api.get_metadata_from_sequence_ids(tbr_metadata_collection, sequences, ['sequence_id', 'sample_id'])
+            print("TESTING NEW FUNCTION")
+            print(list(metadata))
+
             sample_ids = [ sub['sample_id'] for sub in ids ]
             document_count, tbr_metadata = mongo_api.get_metadata_from_isolate_ids(tbr_metadata_collection, sample_ids, dashboard.tbr_data_fields)
             if document_count < len(sequences):
