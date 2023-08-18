@@ -181,7 +181,7 @@ def launchpad(request, tree_id):
             messages.add_message(request, messages.INFO, msg)
             tbr_metadata_collection = settings.METADATA_COLLECTIONS['tbr']
             # Convert sequnce ids to isolate ids
-            sample_ids_raw = mongo_api.get_samples_from_sequence_ids(sequences, ['sample_id'])
+            sample_ids_raw = mongo_api.get_samples_from_sequence_ids(sequences, ['sequence_id', 'sample_id'])
             sample_ids = [ sub['sample_id'] for sub in sample_ids_raw ]
             print("Sample ids:")
             print(list(sample_ids))
