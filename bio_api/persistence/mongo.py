@@ -150,7 +150,8 @@ class MongoAPI:
             self,
             metadata_collection: str,
             sequence_ids: list,
-            fields
+            fields,
+            metadata_fields
         ):
         
         pipeline = list()

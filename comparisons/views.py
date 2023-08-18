@@ -184,7 +184,12 @@ def launchpad(request, tree_id):
             ids = mongo_api.get_samples_from_sequence_ids(sequences, ['sequence_id', 'sample_id'])
 
             # Testing...
-            metadata = mongo_api.get_metadata_from_sequence_ids(tbr_metadata_collection, sequences, ['sequence_id', 'sample_id'])
+            metadata = mongo_api.get_metadata_from_sequence_ids(
+                tbr_metadata_collection,
+                sequences,
+                ['sequence_id', 'sample_id'],
+                dashboard.tbr_data_fields
+                )
             print("TESTING NEW FUNCTION")
             print(list(metadata))
 
