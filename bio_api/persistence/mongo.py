@@ -188,6 +188,11 @@ class MongoAPI:
             else:
                 projection[field] = SEQUENCE_FIELD_MAPPING[field]
         
+        projection['tbr'] = '$tbr'
+
+        print("Projection:")
+        print(projection)
+        
         pipeline.append(
             {'$project': projection
             }
