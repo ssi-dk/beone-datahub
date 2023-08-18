@@ -91,13 +91,13 @@ class MongoAPI:
     ):
 
         pipeline = list()
-        sid_field = SEQUENCE_FIELD_MAPPING['sequence_id']
+        seqid_field = SEQUENCE_FIELD_MAPPING['sequence_id']
 
         # Match
         pipeline.append(
             {'$match':
                 {
-                    sid_field: {'$in': sequence_ids}
+                    seqid_field: {'$in': sequence_ids}
                 }
             }
         )
@@ -148,8 +148,34 @@ class MongoAPI:
     
     def get_metadata_from_sequence_ids(
             self,
-            collection: str,
+            metadata_collection: str,
             sequence_ids: list,
             fields
         ):
-        pass
+        
+        pipeline = list()
+        seqid_field = SEQUENCE_FIELD_MAPPING['sequence_id']
+
+        # Match
+        pipeline.append(
+            {'$match':
+                {
+                    seqid_field: {'$in': sequence_ids}
+                }
+            }
+        )
+        
+        # Projection - map only the desired fields
+        projection = dict()
+        for field in fields:
+            if isinstance(SEQUENCE_FIELD_MAPPING[field], str):
+                projection[field] = f"${SEQUENCE_FIELD_MAPPING[field]}"
+            else:
+                projection[field] = SEQUENCE_FIELD_MAPPING[field]
+        
+        pipeline.append(
+            {'$project': projection
+            }
+        )
+
+        return self.db.samples.aggregate(pipeline)
