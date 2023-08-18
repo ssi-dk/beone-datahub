@@ -178,7 +178,6 @@ class MongoAPI:
                 },
             }
         )
-        pipeline.append({'$unwind': '$tbr'})
 
         # Projection - map only the desired fields
         projection = dict()
