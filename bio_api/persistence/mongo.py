@@ -86,7 +86,7 @@ class MongoAPI:
 
     def get_samples_from_sequence_ids(
         self,
-        sid_list:list,
+        seqid_list:list,
         fields: set = set(SEQUENCE_FIELD_MAPPING.keys())
     ):
 
@@ -97,7 +97,7 @@ class MongoAPI:
         pipeline.append(
             {'$match':
                 {
-                    sid_field: {'$in': sid_list}
+                    sid_field: {'$in': seqid_list}
                 }
             }
         )
