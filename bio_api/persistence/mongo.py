@@ -164,18 +164,32 @@ class MongoAPI:
                 }
             }
         )
-        
-        # Projection - map only the desired fields
-        projection = dict()
-        for field in fields:
-            if isinstance(SEQUENCE_FIELD_MAPPING[field], str):
-                projection[field] = f"${SEQUENCE_FIELD_MAPPING[field]}"
-            else:
-                projection[field] = SEQUENCE_FIELD_MAPPING[field]
-        
+
+        # Lookup data in metadata collection
+        # Join field 'name' in samples collection with field 'isolate_id' in metadata collection
         pipeline.append(
-            {'$project': projection
+            {
+                '$lookup': {
+                    'from': metadata_collection,
+                    'localField': 'name',
+                    'foreignField': 'isolate_id',
+                    'as': 'tbr'
+                }
             }
         )
+
+
+        # Projection - map only the desired fields
+        # projection = dict()
+        # for field in fields:
+        #     if isinstance(SEQUENCE_FIELD_MAPPING[field], str):
+        #         projection[field] = f"${SEQUENCE_FIELD_MAPPING[field]}"
+        #     else:
+        #         projection[field] = SEQUENCE_FIELD_MAPPING[field]
+        
+        # pipeline.append(
+        #     {'$project': projection
+        #     }
+        # )
 
         return self.db.samples.aggregate(pipeline)
