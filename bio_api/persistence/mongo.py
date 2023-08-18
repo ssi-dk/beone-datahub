@@ -86,7 +86,7 @@ class MongoAPI:
 
     def get_samples_from_sequence_ids(
         self,
-        seqid_list:list,
+        sequence_ids:list,
         fields: set = set(SEQUENCE_FIELD_MAPPING.keys())
     ):
 
@@ -97,7 +97,7 @@ class MongoAPI:
         pipeline.append(
             {'$match':
                 {
-                    sid_field: {'$in': seqid_list}
+                    sid_field: {'$in': sequence_ids}
                 }
             }
         )
@@ -145,3 +145,11 @@ class MongoAPI:
         if document_count > len(isolate_ids):  # document_count < list length is OK since not all isolates might have metadata!
             raise MongoAPIError (f"Too many documents: You asked for {list_length} documents, but the number of matching documents is {document_count}.")
         return document_count, mongo_cursor
+    
+    def get_metadata_from_sequence_ids(
+            self,
+            collection: str,
+            sequence_ids: list,
+            fields
+        ):
+        pass
