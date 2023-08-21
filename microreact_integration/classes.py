@@ -1,6 +1,6 @@
 from base64 import b64encode
 
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 @dataclass
 class Meta:
@@ -101,7 +101,11 @@ class Project:
         files_dict = dict()
         for file in self.files:
             files_dict[file.id] = file.to_dict()
+        dataset_dict = dict()
+        for dataset in self.datasets:
+            dataset_dict[dataset.id] = asdict(dataset)
         return {
             'meta': self.meta.to_dict(),
-            'files': files_dict
+            'files': files_dict,
+            'datasets': dataset_dict
         }

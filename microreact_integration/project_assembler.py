@@ -29,7 +29,7 @@ def assemble_project(project_name: str, metadata_keys: list, metadata_values: li
 
     metadata_file = classes.File(project_name=project_name, type='data', body=metadata_body)
     newick_file = classes.File(project_name=project_name, type='tree', body=tree)
-    dataset = classes.Dataset(id='dataset-1', file=metadata_file.name, idFieldName=id_field_name)
+    dataset = classes.Dataset(id='dataset-1', file=metadata_file.id, idFieldName=id_field_name)
     tree =  classes.Tree(
             type='rc',
             title='Tree',
@@ -42,7 +42,7 @@ def assemble_project(project_name: str, metadata_keys: list, metadata_values: li
 
     project = classes.Project(
         meta=project_meta,
-        datasets={dataset.id: dataset},
+        datasets=[dataset],
         files=[metadata_file, newick_file],
         tables=tables,
         timelines=timelines,
