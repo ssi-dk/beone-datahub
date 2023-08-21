@@ -227,5 +227,4 @@ def launchpad(request, tree_id):
     'tree': tree,
     'sequence_count': len(tree.comparison.sequences),
     'dashboards': dashboards,
-    'microreact_url': settings.MICROREACT_BASE_URL
     })
