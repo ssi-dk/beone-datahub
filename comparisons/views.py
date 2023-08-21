@@ -214,7 +214,7 @@ def launchpad(request, tree_id):
             # print("tree encoded:")
             # print(tree_encoded)
             # TODO Repeat The code section above for lims metadata and manual metadata
-            project_name = request.user.username + '_' + str(timezone.now())
+            project_name = request.user.username + '_' + str(timezone.now().astimezone())
             project = assemble_project(project_name, metadata_keys, metadata_values, tree.newick)
             print("Project as dict:")
             print(project.to_dict())
