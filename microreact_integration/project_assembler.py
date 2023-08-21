@@ -31,10 +31,11 @@ def assemble_project(project_name: str, metadata_keys: list, metadata_values: li
     newick_file = classes.File(project_name=project_name, type='tree', body=tree)
     dataset = classes.Dataset(id='dataset-1', file=metadata_file.id, idFieldName=id_field_name)
     tree =  classes.Tree(
+            id='tree-1',
             type='rc',
             title='Tree',
             labelField=id_field_name,
-            file=newick_file,
+            file=newick_file.id,
             highlightedId=None
         )
     table = classes.Table(paneId='table-1', title='Metadata', columns=metadata_keys, file=metadata_file.id)
@@ -47,7 +48,7 @@ def assemble_project(project_name: str, metadata_keys: list, metadata_values: li
         files=[metadata_file, newick_file],
         tables=[table],
         timelines=timelines,
-        trees = {"tree-1": tree},
+        trees = [tree],
         schema="https://microreact.org/schema/v1.json"
     )
 

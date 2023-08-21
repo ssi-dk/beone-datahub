@@ -98,10 +98,11 @@ class Timeline:
 
 @dataclass
 class Tree:
+    id: str
     file: File
     type: str = "rc"
     title: str = "Tree"
-    labelField: str = "Key"  # Det var derfor, jeg ikke fik labels på nodes!
+    labelField: str = "key"
     highlightedId: str = None
 
 @dataclass
@@ -129,9 +130,14 @@ class Project:
         for table in self.tables:
             assert table.paneId not in tables_dict
             tables_dict[table.paneId] = table.to_dict()
+        trees_dict = dict()
+        for tree in self.trees:
+            assert tree.id not in trees_dict
+            trees_dict[tree.id] = asdict(tree)
         return {
             'meta': self.meta.to_dict(),
             'files': files_dict,
             'datasets': datasets_dict,
-            'tables': tables_dict
+            'tables': tables_dict,
+            'trees': trees_dict
         }
