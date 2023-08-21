@@ -177,13 +177,7 @@ def launchpad(request, tree_id):
                 tbr_data_fields=form.cleaned_data['tbr_data_fields'],
                 lims_data_fields=form.cleaned_data['lims_data_fields'],
             )
-            msg = "Microreact is not yet integrated."
-            messages.add_message(request, messages.INFO, msg)
             tbr_collection = settings.METADATA_COLLECTIONS['tbr']
-            # Convert sequnce ids to isolate ids
-            ids = mongo_api.get_samples_from_sequence_ids(sequences, ['sequence_id', 'sample_id'])
-
-            # Testing...
             metadata = mongo_api.get_metadata_from_sequence_ids(
                 tbr_collection,
                 sequences,
@@ -207,7 +201,7 @@ def launchpad(request, tree_id):
             access_token = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..aoxg7jxHXGKS5gsU.9lcYdFeogzy9mEth0aAy3FmFucmDCAd0HVwnz5ssm3dKvY_jVkRc_UviOs0K8mimGzZBE4btSPpmh-B9rN7ba6x6Bt2aIjEuY526hxSUjzTrot6V4F0auVJOfHmtU4U106jAS2pD5kte4H51GfCRVw.35f_9LCrIg0lWpkO_Geekw'
             json_data = dumps(project.to_dict())
             print(json_data)
-            response = requests.post(
+            dashboard_response = requests.post(
                 f'{settings.MICROREACT_BASE_URL}/api/projects/create/',
                 headers= {
                     'Content-Type': 'application/json; charset=utf-8',
@@ -215,12 +209,16 @@ def launchpad(request, tree_id):
                     },
                 data=json_data,
             )
-            print(response)
-            print(response.json())
-
-            # TODO Create project in Microreact, get project id & url from response
-            # TODO dashboard.save()
-            # TODO open dashboard url in new browser tab
+            print(dashboard_response)
+            if dashboard_response.status_code == 200:
+                messages.add_message(request, messages.INFO, "A new dashboard was created.")
+                json_response = dashboard_response.json()
+                dashboard.id = json_response['id']
+                dashboard.url = json_response['url']
+                dashboard.save()
+                # TODO open dashboard url in new browser tab
+            else: 
+                messages.add_message(request, messages.ERROR, "Could not create dashboard.")
     else:
         form = NewDashboardForm()
 
