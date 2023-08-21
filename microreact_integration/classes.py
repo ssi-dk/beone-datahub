@@ -101,5 +101,5 @@ class Project:
             files_dict[file.id] = file.to_dict()
         return {
             'meta': self.meta.to_dict(),
-            #'files': files_dict
+            'files': files_dict
         }

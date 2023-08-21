@@ -200,10 +200,6 @@ def launchpad(request, tree_id):
                     metadata_values.append(list(next(metadata).values()))
                 except StopIteration:
                     break
-            print("Matadata keys:")
-            print(metadata_keys)
-            print("Metadata values:")
-            print(metadata_values)
             # tree_encoded = b64encode(tree.newick.encode('utf-8'))
             # tbr_metadata_str = "\n".join(tbr_metadata_list)
             # print("tbr_metadata_str:")
@@ -216,18 +212,17 @@ def launchpad(request, tree_id):
             # TODO Repeat The code section above for lims metadata and manual metadata
             project_name = request.user.username + '-' + str(timezone.now().astimezone())
             project = assemble_project(project_name, metadata_keys, metadata_values, tree.newick)
-            print("Project as dict:")
-            print(project.to_dict())
             #TODO Access-Token must be saved per user
             access_token = 'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..aoxg7jxHXGKS5gsU.9lcYdFeogzy9mEth0aAy3FmFucmDCAd0HVwnz5ssm3dKvY_jVkRc_UviOs0K8mimGzZBE4btSPpmh-B9rN7ba6x6Bt2aIjEuY526hxSUjzTrot6V4F0auVJOfHmtU4U106jAS2pD5kte4H51GfCRVw.35f_9LCrIg0lWpkO_Geekw'
-
+            json_data = dumps(project.to_dict())
+            print(json_data)
             response = requests.post(
                 f'{settings.MICROREACT_BASE_URL}/api/projects/create/',
                 headers= {
                     'Content-Type': 'application/json; charset=utf-8',
                     'Access-Token': access_token
                     },
-                data=dumps(project.to_dict()),
+                data=json_data,
             )
             print(response)
             #print(response.json())
