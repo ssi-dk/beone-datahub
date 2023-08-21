@@ -8,3 +8,4 @@ test_data/campy/
 comparison_backend/settings_local.py/
 *.nwk
 tmp/
+files/
