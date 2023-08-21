@@ -37,14 +37,15 @@ def assemble_project(project_name: str, metadata_keys: list, metadata_values: li
             file=newick_file,
             highlightedId=None
         )
-    tables = dict()  # TODO
+    table = classes.Table(paneId='table-1', title='Metadata', columns=metadata_keys)
+
     timelines = dict()  # TODO
 
     project = classes.Project(
         meta=project_meta,
         datasets=[dataset],
         files=[metadata_file, newick_file],
-        tables=tables,
+        tables=[table],
         timelines=timelines,
         trees = {"tree-1": tree},
         schema="https://microreact.org/schema/v1.json"

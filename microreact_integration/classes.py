@@ -59,6 +59,7 @@ class Column:
 
 @dataclass
 class Table:
+    paneId: str
     title: str
     columns: list
 
@@ -106,8 +107,13 @@ class Project:
         for dataset in self.datasets:
             assert dataset.id not in datasets_dict
             datasets_dict[dataset.id] = asdict(dataset)
+        tables_dict = dict()
+        for table in self.tables:
+            assert table.paneId not in tables_dict
+            tables_dict[table.paneId] = asdict(table)
         return {
             'meta': self.meta.to_dict(),
             'files': files_dict,
-            'datasets': datasets_dict
+            'datasets': datasets_dict,
+            'tables': tables_dict
         }
