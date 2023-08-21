@@ -100,12 +100,14 @@ class Project:
     def to_dict(self):
         files_dict = dict()
         for file in self.files:
+            assert file.id not in files_dict
             files_dict[file.id] = file.to_dict()
-        dataset_dict = dict()
+        datasets_dict = dict()
         for dataset in self.datasets:
-            dataset_dict[dataset.id] = asdict(dataset)
+            assert dataset.id not in datasets_dict
+            datasets_dict[dataset.id] = asdict(dataset)
         return {
             'meta': self.meta.to_dict(),
             'files': files_dict,
-            'datasets': dataset_dict
+            'datasets': datasets_dict
         }
