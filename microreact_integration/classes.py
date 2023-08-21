@@ -40,14 +40,14 @@ class File:
         self.type = type
         self.body = body
     
-    def __to_dict__(self):
+    def to_dict(self):
         blob = b64encode(self.body.encode('utf-8'))
         return {
             "id": self.id,
             "type": self.type,
             "name": self.name,
             "format": self.format,
-            "blob": self.mimetype + ',' + blob
+            "blob": self.mimetype + ',' + str(blob)
         }
 
 @dataclass
@@ -96,6 +96,10 @@ class Project:
     schema: str
 
     def to_dict(self):
+        files_dict = dict()
+        for file in self.files:
+            files_dict[file.id] = file.to_dict()
         return {
-            'meta': self.meta.to_dict()
+            'meta': self.meta.to_dict(),
+            #'files': files_dict
         }

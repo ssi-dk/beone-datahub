@@ -23,7 +23,7 @@ def assemble_project(project_name: str, metadata_keys: list, metadata_values: li
     id_field_name = metadata_keys[0]
 
     metadata_body = str()
-    metadata_body += stringify(metadata_keys)
+    metadata_body += stringify(metadata_keys)  # Add keys as first line in body
     for record in metadata_values:
         metadata_body += stringify(record)
 
