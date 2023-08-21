@@ -216,7 +216,7 @@ def launchpad(request, tree_id):
                 dashboard.id = json_response['id']
                 dashboard.url = json_response['url']
                 dashboard.save()
-                # TODO open dashboard url in new browser tab
+                return HttpResponseRedirect(reverse('launchpad', args=[tree_id]))
             else: 
                 messages.add_message(request, messages.ERROR, "Could not create dashboard.")
     else:
@@ -224,7 +224,5 @@ def launchpad(request, tree_id):
 
     return render(request, 'comparisons/launchpad.html',{
     'form': form,
-    'tree': tree,
-    'sequence_count': len(tree.comparison.sequences),
     'dashboards': dashboards,
     })
