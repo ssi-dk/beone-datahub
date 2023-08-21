@@ -1,0 +1,87 @@
+{
+    "meta": {
+        "name": "finn-2023-08-001"
+    },
+	
+	  "tables": {
+			"table-1": {
+				"displayMode": "cosy",
+				"hideUnselected": false,
+				"title": "Metadata",
+				"paneId": "table-1",
+				"columns": [
+					{
+						"field": "Key",
+						"fixed": false
+					},
+					{
+						"field": "ClusterID",
+						"fixed": false
+					},
+					{
+						"field": "PatientTravel",
+						"fixed": false
+					},
+					{
+						"field": "SourceCountry",
+						"fixed": false
+					},
+					{
+						"field": "InSilico_Serotype",
+						"fixed": false
+					},
+					{
+						"field": "FUDnr",
+						"fixed": false
+					},
+					{
+						"field": "Year",
+						"fixed": false
+					},
+					{
+						"field": "SampleDate",
+						"fixed": false
+					},
+					{
+						"field": "PatientSex",
+						"fixed": false
+					},
+					{
+						"field": "PatientAge",
+						"fixed": false
+					},
+					{
+						"field": "SourceRegion",
+						"fixed": false
+					}
+				],
+				"file": "441l"
+			}
+		}
+ 
+	,
+	  "datasets": {
+    "dataset-1": {
+      "id": "dataset-1",
+      "file": "finn-2023-08-001_metadata",
+      "idFieldName": "sequence_id"
+    }
+  },
+	
+    "files": {
+        "finn-2023-08-001_metadata": {
+            "id": "finn-2023-08-001_metadata",
+            "type": "data",
+            "name": "finn-2023-08-001_metadata.csv",
+            "format": "text/csv",
+            "blob": "data:application/vnd.ms-excel;base64,c2VxdWVuY2VfaWQ7c2FtcGxlX2lkO2FnZTtnZW5kZXI7a21hO3JlZ2lvbjt0cmF2ZWw7dHJhdmVsX2NvdW50cnk7cHJpbWFyeV9pc29sYXRlCjBQV09PVDlUUDBfQTJCVjZQUkVGNjtBMkJWNlBSRUY2OzM1O007SHZpZG92cmU7SE9WRURTVEFERU47SjtHUsOGS0VOTEFORDtUcnVlCjBQV09PVDlUUDBfRVhSVkI3WFpHUztFWFJWQjdYWkdTOzU2O007SHZpZG92cmU7Tk9SREpZTExBTkQ7TjtOb25lO1RydWUKMFBXT09UOVRQMF9QQ1lURVFXTlc3O1BDWVRFUVdOVzc7MTg7TTtPVUg7SE9WRURTVEFERU47SjtVTklURURfS0lOR0RPTTtUcnVlCjBQV09PVDlUUDBfNDkwTE9TSzA3Tjs0OTBMT1NLMDdOOzQ2O0s7U2tlamJ5O05PUkRKWUxMQU5EO047Tm9uZTtUcnVlCjBQV09PVDlUUDBfNTlCMVJLTVZQMTs1OUIxUktNVlAxOzc4O0s7QWFsYm9yZztNSURUSllMTEFORDtOO05vbmU7VHJ1ZQowUFdPT1Q5VFAwX1VNWFo4R1RDMjc7VU1YWjhHVEMyNzs4MTtLO1NrZWpieTtTWUREQU5NQVJLO047Tm9uZTtUcnVlCjBQV09PVDlUUDBfRzRKSUdUTFY3QztHNEpJR1RMVjdDOzU7TTtPVUg7SE9WRURTVEFERU47TjtOb25lO1RydWUKMFBXT09UOVRQMF9DUzYxQ1AyQ1gyO0NTNjFDUDJDWDI7OTQ7TTtIdmlkb3ZyZTtOT1JESllMTEFORDtKO1NQQU5JRU47VHJ1ZQowUFdPT1Q5VFAwXzVXVU5RQU5RSVY7NVdVTlFBTlFJVjs5NjtNO0hlcmxldjtIT1ZFRFNUQURFTjtOO05vbmU7VHJ1ZQowUFdPT1Q5VFAwX0tMTUI5SlNCOUw7S0xNQjlKU0I5TDswO007Umlnc2hvc3BpdGFsZXQ7U1lEREFOTUFSSztKO1NQQU5JRU47VHJ1ZQo="
+        },
+        "finn-2023-08-001": {
+            "id": "finn-2023-08-001_tree",
+            "type": "tree",
+            "name": "finn-2023-08-001_tree.nwk",
+            "format": "text/x-nh",
+            "blob": "data:application/octet-stream;base64,KCgoKCgwUFdPT1Q5VFAwX0c0SklHVExWN0M6MTIwODUuODcsMFBXT09UOVRQMF80OTBMT1NLMDdOOjEyMDg1Ljg3KToxLjQyLDBQV09PVDlUUDBfRVhSVkI3WFpHUzoxMjA4Ny4yOSk6MC4wMCwoKDBQV09PVDlUUDBfNVdVTlFBTlFJVjoxMjA4NS44NywwUFdPT1Q5VFAwXzU5QjFSS01WUDE6MTIwODUuODcpOjAuMDEsKCgwUFdPT1Q5VFAwX0tMTUI5SlNCOUw6MTIwNzUuOTgsMFBXT09UOVRQMF9BMkJWNlBSRUY2OjEyMDc1Ljk4KTo1LjY2LDBQV09PVDlUUDBfUENZVEVRV05XNzoxMjA4MS42NCk6NC4yNCk6MS40MSk6MS40MSwwUFdPT1Q5VFAwX0NTNjFDUDJDWDI6MTIwODguNzApOjAuMDEsMFBXT09UOVRQMF9VTVhaOEdUQzI3OjEyMDg4LjcxKTs="
+        }
+    }
+}
