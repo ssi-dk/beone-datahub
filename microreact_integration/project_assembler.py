@@ -42,7 +42,7 @@ def assemble_project(project_name: str, metadata_keys: list, metadata_values: li
 
     project = classes.Project(
         meta=project_meta,
-        datasets=[dataset],
+        datasets={dataset.id: dataset},
         files=[metadata_file, newick_file],
         tables=tables,
         timelines=timelines,
