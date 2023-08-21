@@ -37,7 +37,7 @@ def assemble_project(project_name: str, metadata_keys: list, metadata_values: li
             file=newick_file,
             highlightedId=None
         )
-    table = classes.Table(paneId='table-1', title='Metadata', columns=metadata_keys)
+    table = classes.Table(paneId='table-1', title='Metadata', columns=metadata_keys, file=metadata_file.id)
 
     timelines = dict()  # TODO
 

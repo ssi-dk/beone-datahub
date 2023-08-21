@@ -62,6 +62,7 @@ class Table:
     paneId: str
     title: str
     columns: list
+    file: str
 
 @dataclass
 class Timeline:
