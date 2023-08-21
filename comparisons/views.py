@@ -200,15 +200,6 @@ def launchpad(request, tree_id):
                     metadata_values.append(list(next(metadata).values()))
                 except StopIteration:
                     break
-            # tree_encoded = b64encode(tree.newick.encode('utf-8'))
-            # tbr_metadata_str = "\n".join(tbr_metadata_list)
-            # print("tbr_metadata_str:")
-            # print(tbr_metadata_str)
-            # tbr_metadata_encoded = b64encode(tbr_metadata_str.encode('utf-8'))
-            # print("tbr metadata encoded:")
-            # print(tbr_metadata_encoded)
-            # print("tree encoded:")
-            # print(tree_encoded)
             # TODO Repeat The code section above for lims metadata and manual metadata
             project_name = request.user.username + '-' + str(timezone.now().strftime('%Y%m%d%H%M%S'))
             project = assemble_project(project_name, metadata_keys, metadata_values, tree.newick)
@@ -225,7 +216,7 @@ def launchpad(request, tree_id):
                 data=json_data,
             )
             print(response)
-            #print(response.json())
+            print(response.json())
 
             # TODO Create project in Microreact, get project id & url from response
             # TODO dashboard.save()
