@@ -42,12 +42,14 @@ class File:
     
     def to_dict(self):
         blob = b64encode(self.body.encode('utf-8'))
+        blob_str = str(blob)
+        blob_str = blob_str[2:-1]
         return {
             "id": self.id,
             "type": self.type,
             "name": self.name,
             "format": self.format,
-            "blob": self.mimetype + ',' + str(blob)
+            "blob": self.mimetype + ',' + blob_str
         }
 
 @dataclass
