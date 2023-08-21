@@ -64,6 +64,23 @@ class Table:
     columns: list
     file: str
 
+    def get_col_list(self):
+        col_list = list()
+        for column in self.columns:
+            col_list.append(					{
+						"field": column,
+						"fixed": False
+					},)
+        return col_list
+    
+    def to_dict(self):
+        return {
+            'title': self.title,
+            'paneId': self.paneId,
+            'columns': self.get_col_list(),
+            'file': self.file
+        }
+
 @dataclass
 class Timeline:
     bounds: None
@@ -111,7 +128,7 @@ class Project:
         tables_dict = dict()
         for table in self.tables:
             assert table.paneId not in tables_dict
-            tables_dict[table.paneId] = asdict(table)
+            tables_dict[table.paneId] = table.to_dict()
         return {
             'meta': self.meta.to_dict(),
             'files': files_dict,
