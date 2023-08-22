@@ -15,10 +15,6 @@ def assemble_project(project_name: str, metadata_keys: list, metadata_values: li
     metadata_values: metadata values a list of lists
     tree: tree in Newick format
     """
-    # TODO
-    # We need to examine the content of the 'metadata'ø variable in order to:
-    # 1. Determine the idFieldName (assumed to be the name of first column)
-    # 2. Get the complete list of column names, which we need to into the 'tables' object
     project_meta = classes.Meta(name=project_name)
     id_field_name = metadata_keys[0]
 
