@@ -224,5 +224,7 @@ def launchpad(request, tree_id):
 
     return render(request, 'comparisons/launchpad.html',{
     'form': form,
+    'tree': tree,
+    'sequence_count': len(tree.comparison.sequences),
     'dashboards': dashboards,
     })
