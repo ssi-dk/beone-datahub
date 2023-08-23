@@ -29,9 +29,9 @@ class TBRMetadata(Metadata):
         'travel',
         'travel_country',
         'primary_isolate',
-        'date_received',
-        'date_received_kma',
-        'date_sample',
+        # 'date_received',
+        # 'date_received_kma',
+        # 'date_sample',
     ]
 
 
