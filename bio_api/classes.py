@@ -22,13 +22,62 @@ class Metadata(ABC):
 
 class TBRMetadata(Metadata):
     metadata_fields = [
-        'age', 'gender', 'kma', 'region', 'travel', 'travel_country', 'primary_isolate'
+        'age',
+        'gender',
+        'kma',
+        'region',
+        'travel',
+        'travel_country',
+        'primary_isolate',
+        'date_received',
+        'date_received_kma',
+        'date_sample',
     ]
 
 
 class LIMSMetadata(Metadata):
     metadata_fields = [
-        'product_type', 'product', 'origin_country', 'cvr_number', 'chr_number', 'aut_number', 'animal_species'
+        'product_type',
+        'product',
+        'origin_country',
+        'cvr_number',
+        'chr_number',
+        'aut_number',
+        'animal_species',
+        # Could all the amr fields be concatenated to one field where the values could be unpacked by the frontend?
+        # 'amr_ami',
+        # 'amr_amp',
+        # 'amr_azi',
+        # 'amr_chl',
+        # 'amr_cip',
+        # 'amr_col',
+        # 'amr_etp',
+        # 'amr_f/c',
+        # 'amr_fep',
+        # 'amr_fot',
+        # 'amr_fox',
+        # 'amr_gen',
+        # 'amr_imi',
+        # 'amr_mero',
+        # 'amr_nal',
+        # 'amr_sul',
+        # 'amr_t/c',
+        # 'amr_taz',
+        # 'amr_tet',
+        # 'amr_tgc',
+        # 'amr_tmp',
+        # 'amr_trm',
+        # 'animal_species',
+        # 'date_analysis_sofi', Manual data?
+        # 'date_sample', Manual data?
+        # 'project_number', Manual data?
+        # 'project_title', Manual data?
+        # 'resfinder_version',
+        # 'sample_info',
+        #  'sequence_id', Not related to metadata
+        # 'serotype_final', Manual data?
+        # 'st_final', Manual data?
+        # 'subspecies', Manual data?
     ]
 
 
