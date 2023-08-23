@@ -192,7 +192,8 @@ def launchpad(request, tree_id):
             # Der er et uhåndteret potentielt problem her. Koden går ud fra, at alle key/value par
             # eksisterer på alle dokumenter, og det kan vi ikke være sikre på!
             # Vi er nødt til for hvert eneste dokument at tjekke, om keys er de samme som dem, der
-            # er listet i tbr_data_fields, og hvis der mangler en key, skal der indsættes None
+            # er listet i tbr_data_fields, og hvis der mangler en key, skal der indsættes et 'tomt' felt,
+            # som senere skal oversættes til ';;'. Måske en tom streng (ved ikke om det vil være godt med None).
             metadata_values.append(list(first_record.values()))
             while True:
                 try:
