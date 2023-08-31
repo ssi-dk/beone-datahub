@@ -13,6 +13,6 @@
       }
     },
     "baseUrl": "http://localhost:3000/",
-    "mongodb": { "url": "mongodb://mongo:27017/test_bifrost" },
+    "mongodb": { "url": "mongodb://mongo:27017/bifrost_test" },
     "mapboxApiAccessToken": "pk.eyJ1IjoiZmlnbCIsImEiOiJjbDNsYnJicGwwMHg2M2pwdWE2ZXl2ZG1mIn0.PZbO58gOLIkVMOLMBV4mXQ"
   }
