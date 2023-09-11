@@ -10,6 +10,18 @@ BeONE web app runs trough Docker, so you will need Docker on your computer in or
 During the testing process it can sometimes be desirable to be able to view the MongoDB data in another way separate from the web app. For this purpose, the MongoDB Compass data viewer can be recommended. Please see MongoDB website for hos to download and install MongoDB Compass.
 
 # Installation
+
+## Build the dashboard server
+The dashboard server is not on Docker Hub yet, so the container has to be built manually following these instructions.
+    
+    git clone git@github.com:ssi-dk/dashboard_server.git
+    cd dashboard_server
+    docker build -t dashboard_server .
+
+After this step, your Docker instance has an image of the dashboard server that can be used in the following step.
+
+## Build rest of the the Docker environment
+
 If you haven't done so already, check out this repository on your computer (in Windows, do this on a Linux instance under WSL2).
 
 'cd' to the installation directory.
@@ -26,13 +38,13 @@ http://localhost:8080/
 
 Open another terminal window (while the containers are still running in the first one) and type the following to generate the table structure in PostgreSQL:
 
-    docker exec beone-datahub_django_1 python manage.py migrate
+    docker exec -it beone-datahub-django-1 python manage.py migrate
 
 This should produce som text output but no error messages.
 
 Then type in the same terminal window to create a user that can login to the web app:
 
-    docker exec -it beone-datahub_django_1 python manage.py createsuperuser
+    docker exec -it beone-datahub-django-1 python manage.py createsuperuser
 
 Enter user information at the prompts.
 
