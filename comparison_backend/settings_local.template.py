@@ -1,0 +1,3 @@
+# Microreact user auth (for prototype only)
+MICROREACT_ACCESS_TOKEN = \
+    'eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..z2ronqMJ2DfFPolr.BfE_hydKbhCngxfZcW7xxaC3F_x1m1dirTc2B3lcwOQbOF7VaEvgBWwwqIT2lhM1aFSDv2fcXv0bfMazAH7nS8Tg6xg2bcPK9Ru_sTR7GRc3TOg7pSn-MkVh_s-FNww3XhdmLH2Qxdfzj1BGhkNAsQ.vQOQXhTwa41zxey2xObnXA'

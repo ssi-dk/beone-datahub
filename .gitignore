@@ -9,3 +9,4 @@ comparison_backend/settings_local.py/
 *.nwk
 tmp/
 files/
+*/settings_local.py

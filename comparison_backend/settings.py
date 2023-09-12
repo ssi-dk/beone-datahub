@@ -1,5 +1,7 @@
 import os
 
+from comparison_backend import settings_local
+
 """
 Django settings for comparison_backend project.
 
@@ -198,3 +200,4 @@ REPORTREE_TIMEOUT = 5  # The number of seconds to wait for at REST response befo
 BIO_API_PORT = 8001
 
 MICROREACT_BASE_URL = 'http://dashboard:3000'
+MICROREACT_ACCESS_TOKEN = settings_local.MICROREACT_ACCESS_TOKEN
