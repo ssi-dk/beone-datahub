@@ -48,18 +48,36 @@ To create some dummy data, type:
 
     python manage.py createdummydata --count 20
 
-### TODO what does this command do?
-Finally, type:
-
-    python manage.py loaddata dumps/group.json
-
 You should now be able to login to the web application at:
 
-http://localhost:8080/
+http://localhost:8000/
 
 You should be able to login with the username and password you provided.
 
 You can then exit the Django shell.
 
 ## Get an access token from Microreact
-### TODO
+
+In a terminal go to the folder 'comparison_backend' and type:
+
+    cp settings_local.template.py settings_local.py
+
+Open the created file, settings_local.py, in an editor.
+
+Now point your web browser to the dashboard:
+
+http://localhost:3000/
+
+Login with username adminuser1. Password is 'password'. The user will be logged in via a dummy LDAP server. At first login, a user instance will be created in MongoDB in a collection named 'users'.
+
+Go to the users' account settings:
+
+http://localhost:3000/my-account/settings
+
+Copy the access token to the field MICROREACT_ACCESS_TOKEN in settings_local.py.
+
+It should now be possible to create Microreact projects programmatically using the main web interface in the prototype.
+
+If you at any point experience problems with creating projects programmatically, try to:
+- Logout from Microreact and log back in (using 'adminuser1' and 'password')
+- Go to the account settings, copy the new token, and paste it in settings_local.py
