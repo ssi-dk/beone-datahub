@@ -46,7 +46,7 @@ Enter user information at the prompts.
 
 To create some dummy data, type:
 
-    python manage.py createdummydata --count 20
+    python manage.py createfakedata --count 20
 
 You should now be able to login to the web application at:
 
